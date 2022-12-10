@@ -5,10 +5,10 @@ services:
       context: ./
       dockerfile: ./infra/app/Dockerfile
     ports:
-      - "23580:23580"
-    environment:
-      - HTTP_PORT=23580
+      - "23380:80"
     working_dir: /app
-    tty: true
-    # volumes:
+    volumes:
+        - "./app/:/var/www/html"
     #   - "./app/:/app"
+    privileged: true
+    tty: true
