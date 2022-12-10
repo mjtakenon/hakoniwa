@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    build: 
+      context: ./
+      dockerfile: ./infra/app/Dockerfile
+    ports:
+      - "23580:23580"
+    environment:
+      - HTTP_PORT=23580
+    working_dir: /app
+    tty: true
+    # volumes:
+    #   - "./app/:/app"
