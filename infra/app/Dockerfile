@@ -13,6 +13,7 @@ RUN \
     nginx \
     supervisor \
     iputils-ping net-tools \
+    htop \
     vim \
     emacs
 
@@ -23,18 +24,8 @@ RUN docker-php-ext-install \
   zip \
   opcache
 
-RUN \
-  apt-get update && \
-  apt-get install -y \
-    python
-
-RUN mkdir -p /var/run/php-fpm
-    # && \
-    # touch /var/run/php-fpm/php-fpm.sock && \
-    # chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \
-    # chmod 660 /var/run/php-fpm/php-fpm.sock
-
-RUN python -c "import socket as s; sock = s.socket(s.AF_UNIX); sock.bind('/var/run/php-fpm/php-fpm.sock')" && \
+RUN mkdir -p /var/run/php-fpm && \
+    touch /var/run/php-fpm/php-fpm.sock && \
     chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \
     chmod 660 /var/run/php-fpm/php-fpm.sock
 
