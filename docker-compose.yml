@@ -5,7 +5,7 @@ services:
       context: ./
       dockerfile: ./infra/app/Dockerfile
     ports:
-      - "32280:80"
+      - "${APP_PORT:-32280}:80"
     working_dir: /app
     volumes:
         - "./app/:/app"
@@ -25,9 +25,9 @@ services:
           - ./infra/db/my.cnf:/etc/mysql/conf.d/my.cnf
           - ./infra/db/init.sql:/tmp/init.sql
       ports:
-        - "7306:${DB_PORT:-3306}"
+        - "${DB_PORT:-7306}:3306"
       expose:
-        - "${DB_PORT:-3306}"
+        - "${DB_PORT:-7306}"
       environment:
           - MYSQL_ROOT_PASSWORD=T9jm?tGN
           - MYSQL_DATABASE=hakoniwa

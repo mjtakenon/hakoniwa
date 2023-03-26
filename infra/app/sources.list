@@ -1,0 +1,10 @@
+# deb http://snapshot.debian.org/archive/debian/20230320T000000Z bullseye main
+# deb http://ftp.jp.debian.org/debian/ bullseye main
+deb http://ftp.jp.debian.org/debian bullseye main
+# deb http://snapshot.debian.org/archive/debian-security/20230320T000000Z bullseye-security main
+# deb http://deb.debian.org/debian-security bullseye-security main
+deb http://security.debian.org/debian-security/ bullseye-security main contrib non-free
+# deb http://snapshot.debian.org/archive/debian/20230320T000000Z bullseye-updates main
+# deb http://deb.debian.org/debian bullseye-updates main
+deb http://ftp.jp.debian.org/debian bullseye-updates main
+deb http://ftp.jp.debian.org/debian bullseye-backports main contrib non-free

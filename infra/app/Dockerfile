@@ -2,6 +2,8 @@ FROM php:8.2.4-fpm
 
 WORKDIR /app
 
+COPY ./infra/app/sources.list /etc/apt/sources.list
+
 RUN \
   apt-get update && \
   apt-get install -y \
@@ -9,7 +11,10 @@ RUN \
     libzip-dev \
     cron \
     nginx \
-    iputils-ping net-tools
+    supervisor \
+    iputils-ping net-tools \
+    vim \
+    emacs
 
 RUN docker-php-ext-install \
   bcmath \
@@ -18,4 +23,25 @@ RUN docker-php-ext-install \
   zip \
   opcache
 
-EXPOSE 80
+RUN \
+  apt-get update && \
+  apt-get install -y \
+    python
+
+RUN mkdir -p /var/run/php-fpm
+    # && \
+    # touch /var/run/php-fpm/php-fpm.sock && \
+    # chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \
+    # chmod 660 /var/run/php-fpm/php-fpm.sock
+
+RUN python -c "import socket as s; sock = s.socket(s.AF_UNIX); sock.bind('/var/run/php-fpm/php-fpm.sock')" && \
+    chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \
+    chmod 660 /var/run/php-fpm/php-fpm.sock
+
+COPY ./infra/app/nginx.conf /etc/nginx/nginx.conf
+COPY ./infra/app/nginx-default.conf /etc/nginx/conf.d/
+COPY ./infra/app/php-fpm.conf /usr/local/etc/php-fpm.d/php-fpm.conf
+COPY ./infra/app/php.ini /usr/local/etc/php/php.ini
+COPY ./infra/app/supervisor-app.conf /etc/supervisor/conf.d/
+
+CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf" ]

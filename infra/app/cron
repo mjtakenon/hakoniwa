@@ -1,0 +1,1 @@
+* * * * * www-data cd /app && /usr/local/bin/php artisan schedule:run >> /var/log/app/schedule.log 2>&1
