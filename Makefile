@@ -20,11 +20,13 @@ logs-watch:
 
 exec-app: 
 	docker compose exec app /bin/bash
+migrate:
+	docker compose exec app php artisan migrate
 
 exec-composer:
-	docker-compose run composer bash
+	docker compose run composer bash
 composer-inst:
-	docker-compose run composer bash -c "composer install"
+	docker compose run composer bash -c "composer install"
 
 exec-db:
 	docker compose exec db bash
@@ -32,5 +34,6 @@ exec-mysql:
 	docker compose exec db bash -c "mysql -h localhost -u\$$MYSQL_USER -D \$$MYSQL_DATABASE -p\$$MYSQL_PASSWORD"
 init-db:
 	docker compose exec db bash -c "mysql -h localhost -uroot -p\$$MYSQL_ROOT_PASSWORD --execute 'source /tmp/init.sql'"
-migrate:
-	docker compose exec app php artisan migrate
+
+exec-frontend: 
+	docker compose exec frontend /bin/bash
