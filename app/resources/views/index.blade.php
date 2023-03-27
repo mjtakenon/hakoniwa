@@ -9,6 +9,6 @@
 <body>
     <div id="app"></div>
     <!--<script src="js/app.js"></script> -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.ts'])
 </body>
 </html>
