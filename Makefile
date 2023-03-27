@@ -10,9 +10,13 @@ setup:
 	make composer-inst
 	make init-db
 	make migrate
+	make yarn-inst
+	make yarn-run-dev
 start:
 	make up
 	make migrate
+	make yarn-inst
+	make yarn-run-dev
 logs:
 	docker compose logs
 logs-watch:
@@ -36,4 +40,8 @@ init-db:
 	docker compose exec db bash -c "mysql -h localhost -uroot -p\$$MYSQL_ROOT_PASSWORD --execute 'source /tmp/init.sql'"
 
 exec-frontend: 
-	docker compose exec frontend /bin/bash
+	docker compose exec frontend bash
+yarn-inst:
+	docker compose exec frontend bash -c "yarn install --frozen-lockfile"
+yarn-run-dev:
+	docker compose exec frontend bash -c "yarn run dev"

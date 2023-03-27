@@ -19,27 +19,27 @@ services:
       context: ./
       dockerfile: ./infra/composer/Dockerfile
     volumes:
-        - ./app/:/app/
+      - ./app/:/app/
     working_dir: /app
   db:
-      image: mysql:8
-      volumes:
-          - db-data:/var/lib/mysql
-          - ./infra/db/my.cnf:/etc/mysql/conf.d/my.cnf
-          - ./infra/db/init.sql:/tmp/init.sql
-      ports:
-        - "${DB_PORT:-7306}:3306"
-      expose:
-        - "${DB_PORT:-7306}"
-      environment:
-          - MYSQL_ROOT_PASSWORD=T9jm?tGN
-          - MYSQL_DATABASE=hakoniwa
-          - MYSQL_USER=hakoniwa_user
-          - MYSQL_PASSWORD=Vp8mD!uS
-      healthcheck:
-        test: [ "CMD", "mysqladmin", "ping", "-p${MYSQL_PASSWORD:-password}"]
-        retries: 3
-        timeout: 5s
+    image: mysql:8
+    volumes:
+        - db-data:/var/lib/mysql
+        - ./infra/db/my.cnf:/etc/mysql/conf.d/my.cnf
+        - ./infra/db/init.sql:/tmp/init.sql
+    ports:
+      - "${DB_PORT:-32206}:3306"
+    # expose:
+    #   - "${DB_PORT:-32206}"
+    environment:
+        - MYSQL_ROOT_PASSWORD=T9jm?tGN
+        - MYSQL_DATABASE=hakoniwa
+        - MYSQL_USER=hakoniwa_user
+        - MYSQL_PASSWORD=Vp8mD!uS
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-p${MYSQL_PASSWORD:-password}"]
+      retries: 3
+      timeout: 5s
   frontend:
     build: 
       context: ./
@@ -47,6 +47,8 @@ services:
     tty: true
     volumes:
       - ./app/:/app
+    ports:
+      - "${FRONT_PORT:-32273}:32273"
 volumes:
   db-data: 
     driver: local
