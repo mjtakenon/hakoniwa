@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
+$baseMiddleware = [
+    \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    \Illuminate\Http\Middleware\FrameGuard::class,
+];
+
+Route::prefix('/')->middleware(array_merge($baseMiddleware, []))->group( function() {
+    Route::get('', [\App\Http\Controllers\IndexController::class, 'get']);
 });
