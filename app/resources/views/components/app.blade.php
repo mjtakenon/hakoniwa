@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>@yield('title')</title>
 </head>
 <body>
-    <div id="app"></div>
-    <!--<script src="js/app.js"></script> -->
-    @vite(['resources/css/app.css', 'resources/js/app.ts'])
+    <header>
+        @include('components.header')
+    </header>
+    <div>
+        @yield('contents')
+    </div>
 </body>
 </html>

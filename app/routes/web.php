@@ -23,3 +23,8 @@ $baseMiddleware = [
 Route::prefix('/')->middleware(array_merge($baseMiddleware, []))->group( function() {
     Route::get('', [\App\Http\Controllers\IndexController::class, 'get']);
 });
+
+Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->group( function() {
+    Route::get('redirect', [\App\Http\Controllers\Auth\Google\RedirectController::class, 'get']);
+    Route::get('callback', [\App\Http\Controllers\Auth\Google\CallbackController::class, 'get']);
+});
