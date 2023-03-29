@@ -20,11 +20,17 @@ $baseMiddleware = [
     \Illuminate\Http\Middleware\FrameGuard::class,
 ];
 
-Route::prefix('/')->middleware(array_merge($baseMiddleware, []))->group( function() {
-    Route::get('', [\App\Http\Controllers\IndexController::class, 'get']);
+Route::prefix('/')->middleware(array_merge($baseMiddleware))->group( function() {
+    Route::get('', [\App\Http\Controllers\IndexController::class, 'get'])->name('home');
+});
+
+Route::prefix('/logout')->middleware(array_merge($baseMiddleware))->group( function() {
+    Route::post('', [\App\Http\Controllers\Logout\IndexController::class, 'post']);
 });
 
 Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->group( function() {
-    Route::get('redirect', [\App\Http\Controllers\Auth\Google\RedirectController::class, 'get']);
+    Route::get('redirect', [\App\Http\Controllers\Auth\Google\RedirectController::class, 'get'])->name('login');
     Route::get('callback', [\App\Http\Controllers\Auth\Google\CallbackController::class, 'get']);
 });
+
+//, ['auth:sanctum']
