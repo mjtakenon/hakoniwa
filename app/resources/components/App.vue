@@ -1,10 +1,12 @@
 <template>
-    <div>
-        <dev>
-            {{ hello }}
-        </dev>
+    <div class="wrapper">
+        <!-- <v-header></v-header> -->
         <dev class="test">
             hoge
+        </dev>
+        
+        <dev>
+            {{ hello }}
         </dev>
     </div>
 </template>
