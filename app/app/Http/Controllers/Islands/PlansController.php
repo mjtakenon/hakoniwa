@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Islands;
 
-class IndexController extends Controller
+use App\Http\Controllers\Controller;
+class PlansController extends Controller
 {
     public function get() {
         return response()->json(['islands/{id}/plans']);

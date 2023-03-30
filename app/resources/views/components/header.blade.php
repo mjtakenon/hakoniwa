@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="{{config('app.url')}}">
+            <a class="navbar-item" href="{{ config('app.url') }}">
                 {{-- <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"> --}}
                 🏝️
             </a>
@@ -9,7 +9,7 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item">
+                <a class="navbar-item" href="{{ config('app.url') }}">
                     Home
                 </a>
             </div>
@@ -19,10 +19,18 @@
                     <div class="navbar-item">
                         {{ \Auth::guard('sanctum')->user()->name }}
                     </div>
+{{--                @if(\Island::isRegisterd())--}}
+                    <div class="navbar-item">
+                        <a class="button is-primary" href="{{ config('app.url').'/register' }}">
+                            島を探しに行く（新規登録）
+                        </a>
+                    </div>
+{{--                @else--}}
+{{--                @endif--}}
                     <div class="navbar-item">
                         <form method="POST" name="logout" action="{{ config('app.url').'/logout' }}">
                             @csrf
-                            <a class="button is-primary" href="javascript:logout.submit()">
+                            <a class="button" href="javascript:logout.submit()">
                                 ログアウト
                             </a>
                         </form>

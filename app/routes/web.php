@@ -24,6 +24,11 @@ Route::prefix('/')->middleware(array_merge($baseMiddleware))->group( function() 
     Route::get('', [\App\Http\Controllers\IndexController::class, 'get'])->name('home');
 });
 
+Route::prefix('/register')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
+    Route::get('', [\App\Http\Controllers\Register\IndexController::class, 'get']);
+    Route::post('', [\App\Http\Controllers\Register\IndexController::class, 'post']);
+});
+
 Route::prefix('/logout')->middleware(array_merge($baseMiddleware))->group( function() {
     Route::post('', [\App\Http\Controllers\Logout\IndexController::class, 'post']);
 });
