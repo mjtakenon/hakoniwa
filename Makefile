@@ -70,5 +70,5 @@ yarn-inst:
 yarn-run-dev:
 	docker compose exec frontend bash -c "yarn run dev"
 
-#testing:
-#	docker compose exec app
+testing:
+	docker compose exec app /app/vendor/phpunit/phpunit/phpunit /app/tests/

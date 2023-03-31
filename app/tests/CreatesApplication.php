@@ -18,10 +18,8 @@ trait CreatesApplication
         $app->make(Kernel::class)->bootstrap();
 
         if (\DB::getConfig()['host'] !== 'db-testing') {
-            throw new \Exception(\DB::getConfig()['host']);
+            throw new \Exception('testing環境以外のDBに接続しているため中断します。 host:' . \DB::getConfig()['host']);
         }
-
-        \DB::beginTransaction();
 
         foreach(\DB::select('SHOW TABLES') as $table) {
             if (!$table->Tables_in_hakoniwa === 'migrations') {
@@ -30,6 +28,8 @@ trait CreatesApplication
         }
 
         \Artisan::call('db:seed');
+
+        \DB::beginTransaction();
 
         return $app;
     }
