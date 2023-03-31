@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('island_bbs', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('turn_id')->index();
+            $table->bigInteger('turn_id');
             $table->bigInteger('island_id')->index();
             $table->bigInteger('contributors_island_id');
             $table->string('contents', 255);
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->index('created_at');
+            $table->index(['turn_id', 'island_id']);
         });
     }
 

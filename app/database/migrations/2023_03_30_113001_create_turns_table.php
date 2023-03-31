@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('turns', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->dropColumn('updated_at');
+            $table->index('created_at');
         });
     }
 

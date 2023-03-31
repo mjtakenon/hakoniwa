@@ -46,6 +46,8 @@ use Illuminate\Database\Eloquent\Model;
 class IslandStatus extends Model
 {
     use HasFactory;
+    
+    const UPDATED_AT = null;
 
     const INITIAL_DEVELOPMENT_POINTS = 0;
     const INITIAL_FUNDS = 1000;

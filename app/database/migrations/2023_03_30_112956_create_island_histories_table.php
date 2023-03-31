@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('name', 32)->index();
             $table->string('owner_name', 32)->index();
             $table->timestamps();
+            $table->dropColumn('updated_at');
+            
+            $table->index('created_at');
         });
     }
 

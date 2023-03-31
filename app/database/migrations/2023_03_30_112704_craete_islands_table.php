@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('owner_name', 32)->unique();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('created_at');
         });
     }
 
