@@ -25,19 +25,19 @@ logs-watch:
 	docker compose logs -f
 
 exec-app: 
-	docker compose exec app /bin/bash
+	docker compose exec --user debian app /bin/bash
 migrate:
-	docker compose exec app php artisan migrate
+	docker compose exec --user debian app php artisan migrate
 db-seed:
-	docker compose exec app php artisan db:seed
+	docker compose exec --user debian app php artisan db:seed
 ide-helper-generate:
-	docker compose exec app php artisan ide-helper:generate
-	docker compose exec app php artisan ide-helper:model
+	docker compose exec --user debian app sudo php artisan ide-helper:generate
+	docker compose exec --user debian app sudo php artisan ide-helper:model --nowrite
 
 exec-composer:
-	docker compose run composer bash
+	docker compose run --user debian composer bash
 composer-inst:
-	docker compose run composer bash -c "composer install"
+	docker compose run --user debian composer bash -c "composer install"
 
 exec-db:
 	docker compose exec db bash

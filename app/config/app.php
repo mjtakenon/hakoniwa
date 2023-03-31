@@ -195,6 +195,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+
+        App\Providers\HakoniwaServiceProvider::class,
+        App\Providers\TerrainServiceProvider::class,
     ],
 
     /*
@@ -210,6 +213,10 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+
+        'Hakoniwa' => App\Facades\HakoniwaService::class,
+        'Terrain' => App\Facades\TerrainService::class,
+
     ])->toArray(),
 
 ];

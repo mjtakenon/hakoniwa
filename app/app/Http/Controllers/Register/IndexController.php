@@ -38,12 +38,12 @@ class IndexController extends Controller
             $turn = Turn::getLatestTurn();
 
             $islandTerrain = new IslandTerrain();
-            $islandTerrain->generateInitialTerrain();
+            $islandTerrain->generateInitialTerrain($island);
             $islandTerrain->save();
 
             $islandStatus = new IslandStatus();
             $islandStatus->setInitialStatus();
-            $islandStatus->aggregate();
+            $islandStatus->aggregate($islandTerrain);
             $islandStatus->save();
        });
 

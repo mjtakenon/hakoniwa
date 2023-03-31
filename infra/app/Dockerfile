@@ -15,7 +15,8 @@ RUN \
     iputils-ping net-tools \
     htop \
     vim \
-    emacs
+    emacs \
+    sudo
 
 RUN docker-php-ext-install \
   bcmath \
@@ -28,6 +29,16 @@ RUN mkdir -p /var/run/php-fpm && \
     touch /var/run/php-fpm/php-fpm.sock && \
     chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \
     chmod 660 /var/run/php-fpm/php-fpm.sock
+
+ARG USERNAME=debian
+ARG GROUPNAME=debian
+ARG UID=1000
+ARG GID=1000
+ARG PASSWORD=debian
+RUN groupadd -g $GID $GROUPNAME && \
+    useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USERNAME && \
+    echo $USERNAME:$PASSWORD | chpasswd && \
+    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 COPY ./infra/app/nginx.conf /etc/nginx/nginx.conf
 COPY ./infra/app/nginx-default.conf /etc/nginx/conf.d/
