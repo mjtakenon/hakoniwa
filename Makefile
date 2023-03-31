@@ -10,6 +10,7 @@ setup:
 	make composer-inst
 	make init-db
 	make migrate
+	make db-seed
 	make ide-helper-generate
 	make yarn-inst
 	make yarn-run-dev
@@ -27,6 +28,8 @@ exec-app:
 	docker compose exec app /bin/bash
 migrate:
 	docker compose exec app php artisan migrate
+db-seed:
+	docker compose exec app php artisan db:seed
 ide-helper-generate:
 	docker compose exec app php artisan ide-helper:generate
 	docker compose exec app php artisan ide-helper:model

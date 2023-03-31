@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|IslandBbs whereIslandId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandBbs whereTurnId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandBbs whereUpdatedAt($value)
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandBbs whereDeletedAt($value)
  * @mixin \Eloquent
  */
 class IslandBbs extends Model

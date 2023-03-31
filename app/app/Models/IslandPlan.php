@@ -19,6 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|IslandPlan whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandPlan wherePlan($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandPlan whereUpdatedAt($value)
+ * @property int $turn_id
+ * @property int $island_id
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandPlan whereIslandId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandPlan whereTurnId($value)
  * @mixin \Eloquent
  */
 class IslandPlan extends Model

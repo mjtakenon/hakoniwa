@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Register;
 
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
+use App\Models\Turn;
 use App\Models\User;
 
 class IndexController extends Controller
@@ -26,12 +29,23 @@ class IndexController extends Controller
 
         $validated = $validator->safe()->collect();
 
-//        \DB::transaction(function ($validated) {
+       \DB::transaction(function () use ($validated) {
             $island = new Island();
             $island->name = $validated->get('island_name');
             $island->owner_name = $validated->get('owner_name');
             $island->save();
-//        });
+
+            $turn = Turn::getLatestTurn();
+
+            $islandTerrain = new IslandTerrain();
+            $islandTerrain->generateInitialTerrain();
+            $islandTerrain->save();
+
+            $islandStatus = new IslandStatus();
+            $islandStatus->setInitialStatus();
+            $islandStatus->aggregate();
+            $islandStatus->save();
+       });
 
 
         $validated->get('owner_name');

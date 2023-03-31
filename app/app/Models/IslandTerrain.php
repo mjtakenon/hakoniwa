@@ -19,9 +19,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|IslandTerrain whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandTerrain whereTerrain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandTerrain whereUpdatedAt($value)
+ * @property int $turn_id
+ * @property int $island_id
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandTerrain whereIslandId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandTerrain whereTurnId($value)
  * @mixin \Eloquent
  */
 class IslandTerrain extends Model
 {
     use HasFactory;
+
+    private function generateInitialTerrain(Island $island, Turn $turn) {
+        // $this->turn_id = 
+    }
 }

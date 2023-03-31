@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Island whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Island whereOwnerName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Island whereUpdatedAt($value)
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Island whereDeletedAt($value)
  * @mixin \Eloquent
  */
 class Island extends Model

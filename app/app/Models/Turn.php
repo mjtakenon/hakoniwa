@@ -22,4 +22,8 @@ use Illuminate\Database\Eloquent\Model;
 class Turn extends Model
 {
     use HasFactory;
+
+    public static function getLatestTurn() {
+        return Turn::orderBy('created_at')->firstOrFail();
+    }
 }

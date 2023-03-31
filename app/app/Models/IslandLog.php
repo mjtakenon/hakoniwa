@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|IslandLog whereLog($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandLog whereTurnId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandLog whereUpdatedAt($value)
+ * @property int $island_id
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandLog whereIslandId($value)
  * @mixin \Eloquent
  */
 class IslandLog extends Model
