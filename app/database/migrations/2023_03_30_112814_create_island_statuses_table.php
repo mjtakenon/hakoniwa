@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('funds_production_number_of_people');
             $table->integer('foods_production_number_of_people');
             $table->integer('resources_production_number_of_people');
-            $table->integer('environment');
+            $table->string('environment', 32);
             $table->integer('area');
             $table->timestamps();
         });

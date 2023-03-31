@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('island_histories', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('island_id');
-            $table->string('name', 32);
-            $table->string('owner_name', 32);
+            $table->bigInteger('island_id')->index();
+            $table->string('name', 32)->index();
+            $table->string('owner_name', 32)->index();
             $table->timestamps();
         });
     }
