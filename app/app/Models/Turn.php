@@ -11,7 +11,11 @@ class Turn extends Model
 
     const UPDATED_AT = null;
 
+    /**
+     * @return Turn
+     */
     public static function getLatestTurn() {
-        return Turn::orderBy('created_at')->firstOrFail();
+        $turn = Turn::orderBy('created_at')->firstOrFail();
+        return $turn;
     }
 }

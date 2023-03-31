@@ -17,6 +17,26 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
+        if (\DB::getConfig()['host'] !== 'db-testing') {
+            throw new \Exception(\DB::getConfig()['host']);
+        }
+
+        \DB::beginTransaction();
+
+        foreach(\DB::select('SHOW TABLES') as $table) {
+            if (!$table->Tables_in_hakoniwa === 'migrations') {
+                \DB::table($table->Tables_in_hakoniwa)->truncate();
+            }
+        }
+
+        \Artisan::call('db:seed');
+
         return $app;
     }
+
+    public function __destruct()
+    {
+        \DB::rollBack();
+    }
+
 }
