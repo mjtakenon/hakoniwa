@@ -40,6 +40,25 @@ services:
       test: [ "CMD", "mysqladmin", "ping", "-p${MYSQL_PASSWORD:-password}"]
       retries: 3
       timeout: 5s
+  db-testing:
+    image: mysql:8
+    volumes:
+      - db-testing-data:/var/lib/mysql
+      - ./infra/db-testing/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./infra/db-testing/init.sql:/tmp/init.sql
+    ports:
+      - "${DB_PORT:-32216}:3306"
+    # expose:
+    #   - "${DB_PORT:-32216}"
+    environment:
+      - MYSQL_ROOT_PASSWORD=T9jm?tGN
+      - MYSQL_DATABASE=hakoniwa
+      - MYSQL_USER=hakoniwa_user
+      - MYSQL_PASSWORD=Vp8mD!uS
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-p${MYSQL_PASSWORD:-password}"]
+      retries: 3
+      timeout: 5s
   frontend:
     build: 
       context: ./
@@ -51,6 +70,8 @@ services:
       - "${FRONT_PORT:-32273}:32273"
 volumes:
   db-data: 
+    driver: local
+  db-testing-data:
     driver: local
   exclude-mount:
     driver: local

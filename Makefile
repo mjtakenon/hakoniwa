@@ -9,14 +9,20 @@ setup:
 	make up
 	make composer-inst
 	make init-db
+	make init-db-testing
 	make migrate
+	make migrate-testing
 	make db-seed
+	make db-seed-testing
 	make ide-helper-generate
 	make yarn-inst
 	make yarn-run-dev
 start:
 	make up
 	make migrate
+	make migrate-testing
+	make db-seed
+	make db-seed-testing
 	make yarn-inst
 	make yarn-run-dev
 logs:
@@ -28,8 +34,12 @@ exec-app:
 	docker compose exec --user debian app /bin/bash
 migrate:
 	docker compose exec --user debian app php artisan migrate
+migrate-testing:
+	docker compose exec --user debian app php artisan migrate --env=testing
 db-seed:
 	docker compose exec --user debian app php artisan db:seed
+db-seed-testing:
+	docker compose exec --user debian app php artisan db:seed --env=testing
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
 	docker compose exec --user debian app sudo php artisan ide-helper:model --nowrite
@@ -45,6 +55,13 @@ exec-mysql:
 	docker compose exec db bash -c "mysql -h localhost -u\$$MYSQL_USER -D \$$MYSQL_DATABASE -p\$$MYSQL_PASSWORD"
 init-db:
 	docker compose exec db bash -c "mysql -h localhost -uroot -p\$$MYSQL_ROOT_PASSWORD --execute 'source /tmp/init.sql'"
+
+exec-db-testing:
+	docker compose exec db-testing bash
+exec-mysql-testing:
+	docker compose exec db-testing bash -c "mysql -h localhost -u\$$MYSQL_USER -D \$$MYSQL_DATABASE -p\$$MYSQL_PASSWORD"
+init-db-testing:
+	docker compose exec db-testing bash -c "mysql -h localhost -uroot -p\$$MYSQL_ROOT_PASSWORD --execute 'source /tmp/init.sql'"
 
 exec-frontend: 
 	docker compose exec frontend bash
