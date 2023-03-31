@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('island_logs', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('turn_id');
+            $table->bigInteger('turn_id')->index();
+            $table->bigInteger('island_id')->index();
             $table->json('log');
             $table->timestamps();
         });

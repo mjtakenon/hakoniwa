@@ -10,7 +10,7 @@ setup:
 	make composer-inst
 	make init-db
 	make migrate
-	make ide-helper-gen
+	make ide-helper-generate
 	make yarn-inst
 	make yarn-run-dev
 start:

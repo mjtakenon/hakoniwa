@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('island_statuses', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('turn_id');
-            $table->bigInteger('island_id');
-            $table->integer('development_points');
+            $table->bigInteger('turn_id')->index();
+            $table->bigInteger('island_id')->index();
+            $table->integer('development_points')->index();
             $table->integer('population');
             $table->integer('funds');
             $table->integer('foods');

@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('island_plans', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('turn_id')->index();
+            $table->bigInteger('island_id')->index();
             $table->json('plan');
             $table->timestamps();
         });
