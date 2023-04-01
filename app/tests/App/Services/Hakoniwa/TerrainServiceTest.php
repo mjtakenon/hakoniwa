@@ -13,7 +13,8 @@ class TerrainServiceTest extends TestCase
      */
     public function testInitTerrain()
     {
-        $terrain = \Terrain::initTerrain();
+        $json = \Terrain::initTerrain()->toJson();
+        $terrain = \Terrain::fromJson($json);
         $this->assertTrue(true);
     }
 }
