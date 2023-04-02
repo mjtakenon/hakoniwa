@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Register;
 
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
@@ -49,7 +50,7 @@ class IndexController extends Controller
             $islandTerrain = new IslandTerrain();
             $islandTerrain->turn_id = $turn->id;
             $islandTerrain->island_id = $island->id;
-            $islandTerrain->generateInitialTerrain($island);
+            $islandTerrain->terrain = \IslandService::initTerrain()->toJson();
             $islandTerrain->save();
 
             $islandStatus = new IslandStatus();
@@ -57,6 +58,12 @@ class IndexController extends Controller
             $islandStatus->island_id = $island->id;
             $islandStatus->setInitialStatus($islandTerrain);
             $islandStatus->save();
+
+            $islandPlan = new IslandPlan();
+            $islandPlan->turn_id = $turn->id;
+            $islandPlan->island_id = $island->id;
+            $islandPlan->plan = \PlanService::getInitialPlans()->toJson();
+            $islandPlan->save();
         });
 
         return redirect()->route('home');

@@ -198,6 +198,7 @@ return [
 
         App\Providers\HakoniwaServiceProvider::class,
         App\Providers\IslandServiceProvider::class,
+        App\Providers\PlanServiceProvider::class,
     ],
 
     /*
@@ -216,6 +217,7 @@ return [
 
         'HakoniwaService' => App\Facades\HakoniwaService::class,
         'IslandService' => App\Facades\IslandService::class,
+        'PlanService' => App\Facades\PlanService::class,
 
     ])->toArray(),
 

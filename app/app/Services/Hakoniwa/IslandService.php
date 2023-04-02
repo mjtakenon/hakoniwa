@@ -9,7 +9,7 @@ use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
-class IslandService extends ServiceProvider
+class IslandService extends ServiceProvider implements JsonEncodable
 {
     const MAX_HEIGHT = 15;
     const MAX_WIDTH = 15;
@@ -45,7 +45,7 @@ class IslandService extends ServiceProvider
 
     public function fromJson(string $json): IslandService
     {
-        $terrain = [];
+        $terrain = new Collection();
         $objects = json_decode($json);
         foreach($objects as $object) {
             /** @var Cell $cell */
