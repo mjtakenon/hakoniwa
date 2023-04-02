@@ -19,7 +19,6 @@ class DetailController extends Controller
             'island' => $island,
             'islandStatus' => $island->islandStatuses->whereNull('deleted_at')->first(),
             'islandTerrain' => $island->islandTerrains->whereNull('deleted_at')->first(),
-            'islandPlan' => $island->islandPlans->whereNull('deleted_at')->first(),
             'islandLog' => $island->islandLogs, // TODO: nターン前から
         ]);
     }

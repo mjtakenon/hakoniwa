@@ -2,6 +2,10 @@
 
 namespace Tests\App\Http\Controllers\Register;
 
+use App\Models\Island;
+use App\Models\IslandPlan;
+use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -23,6 +27,10 @@ class IndexControllerTest extends TestCase
             'island_name' => 'test_island_name',
             'owner_name' => 'test_owner_name',
         ]);
-        $response->assertOk();
+        $response->assertRedirect('/islands/1/plans');
+        $this->assertNotNull(Island::find(1));
+        $this->assertNotNull(IslandTerrain::find(1));
+        $this->assertNotNull(IslandStatus::find(1));
+        $this->assertNotNull(IslandPlan::find(1));
     }
 }

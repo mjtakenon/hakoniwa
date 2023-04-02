@@ -22,7 +22,7 @@ trait CreatesApplication
         }
 
         foreach(\DB::select('SHOW TABLES') as $table) {
-            if (!$table->Tables_in_hakoniwa === 'migrations') {
+            if ($table->Tables_in_hakoniwa !== 'migrations') {
                 \DB::table($table->Tables_in_hakoniwa)->truncate();
             }
         }

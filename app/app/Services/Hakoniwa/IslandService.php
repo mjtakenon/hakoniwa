@@ -49,7 +49,7 @@ class IslandService extends ServiceProvider implements JsonEncodable
         $objects = json_decode($json);
         foreach($objects as $object) {
             /** @var Cell $cell */
-            $cell = Cell::fromJson($object->class, $object->data);
+            $cell = Cell::fromJson($object->type, $object->data);
             $terrain[$cell->getPoint()->x][$cell->getPoint()->y] = $cell;
         }
         $this->terrain = $terrain;

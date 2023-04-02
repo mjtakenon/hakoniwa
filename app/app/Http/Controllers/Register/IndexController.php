@@ -38,7 +38,7 @@ class IndexController extends Controller
 
         $validated = $validator->safe()->collect();
 
-        \DB::transaction(function () use ($validated) {
+        $island = \DB::transaction(function () use ($validated) {
             $island = new Island();
             $island->user_id = \Auth::user()->getAuthIdentifier();
             $island->name = $validated->get('island_name');
@@ -64,8 +64,10 @@ class IndexController extends Controller
             $islandPlan->island_id = $island->id;
             $islandPlan->plan = \PlanService::getInitialPlans()->toJson();
             $islandPlan->save();
+
+            return $island;
         });
 
-        return redirect()->route('home');
+        return redirect('/islands/' . $island->id . '/plans');
     }
 }

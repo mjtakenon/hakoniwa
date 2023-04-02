@@ -7,6 +7,7 @@ use App\Services\Hakoniwa\Util\Point;
 abstract class Cell
 {
     protected ?string $imagePath;
+    protected ?string $type;
     protected Point $point;
 
     public function __construct(Point|\stdClass $point)
@@ -18,7 +19,7 @@ abstract class Cell
     public function toArray(): array
     {
         return [
-            'class' => get_class($this),
+            'type' => $this->type,//get_class($this),
             'data' => [
                 'point' => $this->point,
                 'image_path' => $this->imagePath,
@@ -31,9 +32,9 @@ abstract class Cell
         return $this->point;
     }
 
-    static public function fromJson(string $class, Cell|\stdClass $data): Cell
+    static public function fromJson(string $type, Cell|\stdClass $data): Cell
     {
-        return new $class(new Point($data->point->x, $data->point->y));
+        return new (CellTypeConst::getClassByType($type))(new Point($data->point->x, $data->point->y));
     }
 
 }

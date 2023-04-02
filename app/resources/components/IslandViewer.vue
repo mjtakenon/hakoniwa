@@ -13,11 +13,17 @@ export default {
         const hello = ref(
             "Hello From TypeScript"
         )
-
         return {
             hello
         }
     },
+    mounted() {
+        console.log(this.island);
+        console.log(this.islandStatus);
+        console.log(this.islandTerrain);
+        console.log(this.islandLog);
+    },
+    props: ['island', 'islandStatus', 'islandTerrain', 'islandLog']
 };
 </script>
 
