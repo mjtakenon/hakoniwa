@@ -30,7 +30,7 @@ return new class extends Migration
             $table->datetime('created_at');
 
             $table->index('created_at');
-            $table->index(['turn_id', 'island_id']);
+            $table->unique(['turn_id', 'island_id']);
         });
     }
 

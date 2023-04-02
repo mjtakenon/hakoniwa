@@ -10,6 +10,7 @@ class IslandTerrain extends Model
 {
     use HasFactory;
 
+    const UPDATED_AT = null;
     public function generateInitialTerrain(Island $island)
     {
         $this->terrain = \Terrain::initTerrain()->toJson();
