@@ -14,21 +14,20 @@ class TerrainService extends ServiceProvider
     const MAX_HEIGHT = 15;
     const MAX_WIDTH = 15;
 
-    private array $terrain;
+    private Collection $terrain;
 
     public function initTerrain(): TerrainService
     {
-        $terrain = array();
+        $this->terrain = new Collection();
 
         for ($x = 0; $x < self::MAX_WIDTH; $x++) {
-            $row = array();
+            $row = new Collection();
             for ($y = 0; $y < self::MAX_HEIGHT; $y++) {
                 $row[] = new Sea(new Point($x, $y));
             }
-            $terrain[] = $row;
+            $this->terrain[] = $row;
         }
 
-        $this->terrain = $terrain;
         return $this;
     }
 
