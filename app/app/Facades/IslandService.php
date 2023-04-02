@@ -3,9 +3,9 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class TerrainService extends Facade
+class IslandService extends Facade
 {
     protected static function getFacadeAccessor() {
-        return 'TerrainService';
+        return 'IslandService';
     }
 }

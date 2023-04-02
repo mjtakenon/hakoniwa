@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name', 32)->index();
             $table->string('owner_name', 32)->index();
             $table->datetime('created_at');
+            $table->softDeletes();
 
             $table->index('created_at');
         });

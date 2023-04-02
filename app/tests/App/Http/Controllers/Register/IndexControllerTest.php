@@ -7,11 +7,14 @@ use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+    public function testGetSuccess()
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)
+            ->get('/register');
+        $response->assertOk();
+    }
+
     public function testPostSuccess()
     {
         $user = User::factory()->create();

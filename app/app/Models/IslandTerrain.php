@@ -13,11 +13,11 @@ class IslandTerrain extends Model
     const UPDATED_AT = null;
     public function generateInitialTerrain(Island $island)
     {
-        $this->terrain = \Terrain::initTerrain()->toJson();
+        $this->terrain = \IslandService::initTerrain()->toJson();
     }
 
     public function getAggregatedStatus(): Collection
     {
-        return \Terrain::getAggregatedStatus($this);
+        return \IslandService::getAggregatedStatus($this);
     }
 }

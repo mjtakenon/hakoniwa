@@ -9,14 +9,14 @@ use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
-class TerrainService extends ServiceProvider
+class Terrain extends ServiceProvider
 {
     const MAX_HEIGHT = 15;
     const MAX_WIDTH = 15;
 
     private Collection $terrain;
 
-    public function initTerrain(): TerrainService
+    public function initTerrain(): Terrain
     {
         $this->terrain = new Collection();
 
@@ -43,7 +43,7 @@ class TerrainService extends ServiceProvider
         return json_encode($terrain);
     }
 
-    public function fromJson(string $json): TerrainService
+    public function fromJson(string $json): Terrain
     {
         $terrain = [];
         $objects = json_decode($json);

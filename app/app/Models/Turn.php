@@ -10,12 +10,4 @@ class Turn extends Model
     use HasFactory;
 
     const UPDATED_AT = null;
-
-    /**
-     * @return Turn
-     */
-    public static function getLatestTurn() {
-        $turn = Turn::orderBy('created_at')->firstOrFail();
-        return $turn;
-    }
 }

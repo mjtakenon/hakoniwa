@@ -13,7 +13,7 @@ class IndexController extends Controller
 {
     public function get()
     {
-        if (\Hakoniwa::isRegisterd()) {
+        if (\HakoniwaService::isIslandRegisterd()) {
             return redirect()->route('home');
         }
 
@@ -31,7 +31,7 @@ class IndexController extends Controller
             return response()->json($validator->getMessageBag());
         }
 
-        if (\Hakoniwa::isRegisterd()) {
+        if (\HakoniwaService::isIslandRegisterd()) {
             return redirect()->route('home');
         }
 
@@ -39,12 +39,12 @@ class IndexController extends Controller
 
         \DB::transaction(function () use ($validated) {
             $island = new Island();
-            $island->user_id = \Auth::guard('sanctum')->user()->getAuthIdentifier();
+            $island->user_id = \Auth::user()->getAuthIdentifier();
             $island->name = $validated->get('island_name');
             $island->owner_name = $validated->get('owner_name');
             $island->save();
 
-            $turn = Turn::getLatestTurn();
+            $turn = \HakoniwaService::getLatestTurn();
 
             $islandTerrain = new IslandTerrain();
             $islandTerrain->turn_id = $turn->id;

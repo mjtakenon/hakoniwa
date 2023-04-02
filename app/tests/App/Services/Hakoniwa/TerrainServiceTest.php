@@ -6,15 +6,10 @@ use Tests\TestCase;
 
 class TerrainServiceTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function testInitTerrain()
     {
-        $json = \Terrain::initTerrain()->toJson();
-        $terrain = \Terrain::fromJson($json);
+        $json = \IslandService::initTerrain()->toJson();
+        $terrain = \IslandService::fromJson($json);
         $this->assertTrue(true);
     }
 }

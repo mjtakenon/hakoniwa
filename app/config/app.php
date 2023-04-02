@@ -197,7 +197,7 @@ return [
 
 
         App\Providers\HakoniwaServiceProvider::class,
-        App\Providers\TerrainServiceProvider::class,
+        App\Providers\IslandServiceProvider::class,
     ],
 
     /*
@@ -214,8 +214,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
 
-        'Hakoniwa' => App\Facades\HakoniwaService::class,
-        'Terrain' => App\Facades\TerrainService::class,
+        'HakoniwaService' => App\Facades\HakoniwaService::class,
+        'IslandService' => App\Facades\IslandService::class,
 
     ])->toArray(),
 

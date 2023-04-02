@@ -17,9 +17,9 @@
             <div class="navbar-end">
                 @if(\Auth::check())
                     <div class="navbar-item">
-                        {{ \Auth::guard('sanctum')->user()->name }}
+                        {{ \Auth::user()->name }}
                     </div>
-                    @if(\Hakoniwa::isRegisterd())
+                    @if(\HakoniwaService::isIslandRegisterd())
                         <div class="navbar-item">
                             <a class="button is-primary" href="{{ config('app.url').'/island/'.'1' }}"> {{-- fixme:island_id --}}
                                 開発画面に行く

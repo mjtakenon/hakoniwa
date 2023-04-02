@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\Hakoniwa\TerrainService;
+use App\Services\Hakoniwa\IslandService;
 use Illuminate\Support\ServiceProvider;
 
-class TerrainServiceProvider extends ServiceProvider
+class IslandServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -14,8 +14,8 @@ class TerrainServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('TerrainService', function () {
-            return new TerrainService($this->app);
+        $this->app->bind('IslandService', function () {
+            return new IslandService($this->app);
         });
     }
 

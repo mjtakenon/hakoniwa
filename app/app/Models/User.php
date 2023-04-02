@@ -44,9 +44,9 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function island() {
-        return $this->hasMany(Island::class);
+        return $this->hasOne(Island::class);
     }
 }
