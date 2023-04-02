@@ -27,11 +27,13 @@ class IndexController extends Controller
             return response()->json($validator->getMessageBag());
         }
 
+//        if (\Auth::user()->getAuthIdentifier())
+
         $validated = $validator->safe()->collect();
 
         \DB::transaction(function () use ($validated) {
             $island = new Island();
-            $island->user_id = \Auth::guard('sanctum')->user()->id;
+            $island->user_id = \Auth::guard('sanctum')->user()->getAuthIdentifier();
             $island->name = $validated->get('island_name');
             $island->owner_name = $validated->get('owner_name');
             $island->save();
@@ -51,6 +53,6 @@ class IndexController extends Controller
             $islandStatus->save();
         });
 
-        return response()->json();
+        return redirect()->route('home');//response()->json(['test' => 'ok']);
     }
 }

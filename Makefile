@@ -7,7 +7,7 @@ down:
 setup: 
 	make build
 	make up
-	make composer-inst
+	make composer-install
 	make init-db
 	make init-db-testing
 	make migrate
@@ -15,7 +15,7 @@ setup:
 	make db-seed
 	make db-seed-testing
 	make ide-helper-generate
-	make yarn-inst
+	make yarn-install
 	make yarn-run-dev
 start:
 	make up
@@ -23,7 +23,7 @@ start:
 	make migrate-testing
 	make db-seed
 	make db-seed-testing
-	make yarn-inst
+	make yarn-install
 	make yarn-run-dev
 logs:
 	docker compose logs
@@ -46,7 +46,7 @@ ide-helper-generate:
 
 exec-composer:
 	docker compose run --user debian composer bash
-composer-inst:
+composer-install:
 	docker compose run --user debian composer bash -c "composer install"
 
 exec-db:
@@ -65,7 +65,7 @@ init-db-testing:
 
 exec-frontend: 
 	docker compose exec frontend bash
-yarn-inst:
+yarn-install:
 	docker compose exec frontend bash -c "yarn install --frozen-lockfile"
 yarn-run-dev:
 	docker compose exec frontend bash -c "yarn run dev"
