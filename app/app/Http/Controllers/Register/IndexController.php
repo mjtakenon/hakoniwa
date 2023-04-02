@@ -29,7 +29,7 @@ class IndexController extends Controller
 
         $validated = $validator->safe()->collect();
 
-       \DB::transaction(function () use ($validated) {
+        \DB::transaction(function () use ($validated) {
             $island = new Island();
             $island->name = $validated->get('island_name');
             $island->owner_name = $validated->get('owner_name');
@@ -38,14 +38,17 @@ class IndexController extends Controller
             $turn = Turn::getLatestTurn();
 
             $islandTerrain = new IslandTerrain();
+            $islandTerrain->turn_id = $turn->id;
+            $islandTerrain->island_id = $island->id;
             $islandTerrain->generateInitialTerrain($island);
             $islandTerrain->save();
 
             $islandStatus = new IslandStatus();
-            $islandStatus->setInitialStatus();
-            $islandStatus->aggregate($islandTerrain);
+            $islandStatus->turn_id = $turn->id;
+            $islandStatus->island_id = $island->id;
+            $islandStatus->setInitialStatus($islandTerrain);
             $islandStatus->save();
-       });
+        });
 
 
         $validated->get('owner_name');
