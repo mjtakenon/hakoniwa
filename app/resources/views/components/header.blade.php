@@ -21,7 +21,7 @@
                     </div>
                     @if(\HakoniwaService::isIslandRegisterd())
                         <div class="navbar-item">
-                            <a class="button is-primary" href="{{ config('app.url').'/island/'.'1' }}"> {{-- fixme:island_id --}}
+                            <a class="button is-primary" href="{{ config('app.url').'/islands/' . \HakoniwaService::getOwnedIsland()->id . '/plans' }}"> {{-- fixme:island_id --}}
                                 開発画面に行く
                             </a>
                         </div>

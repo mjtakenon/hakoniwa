@@ -12,10 +12,16 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-import { createApp } from "vue";
+import { createApp } from "vue/dist/vue.esm-bundler";
 import App from "../components/App.vue";
+import IslandViewer from "../components/IslandViewer.vue";
 
-const app = createApp(App);
+const app =createApp({
+    components:{
+        App,
+        IslandViewer,
+    }
+});
 
 app.mount("#app");
 

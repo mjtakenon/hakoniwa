@@ -1,10 +1,5 @@
 <template>
-    <div class="wrapper">
-        <!-- <v-header></v-header> -->
-        <div class="test">
-            hoge
-        </div>
-
+    <div id="island-viewer" class="wrapper">
         <div>
             {{ hello }}
         </div>

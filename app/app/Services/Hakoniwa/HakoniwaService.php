@@ -2,6 +2,7 @@
 
 namespace App\Services\Hakoniwa;
 
+use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,5 +21,12 @@ class HakoniwaService extends ServiceProvider
      */
     public function getLatestTurn() {
         return Turn::orderBy('created_at')->firstOrFail();
+    }
+
+    /**
+     * @return Island
+     */
+    public function getOwnedIsland() {
+        return \Auth::user()->island;
     }
 }

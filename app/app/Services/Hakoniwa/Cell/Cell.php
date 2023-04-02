@@ -6,15 +6,13 @@ use App\Services\Hakoniwa\Util\Point;
 
 abstract class Cell
 {
-    public const CELL_SEA = 'sea';
-    public const CELL_SHALLOW_WATER = 'shallow_water';
-    public const CELL_PLAIN = 'plain';
-    public const CELL_MOUNTAIN = 'mountain';
+    protected ?string $imagePath;
     protected Point $point;
 
     public function __construct(Point|\stdClass $point)
     {
         $this->point = $point;
+        $this->imagePath = null;
     }
 
     public function toArray(): array
@@ -23,6 +21,7 @@ abstract class Cell
             'class' => get_class($this),
             'data' => [
                 'point' => $this->point,
+                'image_path' => $this->imagePath,
             ]
         ];
     }
