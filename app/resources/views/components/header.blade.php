@@ -19,14 +19,19 @@
                     <div class="navbar-item">
                         {{ \Auth::guard('sanctum')->user()->name }}
                     </div>
-{{--                @if(\Island::isRegisterd())--}}
-                    <div class="navbar-item">
-                        <a class="button is-primary" href="{{ config('app.url').'/register' }}">
-                            島を探しに行く（新規登録）
-                        </a>
-                    </div>
-{{--                @else--}}
-{{--                @endif--}}
+                    @if(\Hakoniwa::isRegisterd())
+                        <div class="navbar-item">
+                            <a class="button is-primary" href="{{ config('app.url').'/island/'.'1' }}"> {{-- fixme:island_id --}}
+                                開発画面に行く
+                            </a>
+                        </div>
+                    @else
+                        <div class="navbar-item">
+                            <a class="button is-primary" href="{{ config('app.url').'/register' }}">
+                                島を探しに行く（新規登録）
+                            </a>
+                        </div>
+                    @endif
                     <div class="navbar-item">
                         <form method="POST" name="logout" action="{{ config('app.url').'/logout' }}">
                             @csrf

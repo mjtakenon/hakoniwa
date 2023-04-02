@@ -13,6 +13,10 @@ class IndexController extends Controller
 {
     public function get()
     {
+        if (\Hakoniwa::isRegisterd()) {
+            return redirect()->route('home');
+        }
+
         return view('pages.register');
     }
 
@@ -27,7 +31,9 @@ class IndexController extends Controller
             return response()->json($validator->getMessageBag());
         }
 
-//        if (\Auth::user()->getAuthIdentifier())
+        if (\Hakoniwa::isRegisterd()) {
+            return redirect()->route('home');
+        }
 
         $validated = $validator->safe()->collect();
 
@@ -53,6 +59,6 @@ class IndexController extends Controller
             $islandStatus->save();
         });
 
-        return redirect()->route('home');//response()->json(['test' => 'ok']);
+        return redirect()->route('home');
     }
 }
