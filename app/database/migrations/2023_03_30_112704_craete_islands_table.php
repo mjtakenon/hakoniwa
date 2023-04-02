@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 32)->unique();
             $table->string('owner_name', 32)->unique();
-            $table->timestamps();
+            $table->datetime('created_at');
+            $table->datetime('updated_at');
             $table->softDeletes();
 
             $table->index('created_at');

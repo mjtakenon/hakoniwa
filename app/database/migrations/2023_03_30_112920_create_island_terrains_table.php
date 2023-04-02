@@ -18,8 +18,8 @@ return new class extends Migration
             $table->bigInteger('turn_id');
             $table->bigInteger('island_id')->index();
             $table->json('terrain');
-            $table->timestamps();
-            
+            $table->datetime('created_at');
+
             $table->index('created_at');
             $table->index(['turn_id', 'island_id']);
         });

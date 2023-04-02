@@ -27,8 +27,7 @@ return new class extends Migration
             $table->integer('resources_production_number_of_people');
             $table->string('environment', 32);
             $table->integer('area');
-            $table->timestamps();
-            $table->dropColumn('updated_at');
+            $table->datetime('created_at');
 
             $table->index('created_at');
             $table->index(['turn_id', 'island_id']);

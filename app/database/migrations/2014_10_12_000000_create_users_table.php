@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->rememberToken();
-            $table->timestamps();
-            
+            $table->datetime('created_at');
+            $table->datetime('updated_at');
+
             $table->index('created_at');
         });
     }

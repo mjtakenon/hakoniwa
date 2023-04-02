@@ -19,9 +19,10 @@ return new class extends Migration
             $table->bigInteger('island_id')->index();
             $table->bigInteger('contributors_island_id');
             $table->string('contents', 255);
-            $table->timestamps();
+            $table->datetime('created_at');
+            $table->datetime('updated_at');
             $table->softDeletes();
-            
+
             $table->index('created_at');
             $table->index(['turn_id', 'island_id']);
         });

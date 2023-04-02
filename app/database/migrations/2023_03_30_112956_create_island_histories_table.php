@@ -18,9 +18,8 @@ return new class extends Migration
             $table->bigInteger('island_id')->index();
             $table->string('name', 32)->index();
             $table->string('owner_name', 32)->index();
-            $table->timestamps();
-            $table->dropColumn('updated_at');
-            
+            $table->datetime('created_at');
+
             $table->index('created_at');
         });
     }
