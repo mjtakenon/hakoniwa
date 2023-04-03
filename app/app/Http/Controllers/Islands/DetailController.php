@@ -16,6 +16,10 @@ class DetailController extends Controller
 
         return view('pages.islands.detail', [
             'user' => \Auth::user(),
+            'hakoniwa' => json_encode([
+                'width' => \HakoniwaService::getMaxWidth(),
+                'height' => \HakoniwaService::getMaxHeight(),
+            ]),
             'island' => $island,
             'islandStatus' => $island->islandStatuses->whereNull('deleted_at')->first(),
             'islandTerrain' => $island->islandTerrains->whereNull('deleted_at')->first(),

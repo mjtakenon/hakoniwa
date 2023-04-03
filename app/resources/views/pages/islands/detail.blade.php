@@ -4,6 +4,7 @@
     @vite('resources/js/app.ts', 'resources/css/app.css')
     <div id="app">
         <island-viewer
+            :hakoniwa="{{ $hakoniwa }}"
             :island="{{ $island }}"
             :island-status="{{ $islandStatus }}"
             :island-terrain="{{ $islandTerrain->terrain }}"

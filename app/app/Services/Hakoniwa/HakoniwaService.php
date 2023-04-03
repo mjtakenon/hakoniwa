@@ -8,6 +8,9 @@ use Illuminate\Support\ServiceProvider;
 
 class HakoniwaService extends ServiceProvider
 {
+    const MAX_HEIGHT = 15;
+    const MAX_WIDTH = 15;
+
     public function isIslandRegisterd() {
         if (!\Auth::check()) {
             return false;
@@ -28,5 +31,15 @@ class HakoniwaService extends ServiceProvider
      */
     public function getOwnedIsland() {
         return \Auth::user()->island;
+    }
+
+    public function getMaxWidth():int
+    {
+        return self::MAX_WIDTH;
+    }
+
+    public function getMaxHeight():int
+    {
+        return self::MAX_HEIGHT;
     }
 }

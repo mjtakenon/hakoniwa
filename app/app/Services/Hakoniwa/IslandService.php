@@ -11,18 +11,15 @@ use Illuminate\Support\ServiceProvider;
 
 class IslandService extends ServiceProvider implements JsonEncodable
 {
-    const MAX_HEIGHT = 15;
-    const MAX_WIDTH = 15;
-
     private Collection $terrain;
 
     public function initTerrain(): IslandService
     {
         $this->terrain = new Collection();
 
-        for ($x = 0; $x < self::MAX_WIDTH; $x++) {
+        for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
             $row = new Collection();
-            for ($y = 0; $y < self::MAX_HEIGHT; $y++) {
+            for ($x = 0; $x < \HakoniwaService::getMaxHeight();$x++) {
                 $row[] = new Sea(new Point($x, $y));
             }
             $this->terrain[] = $row;
