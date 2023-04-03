@@ -1,6 +1,5 @@
 <template>
     <div id="island-viewer" class="wrapper">
-        <div class="subtitle"><a href="/">TOPへ戻る</a></div>
         <div class="title">{{ island.name }}島へようこそ！</div>
         <div class="table-container">
             <table id="status" class="table is-striped">
@@ -38,7 +37,8 @@
                 </tbody>
             </table>
         </div>
-        <div id="island" class="parent"><!--is-flex is-flex-direction-row-->
+        <hr/>
+        <div id="island">
             <div class="row m-0 p-0" v-for="y of hakoniwa.height" key="y">
                 <div class="right-padding" v-if="y%2 === 1">
                     {{ y }}
@@ -47,6 +47,13 @@
                     <img :src="getIslandTerrain(x-1,y-1).data.image_path" :alt="getIslandTerrain(x-1,y-1).data.type" class="cell">
                 </div>
                 <div class="left-padding" v-if="y%2 === 0"></div>
+            </div>
+        </div>
+        <hr/>
+        <div id="logs">
+            {{ island.name }}島のログ
+            <div v-for="log of islandLogs" key="id">
+                ターン {{ log.turn_id }} : {{ log.log }}
             </div>
         </div>
     </div>
@@ -69,8 +76,6 @@ export default {
         // console.log(this.islandTerrain);
         // console.log(this.islandLog);
     },
-    // methods() {
-    // },
     props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog'],
 };
 </script>
@@ -93,8 +98,10 @@ export default {
     margin: 0 auto;
 }
 
-.parent {
-    display: grid;
+#logs {
+    text-align: left;
+    margin-left: 30px;
+    max-width: 800px;
 }
 
 .row {
