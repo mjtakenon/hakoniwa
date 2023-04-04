@@ -1,11 +1,9 @@
 <template>
     <div id="island-viewer" class="wrapper">
         <div class="title">{{ island.name }}島開発計画</div>
-        <div class="table-container">
-            <status-table
-                :island-status="islandStatus"
-            ></status-table>
-        </div>
+        <status-table
+            :island-status="islandStatus"
+        ></status-table>
         <hr/>
         <island-viewer
             :hakoniwa="hakoniwa"
