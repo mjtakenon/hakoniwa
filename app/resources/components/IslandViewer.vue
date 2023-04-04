@@ -44,15 +44,29 @@
                     {{ y }}
                 </div>
                 <div class="cell" v-for="x of hakoniwa.width" key="x">
-                    <img :src="getIslandTerrain(x-1,y-1).data.image_path" :alt="getIslandTerrain(x-1,y-1).data.type" class="cell">
+                    <img
+                        @mouseover="onMouseOverCell(x-1, y-1)"
+                        @mouseleave="onMouseLeaveCell(x-1, y-1)"
+                        :src="getIslandTerrain(x-1,y-1).data.image_path"
+                        :alt="getIslandTerrain(x-1,y-1).data.type"
+                        class="cell"
+                    >
                 </div>
                 <div class="left-padding" v-if="y%2 === 0"></div>
+            </div>
+            <div v-show="showHoverWindow" class="hover-window" :style="{ top: hoverWindowTop+'px', left: hoverWindowLeft+'px' }">
+                <div>
+                    <img
+                        :src="getIslandTerrain(hoverCell.x, hoverCell.y).data.image_path"
+                    >
+                    ({{ hoverCell.x }}, {{ hoverCell.y }}) {{ getIslandTerrain(hoverCell.x, hoverCell.y).data.name }}
+                </div>
             </div>
         </div>
         <hr/>
         <div id="logs">
             {{ island.name }}島のログ
-            <div v-for="log of islandLogs" key="id">
+            <div v-for="log of islandLog" key="id">
                 ターン {{ log.turn_id }} : {{ log.log }}
             </div>
         </div>
@@ -61,6 +75,17 @@
 
 <script lang="ts">
 export default {
+    data() {
+        return {
+            showHoverWindow: false,
+            hoverCell: {
+                "x": 0,
+                "y": 0,
+            },
+            hoverWindowTop: 170,
+            hoverWindowLeft: 0,
+        }
+    },
     setup() {
     },
     methods: {
@@ -68,6 +93,21 @@ export default {
             return this.islandTerrain.filter(function(item, idx){
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
+        },
+        onMouseOverCell(x, y) {
+            this.showHoverWindow = true;
+            this.hoverCell.x = x;
+            this.hoverCell.y = y;
+
+            // 左半分
+            if (this.hoverCell.x < this.hakoniwa.width / 2) {
+                this.hoverWindowLeft = 250;
+            } else {
+                this.hoverWindowLeft = 0;
+            }
+        },
+        onMouseLeaveCell(x, y) {
+            this.showHoverWindow = false;
         }
     },
     mounted() {
@@ -75,6 +115,9 @@ export default {
         // console.log(this.islandStatus);
         // console.log(this.islandTerrain);
         // console.log(this.islandLog);
+    },
+    computed: {
+        // showHoverWindow() { return true; }
     },
     props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog'],
 };
@@ -90,6 +133,7 @@ export default {
 }
 
 #island {
+    position: relative;
     margin: 0 auto;
     max-width: 480px;
 }
@@ -131,4 +175,16 @@ export default {
     font-size: 10px;
     padding-top: 8px;
 }
+
+.hover-window {
+    text-align: left;
+    padding: 10px;
+    margin: 10px;
+    position: absolute;
+    border: 1px solid;
+    background-color: lightyellow;
+    min-width: 200px;
+    min-height: 50px;
+}
+
 </style>
