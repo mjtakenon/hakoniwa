@@ -11,7 +11,7 @@ class HakoniwaService extends ServiceProvider
     const MAX_HEIGHT = 15;
     const MAX_WIDTH = 15;
 
-    public function isIslandRegisterd() {
+    public function isIslandRegistered() {
         if (!\Auth::check()) {
             return false;
         }
@@ -30,6 +30,9 @@ class HakoniwaService extends ServiceProvider
      * @return Island
      */
     public function getOwnedIsland() {
+        if (!\Auth::check()) {
+            return null;
+        }
         return \Auth::user()->island;
     }
 

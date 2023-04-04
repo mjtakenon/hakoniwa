@@ -111,10 +111,7 @@ export default {
         }
     },
     mounted() {
-        // console.log(this.island);
-        // console.log(this.islandStatus);
-        // console.log(this.islandTerrain);
-        // console.log(this.islandLog);
+        // console.log(this.$props)
     },
     computed: {
         // showHoverWindow() { return true; }

@@ -2,6 +2,8 @@
 @section('title', 'hakoniwa')
 @section('contents')
     @vite('resources/js/app.ts', 'resources/css/app.css')
-    index
-    <div id="app"></div>
+    <div id="app">
+        @include('components.header')
+        index
+    </div>
 @endsection

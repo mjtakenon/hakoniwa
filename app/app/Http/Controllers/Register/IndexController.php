@@ -14,7 +14,7 @@ class IndexController extends Controller
 {
     public function get()
     {
-        if (\HakoniwaService::isIslandRegisterd()) {
+        if (\HakoniwaService::isIslandRegistered()) {
             return redirect()->route('home');
         }
 
@@ -32,7 +32,7 @@ class IndexController extends Controller
             return response()->json($validator->getMessageBag());
         }
 
-        if (\HakoniwaService::isIslandRegisterd()) {
+        if (\HakoniwaService::isIslandRegistered()) {
             return redirect()->route('home');
         }
 
