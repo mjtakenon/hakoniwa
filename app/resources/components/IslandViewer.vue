@@ -2,7 +2,7 @@
     <div id="island-viewer" class="wrapper">
         <div class="title">{{ island.name }}島へようこそ！</div>
         <div class="table-container">
-            <table id="status" class="table is-striped">
+            <table id="status" class="table is-narrow is-striped">
                 <thead>
                     <tr>
                         <th> 発展ポイント </th>
@@ -133,10 +133,13 @@ export default {
     position: relative;
     margin: 0 auto;
     max-width: 480px;
+    min-width: 496px;
+    min-height: 496px;
 }
 
 #status {
     margin: 0 auto;
+    min-width: 480px;
 }
 
 #logs {

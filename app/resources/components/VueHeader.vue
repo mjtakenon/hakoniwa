@@ -6,11 +6,11 @@
                     🏝️
                 </a>
 
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <button @click="isOpenHambargurMenu=!isOpenHambargurMenu" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
-                </a>
+                </button>
             </div>
 
             <div id="navbarBasicExample" class="navbar-menu">
@@ -50,6 +50,36 @@
                 </div>
             </div>
         </nav>
+
+        <nav v-show="isOpenHambargurMenu" class="navbar" role="navigation" aria-label="dropdown navigation">
+            <div class="navbar-item has-dropdown">
+                <div class="navbar-dropdown">
+                    <div v-if="isLoggedIn" class="navbar-end">
+                        <div v-if="isIslandRegistered" class="navbar-item">
+                            <a :href="'/islands/'+ownedIsland.id+'/plans'" > <!--fixme:island_id-->
+                                開発画面に行く
+                            </a>
+                        </div>
+                        <div v-else class="navbar-item">
+                            <a class="navbar-item" href="/register">
+                                島を探しに行く（新規登録）
+                            </a>
+                        </div>
+                        <div class="navbar-item">
+                            <a href="javascript:logout.submit()">
+                                ログアウト
+                            </a>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <a href="/auth/google/redirect">
+                            <img src="/img/btn_google_signin_light_normal_web.png">
+                        </a>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+        </nav>
     </header>
 </template>
 
@@ -57,7 +87,7 @@
 export default {
     data() {
         return {
-            // csrfToken: ''
+            isOpenHambargurMenu: false,
         }
     },
     setup() {
