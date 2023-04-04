@@ -14,15 +14,18 @@ class DetailController extends Controller
             abort(404);
         }
 
+        $turn = \HakoniwaService::getLatestTurn();
+
         return view('pages.islands.detail', [
             'user' => \Auth::user(),
             'hakoniwa' => json_encode([
                 'width' => \HakoniwaService::getMaxWidth(),
                 'height' => \HakoniwaService::getMaxHeight(),
             ]),
+            'turn' => $turn,
             'island' => $island,
-            'islandStatus' => $island->islandStatuses->whereNull('deleted_at')->first(),
-            'islandTerrain' => $island->islandTerrains->whereNull('deleted_at')->first(),
+            'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
+            'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
             'islandLog' => $island->islandLogs, // TODO: nターン前から
         ]);
     }

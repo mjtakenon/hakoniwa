@@ -61,7 +61,7 @@
                             </a>
                         </div>
                         <div v-else class="navbar-item">
-                            <a class="navbar-item" href="/register">
+                            <a href="/register">
                                 島を探しに行く（新規登録）
                             </a>
                         </div>

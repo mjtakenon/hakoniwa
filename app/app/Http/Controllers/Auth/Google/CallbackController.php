@@ -30,6 +30,10 @@ class CallbackController extends Controller
             return $token;
         });
 
-        return redirect(config('app.url'));
+        if (\HakoniwaService::isIslandRegistered()) {
+            return redirect(config('app.url') . '/islands/' . \Auth::user()->island->id . '/plans');
+        } else {
+            return redirect(route('home'));
+        }
     }
 }

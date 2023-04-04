@@ -1,6 +1,6 @@
 <template>
     <div id="island-viewer" class="wrapper">
-        <div class="title">{{ island.name }}島へようこそ！</div>
+        <div class="title">{{ island.name }}島開発計画</div>
         <div class="table-container">
             <status-table
                 :island-status="islandStatus"
@@ -85,6 +85,7 @@ export default {
         }
     },
     mounted() {
+        console.log(StatusTable);
         // console.log(this.$props)
     },
     computed: {
@@ -110,6 +111,7 @@ export default {
     min-width: 496px;
     min-height: 496px;
 }
+
 
 .row {
     display: grid;

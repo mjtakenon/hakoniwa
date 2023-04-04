@@ -14,11 +14,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import { createApp } from "vue/dist/vue.esm-bundler";
 import IslandViewer from "../components/IslandViewer.vue";
+import PlanViewer from "../components/PlanViewer.vue";
 import VueHeader from "../components/VueHeader.vue";
 
 const app =createApp({
     components:{
         IslandViewer,
+        PlanViewer,
         VueHeader,
     }
 });
