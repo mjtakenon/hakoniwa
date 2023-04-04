@@ -1,34 +1,38 @@
 <template>
-    <div id="island">
-        <div class="row m-0 p-0" v-for="y of hakoniwa.height" key="y">
-            <div class="right-padding" v-if="y%2 === 1">
-                {{ y }}
-            </div>
-            <div class="cell" v-for="x of hakoniwa.width" key="x">
-                <img
-                    @mouseover="onMouseOverCell(x-1, y-1)"
-                    @mouseleave="onMouseLeaveCell(x-1, y-1)"
-                    :src="getIslandTerrain(x-1,y-1).data.image_path"
-                    :alt="getIslandTerrain(x-1,y-1).data.type"
-                    class="cell"
-                >
-            </div>
-            <div class="left-padding" v-if="y%2 === 0"></div>
+    <div id="island-viewer" class="wrapper">
+        <div class="title">{{ island.name }}島へようこそ！</div>
+        <div class="table-container">
+            <status-table
+                :island-status="islandStatus"
+            ></status-table>
         </div>
-        <div v-show="showHoverWindow" class="hover-window" :style="{ top: hoverWindowTop+'px', left: hoverWindowLeft+'px' }">
-            <div>
-                <img
-                    :src="getIslandTerrain(hoverCell.x, hoverCell.y).data.image_path"
-                >
-                ({{ hoverCell.x }}, {{ hoverCell.y }}) {{ getIslandTerrain(hoverCell.x, hoverCell.y).data.name }}
-            </div>
-        </div>
+        <hr/>
+        <island-viewer
+            :hakoniwa="hakoniwa"
+            :island="island"
+            :island-status="islandStatus"
+            :island-terrain="islandTerrain"
+            :island-log="islandLog"
+        ></island-viewer>
+        <hr/>
+        <log-viewer
+            :island="island"
+            :island-log="islandLog"
+        ></log-viewer>
     </div>
 </template>
 
 <script lang="ts">
+import StatusTable from "./StatusTable.vue";
+import LogViewer from "./LogViewer.vue";
+import IslandViewer from "./IslandViewer.vue";
+
 export default {
-    components: {},
+    components: {
+        IslandViewer,
+        StatusTable,
+        LogViewer,
+    },
     data() {
         return {
             showHoverWindow: false,
@@ -67,13 +71,21 @@ export default {
     mounted() {
         // console.log(this.$props)
     },
-    computed: {},
+    computed: {
+        // showHoverWindow() { return true; }
+    },
     props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog'],
 };
 </script>
 
 <style lang="scss" scoped>
 @import "bulma/bulma.sass";
+
+#island-viewer {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 800px;
+}
 
 #island {
     position: relative;

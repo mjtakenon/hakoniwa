@@ -4,12 +4,12 @@
     @vite('resources/js/app.ts', 'resources/css/app.css')
     <div id="app">
         @include('components.header')
-        <plan-viewer
+        <plan-page
             :hakoniwa="{{ $hakoniwa }}"
             :island="{{ $island }}"
             :island-status="{{ $islandStatus }}"
             :island-terrain="{{ $islandTerrain->terrain }}"
             :island-log="{{ $islandLog }}"
-        ></plan-viewer>
+        ></plan-page>
     </div>
 @endsection

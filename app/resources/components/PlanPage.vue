@@ -7,31 +7,13 @@
             ></status-table>
         </div>
         <hr/>
-        <div id="island">
-            <div class="row m-0 p-0" v-for="y of hakoniwa.height" key="y">
-                <div class="right-padding" v-if="y%2 === 1">
-                    {{ y }}
-                </div>
-                <div class="cell" v-for="x of hakoniwa.width" key="x">
-                    <img
-                        @mouseover="onMouseOverCell(x-1, y-1)"
-                        @mouseleave="onMouseLeaveCell(x-1, y-1)"
-                        :src="getIslandTerrain(x-1,y-1).data.image_path"
-                        :alt="getIslandTerrain(x-1,y-1).data.type"
-                        class="cell"
-                    >
-                </div>
-                <div class="left-padding" v-if="y%2 === 0"></div>
-            </div>
-            <div v-show="showHoverWindow" class="hover-window" :style="{ top: hoverWindowTop+'px', left: hoverWindowLeft+'px' }">
-                <div>
-                    <img
-                        :src="getIslandTerrain(hoverCell.x, hoverCell.y).data.image_path"
-                    >
-                    ({{ hoverCell.x }}, {{ hoverCell.y }}) {{ getIslandTerrain(hoverCell.x, hoverCell.y).data.name }}
-                </div>
-            </div>
-        </div>
+        <island-viewer
+            :hakoniwa="hakoniwa"
+            :island="island"
+            :island-status="islandStatus"
+            :island-terrain="islandTerrain"
+            :island-log="islandLog"
+        ></island-viewer>
         <hr/>
         <log-viewer
             :island="island"
@@ -41,6 +23,7 @@
 </template>
 
 <script lang="ts">
+import IslandViewer from "./IslandViewer.vue";
 import StatusTable from "./StatusTable.vue";
 import LogViewer from "./LogViewer.vue";
 
@@ -48,6 +31,7 @@ export default {
     components: {
         StatusTable,
         LogViewer,
+        IslandViewer,
     },
     data() {
         return {
@@ -85,7 +69,6 @@ export default {
         }
     },
     mounted() {
-        console.log(StatusTable);
         // console.log(this.$props)
     },
     computed: {
