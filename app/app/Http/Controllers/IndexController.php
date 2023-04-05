@@ -1,11 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
+
+use App\Models\Island;
 
 class IndexController extends Controller
 {
-    public function get() {
-        return view('pages.index');
+    public function get()
+    {
+        $islands = Island::with(['islandStatuses' => function ($query) {
+            $query->where('turn_id', \HakoniwaService::getLatestTurn());
+        }])->whereNull('deleted_at')->get();
+
+        return view('pages.index', [
+            'islands' => $islands,
+        ]);
     }
 }

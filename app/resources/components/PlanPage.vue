@@ -93,7 +93,6 @@ export default {
     min-height: 496px;
 }
 
-
 .row {
     display: grid;
     grid-template-columns: repeat(16, 1fr);

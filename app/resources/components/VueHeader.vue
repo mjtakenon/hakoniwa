@@ -1,12 +1,13 @@
 <template>
-    <header>
+    <div>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="/">
                     🏝️
                 </a>
 
-                <button @click="isOpenHambargurMenu=!isOpenHambargurMenu" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <button
+                    @click="isOpenHamburgerMenu=!isOpenHamburgerMenu" role="button" :class="[{'is-active':isOpenHamburgerMenu}, 'navbar-burger']" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -51,7 +52,7 @@
             </div>
         </nav>
 
-        <nav v-show="isOpenHambargurMenu" class="navbar" role="navigation" aria-label="dropdown navigation">
+        <nav v-show="isOpenHamburgerMenu" class="navbar" role="navigation" aria-label="dropdown navigation">
             <div class="navbar-item has-dropdown">
                 <div class="navbar-dropdown">
                     <div v-if="isLoggedIn" class="navbar-end">
@@ -80,14 +81,14 @@
                 </div>
             </div>
         </nav>
-    </header>
+    </div>
 </template>
 
 <script lang="ts">
 export default {
     data() {
         return {
-            isOpenHambargurMenu: false,
+            isOpenHamburgerMenu: false,
         }
     },
     setup() {
