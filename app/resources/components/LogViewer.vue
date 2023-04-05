@@ -1,8 +1,16 @@
 <template>
     <div id="logs">
-        {{ island.name }}島のログ
-        <div v-for="log of islandLog" key="id">
-            ターン {{ log.turn_id }} : {{ log.log }}
+        {{ island.name }}島の近況
+        <div v-for="log of islandLog" key="log.id">
+<!--            ターン {{ log.turn_id }} :-->
+            <span v-for="context of JSON.parse(log.log)" key="context.text">
+                <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">
+                    {{ context.text }}
+                </a>
+                <span v-else :style="context.style">
+                    {{ context.text }}
+                </span>
+            </span>
         </div>
     </div>
 </template>

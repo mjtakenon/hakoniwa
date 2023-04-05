@@ -2,7 +2,7 @@
 
 namespace App\Services\Hakoniwa;
 
-use App\Services\Hakoniwa\Plan\CashFlow;
+use App\Services\Hakoniwa\Plan\CashFlowPlan;
 use App\Services\Hakoniwa\Plan\Plan;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -17,7 +17,7 @@ class PlanService extends ServiceProvider implements JsonEncodable
         $this->plans = new Collection();
 
         for ($n = 0; $n < self::MAX_PLANS; $n++) {
-            $this->plans[] = new CashFlow();
+            $this->plans[] = new CashFlowPlan();
         }
 
         return $this;

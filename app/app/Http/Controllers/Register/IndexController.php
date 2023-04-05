@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Register;
 
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandLog;
 use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Models\User;
+use App\Services\Hakoniwa\Log\IslandFoundLog;
 
 class IndexController extends Controller
 {
@@ -64,6 +66,12 @@ class IndexController extends Controller
             $islandPlan->island_id = $island->id;
             $islandPlan->plan = \PlanService::getInitialPlans()->toJson();
             $islandPlan->save();
+
+            $islandLog = new IslandLog();
+            $islandLog->turn_id = $turn->id;
+            $islandLog->island_id = $island->id;
+            $islandLog->log = IslandFoundLog::create($island, $turn)->get();
+            $islandLog->save();
 
             return $island;
         });
