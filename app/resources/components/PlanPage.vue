@@ -5,13 +5,20 @@
             :island-status="islandStatus"
         ></status-table>
         <hr/>
-        <island-viewer
-            :hakoniwa="hakoniwa"
-            :island="island"
-            :island-status="islandStatus"
-            :island-terrain="islandTerrain"
-            :island-log="islandLog"
-        ></island-viewer>
+        <div class="is-flex is-flex-direction-row">
+            <plan-editor
+                :hakoniwa="hakoniwa"
+                :island="island"
+                :island-status="islandStatus"
+            ></plan-editor>
+            <island-editor
+                :hakoniwa="hakoniwa"
+                :island="island"
+                :island-status="islandStatus"
+                :island-terrain="islandTerrain"
+                :island-log="islandLog"
+            ></island-editor>
+        </div>
         <hr/>
         <log-viewer
             :island="island"
@@ -21,15 +28,17 @@
 </template>
 
 <script lang="ts">
-import IslandViewer from "./IslandViewer.vue";
 import StatusTable from "./StatusTable.vue";
 import LogViewer from "./LogViewer.vue";
+import IslandEditor from "./IslandEditor.vue";
+import PlanEditor from "./PlanEditor.vue";
 
 export default {
     components: {
+        PlanEditor,
         StatusTable,
         LogViewer,
-        IslandViewer,
+        IslandEditor,
     },
     data() {
         return {
@@ -82,7 +91,7 @@ export default {
 #island-viewer {
     text-align: center;
     margin: 0 auto;
-    max-width: 800px;
+    max-width: 1000px;
 }
 
 #island {
