@@ -3,7 +3,7 @@
         <div class="list-header">
             -- 開発計画 --
         </div>
-        <table>
+        <table class="list-body">
             <tbody>
                     <tr
                         v-for="[index, plan] of Object.entries(JSON.parse(islandPlans.plan))"
@@ -47,11 +47,16 @@ export default {
     max-height: 480px;
     text-align: left;
     overflow: visible scroll;
-    //font-size: 14px;
 }
 
 .list-header {
     text-align: center;
+    margin: 2px 0;
+    font-size: 16px;
+}
+
+.list-body {
+    font-size: 14px;
 }
 
 </style>
