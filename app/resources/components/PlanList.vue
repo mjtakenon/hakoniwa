@@ -3,20 +3,18 @@
         <div class="list-header">
             -- 開発計画 --
         </div>
-<!--        <div v-for="[index, plan] of Object.entries(JSON.parse(islandPlans.plan))" key="islandPlan.id">-->
         <table>
             <tbody>
-                <tr
-                    v-for="[index, plan] of Object.entries(JSON.parse(islandPlans.plan))"
-                    key="islandPlan.id"
-                >
-                    <td>{{ index }}</td>
-                    <td>：</td>
-                    <td>{{ plan.data.name }}</td>
-                </tr>
+                    <tr
+                        v-for="[index, plan] of Object.entries(JSON.parse(islandPlans.plan))"
+                        key="islandPlan.id"
+                    >
+                        <td>{{ index }}</td>
+                        <td>：</td>
+                        <td>{{ plan.data.name }}</td>
+                    </tr>
             </tbody>
         </table>
-<!--        </div>-->
     </div>
 </template>
 
