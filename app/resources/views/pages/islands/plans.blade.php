@@ -8,6 +8,7 @@
             :hakoniwa="{{ $hakoniwa }}"
             :island="{{ $island }}"
             :island-status="{{ $islandStatus }}"
+            :island-plans="{{ $islandPlans }}"
             :island-terrain="{{ $islandTerrain->terrain }}"
             :island-log="{{ $islandLog }}"
         ></plan-page>

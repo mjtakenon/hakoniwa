@@ -17,6 +17,7 @@ abstract class Plan
         return [
             'class' => get_class($this),
             'data' => [
+                'name' => $this->getName()
             ]
         ];
     }
@@ -27,4 +28,6 @@ abstract class Plan
     }
 
     public function execute() {}
+
+    public function getName():string { return ''; }
 }

@@ -6,11 +6,11 @@
         ></status-table>
         <hr/>
         <div class="is-flex is-flex-direction-row">
-            <plan-editor
+            <plan-controller
                 :hakoniwa="hakoniwa"
                 :island="island"
                 :island-status="islandStatus"
-            ></plan-editor>
+            ></plan-controller>
             <island-editor
                 :hakoniwa="hakoniwa"
                 :island="island"
@@ -18,6 +18,11 @@
                 :island-terrain="islandTerrain"
                 :island-log="islandLog"
             ></island-editor>
+            <plan-list
+                :hakoniwa="hakoniwa"
+                :island="island"
+                :island-plans="islandPlans"
+            ></plan-list>
         </div>
         <hr/>
         <log-viewer
@@ -31,14 +36,16 @@
 import StatusTable from "./StatusTable.vue";
 import LogViewer from "./LogViewer.vue";
 import IslandEditor from "./IslandEditor.vue";
-import PlanEditor from "./PlanEditor.vue";
+import PlanController from "./PlanController.vue";
+import PlanList from "./PlanList.vue";
 
 export default {
     components: {
-        PlanEditor,
+        PlanController,
         StatusTable,
         LogViewer,
         IslandEditor,
+        PlanList,
     },
     data() {
         return {
@@ -81,7 +88,7 @@ export default {
     computed: {
         // showHoverWindow() { return true; }
     },
-    props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog'],
+    props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog'],
 };
 </script>
 

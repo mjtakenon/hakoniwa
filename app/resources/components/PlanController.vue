@@ -1,8 +1,8 @@
 <template>
-    <div id="plan-editor" class="box">
+    <div id="plan-controller" class="box">
         <div>
             <span style="vertical-align: middle">
-                計画番号 :
+                計画番号：
             </span>
             <div class="select is-small">
                 <select>
@@ -29,7 +29,7 @@
 
         <div>
             <span style="vertical-align: middle">
-                座標 : (
+                座標：（
             </span>
             <span class="select is-small">
                 <select>
@@ -49,7 +49,7 @@
                 </select>
             </span>
             <span style="vertical-align: middle">
-                )
+                ）
             </span>
         </div>
 
@@ -57,7 +57,7 @@
 
         <div>
             <span style="vertical-align: middle">
-                数量 :
+                数量：
             </span>
             <div class="select is-small">
                 <select>
@@ -91,17 +91,23 @@
         <hr />
 
         <div>
-            <button class="button is-small is-primary">計画送信</button>
+            <span class="is-small" style="vertical-align: middle">
+                コマンド移動：
+            </span>
+            <button class="button is-small"> ▲ </button> - <button class="button is-small"> ▼ </button>
         </div>
 
+        <hr />
+
+        <div>
+            <button class="button is-small is-primary">計画送信</button>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import IslandViewer from "./IslandViewer.vue";
-
 export default {
-    components: { IslandViewer },
+    components: {  },
     data() {
         return {
         }
@@ -119,16 +125,17 @@ export default {
 
 <style lang="scss" scoped>
 @import "bulma/bulma.sass";
-#plan-editor {
+#plan-controller {
     background-color: #e2e8f0;
     margin: 0 10px 16px 10px;
     padding: 10px;
-    min-width: 220px;
+    min-width: 230px;
+    max-height: 496px;
     //font-size: 14px;
 }
 
 hr {
-    margin: 4px 0;
+    margin: 8px 0;
 }
 
 </style>
