@@ -4,6 +4,7 @@ namespace App\Services\Hakoniwa;
 
 use App\Services\Hakoniwa\Plan\CashFlowPlan;
 use App\Services\Hakoniwa\Plan\Plan;
+use App\Services\Hakoniwa\Plan\PlanConst;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +22,19 @@ class PlanService extends ServiceProvider implements JsonEncodable
         }
 
         return $this;
+    }
+
+    public function getAllPlans(): array
+    {
+        return array_map(function ($plan) {
+            /** @var Plan $plan */
+            return [
+                $plan::create()->getKey() => [
+                    'name' => $plan::create()->getName(),
+                    'price' => $plan::create()->getPrice(),
+                ]
+            ];
+        }, PlanConst::getPlanList());
     }
 
     public function toJson(): string

@@ -4,12 +4,26 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Services\Hakoniwa\Util\Point;
 
-abstract class Plan
+abstract class Plan implements IPlan
 {
-    public const PLAN_CASH_FLOW = 'cash_flow';
+    public const KEY = '';
 
-    public function __construct()
+    public const NAME = '';
+    public const COMMAND_NAME = '';
+
+    public function getName(): string
     {
+        return self::NAME;
+    }
+
+    public function getPrice(): string
+    {
+        return self::COMMAND_NAME;
+    }
+
+    public function getKey(): string
+    {
+        return self::KEY;
     }
 
     public function toArray(): array
@@ -22,12 +36,13 @@ abstract class Plan
         ];
     }
 
-    static public function fromJson(string $class, Plan|\stdClass $data): Plan
+    static public function fromJson(string $class, IPlan|\stdClass $data): IPlan
     {
         return new $class();
     }
 
-    public function execute() {}
-
-    public function getName():string { return ''; }
+    public static function create(): static
+    {
+        return new static();
+    }
 }

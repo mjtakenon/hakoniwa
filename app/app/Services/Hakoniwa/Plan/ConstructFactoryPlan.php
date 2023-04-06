@@ -4,12 +4,12 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Services\Hakoniwa\Util\Point;
 
-class CashFlowPlan extends Plan
+class ConstructFactoryPlan extends Plan
 {
-    public const KEY = 'cash_flow';
+    public const KEY = 'construct_factory';
 
-    public const NAME = '資金繰り';
-    public const PRICE = -10;
+    public const NAME = '工場建設';
+    public const PRICE = 20;
 
     public function getName(): string
     {

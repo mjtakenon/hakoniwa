@@ -5,7 +5,7 @@ namespace App\Services\Hakoniwa\Log;
 use App\Models\Island;
 use App\Models\Turn;
 
-class IslandFoundLog implements Log
+class IslandFoundLog implements ILog
 {
     private Island $island;
     private Turn $turn;
