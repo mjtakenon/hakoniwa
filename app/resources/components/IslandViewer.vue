@@ -18,9 +18,10 @@
         <div v-show="showHoverWindow" class="hover-window" :style="{ top: hoverWindowTop+'px', left: hoverWindowLeft+'px' }">
             <div>
                 <img
+                    class="hover-window-img"
                     :src="getIslandTerrain(hoverCell.x, hoverCell.y).data.image_path"
                 >
-                ({{ hoverCell.x }}, {{ hoverCell.y }}) {{ getIslandTerrain(hoverCell.x, hoverCell.y).data.name }}
+                {{ getIslandTerrain(hoverCell.x, hoverCell.y).data.info }}
             </div>
         </div>
     </div>
@@ -120,6 +121,10 @@ export default {
     background-color: lightyellow;
     min-width: 200px;
     min-height: 50px;
+}
+
+.hover-window-img {
+    vertical-align: top;
 }
 
 </style>

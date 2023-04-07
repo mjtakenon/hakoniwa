@@ -34,6 +34,7 @@ abstract class Cell
             'data' => [
                 'point' => $this->point,
                 'image_path' => $this->imagePath,
+                'info' => $this->getInfoString(),
             ]
         ];
     }
@@ -48,7 +49,7 @@ abstract class Cell
         return '';
     }
 
-    public function getPopulation():int {
+    public function getPopulation(): int {
         return $this->population;
     }
 
