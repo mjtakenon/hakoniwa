@@ -18,7 +18,7 @@ class CellTypeConst
         Wasteland::TYPE => Wasteland::class,
     ];
 
-    static public function getClassByType(string $type)
+    static public function getClassByType(string $type): string
     {
         return self::CELL_TYPE_LIST[$type];
     }

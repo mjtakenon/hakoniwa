@@ -16,12 +16,14 @@
             <div class="left-padding" v-if="y%2 === 0"></div>
         </div>
         <div v-show="showHoverWindow" class="hover-window" :style="{ top: hoverWindowTop+'px', left: hoverWindowLeft+'px' }">
-            <div>
+            <div class="is-flex">
                 <img
-                    class="hover-window-img"
+                    class="is-flex-direction-column hover-window-img"
                     :src="getIslandTerrain(hoverCell.x, hoverCell.y).data.image_path"
                 >
-                {{ getIslandTerrain(hoverCell.x, hoverCell.y).data.info }}
+                <div class="is-flex-direction-column hover-window-info">
+                    {{ (getIslandTerrain(hoverCell.x, hoverCell.y).data.info) }}
+                </div>
             </div>
         </div>
     </div>
@@ -124,7 +126,13 @@ export default {
 }
 
 .hover-window-img {
-    vertical-align: top;
+    width:32px;
+    height:32px;
+    margin-right: 10px;
+}
+
+.hover-window-info {
+    white-space: pre-line;
 }
 
 </style>

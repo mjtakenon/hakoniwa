@@ -63,13 +63,6 @@ abstract class Cell
 
     static public function fromJson(string $type, $data): Cell
     {
-//        $point = new Point($data->point->x, $data->point->y);
-////        dd($data);
-//        $args = [
-//            'point' => $point,
-//            'image_path' => $data->image_path,
-//            'info' => $data->info,
-//        ];
         return new (CellTypeConst::getClassByType($type))(...get_object_vars($data));
     }
 
