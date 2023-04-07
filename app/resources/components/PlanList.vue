@@ -3,15 +3,16 @@
         <div class="list-header">
             -- 開発計画 --
         </div>
+        <hr/>
         <table class="list-body">
             <tbody>
                     <tr
                         v-for="[index, plan] of Object.entries(JSON.parse(islandPlans.plan))"
                         key="islandPlan.id"
                     >
-                        <td>{{ index }}</td>
-                        <td>：</td>
-                        <td>{{ plan.data.name }}</td>
+                        <td><a>{{ index }}</a></td>
+                        <td><a>：</a></td>
+                        <td><a>{{ plan.data.name }}</a></td>
                     </tr>
             </tbody>
         </table>
@@ -57,6 +58,10 @@ export default {
 
 .list-body {
     font-size: 14px;
+}
+
+hr {
+    margin: 8px 0;
 }
 
 </style>

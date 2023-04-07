@@ -4,11 +4,11 @@ namespace App\Services\Hakoniwa\Cell;
 
 use App\Services\Hakoniwa\Util\Point;
 
-class Sea extends Cell
+class Factory extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land0.gif';
-    const TYPE = 'sea';
-    const NAME = '海';
+    const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
+    const TYPE = 'factory';
+    const NAME = '工場';
 
     public function __construct(Point|\stdClass $point)
     {
