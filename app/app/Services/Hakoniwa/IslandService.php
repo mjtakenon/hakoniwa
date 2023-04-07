@@ -19,11 +19,11 @@ use Illuminate\Support\ServiceProvider;
 
 class IslandService extends ServiceProvider
 {
-    public function getAggregatedStatus(Terrain $terrain): Collection //TODO: 型宣言
+    public function getAggregatedStatus(Terrain $terrain): Collection // TODO: 型宣言
     {
         $status = new Collection();
 
-        $status->put('popuration', $terrain->aggregatePopuration());
+        $status->put('population', $terrain->aggregatePopulation());
         $status->put('funds_production_number_of_people', $terrain->aggregateFundsProductionNumberOfPeople());
         $status->put('foods_production_number_of_people', $terrain->aggregateFoodsProductionNumberOfPeople());
         $status->put('resources_production_number_of_people', $terrain->aggregateResourcesProductionNumberOfPeople());

@@ -2,9 +2,6 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
-use App\Models\Island;
-use App\Models\IslandStatus;
-use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
 abstract class Cell
@@ -20,11 +17,16 @@ abstract class Cell
     protected int $population;
 
 
-    public function __construct(Point|\stdClass $point)
+    public function __construct(...$data)
     {
-        $this->point = $point;
+        $this->point = new Point($data['point']->x, $data['point']->y);
         $this->imagePath = null;
         $this->population = 0;
+    }
+
+    public static function create($data)
+    {
+        return new static($data);
     }
 
     public function toArray(): array
@@ -54,13 +56,21 @@ abstract class Cell
         return '';
     }
 
-    public function getPopulation(): int {
+    public function getPopulation(): int
+    {
         return $this->population;
     }
 
-    static public function fromJson(string $type, Cell|\stdClass $data): Cell
+    static public function fromJson(string $type, $data): Cell
     {
-        return new (CellTypeConst::getClassByType($type))(new Point($data->point->x, $data->point->y));
+//        $point = new Point($data->point->x, $data->point->y);
+////        dd($data);
+//        $args = [
+//            'point' => $point,
+//            'image_path' => $data->image_path,
+//            'info' => $data->info,
+//        ];
+        return new (CellTypeConst::getClassByType($type))(...get_object_vars($data));
     }
 
 //    islandとstatusはモデルと別クラスに切り出す?

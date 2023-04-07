@@ -20,6 +20,19 @@ class Terrain implements JsonEncodable
 {
     private Collection $terrain;
 
+    public function __construct()
+    {
+        $terrain = new Collection();
+        for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
+            $row = new Collection();
+            for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
+                $row[] = new Sea(point: new Point($x, $y));
+            }
+            $terrain[] = $row;
+        }
+        $this->terrain = $terrain;
+    }
+
     public static function create(): Terrain
     {
         return new static;
@@ -39,48 +52,38 @@ class Terrain implements JsonEncodable
 
     public function fromJson(string $json): Terrain
     {
-        $terrain = new Collection();
         $objects = json_decode($json);
         foreach ($objects as $object) {
             /** @var Cell $cell */
             $cell = Cell::fromJson($object->type, $object->data);
-            $terrain[$cell->getPoint()->x][$cell->getPoint()->y] = $cell;
+
+            $this->terrain[$cell->getPoint()->x][$cell->getPoint()->y] = $cell;
         }
-        $this->terrain = $terrain;
         return $this;
     }
 
     public function init(): Terrain
     {
-        $terrain = new Collection();
-        for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
-            $row = new Collection();
-            for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
-                $row[] = new Sea(new Point($x, $y));
-            }
-            $terrain[] = $row;
-        }
-
         $n = 0;
         while (true) {
             $x = (int)Normal::normal(\HakoniwaService::getMaxWidth() / 2, \HakoniwaService::getMaxWidth() / 11);
             $y = (int)Normal::normal(\HakoniwaService::getMaxHeight() / 2, \HakoniwaService::getMaxHeight() / 11);
 
-            if ($terrain[$y][$x]->getType() === 'sea') {
+            if ($this->terrain[$y][$x]->getType() === 'sea') {
                 if ($n < 4) {
-                    $terrain[$y][$x] = new Forest(new Point($x, $y));
+                    $this->terrain[$y][$x] = new Forest(point: new Point($x, $y));
                 } else if ($n < 18) {
-                    $terrain[$y][$x] = new Wasteland(new Point($x, $y));
+                    $this->terrain[$y][$x] = new Wasteland(point: new Point($x, $y));
                 } else if ($n < 19) {
-                    $terrain[$y][$x] = new Mountain(new Point($x, $y));
+                    $this->terrain[$y][$x] = new Mountain(point: new Point($x, $y));
                 } else if ($n < 21) {
-                    $terrain[$y][$x] = new Village(new Point($x, $y), 1000);
+                    $this->terrain[$y][$x] = new Village(point: new Point($x, $y), population: 1000);
                 } else if ($n < 28) {
-                    $terrain[$y][$x] = new Plain(new Point($x, $y));
+                    $this->terrain[$y][$x] = new Plain(point: new Point($x, $y));
                 } else if ($n < 38) {
-                    $terrain[$y][$x] = new Shallow(new Point($x, $y));
+                    $this->terrain[$y][$x] = new Shallow(point: new Point($x, $y));
 //                } else if ($n < 39) {
-//                    $terrain[$y][$x] = new MissileBase(new Point($x, $y));
+//                    $this->terrain[$y][$x] = new MissileBase(new Point($x, $y));
                 } else {
                     break;
                 }
@@ -88,7 +91,6 @@ class Terrain implements JsonEncodable
             }
         }
 
-        $this->terrain = $terrain;
         return $this;
     }
 
@@ -102,9 +104,14 @@ class Terrain implements JsonEncodable
         $this->terrain = $terrain;
     }
 
-    public function aggregatePopuration(): int
+    public function aggregatePopulation(): int
     {
-        return 0;
+        $population = [];
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            $population[] = $cell->getPopulation();
+        }
+        return array_sum($population);
     }
 
     public function aggregateFundsProductionNumberOfPeople(): int

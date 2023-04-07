@@ -10,9 +10,9 @@ class Forest extends Cell
     const TYPE = 'forest';
     const NAME = '森';
 
-    public function __construct(Point|\stdClass $point)
+    public function __construct(...$data)
     {
-        parent::__construct($point);
+        parent::__construct(...$data);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
     }

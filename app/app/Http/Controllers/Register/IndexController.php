@@ -50,16 +50,17 @@ class IndexController extends Controller
 
             $turn = \HakoniwaService::getLatestTurn();
 
+            $terrain = Terrain::create()->init();
             $islandTerrain = new IslandTerrain();
             $islandTerrain->turn_id = $turn->id;
             $islandTerrain->island_id = $island->id;
-            $islandTerrain->terrain = Terrain::create()->init()->toJson();
+            $islandTerrain->terrain = $terrain->toJson();
             $islandTerrain->save();
 
             $islandStatus = new IslandStatus();
             $islandStatus->turn_id = $turn->id;
             $islandStatus->island_id = $island->id;
-            $islandStatus->setInitialStatus($islandTerrain);
+            $islandStatus->setInitialStatus($terrain);
             $islandStatus->save();
 
             $islandPlan = new IslandPlan();

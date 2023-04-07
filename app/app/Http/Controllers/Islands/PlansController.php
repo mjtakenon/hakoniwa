@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Islands;
 
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
@@ -21,6 +22,10 @@ class PlansController extends Controller
         $islandTerrain = IslandTerrain::find(1);
         $islandTerrain->terrain = Terrain::create()->init()->toJson();
         $islandTerrain->save();
+
+        $islandStatus = IslandStatus::find(1);
+        $islandStatus->setInitialStatus(Terrain::create()->fromJson($islandTerrain->terrain));
+        $islandStatus->save();
 
         return view('pages.islands.plans', [
             'user' => \Auth::user(),

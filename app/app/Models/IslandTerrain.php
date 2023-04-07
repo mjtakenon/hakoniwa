@@ -12,8 +12,4 @@ class IslandTerrain extends Model
 
     const UPDATED_AT = null;
 
-    public function getAggregatedStatus(): Collection
-    {
-        return \IslandService::getAggregatedStatus($this);
-    }
 }

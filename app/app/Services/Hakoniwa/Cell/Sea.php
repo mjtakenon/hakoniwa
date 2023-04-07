@@ -10,9 +10,9 @@ class Sea extends Cell
     const TYPE = 'sea';
     const NAME = '海';
 
-    public function __construct(Point|\stdClass $point)
+    public function __construct(...$data)
     {
-        parent::__construct($point);
+        parent::__construct(...$data);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
     }
