@@ -10,6 +10,7 @@
                 :hakoniwa="hakoniwa"
                 :island="island"
                 :island-status="islandStatus"
+                :plan-list="planList"
             ></plan-controller>
             <island-editor
                 :hakoniwa="hakoniwa"
@@ -88,7 +89,7 @@ export default {
     computed: {
         // showHoverWindow() { return true; }
     },
-    props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog'],
+    props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog', 'planList'],
 };
 </script>
 

@@ -9,21 +9,32 @@ abstract class Plan implements IPlan
     public const KEY = '';
 
     public const NAME = '';
-    public const COMMAND_NAME = '';
+    public const PRICE = 0;
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
+    protected $key;
+    protected $name;
+    protected $price;
 
-    public function getPrice(): string
+    public function __construct()
     {
-        return self::COMMAND_NAME;
+        $this->key = self::KEY;
+        $this->name = self::NAME;
+        $this->price = self::PRICE;
     }
 
     public function getKey(): string
     {
-        return self::KEY;
+        return $this->key;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getPrice(): string
+    {
+        return $this->price;
     }
 
     public function toArray(): array
@@ -31,7 +42,7 @@ abstract class Plan implements IPlan
         return [
             'class' => get_class($this),
             'data' => [
-                'name' => $this->getName()
+                'key' => $this->getKey()
             ]
         ];
     }

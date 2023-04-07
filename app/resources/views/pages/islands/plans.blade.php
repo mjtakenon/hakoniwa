@@ -11,6 +11,7 @@
             :island-plans="{{ $islandPlans }}"
             :island-terrain="{{ $islandTerrain->terrain }}"
             :island-log="{{ $islandLog }}"
+            :plan-list="{{ json_encode(\PlanService::getAllPlans()) }}"
         ></plan-page>
     </div>
 @endsection

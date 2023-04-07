@@ -1,5 +1,15 @@
 <template>
     <div id="plan-controller" class="box">
+
+        <div> 動作 </div>
+        <div class="is-flex">
+            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">挿入</button></div>
+            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">上書き</button></div>
+            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">削除</button></div>
+        </div>
+
+        <hr />
+
         <div>
             <span style="vertical-align: middle">
                 計画番号：
@@ -18,9 +28,7 @@
             開発計画 <br/>
             <div class="select is-small">
                 <select>
-                    <option value="Argentina">Argentina</option>
-                    <option value="Bolivia">Bolivia</option>
-                    <option value="Brazil">Brazil</option>
+                    <option v-for="plan of planList" key="plan.key"> {{ plan.name }} {{ plan.price }} </option>
                 </select>
             </div>
         </div>
@@ -81,15 +89,6 @@
 
         <hr/>
 
-        <div> 動作 </div>
-        <div class="is-flex">
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">挿入</button></div>
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">上書き</button></div>
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">削除</button></div>
-        </div>
-
-        <hr />
-
         <div>
             <span class="is-small" style="vertical-align: middle">
                 コマンド移動：
@@ -117,9 +116,10 @@ export default {
     methods: {
     },
     mounted() {
+        console.log(this.planList);
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'islandStatus'],
+    props: ['hakoniwa', 'island', 'islandStatus', 'planList'],
 };
 </script>
 

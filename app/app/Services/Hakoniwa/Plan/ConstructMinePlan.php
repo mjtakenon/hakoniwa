@@ -11,19 +11,17 @@ class ConstructMinePlan extends Plan
     public const NAME = '採掘場整備';
     public const PRICE = 300;
 
-    public function getName(): string
+    public function __construct()
     {
-        return self::NAME;
+        parent::__construct();
+        $this->key = self::KEY;
+        $this->name = self::NAME;
+        $this->price = self::PRICE;
     }
 
     public function getPrice(): string
     {
         return '(' . self::PRICE . '億円)';
-    }
-
-    public function getKey(): string
-    {
-        return self::KEY;
     }
 
     public function execute(Point $point, int $amount): void

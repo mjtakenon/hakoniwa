@@ -29,10 +29,9 @@ class PlanService extends ServiceProvider implements JsonEncodable
         return array_map(function ($plan) {
             /** @var Plan $plan */
             return [
-                $plan::create()->getKey() => [
-                    'name' => $plan::create()->getName(),
-                    'price' => $plan::create()->getPrice(),
-                ]
+                'key' => $plan::create()->getKey(),
+                'name' => $plan::create()->getName(),
+                'price' => $plan::create()->getPrice(),
             ];
         }, PlanConst::getPlanList());
     }

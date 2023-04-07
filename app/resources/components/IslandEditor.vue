@@ -6,6 +6,7 @@
             :island-status="islandStatus"
             :island-terrain="islandTerrain"
             :island-log="islandLog"
+            :plan-list="planList"
         ></island-viewer>
     </div>
 </template>
@@ -26,7 +27,7 @@ export default {
     mounted() {
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog'],
+    props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog', 'planList'],
 };
 </script>
 
