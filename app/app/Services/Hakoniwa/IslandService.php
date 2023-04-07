@@ -4,7 +4,13 @@ namespace App\Services\Hakoniwa;
 
 use App\Models\IslandStatus;
 use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\Mountain;
+use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
+use App\Services\Hakoniwa\Cell\Town;
+use App\Services\Hakoniwa\Cell\Village;
+use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +29,35 @@ class IslandService extends ServiceProvider implements JsonEncodable
                 $row[] = new Sea(new Point($x, $y));
             }
             $this->terrain[] = $row;
+        }
+
+        $n = 0;
+        while (true) {
+            $x = (int)$this->normal(\HakoniwaService::getMaxWidth()/2, \HakoniwaService::getMaxWidth()/12);
+            $y = (int)$this->normal(\HakoniwaService::getMaxHeight()/2, \HakoniwaService::getMaxHeight()/12);
+
+            if ($this->terrain[$y][$x]->getType() === 'sea') {
+                if ($n < 4) {
+                    $this->terrain[$y][$x] = new Forest(new Point($x, $y));
+                } else if ($n < 9) {
+                    $this->terrain[$y][$x] = new Wasteland(new Point($x, $y));
+                } else if ($n < 10) {
+                    $this->terrain[$y][$x] = new Mountain(new Point($x, $y));
+                } else if ($n < 13) {
+                    $this->terrain[$y][$x] = new Village(new Point($x, $y), 1000);
+                } else if ($n < 14) {
+                    $this->terrain[$y][$x] = new Town(new Point($x, $y), 3000);
+                } else if ($n < 22) {
+                    $this->terrain[$y][$x] = new Plain(new Point($x, $y));
+                }
+                $n++;
+            } else {
+                continue;
+            }
+
+            if ($n >= 25) {
+                break;
+            }
         }
 
         return $this;
@@ -63,5 +98,11 @@ class IslandService extends ServiceProvider implements JsonEncodable
         $status->put('environment', IslandStatus::ENVIRONMENT_BEST);
         $status->put('area', 0);
         return $status;
+    }
+
+    private function normal($av, $sd): float {
+        $x = mt_rand() / mt_getrandmax();
+        $y = mt_rand() / mt_getrandmax();
+        return sqrt(-2*log($x))*cos(2*pi()*$y)*$sd+$av;
     }
 }

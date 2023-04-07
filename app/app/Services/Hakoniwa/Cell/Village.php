@@ -10,11 +10,12 @@ class Village extends Cell
     const TYPE = 'village';
     const NAME = '村';
 
-    public function __construct(Point|\stdClass $point)
+    public function __construct(Point|\stdClass $point, int $population)
     {
         parent::__construct($point);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
+        $this->population = $population;
     }
 
     public function getInfoString(): string

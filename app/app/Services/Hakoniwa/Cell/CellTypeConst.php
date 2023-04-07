@@ -8,6 +8,7 @@ class CellTypeConst
         City::TYPE => City::class,
         Factory::TYPE => Factory::class,
         Farm::TYPE => Farm::class,
+        Forest::TYPE => Forest::class,
         Mountain::TYPE => Mountain::class,
         Plain::TYPE => Plain::class,
         Sea::TYPE => Sea::class,

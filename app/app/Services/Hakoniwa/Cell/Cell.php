@@ -44,6 +44,11 @@ abstract class Cell
         return $this->point;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public function getInfoString(): string
     {
         return '';
