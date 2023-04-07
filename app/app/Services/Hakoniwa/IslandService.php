@@ -39,23 +39,24 @@ class IslandService extends ServiceProvider implements JsonEncodable
             if ($this->terrain[$y][$x]->getType() === 'sea') {
                 if ($n < 4) {
                     $this->terrain[$y][$x] = new Forest(new Point($x, $y));
-                } else if ($n < 9) {
+                } else if ($n < 18) {
                     $this->terrain[$y][$x] = new Wasteland(new Point($x, $y));
-                } else if ($n < 10) {
+                } else if ($n < 19) {
                     $this->terrain[$y][$x] = new Mountain(new Point($x, $y));
-                } else if ($n < 13) {
+                } else if ($n < 21) {
                     $this->terrain[$y][$x] = new Village(new Point($x, $y), 1000);
-                } else if ($n < 14) {
-                    $this->terrain[$y][$x] = new Town(new Point($x, $y), 3000);
-                } else if ($n < 22) {
+                } else if ($n < 28) {
                     $this->terrain[$y][$x] = new Plain(new Point($x, $y));
+                } else if ($n < 29) {
+                    // ミサイル基地
+                    //$this->terrain[$y][$x] = new Plain(new Point($x, $y));
                 }
                 $n++;
             } else {
                 continue;
             }
 
-            if ($n >= 25) {
+            if ($n >= 28) {
                 break;
             }
         }

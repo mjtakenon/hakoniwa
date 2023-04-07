@@ -10,7 +10,7 @@
                         v-for="[index, plan] of Object.entries(JSON.parse(islandPlans.plan))"
                         key="islandPlan.id"
                     >
-                        <td><a>{{ index }}</a></td>
+                        <td><a>{{ parseInt(index)+1 }}</a></td>
                         <td><a>：</a></td>
                         <td><a>{{ plan.data.name }}</a></td>
                     </tr>
