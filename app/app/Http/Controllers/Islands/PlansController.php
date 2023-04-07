@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Islands;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\IslandTerrain;
+use App\Services\Hakoniwa\Terrain\Terrain;
 
 class PlansController extends Controller
 {
@@ -18,7 +19,7 @@ class PlansController extends Controller
         $turn = \HakoniwaService::getLatestTurn();
 
         $islandTerrain = IslandTerrain::find(1);
-        $islandTerrain->terrain = \IslandService::initTerrain()->toJson();
+        $islandTerrain->terrain = Terrain::create()->init()->toJson();
         $islandTerrain->save();
 
         return view('pages.islands.plans', [

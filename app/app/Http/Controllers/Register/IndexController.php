@@ -11,6 +11,7 @@ use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Models\User;
 use App\Services\Hakoniwa\Log\IslandFoundLog;
+use App\Services\Hakoniwa\Terrain\Terrain;
 
 class IndexController extends Controller
 {
@@ -52,7 +53,7 @@ class IndexController extends Controller
             $islandTerrain = new IslandTerrain();
             $islandTerrain->turn_id = $turn->id;
             $islandTerrain->island_id = $island->id;
-            $islandTerrain->terrain = \IslandService::initTerrain()->toJson();
+            $islandTerrain->terrain = Terrain::create()->init()->toJson();
             $islandTerrain->save();
 
             $islandStatus = new IslandStatus();
