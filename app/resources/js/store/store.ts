@@ -3,9 +3,11 @@ import { InjectionKey } from 'vue'
 import { createStore, Store } from 'vuex'
 import { Plan } from "./Plan";
 import { api } from "./api";
+import { Island } from "./Island";
 
 // ストアのステートに対して型を定義します
 export interface State {
+    island: Island,
     plan: Plan[],
     sentPlan: Plan[],
     selectedPoint: Point,
@@ -25,12 +27,13 @@ export const store = createStore<State>({
         selectedPlanNumber: 1,
         isPlanSent: true,
         isSendingPlan: false,
+        island: { id: 0, name: '', owner_name: ''},
     },
     actions: {
         async sendPlan(context, payload) {
             await api.sendPlan()
                 .then(res => {
-                    context.commit('sendPlan', res.data)
+                    context.commit('sentPlan', res.data)
                 })
                 .catch(err => {
                     store.state.isSendingPlan = false
@@ -39,7 +42,9 @@ export const store = createStore<State>({
         }
     },
     mutations: {
-        sendPlan(state, payload) {
+        sentPlan(state, payload) {
+            console.log(payload)
+            store.state.plan = JSON.parse(payload.plan);
             store.state.isSendingPlan = false
             store.state.sentPlan = store.state.plan
             // console.log('mutations')

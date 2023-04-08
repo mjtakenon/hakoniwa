@@ -3,7 +3,6 @@
 namespace App\Services\Hakoniwa\Plan;
 
 use App\Services\Hakoniwa\Util\Point;
-use phpDocumentor\Reflection\Types\Boolean;
 
 abstract class Plan implements IPlan
 {
@@ -54,6 +53,12 @@ abstract class Plan implements IPlan
         return $this->usePoint;
     }
 
+    public function priceString(): string
+    {
+        return $this->priceString;
+    }
+
+
     public function toArray(): array
     {
         return [
@@ -62,14 +67,14 @@ abstract class Plan implements IPlan
                 'name' => $this->getName(),
                 'point' => $this->getPoint(),
                 'amount' => $this->getAmount(),
-                'use_point' => $this->usePoint(),
+                'usePoint' => $this->usePoint(),
             ]
         ];
     }
 
     static public function fromJson(string $key, Point $point, int $amount): IPlan
     {
-        return new (PlanConst::getClassByType($key))($point ,$amount);
+        return new (PlanConst::getClassByType($key))($point, $amount);
     }
 
     public static function create(Point $point, int $amount): static

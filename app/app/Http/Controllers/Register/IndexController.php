@@ -32,7 +32,7 @@ class IndexController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->getMessageBag());
+            return response()->json($validator->getMessageBag(), 403);
         }
 
         if (\HakoniwaService::isIslandRegistered()) {

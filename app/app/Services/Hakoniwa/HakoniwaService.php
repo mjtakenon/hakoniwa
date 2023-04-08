@@ -18,7 +18,6 @@ class HakoniwaService extends ServiceProvider
         return !is_null(\Auth::user()->island);
     }
 
-
     /**
      * @return Turn
      */

@@ -32,7 +32,7 @@ Route::prefix('/islands')->middleware(array_merge($baseMiddleware))->group( func
 Route::prefix('/islands')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
     Route::get('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'get'])
         ->where('island_id', '[0-9]+');
-    Route::post('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'post'])
+    Route::put('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'put'])
         ->where('island_id', '[0-9]+');
 //    Route::get('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'get']);
 //    Route::post('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'post']);

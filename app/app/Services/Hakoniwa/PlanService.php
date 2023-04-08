@@ -59,4 +59,9 @@ class PlanService extends ServiceProvider implements JsonEncodable
         $this->plans = $plans;
         return $this;
     }
+
+    public function isValidPlans($plans): bool
+    {
+        return true;
+    }
 }

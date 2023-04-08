@@ -3,12 +3,10 @@ import {store} from "./store";
 
 export namespace api {
     export async function sendPlan() {
-        return await axios.get(
-            '/islands/' +1+ '/plans' ,
+        return await axios.put(
+            '/islands/' + store.state.island.id + '/plans' ,
             {
-                params: {
-                    plan: JSON.stringify(store.state.plan),
-                }
+                plan: JSON.stringify(store.state.plan),
             }
         )
     }

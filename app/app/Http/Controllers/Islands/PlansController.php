@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Islands;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Trait\WebApi;
 use App\Models\Island;
 use App\Models\IslandPlan;
 use App\Models\IslandStatus;
@@ -11,6 +12,8 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 
 class PlansController extends Controller
 {
+    use WebApi;
+
     public function get(int $islandId)
     {
         if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $islandId) {
@@ -52,7 +55,41 @@ class PlansController extends Controller
         ]);
     }
 
-    public function post() {
-        return response()->json(['islands/{id}/plans']);
+    public function put(int $islandId): \Illuminate\Http\JsonResponse
+    {
+        $validator = \Validator::make(\Request::all(), [
+            'plan' => 'string|required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->badRequest();
+        }
+
+        if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $islandId) {
+            return $this->forbidden();
+        }
+
+        $island = Island::find($islandId);
+
+        if (is_null($island) || !is_null($island->deleted_at)) {
+            return $this->notFound();
+        }
+
+        $validated = $validator->safe()->collect();
+
+        $turn = \HakoniwaService::getLatestTurn();
+
+        $plan = $validated->get('plan');
+
+        if (!\PlanService::isValidPlans($plan)) {
+            return $this->badRequest();
+        }
+
+        $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
+
+        $islandPlan->plan = $plan;
+        $islandPlan->save();
+
+        return response()->json(['plan' => $islandPlan->plan]);
     }
 }

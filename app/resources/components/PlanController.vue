@@ -133,7 +133,7 @@ export default {
                         y: this.$store.state.selectedPoint.y,
                     },
                     amount: this.selectedAmount,
-                    use_point: this.planList[this.selectedPlan].use_point,
+                    usePoint: this.planList[this.selectedPlan].usePoint,
                 }
             };
         },
