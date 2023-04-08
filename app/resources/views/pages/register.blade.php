@@ -1,5 +1,5 @@
 @extends('components.app')
-@section('title', 'hakoniwa')
+@section('title', '島を探しに行く')
 @section('contents')
     <section class="section">
         <h1 class="title">島を探しに行く</h1>

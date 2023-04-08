@@ -1,10 +1,10 @@
 <template>
     <div id="island">
-        <div class="row m-0 p-0" v-for="y of hakoniwa.height" key="y">
+        <div class="row m-0 p-0" v-for="y of hakoniwa.height" :key="y">
             <div class="right-padding" v-if="y%2 === 1">
                 {{ y }}
             </div>
-            <div class="cell" v-for="x of hakoniwa.width" key="x">
+            <div class="cell" v-for="x of hakoniwa.width" :key="x">
                 <img
                     @mouseover="onMouseOverCell(x-1, y-1)"
                     @mouseleave="onMouseLeaveCell(x-1, y-1)"

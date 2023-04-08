@@ -3,9 +3,9 @@
 
         <div> 動作 </div>
         <div class="is-flex">
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">挿入</button></div>
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">上書き</button></div>
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small">削除</button></div>
+            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small" @click="onClickInsert">挿入</button></div>
+            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small" @click="onClickOverwrite">上書き</button></div>
+            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small" @click="onClickDelete">削除</button></div>
         </div>
 
         <hr />
@@ -15,9 +15,8 @@
                 計画番号：
             </span>
             <div class="select is-small">
-                <select>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                <select v-model="selectedPlanNumber">
+                    <option v-for="num of MAX_PLAN_NUMBER" :value="num" :key="num"> {{ num }} </option>
                 </select>
             </div>
         </div>
@@ -27,8 +26,12 @@
         <div>
             開発計画 <br/>
             <div class="select is-small">
-                <select>
-                    <option v-for="plan of planList" key="plan.key"> {{ plan.name }} {{ plan.price }} </option>
+                <select v-model="selectedPlan">
+                    <option
+                        v-for="plan of planList"
+                        :key="plan.key"
+                        :value="plan.key"
+                    > {{ plan.name }} {{ plan.price }} </option>
                 </select>
             </div>
         </div>
@@ -40,8 +43,8 @@
                 座標：（
             </span>
             <span class="select is-small">
-                <select>
-                    <option v-for="x of hakoniwa.height" key="x" value="x">
+                <select v-model="selectedPointX">
+                    <option v-for="x of hakoniwa.height" :key="x" :value="x">
                         {{ x }}
                     </option>
                 </select>
@@ -50,8 +53,8 @@
                 ,
             </span>
             <span class="select is-small">
-                <select>
-                    <option v-for="y of hakoniwa.height" key="y" value="y">
+                <select v-model="selectedPointY">
+                    <option v-for="y of hakoniwa.height" :key="y" :value="y">
                         {{ y }}
                     </option>
                 </select>
@@ -68,8 +71,8 @@
                 数量：
             </span>
             <div class="select is-small">
-                <select>
-                    <option v-for="n of 99" key="n" value="n">
+                <select v-model="selectedAmount">
+                    <option v-for="n of 99" :key="n" :value="n">
                         {{ n }}
                     </option>
                 </select>
@@ -81,7 +84,7 @@
         <div>
             目標の島 <br/>
             <div class="select is-small">
-                <select>
+                <select v-model="selectedTargetIsland">
                     <option :value="island.name"> {{ island.name }} 島 </option>
                 </select>
             </div>
@@ -93,13 +96,13 @@
             <span class="is-small" style="vertical-align: middle">
                 コマンド移動：
             </span>
-            <button class="button is-small"> ▲ </button> - <button class="button is-small"> ▼ </button>
+            <button class="button is-small" @click="onClickMoveUp"> ▲ </button> - <button class="button is-small" @click="onClickMoveDown"> ▼ </button>
         </div>
 
         <hr />
 
         <div>
-            <button class="button is-small is-primary">計画送信</button>
+            <button class="button is-small is-primary" @click="onClickSendPlan">計画送信</button>
         </div>
     </div>
 </template>
@@ -109,14 +112,39 @@ export default {
     components: {  },
     data() {
         return {
+            MAX_PLAN_NUMBER: 30,
+            selectedPlanNumber: 1,
+            selectedPlan: 'cash_flow',
+            selectedAmount: 1,
+            selectedPointX: 1,
+            selectedPointY: 1,
+            selectedTargetIsland: this.island.name,
         }
     },
-    setup() {
-    },
+    setup() {},
     methods: {
+        onClickInsert() {
+            if (this.selectedPlanNumber < this.MAX_PLAN_NUMBER)
+            this.selectedPlanNumber++;
+            console.log(this.selectedPlan)
+        },
+        onClickOverwrite() {
+            console.log(this.selectedPlan)
+        },
+        onClickDelete() {
+            console.log(this.selectedPlan)
+        },
+        onClickMoveUp() {
+            console.log(this.selectedPlan)
+        },
+        onClickMoveDown() {
+            console.log(this.selectedPlan)
+        },
+        onClickSendPlan() {
+            console.log(this.selectedPlan)
+        }
     },
     mounted() {
-        console.log(this.planList);
     },
     computed: {},
     props: ['hakoniwa', 'island', 'islandStatus', 'planList'],

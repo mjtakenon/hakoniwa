@@ -1,5 +1,5 @@
 @extends('components.app')
-@section('title', 'hakoniwa')
+@section('title', 'やまにてぃ（仮）')
 @section('contents')
     @vite('resources/js/app.ts', 'resources/css/app.css')
     <div id="app">

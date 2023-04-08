@@ -1,6 +1,7 @@
 <template>
     <div id="island-viewer" class="wrapper">
         <div class="title">{{ island.name }}島開発計画</div>
+        <div class="subtitle"><a href="/">トップへ戻る</a></div>
         <status-table
             :island-status="islandStatus"
         ></status-table>
