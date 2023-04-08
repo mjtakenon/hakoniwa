@@ -85,6 +85,7 @@ export default {
     },
     mounted() {
         this.$store.state.plan = JSON.parse(this.islandPlans.plan)
+        this.$store.state.sentPlan = JSON.parse(this.islandPlans.plan)
     },
     computed: {},
     props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog', 'planList'],

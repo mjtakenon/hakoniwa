@@ -133,7 +133,7 @@ export default {
                         y: this.$store.state.selectedPoint.y,
                     },
                     amount: this.selectedAmount,
-                    usePoint: this.planList[this.selectedPlan].usePoint,
+                    use_point: this.planList[this.selectedPlan].use_point,
                 }
             };
         },
@@ -143,7 +143,6 @@ export default {
             if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                 this.$store.state.selectedPlanNumber++;
             }
-            console.log(this.$store.state.plan)
         },
         onClickOverwrite() {
             this.$store.state.plan[this.$store.state.selectedPlanNumber-1] = this.getSelectedPlan();

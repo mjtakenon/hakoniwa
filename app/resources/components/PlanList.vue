@@ -1,20 +1,21 @@
 <template>
     <div id="plan-list" class="box">
         <div class="list-header">
-            -- 開発計画 --
+            <span v-if="isPlanSent" class="success-color"> -- 計画送信済み -- </span>
+            <span v-else class="danger-color"> -- 計画未送信 -- </span>
         </div>
         <hr/>
         <table class="list-body">
             <tbody>
-                    <tr
-                        v-for="[index, plan] of Object.entries(this.$store.state.plan)"
-                        key="islandPlan.id"
-                        @click="onClickPlan(index)"
-                    >
-                        <td><a>{{ parseInt(index)+1 }}</a></td>
-                        <td><a>：</a></td>
-                        <td><a> <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span> {{ plan.data.name }}</a></td>
-                    </tr>
+                <tr
+                    v-for="[index, plan] of Object.entries($store.state.plan)"
+                    :key="$store.state.plan.name"
+                    @click="onClickPlan(index)"
+                >
+                    <td><a>{{ parseInt(index)+1 }}</a></td>
+                    <td><a>：</a></td>
+                    <td><a> <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span> {{ plan.data.name }}</a></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -36,7 +37,15 @@ export default {
         }
     },
     mounted() {},
-    computed: {},
+    computed: {
+        isPlanSent: function() {
+            if (JSON.stringify(this.$store.state.plan) !== JSON.stringify(this.$store.state.sentPlan)) {
+                console.log(JSON.stringify(this.$store.state.plan));
+                console.log(JSON.stringify(this.$store.state.sentPlan));
+            }
+            return JSON.stringify(this.$store.state.plan) === JSON.stringify(this.$store.state.sentPlan)
+        }
+    },
     props: ['hakoniwa', 'island'],
 };
 </script>

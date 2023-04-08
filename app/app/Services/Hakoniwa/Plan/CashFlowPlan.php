@@ -13,7 +13,7 @@ class CashFlowPlan extends Plan
     public const PRICE_STRING = '(+' . self::PRICE*-1 . '億円)';
     public const USE_POINT = false;
 
-    public function __construct(Point $point = (new Point(1,1)), int $amount = 0)
+    public function __construct(Point $point = (new Point(0,0)), int $amount = 1)
     {
         parent::__construct($point, $amount);
         $this->key = self::KEY;

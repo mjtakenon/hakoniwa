@@ -4,7 +4,7 @@ export interface Plan {
         name: string,
         point: Point,
         amount: number,
-        usePoint: boolean,
+        use_point: boolean,
     },
 }
 
@@ -18,7 +18,7 @@ export function getDefaultPlan(): Plan {
                 y: 0,
             },
             amount: 1,
-            usePoint: false,
+            use_point: false,
         }
     }
 }
