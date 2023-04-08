@@ -5,6 +5,7 @@ namespace App\Services\Hakoniwa;
 use App\Services\Hakoniwa\Plan\CashFlowPlan;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Plan\PlanConst;
+use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
@@ -60,8 +61,26 @@ class PlanService extends ServiceProvider implements JsonEncodable
         return $this;
     }
 
-    public function isValidPlans($plans): bool
+    public function fromString(string $json)
     {
+        $plans = new Collection();
+        $objects = json_decode($json);
+        foreach ($objects as $object) {
+            /** @var Plan $plan */
+            $plans[] = new (PlanConst::getClassByType($object->key))(new Point($object->data->point->x, $object->data->point->y), $object->data->amount);
+        }
+        $this->plans = $plans;
+        return $this;
+    }
+
+    public function isValidPlans(string $plans): bool
+    {
+        try {
+            $this->fromString($plans);
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+            return false;
+        }
         return true;
     }
 }

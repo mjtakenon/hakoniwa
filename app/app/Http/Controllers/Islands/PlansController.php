@@ -87,7 +87,7 @@ class PlansController extends Controller
 
         $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
 
-        $islandPlan->plan = $plan;
+        $islandPlan->plan = \PlanService::fromString($plan)->toJson();;
         $islandPlan->save();
 
         return response()->json(['plan' => $islandPlan->plan]);
