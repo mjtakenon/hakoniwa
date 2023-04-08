@@ -86,12 +86,8 @@ export default {
             this.showHoverWindow = false;
         }
     },
-    mounted() {
-        // console.log(this.$props)
-    },
-    computed: {
-        // showHoverWindow() { return true; }
-    },
+    mounted() {},
+    computed: {},
     props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog', 'planList'],
 };
 </script>

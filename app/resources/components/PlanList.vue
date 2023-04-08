@@ -50,6 +50,7 @@ export default {
     margin: 0 10px 16px 10px;
     padding: 10px;
     min-width: 230px;
+    max-width: 230px;
     max-height: 480px;
     text-align: left;
     overflow: visible scroll;

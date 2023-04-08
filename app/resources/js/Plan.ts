@@ -1,4 +1,4 @@
-interface Plan {
+export interface Plan {
     key: string,
     data: {
         name: string,
@@ -8,7 +8,7 @@ interface Plan {
     },
 }
 
-function getDefaultPlan(): Plan {
+export function getDefaultPlan(): Plan {
     return {
         key: 'cash_flow',
         data: {

@@ -109,6 +109,8 @@
 
 <script lang="ts">
 
+import { getDefaultPlan, Plan } from "../js/Plan";
+
 export default {
     components: {  },
     data() {
@@ -178,8 +180,8 @@ export default {
     margin: 0 10px 16px 10px;
     padding: 10px;
     min-width: 230px;
+    max-width: 230px;
     max-height: 496px;
-    //font-size: 14px;
 }
 
 hr {
