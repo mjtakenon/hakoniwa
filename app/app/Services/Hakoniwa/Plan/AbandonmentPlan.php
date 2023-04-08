@@ -11,6 +11,7 @@ class AbandonmentPlan extends Plan
     public const NAME = '島の放棄';
     public const PRICE = 0;
     public const PRICE_STRING = '(無料)';
+    public const USE_POINT = false;
 
     public function __construct(Point $point = (new Point(1,1)), int $amount = 0)
     {
@@ -18,6 +19,7 @@ class AbandonmentPlan extends Plan
         $this->key = self::KEY;
         $this->name = self::NAME;
         $this->price = self::PRICE;
+        $this->usePoint = self::USE_POINT;
     }
 
     public function execute(Point $point, int $amount): void

@@ -11,6 +11,7 @@ class CashFlowPlan extends Plan
     public const NAME = '資金繰り';
     public const PRICE = -10;
     public const PRICE_STRING = '(+' . self::PRICE*-1 . '億円)';
+    public const USE_POINT = false;
 
     public function __construct(Point $point = (new Point(1,1)), int $amount = 0)
     {
@@ -18,6 +19,7 @@ class CashFlowPlan extends Plan
         $this->key = self::KEY;
         $this->name = self::NAME;
         $this->price = self::PRICE;
+        $this->usePoint = self::USE_POINT;
     }
 
     public function execute(Point $point, int $amount): void

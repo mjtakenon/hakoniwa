@@ -32,7 +32,8 @@ class PlanService extends ServiceProvider implements JsonEncodable
                 'key' => $plan::KEY,
                 'name' => $plan::NAME,
                 'price' => $plan::PRICE,
-                'price_string' => $plan::PRICE_STRING,
+                'priceString' => $plan::PRICE_STRING,
+                'usePoint' => $plan::USE_POINT,
             ];
         }, PlanConst::getPlanList());
     }

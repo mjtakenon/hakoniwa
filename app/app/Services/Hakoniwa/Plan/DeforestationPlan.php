@@ -11,6 +11,7 @@ class DeforestationPlan extends Plan
     public const NAME = '伐採';
     public const PRICE = 0;
     public const PRICE_STRING = '(無料)';
+    public const USE_POINT = true;
 
     public function __construct(Point $point, int $amount = 0)
     {
@@ -18,6 +19,7 @@ class DeforestationPlan extends Plan
         $this->key = self::KEY;
         $this->name = self::NAME;
         $this->price = self::PRICE;
+        $this->usePoint = self::USE_POINT;
     }
 
     public function execute(Point $point, int $amount): void

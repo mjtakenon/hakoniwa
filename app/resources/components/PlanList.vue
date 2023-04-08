@@ -9,10 +9,11 @@
                     <tr
                         v-for="[index, plan] of Object.entries(this.$store.state.plan)"
                         key="islandPlan.id"
+                        v-on:click="onClickPlan(index)"
                     >
                         <td><a>{{ parseInt(index)+1 }}</a></td>
                         <td><a>：</a></td>
-                        <td><a>{{ plan.data.name }}</a></td>
+                        <td><a> <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span> {{ plan.data.name }}</a></td>
                     </tr>
             </tbody>
         </table>
@@ -20,23 +21,23 @@
 </template>
 
 <script lang="ts">
-import { useStore } from 'vuex'
-import { key } from '../js/store'
 
 export default {
     components: {  },
     data() {
         return {
-            store: useStore(key)
         }
     },
     setup() {
     },
     methods: {
+        onClickPlan(index) {
+            this.$store.state.selectedPlanNumber = parseInt(index)+1
+        }
     },
     mounted() {
         this.$store.state.plan = JSON.parse(this.islandPlans.plan)
-        // console.log(this.islandPlans)
+        console.log(this.$store.state.plan)
     },
     computed: {},
     props: ['hakoniwa', 'island', 'islandPlans'],

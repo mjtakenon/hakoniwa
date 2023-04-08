@@ -2,10 +2,8 @@ interface Plan {
     key: string,
     data: {
         name: string,
-        point: {
-            x: number,
-            y: number,
-        },
+        point: Point,
         amount: number,
+        usePoint: boolean,
     },
 }

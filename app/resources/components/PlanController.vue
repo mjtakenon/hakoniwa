@@ -15,7 +15,7 @@
                 計画番号：
             </span>
             <div class="select is-small">
-                <select v-model="selectedPlanNumber">
+                <select v-model="$store.state.selectedPlanNumber">
                     <option v-for="num of MAX_PLAN_NUMBER" :value="num" :key="num"> {{ num }} </option>
                 </select>
             </div>
@@ -31,7 +31,7 @@
                         v-for="plan of planList"
                         :key="plan.key"
                         :value="plan.key"
-                    > {{ plan.name }} {{ plan.price_string }} </option>
+                    > {{ plan.name }} {{ plan.priceString }} </option>
                 </select>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 座標：（
             </span>
             <span class="select is-small">
-                <select v-model="selectedPointX">
+                <select v-model="$store.state.selectedPoint.x">
                     <option v-for="x of hakoniwa.height" :key="x" :value="x">
                         {{ x }}
                     </option>
@@ -53,7 +53,7 @@
                 ,
             </span>
             <span class="select is-small">
-                <select v-model="selectedPointY">
+                <select v-model="$store.state.selectedPoint.y">
                     <option v-for="y of hakoniwa.height" :key="y" :value="y">
                         {{ y }}
                     </option>
@@ -114,11 +114,8 @@ export default {
     data() {
         return {
             MAX_PLAN_NUMBER: 30,
-            selectedPlanNumber: 1,
             selectedPlan: 'cash_flow',
             selectedAmount: 1,
-            selectedPointX: 1,
-            selectedPointY: 1,
             selectedTargetIsland: this.island.name,
         }
     },
@@ -130,10 +127,11 @@ export default {
                 data: {
                     name: this.planList[this.selectedPlan].name,
                     point: {
-                        x: this.selectedPointX,
-                        y: this.selectedPointY,
+                        x: this.$store.state.selectedPoint.x,
+                        y: this.$store.state.selectedPoint.y,
                     },
                     amount: this.selectedAmount,
+                    usePoint: this.planList[this.selectedPlan].usePoint,
                 }
             };
         },
@@ -147,25 +145,27 @@ export default {
                         y: 0,
                     },
                     amount: 1,
+                    usePoint: false,
                 }
             }
         },
         onClickInsert() {
-            this.$store.state.plan.splice(this.selectedPlanNumber-1, 0, this.getSelectedPlan());
+            this.$store.state.plan.splice(this.$store.state.selectedPlanNumber-1, 0, this.getSelectedPlan());
             this.$store.state.plan.pop();
-            if (this.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                this.selectedPlanNumber++;
+            if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.$store.state.selectedPlanNumber++;
             }
+            console.log(this.$store.state.plan)
         },
         onClickOverwrite() {
-            this.$store.state.plan[this.selectedPlanNumber-1] = this.getSelectedPlan();
+            this.$store.state.plan[this.$store.state.selectedPlanNumber-1] = this.getSelectedPlan();
 
-            if (this.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                this.selectedPlanNumber++;
+            if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.$store.state.selectedPlanNumber++;
             }
         },
         onClickDelete() {
-            this.$store.state.plan.splice(this.selectedPlanNumber-1, 1);
+            this.$store.state.plan.splice(this.$store.state.selectedPlanNumber-1, 1);
             this.$store.state.plan.push(this.getDefaultPlan());
         },
         onClickMoveUp() {

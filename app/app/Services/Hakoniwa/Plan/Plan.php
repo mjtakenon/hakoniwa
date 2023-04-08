@@ -3,6 +3,7 @@
 namespace App\Services\Hakoniwa\Plan;
 
 use App\Services\Hakoniwa\Util\Point;
+use phpDocumentor\Reflection\Types\Boolean;
 
 abstract class Plan implements IPlan
 {
@@ -11,21 +12,19 @@ abstract class Plan implements IPlan
     public const NAME = '';
     public const PRICE = 0;
     public const PRICE_STRING = '(+' . self::PRICE . '億円)';
+    public const USE_POINT = false;
 
-    protected string $key;
-    protected string $name;
-    protected int $price;
-    protected string $priceString;
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
+    protected string $priceString = self::PRICE_STRING;
+    protected bool $usePoint = self::USE_POINT;
 
     protected int $amount;
     protected Point $point;
 
     public function __construct(Point $point, int $amount)
     {
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->priceString = self::PRICE_STRING;
         $this->point = $point;
         $this->amount = $amount;
     }
@@ -50,6 +49,11 @@ abstract class Plan implements IPlan
         return $this->amount;
     }
 
+    public function usePoint(): bool
+    {
+        return $this->usePoint;
+    }
+
     public function toArray(): array
     {
         return [
@@ -58,6 +62,7 @@ abstract class Plan implements IPlan
                 'name' => $this->getName(),
                 'point' => $this->getPoint(),
                 'amount' => $this->getAmount(),
+                'use_point' => $this->usePoint(),
             ]
         ];
     }
