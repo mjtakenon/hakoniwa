@@ -9,7 +9,7 @@
                     <tr
                         v-for="[index, plan] of Object.entries(this.$store.state.plan)"
                         key="islandPlan.id"
-                        v-on:click="onClickPlan(index)"
+                        @click="onClickPlan(index)"
                     >
                         <td><a>{{ parseInt(index)+1 }}</a></td>
                         <td><a>：</a></td>
@@ -37,7 +37,6 @@ export default {
     },
     mounted() {
         this.$store.state.plan = JSON.parse(this.islandPlans.plan)
-        console.log(this.$store.state.plan)
     },
     computed: {},
     props: ['hakoniwa', 'island', 'islandPlans'],

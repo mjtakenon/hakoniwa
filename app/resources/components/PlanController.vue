@@ -44,8 +44,8 @@
             </span>
             <span class="select is-small">
                 <select v-model="$store.state.selectedPoint.x">
-                    <option v-for="x of hakoniwa.height" :key="x" :value="x">
-                        {{ x }}
+                    <option v-for="x of hakoniwa.height" :key="x" :value="x-1">
+                        {{ x-1 }}
                     </option>
                 </select>
             </span>
@@ -54,8 +54,8 @@
             </span>
             <span class="select is-small">
                 <select v-model="$store.state.selectedPoint.y">
-                    <option v-for="y of hakoniwa.height" :key="y" :value="y">
-                        {{ y }}
+                    <option v-for="y of hakoniwa.height" :key="y" :value="y-1">
+                        {{ y-1 }}
                     </option>
                 </select>
             </span>
@@ -135,20 +135,6 @@ export default {
                 }
             };
         },
-        getDefaultPlan(): Plan {
-            return {
-                key: 'cash_flow',
-                data: {
-                    name: '資金繰り',
-                    point: {
-                        x: 0,
-                        y: 0,
-                    },
-                    amount: 1,
-                    usePoint: false,
-                }
-            }
-        },
         onClickInsert() {
             this.$store.state.plan.splice(this.$store.state.selectedPlanNumber-1, 0, this.getSelectedPlan());
             this.$store.state.plan.pop();
@@ -166,7 +152,7 @@ export default {
         },
         onClickDelete() {
             this.$store.state.plan.splice(this.$store.state.selectedPlanNumber-1, 1);
-            this.$store.state.plan.push(this.getDefaultPlan());
+            this.$store.state.plan.push(getDefaultPlan());
         },
         onClickMoveUp() {
             console.log(this.selectedPlan)

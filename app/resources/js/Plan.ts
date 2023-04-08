@@ -7,3 +7,18 @@ interface Plan {
         usePoint: boolean,
     },
 }
+
+function getDefaultPlan(): Plan {
+    return {
+        key: 'cash_flow',
+        data: {
+            name: '資金繰り',
+            point: {
+                x: 0,
+                y: 0,
+            },
+            amount: 1,
+            usePoint: false,
+        }
+    }
+}

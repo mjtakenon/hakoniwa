@@ -8,6 +8,7 @@
                 <img
                     @mouseover="onMouseOverCell(x-1, y-1)"
                     @mouseleave="onMouseLeaveCell(x-1, y-1)"
+                    @click="onMouseClick(x-1, y-1)"
                     :src="getIslandTerrain(x-1,y-1).data.image_path"
                     :alt="getIslandTerrain(x-1,y-1).data.type"
                     class="cell"
@@ -65,6 +66,10 @@ export default {
         },
         onMouseLeaveCell(x, y) {
             this.showHoverWindow = false;
+        },
+        onMouseClick(x, y) {
+            this.$store.state.selectedPoint.x = x;
+            this.$store.state.selectedPoint.y = y;
         }
     },
     mounted() {
