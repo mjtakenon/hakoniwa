@@ -16,14 +16,17 @@ import { createApp } from "vue/dist/vue.esm-bundler";
 import SightseeingPage from "../components/SightseeingPage.vue";
 import PlanPage from "../components/PlanPage.vue";
 import VueHeader from "../components/VueHeader.vue";
+import { store, key } from "./store";
 
-const app =createApp({
+const app = createApp({
     components:{
         SightseeingPage,
         PlanPage,
         VueHeader,
     }
 });
+
+app.use(store, key)
 
 app.mount("#app");
 

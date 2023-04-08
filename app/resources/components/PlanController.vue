@@ -108,6 +108,7 @@
 </template>
 
 <script lang="ts">
+
 export default {
     components: {  },
     data() {
@@ -123,25 +124,49 @@ export default {
     },
     setup() {},
     methods: {
+        getSelectedPlan(): Plan {
+            return {
+                key: this.selectedPlan,
+                data: {
+                    name: this.planList[this.selectedPlan].name,
+                    point: {
+                        x: this.selectedPointX,
+                        y: this.selectedPointY,
+                    },
+                    amount: this.selectedAmount,
+                }
+            };
+        },
+        getDefaultPlan(): Plan {
+            return {
+                key: 'cash_flow',
+                data: {
+                    name: '資金繰り',
+                    point: {
+                        x: 0,
+                        y: 0,
+                    },
+                    amount: 1,
+                }
+            }
+        },
         onClickInsert() {
-            let plan = JSON.parse(this.islandPlans.plan);
-            plan[this.selectedPlanNumber-1].key = this.selectedPlan;
-            plan[this.selectedPlanNumber-1].data.point.x = this.selectedPointX;
-            plan[this.selectedPlanNumber-1].data.point.y = this.selectedPointY;
-            plan[this.selectedPlanNumber-1].data.amount = this.selectedAmount;
-            this.islandPlans.plan = JSON.stringify(plan);
+            this.$store.state.plan.splice(this.selectedPlanNumber-1, 0, this.getSelectedPlan());
+            this.$store.state.plan.pop();
             if (this.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                 this.selectedPlanNumber++;
             }
         },
         onClickOverwrite() {
-            console.log(this.selectedPlan)
+            this.$store.state.plan[this.selectedPlanNumber-1] = this.getSelectedPlan();
+
+            if (this.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.selectedPlanNumber++;
+            }
         },
         onClickDelete() {
-            if (this.selectedPlanNumber > 1) {
-                this.selectedPlanNumber--;
-            }
-            console.log(this.selectedPlan)
+            this.$store.state.plan.splice(this.selectedPlanNumber-1, 1);
+            this.$store.state.plan.push(this.getDefaultPlan());
         },
         onClickMoveUp() {
             console.log(this.selectedPlan)

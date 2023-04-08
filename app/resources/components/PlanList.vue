@@ -7,7 +7,7 @@
         <table class="list-body">
             <tbody>
                     <tr
-                        v-for="[index, plan] of Object.entries(JSON.parse(islandPlans.plan))"
+                        v-for="[index, plan] of Object.entries(this.$store.state.plan)"
                         key="islandPlan.id"
                     >
                         <td><a>{{ parseInt(index)+1 }}</a></td>
@@ -20,10 +20,14 @@
 </template>
 
 <script lang="ts">
+import { useStore } from 'vuex'
+import { key } from '../js/store'
+
 export default {
     components: {  },
     data() {
         return {
+            store: useStore(key)
         }
     },
     setup() {
@@ -31,6 +35,7 @@ export default {
     methods: {
     },
     mounted() {
+        this.$store.state.plan = JSON.parse(this.islandPlans.plan)
         // console.log(this.islandPlans)
     },
     computed: {},
