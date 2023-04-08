@@ -124,14 +124,23 @@ export default {
     setup() {},
     methods: {
         onClickInsert() {
-            if (this.selectedPlanNumber < this.MAX_PLAN_NUMBER)
-            this.selectedPlanNumber++;
-            console.log(this.selectedPlan)
+            let plan = JSON.parse(this.islandPlans.plan);
+            plan[this.selectedPlanNumber-1].key = this.selectedPlan;
+            plan[this.selectedPlanNumber-1].data.point.x = this.selectedPointX;
+            plan[this.selectedPlanNumber-1].data.point.y = this.selectedPointY;
+            plan[this.selectedPlanNumber-1].data.amount = this.selectedAmount;
+            this.islandPlans.plan = JSON.stringify(plan);
+            if (this.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.selectedPlanNumber++;
+            }
         },
         onClickOverwrite() {
             console.log(this.selectedPlan)
         },
         onClickDelete() {
+            if (this.selectedPlanNumber > 1) {
+                this.selectedPlanNumber--;
+            }
             console.log(this.selectedPlan)
         },
         onClickMoveUp() {
@@ -147,7 +156,7 @@ export default {
     mounted() {
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'islandStatus', 'planList'],
+    props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'planList'],
 };
 </script>
 

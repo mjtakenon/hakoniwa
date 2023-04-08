@@ -11,6 +11,7 @@
                 :hakoniwa="hakoniwa"
                 :island="island"
                 :island-status="islandStatus"
+                :island-plans="islandPlans"
                 :plan-list="planList"
             ></plan-controller>
             <island-editor
@@ -18,6 +19,7 @@
                 :island="island"
                 :island-status="islandStatus"
                 :island-terrain="islandTerrain"
+                :island-plans="islandPlans"
                 :island-log="islandLog"
             ></island-editor>
             <plan-list

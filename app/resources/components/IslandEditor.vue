@@ -27,7 +27,7 @@ export default {
     mounted() {
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog', 'planList'],
+    props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog', 'islandPlans', 'planList'],
 };
 </script>
 
