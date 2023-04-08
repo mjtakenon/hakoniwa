@@ -10,16 +10,24 @@ abstract class Plan implements IPlan
 
     public const NAME = '';
     public const PRICE = 0;
+    public const PRICE_STRING = '(+' . self::PRICE . '億円)';
 
-    protected $key;
-    protected $name;
-    protected $price;
+    protected string $key;
+    protected string $name;
+    protected int $price;
+    protected string $priceString;
 
-    public function __construct()
+    protected int $amount;
+    protected Point $point;
+
+    public function __construct(Point $point, int $amount)
     {
         $this->key = self::KEY;
         $this->name = self::NAME;
         $this->price = self::PRICE;
+        $this->priceString = self::PRICE_STRING;
+        $this->point = $point;
+        $this->amount = $amount;
     }
 
     public function getKey(): string
@@ -32,29 +40,35 @@ abstract class Plan implements IPlan
         return $this->name;
     }
 
-    public function getPrice(): string
+    public function getPoint(): Point
     {
-        return $this->price;
+        return $this->point;
+    }
+
+    public function getAmount(): int
+    {
+        return $this->amount;
     }
 
     public function toArray(): array
     {
         return [
-            'class' => get_class($this),
+            'key' => $this->getKey(),
             'data' => [
-                'key' => $this->getKey(),
                 'name' => $this->getName(),
+                'point' => $this->getPoint(),
+                'amount' => $this->getAmount(),
             ]
         ];
     }
 
-    static public function fromJson(string $class, IPlan|\stdClass $data): IPlan
+    static public function fromJson(string $key, Point $point, int $amount): IPlan
     {
-        return new $class();
+        return new (PlanConst::getClassByType($key))($point ,$amount);
     }
 
-    public static function create(): static
+    public static function create(Point $point, int $amount): static
     {
-        return new static();
+        return new static($point, $amount);
     }
 }

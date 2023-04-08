@@ -25,17 +25,17 @@ class PlansController extends Controller
 
         $turn = \HakoniwaService::getLatestTurn();
 
-//        $islandTerrain = IslandTerrain::find($islandId);
-//        $islandTerrain->terrain = Terrain::create()->init()->toJson();
-//        $islandTerrain->save();
-//
-//        $islandStatus = IslandStatus::find($islandId);
-//        $islandStatus->setInitialStatus(Terrain::create()->fromJson($islandTerrain->terrain));
-//        $islandStatus->save();
-//
-//        $islandPlan = IslandPlan::find($islandId);
-//        $islandPlan->plan = \PlanService::getInitialPlans()->toJson();
-//        $islandPlan->save();
+        $islandTerrain = IslandTerrain::find($islandId);
+        $islandTerrain->terrain = Terrain::create()->init()->toJson();
+        $islandTerrain->save();
+
+        $islandStatus = IslandStatus::find($islandId);
+        $islandStatus->setInitialStatus(Terrain::create()->fromJson($islandTerrain->terrain));
+        $islandStatus->save();
+
+        $islandPlan = IslandPlan::find($islandId);
+        $islandPlan->plan = \PlanService::getInitialPlans()->toJson();
+        $islandPlan->save();
 
         return view('pages.islands.plans', [
             'user' => \Auth::user(),

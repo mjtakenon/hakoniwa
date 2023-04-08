@@ -10,17 +10,14 @@ class AbandonmentPlan extends Plan
 
     public const NAME = '島の放棄';
     public const PRICE = 0;
+    public const PRICE_STRING = '(無料)';
 
-    public function __construct()
+    public function __construct(Point $point = (new Point(1,1)), int $amount = 0)
     {
-        parent::__construct();
+        parent::__construct($point, $amount);
         $this->key = self::KEY;
         $this->name = self::NAME;
         $this->price = self::PRICE;
-    }
-    public function getPrice(): string
-    {
-        return '(無料)';
     }
 
     public function execute(Point $point, int $amount): void

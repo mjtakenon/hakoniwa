@@ -31,7 +31,7 @@
                         v-for="plan of planList"
                         :key="plan.key"
                         :value="plan.key"
-                    > {{ plan.name }} {{ plan.price }} </option>
+                    > {{ plan.name }} {{ plan.price_string }} </option>
                 </select>
             </div>
         </div>

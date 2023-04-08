@@ -29,9 +29,10 @@ class PlanService extends ServiceProvider implements JsonEncodable
         return array_map(function ($plan) {
             /** @var Plan $plan */
             return [
-                'key' => $plan::create()->getKey(),
-                'name' => $plan::create()->getName(),
-                'price' => $plan::create()->getPrice(),
+                'key' => $plan::KEY,
+                'name' => $plan::NAME,
+                'price' => $plan::PRICE,
+                'price_string' => $plan::PRICE_STRING,
             ];
         }, PlanConst::getPlanList());
     }
@@ -52,7 +53,7 @@ class PlanService extends ServiceProvider implements JsonEncodable
         $objects = json_decode($json);
         foreach ($objects as $object) {
             /** @var Plan $plan */
-            $plans[] = Plan::fromJson($object->class, $object->data);
+            $plans[] = Plan::fromJson($object->key, $object->data->point, $object->data->amount);
         }
         $this->plans = $plans;
         return $this;
