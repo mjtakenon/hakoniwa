@@ -102,14 +102,14 @@
         <hr />
 
         <div>
-            <button class="button is-small is-primary" @click="onClickSendPlan">計画送信</button>
+            <button :class="['button','is-small','is-primary', this.$store.state.isSendingPlan ? 'is-loading' : '']" @click="onClickSendPlan">計画送信</button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 
-import { getDefaultPlan, Plan } from "../js/Plan";
+import { getDefaultPlan, Plan } from "../js/store/Plan";
 
 export default {
     components: {  },
@@ -162,7 +162,8 @@ export default {
             console.log(this.selectedPlan)
         },
         onClickSendPlan() {
-            console.log(this.selectedPlan)
+            this.$store.state.isSendingPlan = true
+            this.$store.dispatch('sendPlan')
         }
     },
     mounted() {

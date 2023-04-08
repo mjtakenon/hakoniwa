@@ -1,6 +1,6 @@
 import { ComponentCustomProperties } from 'vue'
 import { Store } from 'vuex'
-import {State} from "./store";
+import {State} from "./store/store";
 
 declare module '@vue/runtime-core' {
     // `this.$store` の型付けを提供する

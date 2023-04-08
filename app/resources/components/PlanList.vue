@@ -39,10 +39,6 @@ export default {
     mounted() {},
     computed: {
         isPlanSent: function() {
-            if (JSON.stringify(this.$store.state.plan) !== JSON.stringify(this.$store.state.sentPlan)) {
-                console.log(JSON.stringify(this.$store.state.plan));
-                console.log(JSON.stringify(this.$store.state.sentPlan));
-            }
             return JSON.stringify(this.$store.state.plan) === JSON.stringify(this.$store.state.sentPlan)
         }
     },
