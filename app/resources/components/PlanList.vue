@@ -35,11 +35,9 @@ export default {
             this.$store.state.selectedPlanNumber = parseInt(index)+1
         }
     },
-    mounted() {
-        this.$store.state.plan = JSON.parse(this.islandPlans.plan)
-    },
+    mounted() {},
     computed: {},
-    props: ['hakoniwa', 'island', 'islandPlans'],
+    props: ['hakoniwa', 'island'],
 };
 </script>
 

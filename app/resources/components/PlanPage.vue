@@ -11,7 +11,6 @@
                 :hakoniwa="hakoniwa"
                 :island="island"
                 :island-status="islandStatus"
-                :island-plans="islandPlans"
                 :plan-list="planList"
             ></plan-controller>
             <island-editor
@@ -19,13 +18,11 @@
                 :island="island"
                 :island-status="islandStatus"
                 :island-terrain="islandTerrain"
-                :island-plans="islandPlans"
                 :island-log="islandLog"
             ></island-editor>
             <plan-list
                 :hakoniwa="hakoniwa"
                 :island="island"
-                :island-plans="islandPlans"
             ></plan-list>
         </div>
         <hr/>
@@ -86,7 +83,9 @@ export default {
             this.showHoverWindow = false;
         }
     },
-    mounted() {},
+    mounted() {
+        this.$store.state.plan = JSON.parse(this.islandPlans.plan)
+    },
     computed: {},
     props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog', 'planList'],
 };
