@@ -39,6 +39,7 @@ class PlanService extends ServiceProvider implements JsonEncodable
     public function toJson(): string
     {
         $plans = [];
+        /** @var PLan $plan */
         foreach ($this->plans as $plan) {
             $plans[] = $plan->toArray();
         }

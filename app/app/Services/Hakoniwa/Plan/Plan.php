@@ -42,7 +42,8 @@ abstract class Plan implements IPlan
         return [
             'class' => get_class($this),
             'data' => [
-                'key' => $this->getKey()
+                'key' => $this->getKey(),
+                'name' => $this->getName(),
             ]
         ];
     }
