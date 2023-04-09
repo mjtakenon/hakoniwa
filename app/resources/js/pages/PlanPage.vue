@@ -1,7 +1,7 @@
 <template>
     <div id="plan-page" class="wrapper">
         <div class="title">{{ island.name }}島開発計画</div>
-        <div class="subtitle"><a href="/app/public">トップへ戻る</a></div>
+        <div class="subtitle"><a href="/">トップへ戻る</a></div>
         <status-table
             :island-status="islandStatus"
         ></status-table>
@@ -97,7 +97,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../node_modules/bulma/bulma";
 
 #plan-page {
     text-align: center;

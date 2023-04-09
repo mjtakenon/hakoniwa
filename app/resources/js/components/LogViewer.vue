@@ -23,11 +23,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../node_modules/bulma/bulma";
 
 #logs {
     text-align: left;
     margin-left: 30px;
     max-width: 800px;
 }
+
 </style>

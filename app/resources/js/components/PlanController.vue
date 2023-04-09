@@ -174,7 +174,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../node_modules/bulma/bulma";
+
 #plan-controller {
     background-color: #e2e8f0;
     margin: 0 10px 16px 10px;

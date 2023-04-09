@@ -42,10 +42,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../node_modules/bulma/bulma";
 
 #status {
     margin: 0 auto;
     min-width: 480px;
 }
+
 </style>

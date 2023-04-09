@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="/app/public">
+                <a class="navbar-item" href="/">
                     🏝️
                 </a>
 
@@ -16,7 +16,7 @@
 
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="/app/public">
+                    <a class="navbar-item" href="/">
                         Home
                     </a>
                 </div>
@@ -46,7 +46,7 @@
                 </div>
                 <div v-else>
                     <a href="/auth/google/redirect">
-                        <img src="/img/btn_google_signin_light_normal_web.png">
+                        <img :src="'/img/btn_google_signin_light_normal_web.png'">
                     </a>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     </div>
                     <div v-else>
                         <a href="/auth/google/redirect">
-                            <img src="/img/btn_google_signin_light_normal_web.png">
+                            <img :src="'/img/btn_google_signin_light_normal_web.png'">
                         </a>
                     </div>
                     <hr/>
@@ -111,6 +111,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../node_modules/bulma/bulma";
-
 </style>
