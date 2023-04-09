@@ -15,7 +15,17 @@ abstract class Cell
     protected Point $point;
 
     protected int $population;
-
+    const ATTRIBUTE = [
+        CellTypeConst::IS_LAND => false,
+        CellTypeConst::HAS_POPULATION => false,
+        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
+        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
+        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => false,
+        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
+        CellTypeConst::PREVENTING_FIRE => false,
+    ];
 
     public function __construct(...$data)
     {
@@ -32,7 +42,7 @@ abstract class Cell
     public function toArray(): array
     {
         return [
-            'type' => $this->type,//get_class($this),
+            'type' => $this->type,
             'data' => [
                 'point' => $this->point,
                 'image_path' => $this->imagePath,
@@ -44,11 +54,6 @@ abstract class Cell
     public function getPoint(): Point
     {
         return $this->point;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
     }
 
     public function getInfoString(): string

@@ -9,6 +9,17 @@ class Shallow extends Cell
     const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
     const TYPE = 'shallow';
     const NAME = '浅瀬';
+    const ATTRIBUTE = [
+        CellTypeConst::IS_LAND => false,
+        CellTypeConst::HAS_POPULATION => false,
+        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
+        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
+        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
+        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
+        CellTypeConst::PREVENTING_FIRE => false,
+    ];
 
     public function __construct(...$data)
     {

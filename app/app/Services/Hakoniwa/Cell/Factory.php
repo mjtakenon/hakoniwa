@@ -9,6 +9,17 @@ class Factory extends Cell
     const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
     const TYPE = 'factory';
     const NAME = '工場';
+    const ATTRIBUTE = [
+        CellTypeConst::IS_LAND => true,
+        CellTypeConst::HAS_POPULATION => false,
+        CellTypeConst::DESTRUCTIBLE_BY_FIRE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
+        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
+        CellTypeConst::PREVENTING_FIRE => false,
+    ];
 
     public function __construct(...$data)
     {

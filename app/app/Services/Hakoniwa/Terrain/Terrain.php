@@ -81,7 +81,7 @@ class Terrain implements JsonEncodable
             $x = (int)Normal::normal(\HakoniwaService::getMaxWidth() / 2, \HakoniwaService::getMaxWidth() / 11);
             $y = (int)Normal::normal(\HakoniwaService::getMaxHeight() / 2, \HakoniwaService::getMaxHeight() / 11);
 
-            if ($this->terrain[$y][$x]->getType() === 'sea') {
+            if ($this->terrain[$y][$x]::TYPE === 'sea') {
                 if ($n < 4) {
                     $this->terrain[$y][$x] = new Forest(point: new Point($x, $y));
                 } else if ($n < 18) {

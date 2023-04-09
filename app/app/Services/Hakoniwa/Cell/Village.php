@@ -9,6 +9,17 @@ class Village extends Cell
     const IMAGE_PATH = '/img/hakoniwa/hakogif/land3.gif';
     const TYPE = 'village';
     const NAME = '村';
+    const ATTRIBUTE = [
+        CellTypeConst::IS_LAND => true,
+        CellTypeConst::HAS_POPULATION => true,
+        CellTypeConst::DESTRUCTIBLE_BY_FIRE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
+        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
+        CellTypeConst::PREVENTING_FIRE => false,
+    ];
 
     public function __construct(...$data)
     {
