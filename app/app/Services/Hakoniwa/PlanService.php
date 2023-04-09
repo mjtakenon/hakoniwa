@@ -2,28 +2,14 @@
 
 namespace App\Services\Hakoniwa;
 
-use App\Services\Hakoniwa\Plan\CashFlowPlan;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Plan\PlanConst;
-use App\Services\Hakoniwa\Util\Point;
-use Illuminate\Support\Collection;
+use App\Services\Hakoniwa\Plan\Plans;
 use Illuminate\Support\ServiceProvider;
 
-class PlanService extends ServiceProvider implements JsonEncodable
+class PlanService extends ServiceProvider
 {
     const MAX_PLANS = 30;
-    private Collection $plans;
-
-    public function getInitialPlans(): PlanService
-    {
-        $this->plans = new Collection();
-
-        for ($n = 0; $n < self::MAX_PLANS; $n++) {
-            $this->plans[] = new CashFlowPlan();
-        }
-
-        return $this;
-    }
 
     public function getAllPlans(): array
     {
@@ -39,44 +25,10 @@ class PlanService extends ServiceProvider implements JsonEncodable
         }, PlanConst::getPlanList());
     }
 
-    public function toJson(): string
-    {
-        $plans = [];
-        /** @var PLan $plan */
-        foreach ($this->plans as $plan) {
-            $plans[] = $plan->toArray();
-        }
-        return json_encode($plans);
-    }
-
-    public function fromJson(string $json): PlanService
-    {
-        $plans = new Collection();
-        $objects = json_decode($json);
-        foreach ($objects as $object) {
-            /** @var Plan $plan */
-            $plans[] = Plan::fromJson($object->key, $object->data->point, $object->data->amount);
-        }
-        $this->plans = $plans;
-        return $this;
-    }
-
-    public function fromString(string $json)
-    {
-        $plans = new Collection();
-        $objects = json_decode($json);
-        foreach ($objects as $object) {
-            /** @var Plan $plan */
-            $plans[] = new (PlanConst::getClassByType($object->key))(new Point($object->data->point->x, $object->data->point->y), $object->data->amount);
-        }
-        $this->plans = $plans;
-        return $this;
-    }
-
     public function isValidPlans(string $plans): bool
     {
         try {
-            $this->fromString($plans);
+            Plans::fromJson($plans);
         } catch (\Exception $e) {
             \Log::error($e->getMessage());
             return false;

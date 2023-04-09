@@ -7,6 +7,7 @@ use App\Services\Hakoniwa\Util\Point;
 interface IPlan
 {
     public function toArray(): array;
+    public function toArrayWithStatic(): array;
 
     static public function fromJson(string $key, Point $point, int $amount): IPlan;
 

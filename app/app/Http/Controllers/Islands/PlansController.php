@@ -8,6 +8,7 @@ use App\Models\Island;
 use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
+use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
 class PlansController extends Controller
@@ -28,6 +29,7 @@ class PlansController extends Controller
 
         $turn = \HakoniwaService::getLatestTurn();
 
+        //
         $islandTerrain = IslandTerrain::find($islandId);
         $islandTerrain->terrain = Terrain::create()->init()->toJson();
         $islandTerrain->save();
@@ -37,8 +39,11 @@ class PlansController extends Controller
         $islandStatus->save();
 
         $islandPlan = IslandPlan::find($islandId);
-        $islandPlan->plan = \PlanService::getInitialPlans()->toJson();
+        $islandPlan->plan = Plans::init()->toJson();
         $islandPlan->save();
+        //
+
+        $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
 
         return view('pages.islands.plans', [
             'user' => \Auth::user(),
@@ -48,7 +53,7 @@ class PlansController extends Controller
             ]),
             'turn' => $turn,
             'island' => $island,
-            'islandPlans' => $island->islandPlans->where('turn_id', $turn->id)->first(),
+            'islandPlans' => Plans::fromJson($islandPlan->plan)->toJsonWithStatic(),
             'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
             'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
             'islandLog' => $island->islandLogs, // TODO: nターン前から
@@ -85,11 +90,13 @@ class PlansController extends Controller
             return $this->badRequest();
         }
 
+        $plans = Plans::fromJson($plan);
+
         $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
 
-        $islandPlan->plan = \PlanService::fromString($plan)->toJson();;
+        $islandPlan->plan = $plans->toJson();
         $islandPlan->save();
 
-        return response()->json(['plan' => $islandPlan->plan]);
+        return response()->json(['plan' => $plans->toJsonWithStatic()]);
     }
 }

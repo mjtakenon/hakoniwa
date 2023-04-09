@@ -50,16 +50,28 @@ class Terrain implements JsonEncodable
         return json_encode($terrain);
     }
 
-    public function fromJson(string $json): Terrain
+    public static function fromJson(string $json): Terrain
     {
         $objects = json_decode($json);
+
+        $terrain = new Collection();
+        for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
+            $row = new Collection();
+            for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
+                $row[] = null;
+            }
+            $terrain[] = $row;
+        }
+
         foreach ($objects as $object) {
             /** @var Cell $cell */
             $cell = Cell::fromJson($object->type, $object->data);
-
-            $this->terrain[$cell->getPoint()->x][$cell->getPoint()->y] = $cell;
+            $terrain[$cell->getPoint()->x][$cell->getPoint()->y] = $cell;
         }
-        return $this;
+
+        $static = new static();
+        $static->setTerrain($terrain);
+        return $static;
     }
 
     public function init(): Terrain

@@ -84,8 +84,9 @@ export default {
         }
     },
     mounted() {
-        this.$store.state.plan = JSON.parse(this.islandPlans.plan)
-        this.$store.state.sentPlan = JSON.parse(this.islandPlans.plan)
+        console.log(this.islandPlans)
+        this.$store.state.plan = this.islandPlans
+        this.$store.state.sentPlan = this.islandPlans
         this.$store.state.island = this.island;
     },
     computed: {},

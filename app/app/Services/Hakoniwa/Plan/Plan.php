@@ -59,7 +59,7 @@ abstract class Plan implements IPlan
     }
 
 
-    public function toArray(): array
+    public function toArrayWithStatic(): array
     {
         return [
             'key' => $this->getKey(),
@@ -68,6 +68,17 @@ abstract class Plan implements IPlan
                 'point' => $this->getPoint(),
                 'amount' => $this->getAmount(),
                 'usePoint' => $this->usePoint(),
+            ]
+        ];
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'key' => $this->getKey(),
+            'data' => [
+                'point' => $this->getPoint(),
+                'amount' => $this->getAmount(),
             ]
         ];
     }
