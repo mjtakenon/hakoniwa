@@ -14,7 +14,10 @@
                 >
                     <td><a>{{ parseInt(index)+1 }}</a></td>
                     <td><a>：</a></td>
-                    <td><a> <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span> {{ plan.data.name }}</a></td>
+                    <td><a>
+                        <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span>
+                        <span>{{ plan.data.name }}</span>
+                        <span v-if="plan.data.amount >= 2"> ({{ plan.data.amount }}回実施)</span></a></td>
                 </tr>
             </tbody>
         </table>
