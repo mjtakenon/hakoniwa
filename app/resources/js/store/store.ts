@@ -4,6 +4,7 @@ import { createStore, Store } from 'vuex'
 import { Plan } from "./Plan";
 import { api } from "./api";
 import { Island } from "./Island";
+import lodash from "lodash";
 
 // ストアのステートに対して型を定義します
 export interface State {
@@ -46,7 +47,7 @@ export const store = createStore<State>({
             console.log(payload)
             store.state.plan = JSON.parse(payload.plan);
             store.state.isSendingPlan = false
-            store.state.sentPlan = store.state.plan
+            store.state.sentPlan = lodash.cloneDeep(store.state.plan)
             // console.log('mutations')
             // state.user.name = payload.name // ➂stateの更新
         }

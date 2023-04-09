@@ -109,7 +109,7 @@
 
 <script lang="ts">
 
-import { getDefaultPlan, Plan } from "../js/store/Plan";
+import { getDefaultPlan, Plan } from "../store/Plan";
 
 export default {
     components: {  },
@@ -174,7 +174,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "bulma/bulma.sass";
+@import "../../../node_modules/bulma/bulma";
 #plan-controller {
     background-color: #e2e8f0;
     margin: 0 10px 16px 10px;

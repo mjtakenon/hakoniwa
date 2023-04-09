@@ -1,7 +1,7 @@
 <template>
-    <div id="island-viewer" class="wrapper">
+    <div id="plan-page" class="wrapper">
         <div class="title">{{ island.name }}島開発計画</div>
-        <div class="subtitle"><a href="/">トップへ戻る</a></div>
+        <div class="subtitle"><a href="/app/public">トップへ戻る</a></div>
         <status-table
             :island-status="islandStatus"
         ></status-table>
@@ -34,11 +34,12 @@
 </template>
 
 <script lang="ts">
-import StatusTable from "./StatusTable.vue";
-import LogViewer from "./LogViewer.vue";
-import IslandEditor from "./IslandEditor.vue";
-import PlanController from "./PlanController.vue";
-import PlanList from "./PlanList.vue";
+import StatusTable from "../components/StatusTable.vue";
+import LogViewer from "../components/LogViewer.vue";
+import IslandEditor from "../components/IslandEditor.vue";
+import PlanController from "../components/PlanController.vue";
+import PlanList from "../components/PlanList.vue";
+import lodash from 'lodash';
 
 export default {
     components: {
@@ -84,10 +85,11 @@ export default {
         }
     },
     mounted() {
-        console.log(this.islandPlans)
-        this.$store.state.plan = this.islandPlans
-        this.$store.state.sentPlan = this.islandPlans
-        this.$store.state.island = this.island;
+        // console.log(this.islandPlans)
+
+        this.$store.state.plan = lodash.cloneDeep(this.islandPlans)
+        this.$store.state.sentPlan = lodash.cloneDeep(this.islandPlans)
+        this.$store.state.island = this.island
     },
     computed: {},
     props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog', 'planList'],
@@ -95,59 +97,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "bulma/bulma.sass";
+@import "../../../node_modules/bulma/bulma";
 
-#island-viewer {
+#plan-page {
     text-align: center;
     margin: 0 auto;
     max-width: 1000px;
-}
-
-#island {
-    position: relative;
-    margin: 0 auto;
-    max-width: 480px;
-    min-width: 496px;
-    min-height: 496px;
-}
-
-.row {
-    display: grid;
-    grid-template-columns: repeat(16, 1fr);
-}
-
-.cell {
-    width: 32px;
-    height: 32px;
-}
-
-.left-padding {
-    width: 16px;
-    height: 32px;
-    background-image: url("/img/hakoniwa/hakogif/land0.gif");
-    background-position: left;
-}
-
-.right-padding {
-    width: 16px;
-    height: 32px;
-    background-image: url("/img/hakoniwa/hakogif/land0.gif");
-    background-position: right;
-
-    color: white;
-    font-size: 10px;
-    padding-top: 8px;
-}
-
-.hover-window {
-    text-align: left;
-    padding: 10px;
-    margin: 10px;
-    position: absolute;
-    border: 1px solid;
-    background-color: lightyellow;
-    min-width: 200px;
-    min-height: 50px;
 }
 
 </style>

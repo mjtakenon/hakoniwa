@@ -42,6 +42,8 @@ export default {
     mounted() {},
     computed: {
         isPlanSent: function() {
+            // console.log(JSON.stringify(this.$store.state.plan))
+            // console.log(JSON.stringify(this.$store.state.sentPlan))
             return JSON.stringify(this.$store.state.plan) === JSON.stringify(this.$store.state.sentPlan)
         }
     },
@@ -50,7 +52,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "bulma/bulma.sass";
+@import "../../../node_modules/bulma/bulma";
 #plan-list {
     background-color: #e2e8f0;
     margin: 0 10px 16px 10px;

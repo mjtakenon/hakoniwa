@@ -32,6 +32,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "bulma/bulma.sass";
+@import "../../../node_modules/bulma/bulma";
 
 </style>

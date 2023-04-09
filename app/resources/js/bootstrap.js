@@ -13,9 +13,9 @@ window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import { createApp } from "vue/dist/vue.esm-bundler";
-import SightseeingPage from "../components/SightseeingPage.vue";
-import PlanPage from "../components/PlanPage.vue";
-import VueHeader from "../components/VueHeader.vue";
+import SightseeingPage from "./pages/SightseeingPage.vue";
+import PlanPage from "./pages/PlanPage.vue";
+import VueHeader from "./components/VueHeader.vue";
 import { store, key } from "./store/store";
 
 const app = createApp({

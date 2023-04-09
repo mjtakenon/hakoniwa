@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="/">
+                <a class="navbar-item" href="/app/public">
                     🏝️
                 </a>
 
@@ -16,7 +16,7 @@
 
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="/">
+                    <a class="navbar-item" href="/app/public">
                         Home
                     </a>
                 </div>
@@ -111,6 +111,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "bulma/bulma.sass";
+@import "../../../node_modules/bulma/bulma";
 
 </style>
