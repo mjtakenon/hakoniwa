@@ -19,6 +19,10 @@ abstract class Cell
     protected Point $point;
 
     protected int $population;
+    protected int $fundsProductionNumberOfPeople;
+    protected int $foodsProductionNumberOfPeople;
+    protected int $resourcesProductionNumberOfPeople;
+    protected int $maintenanceNumberOfPeople;
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::HAS_POPULATION => false,
@@ -36,6 +40,10 @@ abstract class Cell
         $this->point = new Point($data['point']->x, $data['point']->y);
         $this->imagePath = null;
         $this->population = 0;
+        $this->fundsProductionNumberOfPeople = 0;
+        $this->foodsProductionNumberOfPeople = 0;
+        $this->resourcesProductionNumberOfPeople = 0;
+        $this->maintenanceNumberOfPeople = 0;
     }
 
     public static function create($data)
@@ -68,6 +76,38 @@ abstract class Cell
     public function getPopulation(): int
     {
         return $this->population;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFoodsProductionNumberOfPeople(): int
+    {
+        return $this->foodsProductionNumberOfPeople;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFundsProductionNumberOfPeople(): int
+    {
+        return $this->fundsProductionNumberOfPeople;
+    }
+
+    /**
+     * @return int
+     */
+    public function getResourcesProductionNumberOfPeople(): int
+    {
+        return $this->resourcesProductionNumberOfPeople;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaintenanceNumberOfPeople(): int
+    {
+        return $this->maintenanceNumberOfPeople;
     }
 
     static public function fromJson(string $type, $data): Cell

@@ -58,10 +58,11 @@ class Status
         return $this;
     }
 
-    public function executeTurn(IslandStatus $islandStatus, Terrain $terrain, array $plans): static
+    public function executeTurn(Terrain $terrain): static
     {
-        // TODO: 実装
+        // TODO: 生産と消費実装
         $this->aggregate($terrain);
+        return $this;
     }
 
     private function aggregate(Terrain $terrain)

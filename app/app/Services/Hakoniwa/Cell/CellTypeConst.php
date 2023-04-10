@@ -10,6 +10,8 @@ class CellTypeConst
         Farm::TYPE => Farm::class,
         Forest::TYPE => Forest::class,
         Mountain::TYPE => Mountain::class,
+        Mine::TYPE => Mine::class,
+        Oilfield::TYPE => Oilfield::class,
         Plain::TYPE => Plain::class,
         Sea::TYPE => Sea::class,
         Shallow::TYPE => Shallow::class,

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

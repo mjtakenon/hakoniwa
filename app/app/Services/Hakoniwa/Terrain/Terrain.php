@@ -5,8 +5,11 @@ namespace App\Services\Hakoniwa\Terrain;
 use App\Models\Island;
 use App\Models\IslandStatus;
 use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\Forest;
 use App\Services\Hakoniwa\Cell\Mountain;
+use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
@@ -130,27 +133,68 @@ class Terrain implements JsonEncodable
 
     public function aggregateFundsProductionNumberOfPeople(): int
     {
-        return 0;
+        $fundsProductionNumberOfPeople = [];
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            $fundsProductionNumberOfPeople[] = $cell->getFundsProductionNumberOfPeople();
+        }
+        return array_sum($fundsProductionNumberOfPeople);
     }
 
     public function aggregateFoodsProductionNumberOfPeople(): int
     {
-        return 0;
+        $foodsProductionNumberOfPeople = [];
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            $foodsProductionNumberOfPeople[] = $cell->getFoodsProductionNumberOfPeople();
+        }
+        return array_sum($foodsProductionNumberOfPeople);
     }
 
     public function aggregateResourcesProductionNumberOfPeople(): int
     {
-        return 0;
+        $resourcesProductionNumberOfPeople = [];
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            $resourcesProductionNumberOfPeople[] = $cell->getResourcesProductionNumberOfPeople();
+        }
+        return array_sum($resourcesProductionNumberOfPeople);
     }
 
     public function getEnvironment(): string
     {
-        return Status::ENVIRONMENT_BEST;
+        $hasFactory = false;
+        $hasOilField = false;
+
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            if ($cell::TYPE === Factory::TYPE) {
+                $hasFactory = true;
+            }
+            if ($cell::TYPE === Oilfield::TYPE) {
+                $hasOilField = true;
+            }
+        }
+
+        if ($hasFactory && $hasOilField) {
+            return Status::ENVIRONMENT_NORMAL;
+        }
+        if (!$hasFactory && !$hasOilField) {
+            return Status::ENVIRONMENT_BEST;
+        }
+        return Status::ENVIRONMENT_GOOD;
     }
 
     public function aggregateArea(): int
     {
-        return 0;
+        $area = 0;
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+                $area += 100;
+            }
+        }
+        return $area;
     }
 
     public function passTime(Island $island, Status $status): Terrain

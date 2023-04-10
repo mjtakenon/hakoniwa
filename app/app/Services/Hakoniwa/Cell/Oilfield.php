@@ -4,11 +4,11 @@ namespace App\Services\Hakoniwa\Cell;
 
 use App\Services\Hakoniwa\Util\Point;
 
-class Farm extends Cell
+class Oilfield extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land7.gif';
-    const TYPE = 'farm';
-    const NAME = '農場';
+    const IMAGE_PATH = '/img/hakoniwa/hakogif/land16.gif';
+    const TYPE = 'oilfield';
+    const NAME = '油田';
     const PRODUCTION_NUMBER_OF_PEOPLE = 20000;
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
@@ -16,7 +16,7 @@ class Farm extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => true,
+        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => false,
@@ -27,7 +27,7 @@ class Farm extends Cell
         parent::__construct(...$data);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
-        $this->foodsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+        $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
     }
 
     public function getInfoString(): string
