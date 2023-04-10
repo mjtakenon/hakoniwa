@@ -71,7 +71,7 @@ class Terrain implements JsonEncodable
         foreach ($objects as $object) {
             /** @var Cell $cell */
             $cell = Cell::fromJson($object->type, $object->data);
-            $terrain[$cell->getPoint()->x][$cell->getPoint()->y] = $cell;
+            $terrain[$cell->getPoint()->y][$cell->getPoint()->x] = $cell;
         }
 
         $static = new static();
@@ -121,6 +121,16 @@ class Terrain implements JsonEncodable
         $this->terrain = $terrain;
     }
 
+    public function getCell(Point $point): Cell
+    {
+        return $this->terrain[$point->y][$point->x];
+    }
+
+    public function setCell(Point $point, Cell $cell)
+    {
+        return $this->terrain[$point->y][$point->x] = $cell;
+    }
+
     public function aggregatePopulation(): int
     {
         $population = [];
@@ -159,6 +169,16 @@ class Terrain implements JsonEncodable
             $resourcesProductionNumberOfPeople[] = $cell->getResourcesProductionNumberOfPeople();
         }
         return array_sum($resourcesProductionNumberOfPeople);
+    }
+
+    public function aggregateMaintenanceNumberOfPeople(): int
+    {
+        $maintenanceNumberOfPeople = [];
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            $maintenanceNumberOfPeople[] = $cell->getMaintenanceNumberOfPeople();
+        }
+        return array_sum($maintenanceNumberOfPeople);
     }
 
     public function getEnvironment(): string

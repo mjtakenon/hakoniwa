@@ -43,6 +43,8 @@ db-seed-testing:
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
 	docker compose exec --user debian app sudo php artisan ide-helper:model --nowrite
+next-turn:
+	docker compose exec --user debian app php artisan execute:turn
 
 exec-composer:
 	docker compose run --user debian composer bash

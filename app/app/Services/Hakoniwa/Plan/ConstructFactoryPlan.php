@@ -3,8 +3,8 @@
 namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
-use App\Models\IslandStatus;
-use App\Models\IslandTerrain;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
 class ConstructFactoryPlan extends Plan
@@ -25,8 +25,8 @@ class ConstructFactoryPlan extends Plan
         $this->usePoint = self::USE_POINT;
     }
 
-    public function execute(Island $island, IslandTerrain $islandTerrain, IslandStatus $islandStatus): void
+    public function execute(Terrain $terrain, Status $status): PlanExecuteResult
     {
-        // TODO: Implement execute() method.
+        return new PlanExecuteResult($terrain, $status);
     }
 }

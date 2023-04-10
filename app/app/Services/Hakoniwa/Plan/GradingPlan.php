@@ -3,8 +3,11 @@
 namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
-use App\Models\IslandStatus;
-use App\Models\IslandTerrain;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Plain;
+use App\Services\Hakoniwa\Cell\Wasteland;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
 class GradingPlan extends Plan
@@ -25,8 +28,20 @@ class GradingPlan extends Plan
         $this->usePoint = self::USE_POINT;
     }
 
-    public function execute(Island $island, IslandTerrain $islandTerrain, IslandStatus $islandStatus): void
+    public function execute(Terrain $terrain, Status $status): PlanExecuteResult
     {
-        // TODO: Implement execute() method.
+        $cell = $terrain->getCell($this->point);
+        if ($status->getFunds() < self::PRICE) {
+            // TODO: 中止ログ
+            return new PlanExecuteResult($terrain, $status);
+        }
+        if ($cell::TYPE === Wasteland::TYPE) {
+            $terrain->setCell($this->point, new Plain(point: $this->point));
+            $status->setFunds($status->getFunds() - self::PRICE);
+            // TODO: 実施ログ
+            return new PlanExecuteResult($terrain, $status);
+        }
+        // TODO: 中止ログ
+        return new PlanExecuteResult($terrain, $status);
     }
 }

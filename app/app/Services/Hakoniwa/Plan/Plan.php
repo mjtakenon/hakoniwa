@@ -2,9 +2,6 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
-use App\Models\Island;
-use App\Models\IslandStatus;
-use App\Models\IslandTerrain;
 use App\Services\Hakoniwa\Util\Point;
 
 abstract class Plan implements IPlan

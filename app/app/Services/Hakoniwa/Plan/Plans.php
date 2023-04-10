@@ -2,10 +2,9 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
-use App\Models\Island;
-use App\Models\IslandStatus;
-use App\Models\IslandTerrain;
 use App\Services\Hakoniwa\JsonEncodable;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 
@@ -84,18 +83,22 @@ class Plans implements JsonEncodable
         return $this->plans->shift();
     }
 
-    public function execute(Island $island, IslandTerrain $islandTerrain, IslandStatus $islandStatus): Plans
+    public function execute(Terrain $terrain, Status $status): PlanExecuteResult
     {
         while (true) {
             /** @var Plan $plan */
             $plan = $this->shift();
             // TODO: 各コマンド実装
-            $plan->execute($island, $islandTerrain, $islandStatus);
+            $planExecuteResult = $plan->execute($terrain, $status);
+
+            $terrain = $planExecuteResult->getTerrain();
+            $status = $planExecuteResult->getStatus();
+
             // 2回以上行動できる場合はループ
             if ($plan->isTurnSpending()) {
                 break;
             }
         }
-        return $this;
+        return new PlanExecuteResult($terrain, $status);
     }
 }

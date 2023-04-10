@@ -12,9 +12,9 @@ class Village extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => true,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,

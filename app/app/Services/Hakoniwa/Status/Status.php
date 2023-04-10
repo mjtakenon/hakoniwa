@@ -9,7 +9,7 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 class Status
 {
     const INITIAL_DEVELOPMENT_POINTS = 0;
-    const INITIAL_FUNDS = 1000;
+    const INITIAL_FUNDS = 3000;
     const INITIAL_FOODS = 100000;
     const INITIAL_RESOURCES = 0;
 
@@ -17,14 +17,21 @@ class Status
     const ENVIRONMENT_GOOD = 'good';
     const ENVIRONMENT_BEST = 'best';
 
-    private int $development_points;
+    const FOODS_PRODUCTION_COEF = 0.6;
+    const FOODS_CONSUMPTION_COEF = 0.1;
+    const RESOURCES_PRODUCTION_COEF = 0.02;
+    const RESOURCES_CONSUMPTION_COEF = 0.02;
+    const FUNDS_PRODUCTION_COEF = 0.002;
+
+
+    private int $developmentPoints;
     private int $funds;
     private int $foods;
     private int $resources;
     private int $population;
-    private int $funds_production_number_of_people;
-    private int $foods_production_number_of_people;
-    private int $resources_production_number_of_people;
+    private int $fundsProductionNumberOfPeople;
+    private int $foodsProductionNumberOfPeople;
+    private int $resourcesProductionNumberOfPeople;
     private string $environment;
     private int $area;
 
@@ -34,7 +41,7 @@ class Status
     }
     public function init(Terrain $terrain): static
     {
-        $this->development_points = self::INITIAL_DEVELOPMENT_POINTS;
+        $this->developmentPoints = self::INITIAL_DEVELOPMENT_POINTS;
         $this->funds = self::INITIAL_FUNDS;
         $this->foods = self::INITIAL_FOODS;
         $this->resources = self::INITIAL_RESOURCES;
@@ -44,14 +51,14 @@ class Status
     }
     public function fromModel(IslandStatus $islandStatus): static
     {
-        $this->development_points = $islandStatus->development_points;
+        $this->developmentPoints = $islandStatus->development_points;
         $this->funds = $islandStatus->funds;
         $this->foods = $islandStatus->foods;
         $this->resources = $islandStatus->resources;
         $this->population = $islandStatus->population;
-        $this->funds_production_number_of_people = $islandStatus->funds_production_number_of_people;
-        $this->foods_production_number_of_people = $islandStatus->foods_production_number_of_people;
-        $this->resources_production_number_of_people = $islandStatus->resources_production_number_of_people;
+        $this->fundsProductionNumberOfPeople = $islandStatus->funds_production_number_of_people;
+        $this->foodsProductionNumberOfPeople = $islandStatus->foods_production_number_of_people;
+        $this->resourcesProductionNumberOfPeople = $islandStatus->resources_production_number_of_people;
         $this->environment = $islandStatus->environment;
         $this->area = $islandStatus->area;
 
@@ -60,17 +67,58 @@ class Status
 
     public function executeTurn(Terrain $terrain): static
     {
-        // TODO: 生産と消費実装
         $this->aggregate($terrain);
+
+        // 生産人口算出
+        $realFundsProductionNumberOfPeople = 0;
+        $realFoodsProductionNumberOfPeople = 0;
+        $realResourcesProductionNumberOfPeople = 0;
+
+        $workablePeople = $this->population - $terrain->aggregateMaintenanceNumberOfPeople();
+        $sumProductionNumberOfPeople = $this->foodsProductionNumberOfPeople + $this->fundsProductionNumberOfPeople + $this->resourcesProductionNumberOfPeople;
+
+        if ($sumProductionNumberOfPeople > 0) {
+            $realFundsProductionNumberOfPeople =
+                min([((float)($this->fundsProductionNumberOfPeople) / $sumProductionNumberOfPeople) * $workablePeople, $this->fundsProductionNumberOfPeople]);
+            $realFoodsProductionNumberOfPeople =
+                min([((float)($this->foodsProductionNumberOfPeople) / $sumProductionNumberOfPeople) * $workablePeople, $this->foodsProductionNumberOfPeople]);
+            $realResourcesProductionNumberOfPeople =
+                min([((float)($this->resourcesProductionNumberOfPeople) / $sumProductionNumberOfPeople) * $workablePeople, $this->resourcesProductionNumberOfPeople]);
+        }
+
+        // 食料生産
+        if ($this->environment === self::ENVIRONMENT_BEST) {
+            $this->foods += $realFoodsProductionNumberOfPeople * self::FOODS_PRODUCTION_COEF * 2;
+        } else if ($this->environment === self::ENVIRONMENT_GOOD) {
+            $this->foods += $realFoodsProductionNumberOfPeople * self::FOODS_PRODUCTION_COEF;
+        } else {
+            $this->foods += $realFoodsProductionNumberOfPeople * self::FOODS_PRODUCTION_COEF * 0.5;
+        }
+
+        // 資源生産
+        $this->resources = $realResourcesProductionNumberOfPeople * self::RESOURCES_PRODUCTION_COEF;
+
+        // 資金生産
+        $realFundsProductionNumberOfPeople = min([$this->resources / self::RESOURCES_CONSUMPTION_COEF, $realFundsProductionNumberOfPeople]);
+        $this->funds += $realFundsProductionNumberOfPeople * self::FUNDS_PRODUCTION_COEF;
+        $this->resources -= $realFundsProductionNumberOfPeople * self::RESOURCES_CONSUMPTION_COEF;
+
+        // 食料消費
+        $this->foods -= $this->population * self::FOODS_CONSUMPTION_COEF;
+
+        $this->foods = round($this->foods, -1);
+        $this->funds = round($this->funds, -1);
+        $this->resources = round($this->resources, -1);
+
         return $this;
     }
 
     private function aggregate(Terrain $terrain)
     {
         $this->population = $terrain->aggregatePopulation();
-        $this->funds_production_number_of_people = $terrain->aggregateFundsProductionNumberOfPeople();
-        $this->foods_production_number_of_people = $terrain->aggregateFoodsProductionNumberOfPeople();
-        $this->resources_production_number_of_people = $terrain->aggregateResourcesProductionNumberOfPeople();
+        $this->fundsProductionNumberOfPeople = $terrain->aggregateFundsProductionNumberOfPeople();
+        $this->foodsProductionNumberOfPeople = $terrain->aggregateFoodsProductionNumberOfPeople();
+        $this->resourcesProductionNumberOfPeople = $terrain->aggregateResourcesProductionNumberOfPeople();
         $this->environment = $terrain->getEnvironment();
         $this->area = $terrain->aggregateArea();
     }
@@ -80,7 +128,7 @@ class Status
      */
     public function getDevelopmentPoints(): int
     {
-        return $this->development_points;
+        return $this->developmentPoints;
     }
 
     /**
@@ -89,6 +137,14 @@ class Status
     public function getFunds(): int
     {
         return $this->funds;
+    }
+
+    /**
+     * @param int $funds
+     */
+    public function setFunds(int $funds): void
+    {
+        $this->funds = $funds;
     }
 
     /**
@@ -120,7 +176,7 @@ class Status
      */
     public function getFundsProductionNumberOfPeople(): int
     {
-        return $this->funds_production_number_of_people;
+        return $this->fundsProductionNumberOfPeople;
     }
 
     /**
@@ -128,7 +184,7 @@ class Status
      */
     public function getFoodsProductionNumberOfPeople(): int
     {
-        return $this->foods_production_number_of_people;
+        return $this->foodsProductionNumberOfPeople;
     }
 
     /**
@@ -136,7 +192,7 @@ class Status
      */
     public function getResourcesProductionNumberOfPeople(): int
     {
-        return $this->resources_production_number_of_people;
+        return $this->resourcesProductionNumberOfPeople;
     }
 
     /**
