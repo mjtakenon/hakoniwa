@@ -2,6 +2,9 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
+use App\Models\Island;
+use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
 use App\Services\Hakoniwa\Util\Point;
 
 class AfforestationPlan extends Plan
@@ -22,7 +25,7 @@ class AfforestationPlan extends Plan
         $this->usePoint = self::USE_POINT;
     }
 
-    public function execute(Point $point, int $amount): void
+    public function execute(Island $island, IslandTerrain $islandTerrain, IslandStatus $islandStatus): void
     {
         // TODO: Implement execute() method.
     }

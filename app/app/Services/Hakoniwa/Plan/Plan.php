@@ -2,6 +2,9 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
+use App\Models\Island;
+use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
 use App\Services\Hakoniwa\Util\Point;
 
 abstract class Plan implements IPlan
@@ -56,6 +59,11 @@ abstract class Plan implements IPlan
     public function priceString(): string
     {
         return $this->priceString;
+    }
+
+    public function isTurnSpending(): bool
+    {
+        return true;
     }
 
 

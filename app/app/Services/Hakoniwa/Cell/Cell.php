@@ -2,6 +2,10 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Models\Island;
+use App\Models\IslandStatus;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
 abstract class Cell
@@ -71,9 +75,7 @@ abstract class Cell
         return new (CellTypeConst::getClassByType($type))(...get_object_vars($data));
     }
 
-//    islandとstatusはモデルと別クラスに切り出す?
-//    public function elapse(Island $island, Status $status, Terrain $terrain): Cell
-//    {
-//        return new $this;
-//    }
+    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    {
+    }
 }

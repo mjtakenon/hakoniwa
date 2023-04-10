@@ -16,8 +16,9 @@ class TurnSeeder extends Seeder
      */
     public function run()
     {
-        Turn::firstOrCreate(
-            ['id' =>  1],
-        );
+        Turn::firstOrCreate([
+            'id' => 1,
+            'turn' => 1,
+        ]);
     }
 }

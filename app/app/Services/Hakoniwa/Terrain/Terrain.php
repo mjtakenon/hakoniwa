@@ -2,6 +2,7 @@
 
 namespace App\Services\Hakoniwa\Terrain;
 
+use App\Models\Island;
 use App\Models\IslandStatus;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Forest;
@@ -12,6 +13,7 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Village;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\JsonEncodable;
+use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Util\Normal;
 use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
@@ -143,11 +145,20 @@ class Terrain implements JsonEncodable
 
     public function getEnvironment(): string
     {
-        return IslandStatus::ENVIRONMENT_BEST;
+        return Status::ENVIRONMENT_BEST;
     }
 
     public function aggregateArea(): int
     {
         return 0;
+    }
+
+    public function passTime(Island $island, Status $status): Terrain
+    {
+        foreach ($this->terrain->flatten(1) as $cell) {
+            $cell->passTime($island, $this, $status);
+        }
+
+        return $this;
     }
 }

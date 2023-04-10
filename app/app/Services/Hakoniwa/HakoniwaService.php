@@ -22,7 +22,8 @@ class HakoniwaService extends ServiceProvider
      * @return Turn
      */
     public function getLatestTurn() {
-        return Turn::orderBy('created_at')->firstOrFail();
+
+        return Turn::latest()->firstOrFail();
     }
 
     /**

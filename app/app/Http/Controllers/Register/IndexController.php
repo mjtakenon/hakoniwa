@@ -12,6 +12,7 @@ use App\Models\Turn;
 use App\Models\User;
 use App\Services\Hakoniwa\Log\IslandFoundLog;
 use App\Services\Hakoniwa\Plan\Plans;
+use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
 class IndexController extends Controller
@@ -58,10 +59,20 @@ class IndexController extends Controller
             $islandTerrain->terrain = $terrain->toJson();
             $islandTerrain->save();
 
+            $status = Status::create()->init($terrain);
             $islandStatus = new IslandStatus();
             $islandStatus->turn_id = $turn->id;
             $islandStatus->island_id = $island->id;
-            $islandStatus->setInitialStatus($terrain);
+            $islandStatus->development_points = $status->getDevelopmentPoints();
+            $islandStatus->funds = $status->getFunds();
+            $islandStatus->foods = $status->getFoods();
+            $islandStatus->resources = $status->getResources();
+            $islandStatus->population = $status->getPopulation();
+            $islandStatus->funds_production_number_of_people = $status->getFundsProductionNumberOfPeople();
+            $islandStatus->foods_production_number_of_people = $status->getFoodsProductionNumberOfPeople();
+            $islandStatus->resources_production_number_of_people = $status->getResourcesProductionNumberOfPeople();
+            $islandStatus->environment = $status->getEnvironment();
+            $islandStatus->area = $status->getArea();
             $islandStatus->save();
 
             $islandPlan = new IslandPlan();
