@@ -12,6 +12,18 @@ class IslandStatus extends Model
 
     const UPDATED_AT = null;
 
+    protected $casts = [
+        'development_points' => 'integer',
+        'population' => 'integer',
+        'funds' => 'integer',
+        'foods' => 'integer',
+        'resources' => 'integer',
+        'funds_production_number_of_people' => 'integer',
+        'foods_production_number_of_people' => 'integer',
+        'resources_production_number_of_people' => 'integer',
+        'area' => 'integer',
+    ];
+
     public function toStatus(): Status
     {
         return Status::create()->fromModel($this);
