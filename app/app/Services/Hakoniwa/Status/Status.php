@@ -118,7 +118,7 @@ class Status
         return $this;
     }
 
-    private function aggregate(Terrain $terrain)
+    public function aggregate(Terrain $terrain)
     {
         $this->population = $terrain->aggregatePopulation();
         $this->fundsProductionNumberOfPeople = $terrain->aggregateFundsProductionNumberOfPeople();

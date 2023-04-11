@@ -2,6 +2,20 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
+use App\Services\Hakoniwa\Cell\City;
+use App\Services\Hakoniwa\Cell\Factory;
+use App\Services\Hakoniwa\Cell\Farm;
+use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\Lake;
+use App\Services\Hakoniwa\Cell\Mine;
+use App\Services\Hakoniwa\Cell\Mountain;
+use App\Services\Hakoniwa\Cell\Oilfield;
+use App\Services\Hakoniwa\Cell\Plain;
+use App\Services\Hakoniwa\Cell\Sea;
+use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Cell\Town;
+use App\Services\Hakoniwa\Cell\Village;
+use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Util\Point;
 
 abstract class Plan implements IPlan
@@ -21,6 +35,24 @@ abstract class Plan implements IPlan
 
     protected int $amount;
     protected Point $point;
+
+    public const GRADABLE_CELLS = [
+        City::TYPE,
+        Factory::TYPE,
+        Farm::TYPE,
+        Forest::TYPE,
+        Oilfield::TYPE,
+        Town::TYPE,
+        Village::TYPE,
+        Wasteland::TYPE,
+    ];
+
+    public const CONSTRUCTABLE_CELLS = [
+        Plain::TYPE,
+        City::TYPE,
+        Town::TYPE,
+        Village::TYPE,
+    ];
 
     public function __construct(Point $point, int $amount)
     {

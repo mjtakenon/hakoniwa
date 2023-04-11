@@ -4,6 +4,10 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\Plain;
+use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
+use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -29,6 +33,16 @@ class DeforestationPlan extends Plan
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
     {
-        return new PlanExecuteResult($terrain, $status, Logs::create(), true);
+        $cell = $terrain->getCell($this->point);
+
+        if (!in_array($cell::TYPE, [Forest::TYPE], true)) {
+            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            return new PlanExecuteResult($terrain, $status, $logs, false);
+        }
+
+        $terrain->setCell($this->point, new Plain(point: $this->point));
+        $status->setFunds($status->getFunds() - self::PRICE);
+        $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        return new PlanExecuteResult($terrain, $status, $logs, false);
     }
 }

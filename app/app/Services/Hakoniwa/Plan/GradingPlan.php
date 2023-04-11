@@ -27,14 +27,6 @@ class GradingPlan extends Plan
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
     public const USE_POINT = true;
 
-    public const UNGRADABLE_CELL = [
-        Sea::TYPE,
-        Shallow::TYPE,
-        Lake::TYPE,
-        Mountain::TYPE,
-        Mine::TYPE,
-    ];
-
     public function __construct(Point $point, int $amount = 1)
     {
         parent::__construct($point, $amount);
@@ -52,7 +44,7 @@ class GradingPlan extends Plan
             return new PlanExecuteResult($terrain, $status, $logs, false);
         }
 
-        if (in_array($cell::TYPE, self::UNGRADABLE_CELL)) {
+        if (!in_array($cell::TYPE, self::GRADABLE_CELLS, true)) {
             $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
             return new PlanExecuteResult($terrain, $status, $logs, false);
         }

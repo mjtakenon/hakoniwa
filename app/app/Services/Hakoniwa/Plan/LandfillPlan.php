@@ -4,6 +4,12 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Sea;
+use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Cell\Wasteland;
+use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
+use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
+use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -29,6 +35,25 @@ class LandfillPlan extends Plan
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
     {
-        return new PlanExecuteResult($terrain, $status, Logs::create(), true);
+        $cell = $terrain->getCell($this->point);
+        if ($status->getFunds() < self::PRICE) {
+            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            return new PlanExecuteResult($terrain, $status, $logs, false);
+        }
+
+        if (!in_array($cell::TYPE, [Shallow::TYPE, Sea::TYPE], true)) {
+            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            return new PlanExecuteResult($terrain, $status, $logs, false);
+        }
+
+        if ($cell::TYPE === Shallow::TYPE) {
+            $terrain->setCell($this->point, new Wasteland(point: $this->point));
+        } else {
+            $terrain->setCell($this->point, new Shallow(point: $this->point));
+        }
+
+        $status->setFunds($status->getFunds() - self::PRICE);
+        $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        return new PlanExecuteResult($terrain, $status, $logs, true);
     }
 }

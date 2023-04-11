@@ -34,6 +34,6 @@ class Farm extends Cell
     {
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
-            $this->population . '人規模';
+            $this->foodsProductionNumberOfPeople . '人規模';
     }
 }

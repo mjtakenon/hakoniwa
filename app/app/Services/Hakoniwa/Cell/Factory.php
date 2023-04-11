@@ -35,6 +35,6 @@ class Factory extends Cell
     {
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
-            $this->population . '人規模';
+            $this->fundsProductionNumberOfPeople . '人規模';
     }
 }

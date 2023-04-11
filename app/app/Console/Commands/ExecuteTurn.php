@@ -83,6 +83,9 @@ class ExecuteTurn extends Command
 
                 // 災害
 
+                // 再集計
+                $status->aggregate($terrain);
+
                 // 結果保存
                 $newIslandStatus = new IslandStatus();
                 $newIslandStatus->turn_id = $newTurn->id;
