@@ -16,6 +16,11 @@ class Status
     const ENVIRONMENT_NORMAL = 'normal';
     const ENVIRONMENT_GOOD = 'good';
     const ENVIRONMENT_BEST = 'best';
+    const ENVIRONMENT = [
+        self::ENVIRONMENT_BEST => '最高',
+        self::ENVIRONMENT_GOOD => '良好',
+        self::ENVIRONMENT_NORMAL => '通常',
+    ];
 
     const FOODS_PRODUCTION_COEF = 0.6;
     const FOODS_CONSUMPTION_COEF = 0.1;

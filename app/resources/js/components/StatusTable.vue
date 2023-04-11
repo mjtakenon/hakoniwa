@@ -25,7 +25,7 @@
             <th> 資源生産 </th>
         </tr>
         <tr>
-            <td> {{ islandStatus.environment }}</td>
+            <td> {{ ENVIRONMENT[islandStatus.environment] }}</td>
             <td> {{ islandStatus.area }} 万坪</td>
             <td> {{ islandStatus.foods_production_number_of_people }} 人規模</td>
             <td> {{ islandStatus.funds_production_number_of_people }} 人規模</td>
@@ -37,6 +37,15 @@
 
 <script>
 export default {
+    data() {
+        return {
+            ENVIRONMENT : {
+                'best': '最高',
+                'good': '良好',
+                'normal': '通常',
+            },
+        }
+    },
     props: ['islandStatus', ],
 }
 </script>
