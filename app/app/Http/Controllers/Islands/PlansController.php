@@ -8,6 +8,7 @@ use App\Models\Island;
 use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
+use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
@@ -27,7 +28,7 @@ class PlansController extends Controller
             abort(404);
         }
 
-        $turn = \HakoniwaService::getLatestTurn();
+        $turn = Turn::getLatest();
 
         //
 //        $islandTerrain = IslandTerrain::find($islandId);
@@ -51,7 +52,6 @@ class PlansController extends Controller
                 'width' => \HakoniwaService::getMaxWidth(),
                 'height' => \HakoniwaService::getMaxHeight(),
             ]),
-            'turn' => $turn,
             'island' => $island,
             'islandPlans' => Plans::fromJson($islandPlan->plan)->toJsonWithStatic(),
             'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
@@ -82,7 +82,7 @@ class PlansController extends Controller
 
         $validated = $validator->safe()->collect();
 
-        $turn = \HakoniwaService::getLatestTurn();
+        $turn = Turn::getLatest();
 
         $plan = $validated->get('plan');
 

@@ -20,9 +20,7 @@ setup:
 start:
 	make up
 	make migrate
-	make migrate-testing
 	make db-seed
-	make db-seed-testing
 	make yarn-install
 	make yarn-run-dev
 logs:
@@ -73,4 +71,6 @@ yarn-run-dev:
 	docker compose exec frontend bash -c "yarn run dev"
 
 testing:
+	make migrate-testing
+	make db-seed-testing
 	docker compose exec app /app/vendor/phpunit/phpunit/phpunit /app/tests/

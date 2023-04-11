@@ -39,11 +39,12 @@ class ExecuteTurn extends Command
         \Log::info('start ' . $this->signature);
 
         \DB::transaction(function() {
-            $turn = \HakoniwaService::getLatestTurn();
+            $turn = Turn::getLatest();
 
             // ターン更新
             $newTurn = new Turn();
             $newTurn->turn = $turn->turn+1;
+            $newTurn->next_turn_scheduled_at = $turn->next_turn_scheduled_at;
             $newTurn->save();
 
             $islands = Island::with([

@@ -19,14 +19,6 @@ class HakoniwaService extends ServiceProvider
     }
 
     /**
-     * @return Turn
-     */
-    public function getLatestTurn() {
-
-        return Turn::latest()->firstOrFail();
-    }
-
-    /**
      * @return Island
      */
     public function getOwnedIsland() {

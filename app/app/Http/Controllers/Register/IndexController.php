@@ -50,7 +50,7 @@ class IndexController extends Controller
             $island->owner_name = $validated->get('owner_name');
             $island->save();
 
-            $turn = \HakoniwaService::getLatestTurn();
+            $turn = Turn::getLatest();
 
             $terrain = Terrain::create()->init();
             $islandTerrain = new IslandTerrain();

@@ -8,7 +8,6 @@ class PlanServiceTest extends TestCase
 {
     public function testGetAllPlans()
     {
-        print_r(\PlanService::getAllPlans());
         $this->assertTrue(true);
     }
 }

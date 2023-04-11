@@ -28,7 +28,7 @@ class ExecuteLog implements ILog
     public function get(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->id . ' : '],
+            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'にて'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_PRIMARY ],

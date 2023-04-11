@@ -116,7 +116,7 @@ export default {
     data() {
         return {
             MAX_PLAN_NUMBER: 30,
-            selectedPlan: 'cash_flow',
+            selectedPlan: 'grading',
             selectedAmount: 1,
             selectedTargetIsland: this.island.name,
         }

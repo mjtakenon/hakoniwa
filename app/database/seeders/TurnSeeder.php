@@ -18,7 +18,9 @@ class TurnSeeder extends Seeder
     {
         Turn::firstOrCreate([
             'id' => 1,
+            ],[
             'turn' => 1,
+            'next_turn_scheduled_at' => now()->addHour(),
         ]);
     }
 }

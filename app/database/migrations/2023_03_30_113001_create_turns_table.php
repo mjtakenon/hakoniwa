@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('turns', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('turn')->unique();
+            $table->datetime('next_turn_scheduled_at');
             $table->datetime('created_at');
             $table->index('created_at');
         });

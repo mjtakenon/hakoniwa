@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Islands;
 
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\Turn;
 
 class DetailController extends Controller
 {
@@ -14,7 +15,7 @@ class DetailController extends Controller
             abort(404);
         }
 
-        $turn = \HakoniwaService::getLatestTurn();
+        $turn = Turn::getLatest();
 
         return view('pages.islands.detail', [
             'user' => \Auth::user(),
@@ -22,7 +23,6 @@ class DetailController extends Controller
                 'width' => \HakoniwaService::getMaxWidth(),
                 'height' => \HakoniwaService::getMaxHeight(),
             ]),
-            'turn' => $turn,
             'island' => $island,
             'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
             'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
