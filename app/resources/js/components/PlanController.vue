@@ -96,7 +96,7 @@
             <span class="is-small" style="vertical-align: middle">
                 コマンド移動：
             </span>
-            <button class="button is-small" @click="onClickMoveUp"> ▲ </button> - <button class="button is-small" @click="onClickMoveDown"> ▼ </button>
+            <button class="button is-small" @click="onClickMoveUp" :disabled="this.$store.state.selectedPlanNumber <= 1"> ▲ </button> - <button class="button is-small" @click="onClickMoveDown" :disabled="this.$store.state.selectedPlanNumber >= MAX_PLAN_NUMBER"> ▼ </button>
         </div>
 
         <hr />
@@ -156,10 +156,20 @@ export default {
             this.$store.state.plan.push(getDefaultPlan());
         },
         onClickMoveUp() {
-            console.log(this.selectedPlan)
+            if (this.$store.state.selectedPlanNumber <= 1) {
+                return
+            }
+            [this.$store.state.plan[this.$store.state.selectedPlanNumber-2], this.$store.state.plan[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plan[this.$store.state.selectedPlanNumber-1], this.$store.state.plan[this.$store.state.selectedPlanNumber-2]];
+            this.$store.state.selectedPlanNumber--;
         },
         onClickMoveDown() {
-            console.log(this.selectedPlan)
+            if (this.$store.state.selectedPlanNumber >= 30) {
+                return
+            }
+            [this.$store.state.plan[this.$store.state.selectedPlanNumber], this.$store.state.plan[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plan[this.$store.state.selectedPlanNumber-1], this.$store.state.plan[this.$store.state.selectedPlanNumber]];
+            if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.$store.state.selectedPlanNumber++;
+            }
         },
         onClickSendPlan() {
             this.$store.state.isSendingPlan = true
