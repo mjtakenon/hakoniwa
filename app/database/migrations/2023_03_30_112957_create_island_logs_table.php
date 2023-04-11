@@ -21,7 +21,7 @@ return new class extends Migration
             $table->datetime('created_at');
 
             $table->index('created_at');
-            $table->unique(['turn_id', 'island_id']);
+            $table->index(['turn_id', 'island_id']);
         });
     }
 

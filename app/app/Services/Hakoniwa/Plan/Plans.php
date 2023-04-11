@@ -100,7 +100,7 @@ class Plans implements JsonEncodable
             $logs->merge($planExecuteResult->getLogs());
 
             // 2回以上行動できる場合はループ
-            if ($plan->isTurnSpending()) {
+            if ($planExecuteResult->isTurnSpending()) {
                 break;
             }
         }

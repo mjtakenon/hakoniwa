@@ -4,6 +4,7 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Log\ExecuteLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -29,6 +30,8 @@ class CashFlowPlan extends Plan
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
     {
-        return new PlanExecuteResult($terrain, $status, Logs::create(), true);
+        $status->setFunds($status->getFunds() - self::PRICE);
+        $logs = Logs::create()->add(new ExecuteLog($island, $turn, $this));
+        return new PlanExecuteResult($terrain, $status, $logs, true);
     }
 }

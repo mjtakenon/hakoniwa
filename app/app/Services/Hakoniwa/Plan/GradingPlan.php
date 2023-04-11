@@ -12,7 +12,7 @@ use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
-use App\Services\Hakoniwa\Log\ExecuteLog;
+use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -59,7 +59,7 @@ class GradingPlan extends Plan
 
         $terrain->setCell($this->point, new Plain(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteLog($island, $turn, $this->point, $this));
+        $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
         return new PlanExecuteResult($terrain, $status, $logs, true);
     }
 }
