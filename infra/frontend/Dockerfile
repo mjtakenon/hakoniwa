@@ -1,6 +1,6 @@
 FROM node:18.15.0-bullseye
 
-EXPOSE 32273
+EXPOSE 54373
 
 WORKDIR /app
 

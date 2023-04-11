@@ -5,7 +5,7 @@ services:
       context: ./
       dockerfile: ./infra/app/Dockerfile
     ports:
-      - "${APP_PORT:-32280}:80"
+      - "${APP_PORT:-54380}:80"
     working_dir: /app
     volumes:
       - ./app/:/app
@@ -28,9 +28,9 @@ services:
         - ./infra/db/my.cnf:/etc/mysql/conf.d/my.cnf
         - ./infra/db/init.sql:/tmp/init.sql
     ports:
-      - "${DB_PORT:-32206}:3306"
+      - "${DB_PORT:-54306}:3306"
     # expose:
-    #   - "${DB_PORT:-32206}"
+    #   - "${DB_PORT:-54306}"
     environment:
         - MYSQL_ROOT_PASSWORD=T9jm?tGN
         - MYSQL_DATABASE=hakoniwa
@@ -48,9 +48,9 @@ services:
       - ./infra/db-testing/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./infra/db-testing/init.sql:/tmp/init.sql
     ports:
-      - "${DB_PORT:-32216}:3306"
+      - "${DB_PORT:-54316}:3306"
     # expose:
-    #   - "${DB_PORT:-32216}"
+    #   - "${DB_PORT:-54316}"
     environment:
       - MYSQL_ROOT_PASSWORD=T9jm?tGN
       - MYSQL_DATABASE=hakoniwa
@@ -69,7 +69,7 @@ services:
     volumes:
       - ./app/:/app
     ports:
-      - "${FRONT_PORT:-32273}:32273"
+      - "${FRONT_PORT:-54373}:54373"
 volumes:
   db-data: 
     driver: local
