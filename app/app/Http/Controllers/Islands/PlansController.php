@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Islands;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Trait\WebApi;
 use App\Models\Island;
+use App\Models\IslandLog;
 use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
@@ -29,6 +30,8 @@ class PlansController extends Controller
         }
 
         $turn = Turn::getLatest();
+        // TODO 直近取得ターンの変数切り出し
+        $getLogRecentTurns = 5;
 
         //
 //        $islandTerrain = IslandTerrain::find($islandId);
@@ -56,7 +59,9 @@ class PlansController extends Controller
             'islandPlans' => Plans::fromJson($islandPlan->plan)->toJsonWithStatic(),
             'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
             'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
-            'islandLog' => $island->islandLogs, // TODO: nターン前から
+            'islandLog' => $island->islandLogs()->whereIn('turn_id',
+                Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
+            )->orderByDesc('id')->get('log'),
         ]);
     }
 

@@ -24,6 +24,19 @@ class IslandStatus extends Model
         'area' => 'integer',
     ];
 
+    protected $visible = [
+        'development_points',
+        'population',
+        'funds',
+        'foods',
+        'resources',
+        'funds_production_number_of_people',
+        'foods_production_number_of_people',
+        'resources_production_number_of_people',
+        'environment',
+        'area',
+    ];
+
     public function toStatus(): Status
     {
         return Status::create()->fromModel($this);

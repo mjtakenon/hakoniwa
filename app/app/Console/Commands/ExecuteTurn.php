@@ -44,7 +44,7 @@ class ExecuteTurn extends Command
             // ターン更新
             $newTurn = new Turn();
             $newTurn->turn = $turn->turn+1;
-            $newTurn->next_turn_scheduled_at = $turn->next_turn_scheduled_at;
+            $newTurn->next_turn_scheduled_at = $turn->next_turn_scheduled_at->addHour();
             $newTurn->save();
 
             $islands = Island::with([

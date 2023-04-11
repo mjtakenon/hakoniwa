@@ -10,6 +10,9 @@ class IslandTerrain extends Model
 {
     use HasFactory;
 
+    protected $visible = [
+        'terrain',
+    ];
     const UPDATED_AT = null;
 
 }

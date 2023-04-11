@@ -10,4 +10,8 @@ class IslandLog extends Model
     use HasFactory;
 
     const UPDATED_AT = null;
+
+    protected $visible = [
+        'log',
+    ];
 }

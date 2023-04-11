@@ -15,7 +15,7 @@ class IndexController extends Controller
 
         return view('pages.index', [
             'islands' => $islands,
-            'turn' => Turn::getLatest()->toViewArray()
+            'turn' => Turn::getLatest(['turn', 'next_turn_scheduled_at']),
         ]);
     }
 }

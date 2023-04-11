@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class IslandPlan extends Model
 {
     use HasFactory;
+
+    protected $visible = [
+        'plan',
+    ];
 }

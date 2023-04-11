@@ -85,8 +85,6 @@ export default {
         }
     },
     mounted() {
-        // console.log(this.islandPlans)
-
         this.$store.state.plan = lodash.cloneDeep(this.islandPlans)
         this.$store.state.sentPlan = lodash.cloneDeep(this.islandPlans)
         this.$store.state.island = this.island

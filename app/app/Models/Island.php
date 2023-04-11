@@ -9,6 +9,12 @@ class Island extends Model
 {
     use HasFactory;
 
+    protected $visible = [
+        'id',
+        'name',
+        'owner_name',
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
