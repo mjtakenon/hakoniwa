@@ -120,6 +120,13 @@ class ExecuteTurn extends Command
                     $newLog->save();
                 }
             }
+
+            // 放棄された島はログに入れ、物理削除する
+            foreach($islands as $island) {
+                if (!is_null($island->deleted_at)) {
+                    $island->forceDelete();
+                }
+            }
         });
 
         \Log::info('end ' . $this->signature);

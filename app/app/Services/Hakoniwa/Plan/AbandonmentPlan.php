@@ -3,6 +3,7 @@
 namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
+use App\Models\IslandHistory;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
@@ -29,6 +30,10 @@ class AbandonmentPlan extends Plan
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
     {
+        $island->deleted_at = now();
+
+        IslandHistory::createFromIsland($island);
+
         return new PlanExecuteResult($terrain, $status, Logs::create(), true);
     }
 }
