@@ -106,9 +106,9 @@ class Status
         // 食料消費
         $this->foods -= $this->population * self::FOODS_CONSUMPTION_COEF;
 
-        $this->foods = round($this->foods, -1);
-        $this->funds = round($this->funds, -1);
-        $this->resources = round($this->resources, -1);
+        $this->foods = (int)round($this->foods);
+        $this->funds = (int)round($this->funds);
+        $this->resources = (int)round($this->resources);
 
         return $this;
     }

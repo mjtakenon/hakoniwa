@@ -3,6 +3,8 @@
 namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -25,8 +27,8 @@ class CashFlowPlan extends Plan
         $this->usePoint = self::USE_POINT;
     }
 
-    public function execute(Terrain $terrain, Status $status): PlanExecuteResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
     {
-        return new PlanExecuteResult($terrain, $status);
+        return new PlanExecuteResult($terrain, $status, Logs::create(), true);
     }
 }

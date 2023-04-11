@@ -7,7 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class ExecuteLog implements ILog
+class AbortLackOfFundsLog implements ILog
 {
     private Island $island;
     private Turn $turn;
@@ -32,9 +32,11 @@ class ExecuteLog implements ILog
         return json_encode([
             ['text' => 'ターン ' . $this->turn->id . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
-            ['text' => '(' . $this->point->x . ',' . $this->point->y . ') にて'],
+            ['text' => '(' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_PRIMARY ],
-            ['text' => 'が行われました。'],
+            ['text' => 'は、'],
+            ['text' => '資金不足', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
+            ['text' => 'により中止されました。'],
         ]);
     }
 }

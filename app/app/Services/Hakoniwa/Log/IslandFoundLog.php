@@ -25,7 +25,7 @@ class IslandFoundLog implements ILog
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->id . ' : '],
-            ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => 'font-weight: bold;' ],
+            ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD.StyleConst::COLOR_PRIMARY ],
             ['text' => 'が発見されました！'],
         ]);
     }

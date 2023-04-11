@@ -2,7 +2,10 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
+use App\Models\Island;
+use App\Models\Turn;
 use App\Services\Hakoniwa\JsonEncodable;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -83,22 +86,24 @@ class Plans implements JsonEncodable
         return $this->plans->shift();
     }
 
-    public function execute(Terrain $terrain, Status $status): PlanExecuteResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
     {
+        $logs = Logs::create();
         while (true) {
             /** @var Plan $plan */
             $plan = $this->shift();
             // TODO: 各コマンド実装
-            $planExecuteResult = $plan->execute($terrain, $status);
+            $planExecuteResult = $plan->execute($island, $terrain, $status, $turn);
 
             $terrain = $planExecuteResult->getTerrain();
             $status = $planExecuteResult->getStatus();
+            $logs->merge($planExecuteResult->getLogs());
 
             // 2回以上行動できる場合はループ
             if ($plan->isTurnSpending()) {
                 break;
             }
         }
-        return new PlanExecuteResult($terrain, $status);
+        return new PlanExecuteResult($terrain, $status, $logs, true);
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Models\Island;
+use App\Models\IslandLog;
 use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Console\Command;
@@ -70,9 +72,10 @@ class ExecuteTurn extends Command
 
                 // コマンド実行
                 $plans = Plans::fromJson($islandPlan->plan);
-                $planExecuteResult = $plans->execute($terrain, $status);
+                $planExecuteResult = $plans->execute($island, $terrain, $status, $turn);
                 $terrain = $planExecuteResult->getTerrain();
                 $status = $planExecuteResult->getStatus();
+                $logs = $planExecuteResult->getLogs();
 
                 // セル処理
                 $terrain->passTime($island, $status);
@@ -106,6 +109,15 @@ class ExecuteTurn extends Command
                 $newIslandTerrain->turn_id = $newTurn->id;
                 $newIslandTerrain->terrain = $terrain->toJson();
                 $newIslandTerrain->save();
+
+                /** @var ILog $log */
+                foreach ($logs->getLogs() as $log) {
+                    $newLog = new IslandLog();
+                    $newLog->island_id = $island->id;
+                    $newLog->turn_id = $newTurn->id;
+                    $newLog->log = $log->get();
+                    $newLog->save();
+                }
             }
         });
 
