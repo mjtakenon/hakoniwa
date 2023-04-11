@@ -29,7 +29,7 @@ class PlansController extends Controller
             abort(404);
         }
 
-        $turn = Turn::getLatest();
+        $turn = Turn::latest()->firstOrFail();
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 
@@ -87,7 +87,7 @@ class PlansController extends Controller
 
         $validated = $validator->safe()->collect();
 
-        $turn = Turn::getLatest();
+        $turn = Turn::latest()->firstOrFail();
 
         $plan = $validated->get('plan');
 

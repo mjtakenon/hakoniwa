@@ -15,7 +15,7 @@ class DetailController extends Controller
             abort(404);
         }
 
-        $turn = Turn::getLatest();
+        $turn = Turn::latest()->firstOrFail();
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 

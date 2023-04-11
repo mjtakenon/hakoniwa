@@ -39,7 +39,7 @@ class ExecuteTurn extends Command
         \Log::info('start ' . $this->signature);
 
         \DB::transaction(function() {
-            $turn = Turn::getLatest();
+            $turn = Turn::latest()->firstOrFail();
 
             // ターン更新
             $newTurn = new Turn();

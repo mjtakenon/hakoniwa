@@ -50,7 +50,7 @@ class IndexController extends Controller
             $island->owner_name = $validated->get('owner_name');
             $island->save();
 
-            $turn = Turn::getLatest();
+            $turn = Turn::latest()->firstOrFail();
 
             $terrain = Terrain::create()->init();
             $islandTerrain = new IslandTerrain();

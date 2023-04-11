@@ -19,9 +19,4 @@ class Turn extends Model
     ];
 
     const UPDATED_AT = null;
-
-    public static function getLatest($columns = ['*'])
-    {
-        return self::latest()->firstOrFail($columns);
-    }
 }

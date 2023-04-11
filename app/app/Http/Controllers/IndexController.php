@@ -10,12 +10,12 @@ class IndexController extends Controller
     public function get()
     {
         $islands = Island::with(['islandStatuses' => function ($query) {
-            $query->where('turn_id', Turn::getLatest()->id);
+            $query->where('turn_id', Turn::latest()->firstOrFail()->id);
         }])->whereNull('deleted_at')->get();
 
         return view('pages.index', [
             'islands' => $islands,
-            'turn' => Turn::getLatest(['turn', 'next_turn_scheduled_at']),
+            'turn' => Turn::latest()->first(),
         ]);
     }
 }
