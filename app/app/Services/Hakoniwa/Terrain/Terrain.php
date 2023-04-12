@@ -8,6 +8,7 @@ use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\Plain;
@@ -226,9 +227,9 @@ class Terrain implements JsonEncodable
         return $this;
     }
 
-    public function getAroundCells(Point $point): array
+    public function getAroundCells(Point $point): Collection
     {
-        $cells = [];
+        $cells = new Collection();
         if ($point->x >= 1) {
             $cells[] = $this->terrain[$point->y][$point->x-1];
         }
@@ -265,5 +266,58 @@ class Terrain implements JsonEncodable
             }
         }
         return $cells;
+    }
+
+    public function checkIsLake()
+    {
+
+
+        $candidates = new Collection();
+        $checked = new Collection();
+        $sea = new Collection();
+
+        /** @var Cell $cell */
+        foreach ($this->terrain->flatten(1) as $cell) {
+            if ($cell::TYPE === Lake::TYPE) {
+                $this->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
+            }
+
+            if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+                $checked->push($cell->getPoint()->toString());
+            } else {
+                if ($cell->getPoint()->x === 0 || $cell->getPoint()->x === \HakoniwaService::getMaxWidth()-1 ||
+                    $cell->getPoint()->y === 0 || $cell->getPoint()->y === \HakoniwaService::getMaxHeight()-1) {
+                    $sea->push($cell->getPoint());
+                } else {
+                    $candidates->push($cell->getPoint());
+                }
+            }
+        }
+
+        while ($sea->isNotEmpty()) {
+            /** @var Point $point */
+            $point = $sea->pop();
+            $checked->push($point->toString());
+            $cells = $this->getAroundCells($point);
+            foreach($cells as $cell) {
+                if (in_array($cell->getPoint()->toString(), $checked->toArray(),true)) {
+                    continue;
+                }
+                if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+                    $checked->push($cell->getPoint()->toString());
+                    continue;
+                }
+                $sea->push($cell->getPoint());
+
+                $candidates = $candidates->reject(function($point) use ($cell){
+                    return $cell->getPoint()->x === $point->x && $cell->getPoint()->y === $point->y;
+                });
+            }
+        }
+
+        /** @var Point $candidate */
+        foreach ($candidates as $candidate) {
+            $this->setCell($candidate, new Lake(point: $candidate));
+        }
     }
 }

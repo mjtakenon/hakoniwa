@@ -83,6 +83,8 @@ class ExecuteTurn extends Command
 
                 // 災害
 
+                // 湖判定
+                $terrain->checkIsLake();
                 // 再集計
                 $status->aggregate($terrain);
 

@@ -15,6 +15,7 @@ class CellTypeConst
         Plain::TYPE => Plain::class,
         Sea::TYPE => Sea::class,
         Shallow::TYPE => Shallow::class,
+        Lake::TYPE => Lake::class,
         Town::TYPE => Town::class,
         Village::TYPE => Village::class,
         Wasteland::TYPE => Wasteland::class,

@@ -6,6 +6,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
@@ -44,12 +45,12 @@ class LandfillPlan extends Plan
             return new PlanExecuteResult($terrain, $status, $logs, false);
         }
 
-        if (!in_array($cell::TYPE, [Shallow::TYPE, Sea::TYPE], true)) {
+        if (!in_array($cell::TYPE, [Shallow::TYPE, Sea::TYPE, Lake::TYPE], true)) {
             $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
             return new PlanExecuteResult($terrain, $status, $logs, false);
         }
 
-        if ($cell::TYPE === Shallow::TYPE) {
+        if (in_array($cell::TYPE, [Shallow::TYPE, Lake::TYPE], true)) {
             $terrain->setCell($this->point, new Wasteland(point: $this->point));
 
             // 周囲が3セル以上陸地だった場合、周囲の海は浅瀬になる
