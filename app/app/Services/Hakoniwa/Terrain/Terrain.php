@@ -225,4 +225,45 @@ class Terrain implements JsonEncodable
 
         return $this;
     }
+
+    public function getAroundCells(Point $point): array
+    {
+        $cells = [];
+        if ($point->x >= 1) {
+            $cells[] = $this->terrain[$point->y][$point->x-1];
+        }
+        if ($point->x <= \HakoniwaService::getMaxWidth()-2) {
+            $cells[] = $this->terrain[$point->y][$point->x+1];
+        }
+        if ($point->y >= 1) {
+            $cells[] = $this->terrain[$point->y-1][$point->x];
+        }
+        if ($point->y <= \HakoniwaService::getMaxHeight()-2) {
+            $cells[] = $this->terrain[$point->y+1][$point->x];
+        }
+
+        // yが偶数 => (+1:-1), (+1:+1)
+        if ($point->y % 2 === 0) {
+            //
+            if ($point->x <= \HakoniwaService::getMaxWidth()-2) {
+                if ($point->y >= 1) {
+                    $cells[] = $this->terrain[$point->y-1][$point->x+1];
+                }
+                if ($point->y <= \HakoniwaService::getMaxHeight()-2) {
+                    $cells[] = $this->terrain[$point->y+1][$point->x+1];
+                }
+            }
+        } else {
+            // yが偶数 => (-1:-1), (-1:+1)
+            if ($point->x >= 1) {
+                if ($point->y >= 1) {
+                    $cells[] = $this->terrain[$point->y-1][$point->x-1];
+                }
+                if ($point->y <= \HakoniwaService::getMaxHeight()-2) {
+                    $cells[] = $this->terrain[$point->y+1][$point->x-1];
+                }
+            }
+        }
+        return $cells;
+    }
 }

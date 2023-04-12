@@ -4,6 +4,9 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
@@ -48,6 +51,23 @@ class LandfillPlan extends Plan
 
         if ($cell::TYPE === Shallow::TYPE) {
             $terrain->setCell($this->point, new Wasteland(point: $this->point));
+
+            // 周囲が3セル以上陸地だった場合、周囲の海は浅瀬になる
+            $cells = $terrain->getAroundCells($this->point);
+            $aroundGroundCount = 0;
+            /** @var Cell $c */
+            foreach ($cells as $c) {
+                if ($c::ATTRIBUTE[CellTypeConst::IS_LAND]){
+                    $aroundGroundCount += 1;
+                }
+            }
+            if ($aroundGroundCount >= 3) {
+                foreach ($cells as $c) {
+                    if ($c::TYPE === Sea::TYPE){
+                        $terrain->setCell($c->getPoint(), new Shallow(point: $c->getPoint()));
+                    }
+                }
+            }
         } else {
             $terrain->setCell($this->point, new Shallow(point: $this->point));
         }
