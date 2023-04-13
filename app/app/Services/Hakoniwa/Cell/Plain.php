@@ -6,9 +6,9 @@ use App\Services\Hakoniwa\Util\Point;
 
 class Plain extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land2.gif';
-    const TYPE = 'plain';
-    const NAME = '平地';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land2.gif';
+    public const TYPE = 'plain';
+    public const NAME = '平地';
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => false,

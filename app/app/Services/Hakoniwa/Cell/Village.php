@@ -2,13 +2,18 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Models\Island;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
-class Village extends Cell
+class Village extends City
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land3.gif';
-    const TYPE = 'village';
-    const NAME = '村';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land3.gif';
+    public const TYPE = 'village';
+    public const NAME = '村';
+    public const MIN_POPULATION = 100;
+    public const MAX_POPULATION = 3000;
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => true,
@@ -26,7 +31,12 @@ class Village extends Cell
         parent::__construct(...$data);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
-        $this->population = $data['population'];
+
+        if (array_key_exists('population', $data)) {
+            $this->population = $data['population'];
+        } else {
+            $this->population = self::MIN_POPULATION;
+        }
     }
 
     public function toArray(): array
@@ -47,5 +57,10 @@ class Village extends Cell
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
             '人口 ' . $this->population . '人';
+    }
+
+    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    {
+        $this->incrementPopulation($terrain);
     }
 }

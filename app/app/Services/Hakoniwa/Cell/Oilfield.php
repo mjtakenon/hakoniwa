@@ -6,9 +6,9 @@ use App\Services\Hakoniwa\Util\Point;
 
 class Oilfield extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land16.gif';
-    const TYPE = 'oilfield';
-    const NAME = '油田';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land16.gif';
+    public const TYPE = 'oilfield';
+    public const NAME = '油田';
     const PRODUCTION_NUMBER_OF_PEOPLE = 20000;
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,

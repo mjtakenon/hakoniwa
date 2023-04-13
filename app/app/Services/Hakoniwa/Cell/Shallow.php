@@ -6,9 +6,9 @@ use App\Services\Hakoniwa\Util\Point;
 
 class Shallow extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
-    const TYPE = 'shallow';
-    const NAME = '浅瀬';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
+    public const TYPE = 'shallow';
+    public const NAME = '浅瀬';
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::HAS_POPULATION => false,

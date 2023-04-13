@@ -6,9 +6,9 @@ use App\Services\Hakoniwa\Util\Point;
 
 class Mine extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land15.gif';
-    const TYPE = 'mine';
-    const NAME = '採掘場';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land15.gif';
+    public const TYPE = 'mine';
+    public const NAME = '採掘場';
     const PRODUCTION_NUMBER_OF_PEOPLE = 50000;
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,

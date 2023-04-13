@@ -6,9 +6,9 @@ use App\Services\Hakoniwa\Util\Point;
 
 class Lake extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
-    const TYPE = 'lake';
-    const NAME = '湖';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
+    public const TYPE = 'lake';
+    public const NAME = '湖';
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::HAS_POPULATION => false,

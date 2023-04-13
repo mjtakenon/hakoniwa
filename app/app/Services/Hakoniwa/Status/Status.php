@@ -8,25 +8,25 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 
 class Status
 {
-    const INITIAL_DEVELOPMENT_POINTS = 0;
-    const INITIAL_FUNDS = 3000;
-    const INITIAL_FOODS = 100000;
-    const INITIAL_RESOURCES = 0;
+    private const INITIAL_DEVELOPMENT_POINTS = 0;
+    private const INITIAL_FUNDS = 3000;
+    private const INITIAL_FOODS = 100000;
+    private const INITIAL_RESOURCES = 0;
 
-    const ENVIRONMENT_NORMAL = 'normal';
-    const ENVIRONMENT_GOOD = 'good';
-    const ENVIRONMENT_BEST = 'best';
-    const ENVIRONMENT = [
+    public const ENVIRONMENT_NORMAL = 'normal';
+    public const ENVIRONMENT_GOOD = 'good';
+    public const ENVIRONMENT_BEST = 'best';
+    public const ENVIRONMENT = [
         self::ENVIRONMENT_BEST => '最高',
         self::ENVIRONMENT_GOOD => '良好',
         self::ENVIRONMENT_NORMAL => '通常',
     ];
 
-    const FOODS_PRODUCTION_COEF = 0.6;
-    const FOODS_CONSUMPTION_COEF = 0.1;
-    const RESOURCES_PRODUCTION_COEF = 0.02;
-    const RESOURCES_CONSUMPTION_COEF = 0.02;
-    const FUNDS_PRODUCTION_COEF = 0.002;
+    private const FOODS_PRODUCTION_COEF = 0.6;
+    private const FOODS_CONSUMPTION_COEF = 0.1;
+    private const RESOURCES_PRODUCTION_COEF = 0.02;
+    private const RESOURCES_CONSUMPTION_COEF = 0.02;
+    private const FUNDS_PRODUCTION_COEF = 0.002;
 
 
     private int $developmentPoints;
@@ -220,6 +220,7 @@ class Status
 
     private function sumDevelopmentPoints(Terrain $terrain): int
     {
+        // TODO: 公園
         return (int)round($this->population/200);
     }
 }

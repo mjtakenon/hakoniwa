@@ -12,15 +12,15 @@ setup:
 	make init-db-testing
 	make migrate
 	make migrate-testing
-	make db-seed
-	make db-seed-testing
+	make seeding
+	make seeding-testing
 	make ide-helper-generate
 	make yarn-install
 	make yarn-run-dev
 start:
 	make up
 	make migrate
-	make db-seed
+	make seeding
 	make yarn-install
 	make yarn-run-dev
 logs:
@@ -34,9 +34,9 @@ migrate:
 	docker compose exec --user debian app php artisan migrate
 migrate-testing:
 	docker compose exec --user debian app php artisan migrate --env=testing
-db-seed:
+seeding:
 	docker compose exec --user debian app php artisan db:seed
-db-seed-testing:
+seeding-testing:
 	docker compose exec --user debian app php artisan db:seed --env=testing
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
@@ -72,5 +72,5 @@ yarn-run-dev:
 
 testing:
 	make migrate-testing
-	make db-seed-testing
+	make seeding-testing
 	docker compose exec app /app/vendor/phpunit/phpunit/phpunit /app/tests/

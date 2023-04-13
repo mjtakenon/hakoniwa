@@ -2,14 +2,18 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Models\Island;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
 class Factory extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
-    const TYPE = 'factory';
-    const NAME = '工場';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
+    public const TYPE = 'factory';
+    public const NAME = '工場';
     const PRODUCTION_NUMBER_OF_PEOPLE = 20000;
+    const SEASIDE_PRODUCTION_NUMBER_OF_PEOPLE = 30000;
 
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
@@ -23,12 +27,30 @@ class Factory extends Cell
         CellTypeConst::PREVENTING_FIRE => false,
     ];
 
+    public function toArray(): array
+    {
+        return [
+            'type' => $this->type,
+            'data' => [
+                'point' => $this->point,
+                'image_path' => $this->imagePath,
+                'info' => $this->getInfoString(),
+                'fundsProductionNumberOfPeople' => $this->fundsProductionNumberOfPeople,
+            ]
+        ];
+    }
+
     public function __construct(...$data)
     {
         parent::__construct(...$data);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
-        $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+
+        if (array_key_exists('fundsProductionNumberOfPeople', $data)) {
+            $this->fundsProductionNumberOfPeople = $data['fundsProductionNumberOfPeople'];
+        } else {
+            $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+        }
     }
 
     public function getInfoString(): string
@@ -36,5 +58,16 @@ class Factory extends Cell
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
             $this->fundsProductionNumberOfPeople . '人規模';
+    }
+
+    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    {
+        $cells = $terrain->getAroundCells($this->point);
+        $seasideCells = $cells->reject(function ($cell) { return $cell::ATTRIBUTE[CellTypeConst::IS_LAND]; });
+        if ($seasideCells->count() >= 1) {
+            $this->fundsProductionNumberOfPeople = self::SEASIDE_PRODUCTION_NUMBER_OF_PEOPLE;
+        } else {
+            $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+        }
     }
 }

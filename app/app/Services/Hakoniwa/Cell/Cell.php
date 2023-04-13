@@ -10,19 +10,20 @@ use App\Services\Hakoniwa\Util\Point;
 
 abstract class Cell
 {
-    const IMAGE_PATH = '';
-    const TYPE = '';
-    const NAME = '';
+    public const IMAGE_PATH = '';
+    public const TYPE = '';
+    public const NAME = '';
 
-    protected ?string $imagePath;
+    protected ?string $imagePath = null;
     protected ?string $type;
     protected Point $point;
 
-    protected int $population;
-    protected int $fundsProductionNumberOfPeople;
-    protected int $foodsProductionNumberOfPeople;
-    protected int $resourcesProductionNumberOfPeople;
-    protected int $maintenanceNumberOfPeople;
+    protected int $population = 0;
+    protected int $fundsProductionNumberOfPeople = 0;
+    protected int $foodsProductionNumberOfPeople = 0;
+    protected int $resourcesProductionNumberOfPeople = 0;
+    protected int $maintenanceNumberOfPeople = 0;
+    protected int $woods = 0;
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::HAS_POPULATION => false,
@@ -38,12 +39,6 @@ abstract class Cell
     public function __construct(...$data)
     {
         $this->point = new Point($data['point']->x, $data['point']->y);
-        $this->imagePath = null;
-        $this->population = 0;
-        $this->fundsProductionNumberOfPeople = 0;
-        $this->foodsProductionNumberOfPeople = 0;
-        $this->resourcesProductionNumberOfPeople = 0;
-        $this->maintenanceNumberOfPeople = 0;
     }
 
     public static function create($data)
@@ -100,6 +95,11 @@ abstract class Cell
     public function getResourcesProductionNumberOfPeople(): int
     {
         return $this->resourcesProductionNumberOfPeople;
+    }
+
+    public function getWoods(): int
+    {
+        return $this->woods;
     }
 
     /**

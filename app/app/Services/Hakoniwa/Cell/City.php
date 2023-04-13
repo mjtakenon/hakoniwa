@@ -2,13 +2,20 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Models\Island;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
 class City extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land4.gif';
-    const TYPE = 'city';
-    const NAME = '都市';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land4.gif';
+    public const TYPE = 'city';
+    public const NAME = '都市';
+
+    public const MIN_POPULATION = 10000;
+    public const MAX_POPULATION = 20000;
+
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => true,
@@ -26,7 +33,12 @@ class City extends Cell
         parent::__construct(...$data);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
-        $this->population = $data['population'];
+
+        if (array_key_exists('population', $data)) {
+            $this->population = $data['population'];
+        } else {
+            $this->population = self::MIN_POPULATION;
+        }
     }
 
     public function toArray(): array
@@ -47,5 +59,41 @@ class City extends Cell
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
             '人口 ' . $this->population . '人';
+    }
+
+    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    {
+        $this->incrementPopulation($terrain);
+    }
+
+    protected function incrementPopulation(Terrain $terrain)
+    {
+        if ($this->population < City::MIN_POPULATION) {
+            $this->population += random_int(1,3) * 100;
+
+            if ($this->population >= City::MIN_POPULATION) {
+                $this->population = City::MIN_POPULATION;
+            }
+        }
+
+        if ($this->population < Village::MIN_POPULATION) {
+            $terrain->setCell($this->point, new Plain(point: $this->point));
+            return;
+        }
+
+        if ($this->population < Village::MAX_POPULATION) {
+            $terrain->setCell($this->point, new Village(point: $this->point, population: $this->population));
+            return;
+        }
+
+        if ($this->population >= Town::MIN_POPULATION) {
+            $terrain->setCell($this->point, new Town(point: $this->point, population: $this->population));
+            return;
+        }
+
+        if ($this->population >= City::MIN_POPULATION) {
+            $terrain->setCell($this->point, new Town(point: $this->point, population: $this->population));
+            return;
+        }
     }
 }

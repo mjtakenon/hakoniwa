@@ -6,9 +6,9 @@ use App\Services\Hakoniwa\Util\Point;
 
 class Wasteland extends Cell
 {
-    const IMAGE_PATH = '/img/hakoniwa/hakogif/land1.gif';
-    const TYPE = 'wasteland';
-    const NAME = '荒地';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land1.gif';
+    public const TYPE = 'wasteland';
+    public const NAME = '荒地';
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => false,
