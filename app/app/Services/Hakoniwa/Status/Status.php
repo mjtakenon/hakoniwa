@@ -115,6 +115,8 @@ class Status
         $this->funds = (int)round($this->funds);
         $this->resources = (int)round($this->resources);
 
+        $this->developmentPoints = $this->sumDevelopmentPoints($terrain);
+
         return $this;
     }
 
@@ -214,5 +216,10 @@ class Status
     public function getArea(): int
     {
         return $this->area;
+    }
+
+    private function sumDevelopmentPoints(Terrain $terrain): int
+    {
+        return (int)round($this->population/200);
     }
 }
