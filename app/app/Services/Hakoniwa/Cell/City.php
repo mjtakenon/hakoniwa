@@ -9,7 +9,7 @@ use App\Services\Hakoniwa\Util\Point;
 
 class City extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land4.gif';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land5.gif';
     public const TYPE = 'city';
     public const NAME = '都市';
 
@@ -76,13 +76,8 @@ class City extends Cell
             }
         }
 
-        if ($this->population < Village::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Plain(point: $this->point));
-            return;
-        }
-
-        if ($this->population < Village::MAX_POPULATION) {
-            $terrain->setCell($this->point, new Village(point: $this->point, population: $this->population));
+        if ($this->population >= City::MIN_POPULATION) {
+            $terrain->setCell($this->point, new City(point: $this->point, population: $this->population));
             return;
         }
 
@@ -91,9 +86,11 @@ class City extends Cell
             return;
         }
 
-        if ($this->population >= City::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Town(point: $this->point, population: $this->population));
+        if ($this->population >= Village::MIN_POPULATION) {
+            $terrain->setCell($this->point, new Village(point: $this->point, population: $this->population));
             return;
         }
+
+        $terrain->setCell($this->point, new Plain(point: $this->point));
     }
 }

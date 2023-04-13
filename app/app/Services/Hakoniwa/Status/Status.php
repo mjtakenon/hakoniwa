@@ -11,7 +11,7 @@ class Status
     private const INITIAL_DEVELOPMENT_POINTS = 0;
     private const INITIAL_FUNDS = 3000;
     private const INITIAL_FOODS = 100000;
-    private const INITIAL_RESOURCES = 0;
+    private const INITIAL_RESOURCES = 50000;
 
     public const ENVIRONMENT_NORMAL = 'normal';
     public const ENVIRONMENT_GOOD = 'good';
@@ -115,7 +115,7 @@ class Status
         $this->funds = (int)round($this->funds);
         $this->resources = (int)round($this->resources);
 
-        $this->developmentPoints = $this->sumDevelopmentPoints($terrain);
+        $this->developmentPoints += $this->sumDevelopmentPoints($terrain);
 
         return $this;
     }
