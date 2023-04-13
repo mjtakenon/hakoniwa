@@ -270,11 +270,8 @@ class Terrain implements JsonEncodable
 
     public function checkIsLake()
     {
-
-
-        $candidates = new Collection();
-        $checked = new Collection();
-        $sea = new Collection();
+        $isChecked = new Collection();
+        $lakeCandidate = new Collection();
 
         /** @var Cell $cell */
         foreach ($this->terrain->flatten(1) as $cell) {
@@ -283,41 +280,42 @@ class Terrain implements JsonEncodable
             }
 
             if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
-                $checked->push($cell->getPoint()->toString());
+                $isChecked[$cell->getPoint()->toString()] = true;
+                continue;
+            }
+
+            if ($cell->getPoint()->x === 0 || $cell->getPoint()->x === \HakoniwaService::getMaxWidth()-1 ||
+                $cell->getPoint()->y === 0 || $cell->getPoint()->y === \HakoniwaService::getMaxHeight()-1) {
+                $isChecked[$cell->getPoint()->toString()] = true;
+                $lakeCandidate->push($cell->getPoint());
             } else {
-                if ($cell->getPoint()->x === 0 || $cell->getPoint()->x === \HakoniwaService::getMaxWidth()-1 ||
-                    $cell->getPoint()->y === 0 || $cell->getPoint()->y === \HakoniwaService::getMaxHeight()-1) {
-                    $sea->push($cell->getPoint());
-                } else {
-                    $candidates->push($cell->getPoint());
-                }
+                $isChecked[$cell->getPoint()->toString()] = false;
             }
         }
 
-        while ($sea->isNotEmpty()) {
+        while ($lakeCandidate->isNotEmpty()) {
             /** @var Point $point */
-            $point = $sea->pop();
-            $checked->push($point->toString());
+            $point = $lakeCandidate->pop();
+            $isChecked[$point->toString()] = true;
             $cells = $this->getAroundCells($point);
             foreach($cells as $cell) {
-                if (in_array($cell->getPoint()->toString(), $checked->toArray(),true)) {
+                // 走査済み
+                if ($isChecked[$cell->getPoint()->toString()]) {
                     continue;
                 }
-                if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
-                    $checked->push($cell->getPoint()->toString());
-                    continue;
-                }
-                $sea->push($cell->getPoint());
-
-                $candidates = $candidates->reject(function($point) use ($cell){
-                    return $cell->getPoint()->x === $point->x && $cell->getPoint()->y === $point->y;
-                });
+                // 未走査
+                $lakeCandidate->push($cell->getPoint());
+                $isChecked[$cell->getPoint()->toString()] = true;
             }
         }
 
-        /** @var Point $candidate */
-        foreach ($candidates as $candidate) {
-            $this->setCell($candidate, new Lake(point: $candidate));
-        }
+        $isLake = $isChecked->reject(function($val) {
+            return $val;
+        });
+
+        $isLake->each(function ($val, $key) {
+            $point = Point::fromString($key);
+            $this->setCell($point, new Lake(point: $point));
+        });
     }
 }
