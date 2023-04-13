@@ -36,7 +36,7 @@ class AbortInvalidCellLog implements ILog
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => '(' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
-            ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_PRIMARY ],
+            ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_LINK ],
             ['text' => 'は、予定地が'],
             ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ],
             ['text' => 'だったため'],

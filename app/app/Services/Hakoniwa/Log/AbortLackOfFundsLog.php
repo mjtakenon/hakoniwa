@@ -33,7 +33,7 @@ class AbortLackOfFundsLog implements ILog
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => '(' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
-            ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_PRIMARY ],
+            ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_LINK ],
             ['text' => 'は、'],
             ['text' => '資金不足', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
             ['text' => 'により中止されました。'],

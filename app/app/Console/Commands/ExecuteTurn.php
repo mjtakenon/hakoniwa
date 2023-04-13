@@ -9,6 +9,7 @@ use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\ILog;
+use App\Services\Hakoniwa\Log\SummaryLog;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Console\Command;
@@ -66,6 +67,7 @@ class ExecuteTurn extends Command
                 $islandTerrain = $island->islandTerrains->firstOrFail();
                 $islandStatus = $island->islandStatuses->firstOrFail();
                 $terrain = Terrain::fromJson($islandTerrain->terrain);
+                $prevStatus = $islandStatus->toStatus();
                 $status = $islandStatus->toStatus();
 
                 // 生産・消費処理
@@ -87,6 +89,9 @@ class ExecuteTurn extends Command
                 $terrain->checkIsLake();
                 // 再集計
                 $status->aggregate($terrain);
+
+                // 集計ログ
+                $logs->add(new SummaryLog($status, $prevStatus, $turn));
 
                 // 結果保存
                 $newIslandStatus = new IslandStatus();
