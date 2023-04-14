@@ -20,13 +20,15 @@ class Forest extends Cell
         CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
+        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => true,
         CellTypeConst::PREVENTING_TYPHOON => true,
+        CellTypeConst::PREVENTING_TSUNAMI => true,
+
     ];
 
     public function __construct(...$data)

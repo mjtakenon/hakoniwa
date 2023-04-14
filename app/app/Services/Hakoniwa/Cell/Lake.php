@@ -20,6 +20,7 @@ class Lake extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellTypeConst::PREVENTING_FIRE => false,
         CellTypeConst::PREVENTING_TYPHOON => false,
+        CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
     public const ELEVATION = -1;
 

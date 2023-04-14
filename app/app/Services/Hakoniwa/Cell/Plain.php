@@ -31,6 +31,7 @@ class Plain extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => false,
         CellTypeConst::PREVENTING_TYPHOON => false,
+        CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
     public function __construct(...$data)
