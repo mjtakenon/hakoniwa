@@ -20,8 +20,7 @@ use App\Services\Hakoniwa\Util\Rand;
 
 class Typhoon implements IDisaster
 {
-//    private const OCCUR_PROBABILITY = 0.02;
-    private const OCCUR_PROBABILITY = 0.5;
+    private const OCCUR_PROBABILITY = 0.02;
     private const DESTRUCTION_PROBABILITIES_PER_PREVENT_CELLS = [
         0 => 0.5,
         1 => 0.3,
