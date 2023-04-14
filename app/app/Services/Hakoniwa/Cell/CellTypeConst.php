@@ -30,6 +30,7 @@ class CellTypeConst
     const DESTRUCTIBLE_BY_METEORITE = 'destructible_by_meteorite';
     const DESTRUCTIBLE_BY_MONSTER = 'destructible_by_monster';
     const PREVENTING_FIRE = 'preventing_fire';
+    const PREVENTING_TYPHOON = 'preventing_typhoon';
 
     static public function getClassByType(string $type): string
     {

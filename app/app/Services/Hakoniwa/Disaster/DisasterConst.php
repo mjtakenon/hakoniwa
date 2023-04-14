@@ -9,6 +9,7 @@ class DisasterConst
         Earthquake::class,
         Tsunami::class,
         VolcanicEruption::class,
+        Typhoon::class,
         Meteorite::class,
         HugeMeteorite::class,
     ];

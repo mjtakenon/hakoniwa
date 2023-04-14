@@ -24,6 +24,7 @@ class Village extends City
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => false,
+        CellTypeConst::PREVENTING_TYPHOON => false,
     ];
 
     public function __construct(...$data)

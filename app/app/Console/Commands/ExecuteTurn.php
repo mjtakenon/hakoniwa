@@ -87,6 +87,7 @@ class ExecuteTurn extends Command
                 $logs->merge($occurDisasterResult->getLogs());
 
                 // セル処理
+                // FIXME: 本来災害はセル処理の後だが、隕石→湖判定の順番を考慮し逆にしている
                 $terrain->passTime($island, $status);
 
                 // 湖判定

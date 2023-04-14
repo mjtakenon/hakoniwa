@@ -30,6 +30,7 @@ class Plain extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => false,
+        CellTypeConst::PREVENTING_TYPHOON => false,
     ];
 
     public function __construct(...$data)
@@ -48,7 +49,7 @@ class Plain extends Cell
     public function passTime(Island $island, Terrain $terrain, Status $status): void
     {
         $cells = $terrain->getAroundCells($this->point);
-        $immigrableCells = $cells->filter(function ($cell) { return in_array($cell::TYPE, self::IMMIGRABLE_TYPE); });
+        $immigrableCells = $cells->filter(function ($cell) { return in_array($cell::TYPE, self::IMMIGRABLE_TYPE, true); });
         if ($immigrableCells->count() * self::IMMIGRATE_COEF * 100 >= rand(0, 100)) {
             $terrain->setCell($this->point, new Village(point:$this->point));
         }

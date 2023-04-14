@@ -10,7 +10,7 @@ class Lake extends Cell
     public const TYPE = 'lake';
     public const NAME = '湖';
     const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => false,
+        CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
@@ -19,6 +19,7 @@ class Lake extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellTypeConst::PREVENTING_FIRE => false,
+        CellTypeConst::PREVENTING_TYPHOON => false,
     ];
     public const ELEVATION = -1;
 

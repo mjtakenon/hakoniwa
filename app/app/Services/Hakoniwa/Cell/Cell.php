@@ -34,6 +34,7 @@ abstract class Cell implements ICell
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => false,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellTypeConst::PREVENTING_FIRE => false,
+        CellTypeConst::PREVENTING_TYPHOON => false,
     ];
 
     public const ELEVATION = 0;

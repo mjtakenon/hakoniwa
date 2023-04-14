@@ -282,8 +282,7 @@ class Terrain implements JsonEncodable
             if ($cell::TYPE === Lake::TYPE) {
                 $this->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
             }
-
-            if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+            else if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
                 $isChecked[$cell->getPoint()->toString()] = true;
                 continue;
             }
