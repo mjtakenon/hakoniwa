@@ -81,16 +81,17 @@ class ExecuteTurn extends Command
                 $status = $executePlanResult->getStatus();
                 $logs = $executePlanResult->getLogs();
 
-                // セル処理
-                $terrain->passTime($island, $status);
-
                 // 災害
                 $occurDisasterResult = $terrain->occurDisaster($island, $status, $turn);
                 $status = $occurDisasterResult->getStatus();
                 $logs->merge($occurDisasterResult->getLogs());
 
+                // セル処理
+                $terrain->passTime($island, $status);
+
                 // 湖判定
                 $terrain->checkIsLake();
+
                 // 再集計
                 $status->aggregate($terrain);
 

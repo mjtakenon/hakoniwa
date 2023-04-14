@@ -15,7 +15,7 @@ use App\Services\Hakoniwa\Util\Rand;
 
 class Fire implements IDisaster
 {
-    const OCCUR_PROBABILITY = 0.5;
+    const OCCUR_PROBABILITY = 0.01;
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
@@ -28,7 +28,7 @@ class Fire implements IDisaster
 
         foreach ($candidates as $cell) {
 
-            if (self::OCCUR_PROBABILITY < Rand::mt_rand_float()) {
+            if (self::OCCUR_PROBABILITY <= Rand::mt_rand_float()) {
                 continue;
             }
 

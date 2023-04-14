@@ -8,7 +8,7 @@ use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\DestructionByEarthquakeLog;
-use App\Services\Hakoniwa\Log\EarthquakeLog;
+use App\Services\Hakoniwa\Log\OccurEarthquakeLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -23,7 +23,7 @@ class Earthquake implements IDisaster
     {
         $logs = Logs::create();
 
-        if (self::OCCUR_PROBABILITY < Rand::mt_rand_float()) {
+        if (self::OCCUR_PROBABILITY <= Rand::mt_rand_float()) {
             return new DisasterResult($terrain, $status, $logs);
         }
 
@@ -33,14 +33,14 @@ class Earthquake implements IDisaster
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {
-            if (self::DESTRUCTION_PROBABILITY < Rand::mt_rand_float()) {
+            if (self::DESTRUCTION_PROBABILITY <= Rand::mt_rand_float()) {
                 continue;
             }
             $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             $logs->add(new DestructionByEarthquakeLog($island, $turn, $cell));
         }
 
-        $logs->add(new EarthquakeLog($island, $turn));
+        $logs->add(new OccurEarthquakeLog($island, $turn));
 
         return new DisasterResult($terrain, $status, $logs);
     }

@@ -16,10 +16,11 @@ class Lake extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => false,
+        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellTypeConst::PREVENTING_FIRE => false,
     ];
+    public const ELEVATION = -1;
 
     public function __construct(...$data)
     {

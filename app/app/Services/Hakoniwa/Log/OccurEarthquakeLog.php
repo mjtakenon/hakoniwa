@@ -7,7 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class EarthquakeLog implements ILog
+class OccurEarthquakeLog implements ILog
 {
     private Island $island;
     private Turn $turn;
@@ -30,7 +30,7 @@ class EarthquakeLog implements ILog
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'にて大規模な'],
             ['text' => '地震' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
-            ['text' => '発生！'],
+            ['text' => 'が発生！'],
         ]);
     }
 }

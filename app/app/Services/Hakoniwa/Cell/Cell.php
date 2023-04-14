@@ -24,7 +24,7 @@ abstract class Cell implements ICell
     protected int $resourcesProductionNumberOfPeople = 0;
     protected int $maintenanceNumberOfPeople = 0;
     protected int $woods = 0;
-    const ATTRIBUTE = [
+    public const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
@@ -35,6 +35,8 @@ abstract class Cell implements ICell
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellTypeConst::PREVENTING_FIRE => false,
     ];
+
+    public const ELEVATION = 0;
 
     public function __construct(...$data)
     {

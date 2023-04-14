@@ -8,7 +8,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-class HugeMeteor implements IDisaster
+class HugeMeteorite implements IDisaster
 {
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {

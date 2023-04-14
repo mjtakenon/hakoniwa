@@ -21,6 +21,7 @@ class Oilfield extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => false,
     ];
+    public const ELEVATION = -1;
 
     public function __construct(...$data)
     {
