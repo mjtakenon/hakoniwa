@@ -52,7 +52,7 @@ class Plain extends Cell
     {
         $cells = $terrain->getAroundCells($this->point);
         $immigrableCells = $cells->filter(function ($cell) { return in_array($cell::TYPE, self::IMMIGRABLE_TYPE, true); });
-        if ($immigrableCells->count() * self::IMMIGRATE_COEF * 100 >= rand(0, 100)) {
+        if ($immigrableCells->count() * self::IMMIGRATE_COEF * 100 >= mt_rand(0, 100)) {
             $terrain->setCell($this->point, new Village(point:$this->point));
         }
     }

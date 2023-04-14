@@ -30,15 +30,15 @@ class HugeMeteorite implements IDisaster
 
         $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth() - 1), mt_rand(0, \HakoniwaService::getMaxHeight() - 1));
 
-        $aroundCells1 = $terrain->getAroundCells($point);
-        $aroundCells2 = $terrain->getAroundCells($point, 2);
+        $around1HexCells = $terrain->getAroundCells($point);
+        $around2HexCells = $terrain->getAroundCells($point, 2);
 
         $terrain->setCell($point, new Sea(point: $point));
 
         // 周囲1hex
         /** @var Cell $cell */
-        foreach ($aroundCells1 as $cell) {
-            $aroundCells2 = $aroundCells2->reject(function ($c) use ($cell) {
+        foreach ($around1HexCells as $cell) {
+            $around2HexCells = $around2HexCells->reject(function ($c) use ($cell) {
                 return $c->getPoint()->toString() === $cell->getPoint()->toString();
             });
 
@@ -56,7 +56,7 @@ class HugeMeteorite implements IDisaster
         }
 
         // 周囲2hex
-        foreach ($aroundCells2 as $cell) {
+        foreach ($around2HexCells as $cell) {
             if ($cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_HUGE_METEORITE]) {
                 $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 2));
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
