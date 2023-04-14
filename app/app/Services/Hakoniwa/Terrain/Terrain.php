@@ -231,7 +231,7 @@ class Terrain implements JsonEncodable
         return $this;
     }
 
-    public function getAroundCells(Point $point): Collection
+    public function getAroundCells(Point $point, int $range = 1): Collection
     {
         $cells = new Collection();
         if ($point->x >= 1) {
@@ -269,6 +269,23 @@ class Terrain implements JsonEncodable
                 }
             }
         }
+
+        if ($range === 1) {
+            return $cells;
+        }
+
+        for ($r = 1; $r < $range; $r++) {
+            foreach ($cells as $cell) {
+                $aroundCells = $this->getAroundCells($cell->getPoint())->reject(function ($cell) use ($point) {
+                    return $cell->getPoint()->toString() === $point->toString();
+                });
+                $cells = $cells->merge($aroundCells);
+            }
+            $cells = $cells->uniqueStrict(function ($cell) {
+                return $cell->getPoint()->toString();
+            });
+        }
+
         return $cells;
     }
 

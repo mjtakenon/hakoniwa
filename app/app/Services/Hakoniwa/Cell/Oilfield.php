@@ -18,6 +18,7 @@ class Oilfield extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_HUGE_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => false,
         CellTypeConst::PREVENTING_TYPHOON => false,

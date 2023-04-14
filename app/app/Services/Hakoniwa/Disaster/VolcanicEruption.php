@@ -28,7 +28,7 @@ class VolcanicEruption implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
-        $point = new Point(5, 5);//new Point(mt_rand(0, \HakoniwaService::getMaxWidth()-1),mt_rand(0, \HakoniwaService::getMaxHeight()-1));
+        $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth()-1),mt_rand(0, \HakoniwaService::getMaxHeight()-1));
 
         $terrain->setCell($point, new Mountain(point: $point));
 

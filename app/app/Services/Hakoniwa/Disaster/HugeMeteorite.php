@@ -4,15 +4,67 @@ namespace App\Services\Hakoniwa\Disaster;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Sea;
+use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Cell\Wasteland;
+use App\Services\Hakoniwa\Log\DestructionByHugeMeteoriteLog;
 use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Log\OccurHugeMeteoriteLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use App\Services\Hakoniwa\Util\Point;
+use App\Services\Hakoniwa\Util\Rand;
 
 class HugeMeteorite implements IDisaster
 {
+    const OCCUR_PROBABILITY = 0.005;
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
-        // TODO: Implement occur() method.
-        return new DisasterResult($terrain, $status, Logs::create());
+        $logs = Logs::create();
+
+        if (self::OCCUR_PROBABILITY <= Rand::mt_rand_float()) {
+            return new DisasterResult($terrain, $status, $logs);
+        }
+
+        $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth() - 1), mt_rand(0, \HakoniwaService::getMaxHeight() - 1));
+
+        $aroundCells1 = $terrain->getAroundCells($point);
+        $aroundCells2 = $terrain->getAroundCells($point, 2);
+
+        $terrain->setCell($point, new Sea(point: $point));
+
+        // 周囲1hex
+        /** @var Cell $cell */
+        foreach ($aroundCells1 as $cell) {
+            $aroundCells2 = $aroundCells2->reject(function ($c) use ($cell) {
+                return $c->getPoint()->toString() === $cell->getPoint()->toString();
+            });
+
+            if ($cell::ELEVATION === -1) {
+                $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
+                $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
+                continue;
+            }
+
+            if ($cell::ELEVATION === 0 || $cell::ELEVATION === 1) {
+                $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
+                $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
+                continue;
+            }
+        }
+
+        // 周囲2hex
+        foreach ($aroundCells2 as $cell) {
+            if ($cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_HUGE_METEORITE]) {
+                $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 2));
+                $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
+            }
+        }
+
+        $logs->add(new OccurHugeMeteoriteLog($island, $turn, $point));
+
+        return new DisasterResult($terrain, $status, $logs);
     }
 }
