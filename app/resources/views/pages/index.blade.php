@@ -31,7 +31,7 @@
                 @foreach($islands as $island)
                     <tr>
                         <td> {{ 1 }} </td>
-                        <td> <a href="{{ '/islands/' . $island->id }}"> {{ $island->name }} </a> </td>
+                        <td> <a href="{{ '/islands/' . $island->id }}"> {{ $island->name }}島 </a> </td>
                         <td> {{ $island->islandStatuses->first()->development_points }} pts </td>
                         <td> {{ $island->islandStatuses->first()->population }} 人 </td>
                         <td> {{ $island->islandStatuses->first()->funds }} 億円 </td>

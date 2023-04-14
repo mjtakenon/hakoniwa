@@ -8,7 +8,7 @@ use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class DestructionByEarthquakeLog implements ILog
+class DestructionByFireLog implements ILog
 {
     private Island $island;
     private Turn $turn;
@@ -34,7 +34,7 @@ class DestructionByEarthquakeLog implements ILog
             ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') の'],
             ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ],
             ['text' => 'は'],
-            ['text' => '地震により崩壊' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
+            ['text' => '火災により崩壊' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             ['text' => 'しました。'],
         ]);
     }

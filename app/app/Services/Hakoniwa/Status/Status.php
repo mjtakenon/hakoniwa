@@ -101,7 +101,7 @@ class Status
         }
 
         // 資源生産
-        $this->resources = $realResourcesProductionNumberOfPeople * self::RESOURCES_PRODUCTION_COEF;
+        $this->resources += $realResourcesProductionNumberOfPeople * self::RESOURCES_PRODUCTION_COEF;
 
         // 資金生産
         $realFundsProductionNumberOfPeople = min([$this->resources / self::RESOURCES_CONSUMPTION_COEF, $realFundsProductionNumberOfPeople]);
