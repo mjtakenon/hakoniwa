@@ -28,10 +28,10 @@ class CashFlowPlan extends Plan
         $this->usePoint = self::USE_POINT;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
     {
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $turn, $this));
-        return new PlanExecuteResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

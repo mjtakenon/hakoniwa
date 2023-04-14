@@ -38,6 +38,7 @@ class ExecuteTurn extends Command
     public function handle()
     {
         \Log::info('start ' . $this->signature);
+        $now = hrtime(true);
 
         \DB::transaction(function() {
             $turn = Turn::latest()->firstOrFail();
@@ -75,15 +76,18 @@ class ExecuteTurn extends Command
 
                 // コマンド実行
                 $plans = Plans::fromJson($islandPlan->plan);
-                $planExecuteResult = $plans->execute($island, $terrain, $status, $turn);
-                $terrain = $planExecuteResult->getTerrain();
-                $status = $planExecuteResult->getStatus();
-                $logs = $planExecuteResult->getLogs();
+                $executePlanResult = $plans->execute($island, $terrain, $status, $turn);
+                $terrain = $executePlanResult->getTerrain();
+                $status = $executePlanResult->getStatus();
+                $logs = $executePlanResult->getLogs();
 
                 // セル処理
                 $terrain->passTime($island, $status);
 
                 // 災害
+                $occurDisasterResult = $terrain->occurDisaster($island, $status, $turn);
+                $status = $occurDisasterResult->getStatus();
+                $logs->merge($occurDisasterResult->getLogs());
 
                 // 湖判定
                 $terrain->checkIsLake();
@@ -139,7 +143,7 @@ class ExecuteTurn extends Command
             }
         });
 
-        \Log::info('end ' . $this->signature);
+        \Log::info('end ' . $this->signature . ' ' . hrtime(true) - $now . 'ns');
         return Command::SUCCESS;
     }
 }

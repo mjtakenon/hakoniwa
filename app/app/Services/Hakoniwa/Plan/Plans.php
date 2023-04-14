@@ -86,24 +86,24 @@ class Plans implements JsonEncodable
         return $this->plans->shift();
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
     {
         $logs = Logs::create();
         while (true) {
             /** @var Plan $plan */
             $plan = $this->shift();
             // TODO: 各コマンド実装
-            $planExecuteResult = $plan->execute($island, $terrain, $status, $turn);
+            $executePlanResult = $plan->execute($island, $terrain, $status, $turn);
 
-            $terrain = $planExecuteResult->getTerrain();
-            $status = $planExecuteResult->getStatus();
-            $logs->merge($planExecuteResult->getLogs());
+            $terrain = $executePlanResult->getTerrain();
+            $status = $executePlanResult->getStatus();
+            $logs->merge($executePlanResult->getLogs());
 
             // 2回以上行動できる場合はループ
-            if ($planExecuteResult->isTurnSpending()) {
+            if ($executePlanResult->isTurnSpending()) {
                 break;
             }
         }
-        return new PlanExecuteResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

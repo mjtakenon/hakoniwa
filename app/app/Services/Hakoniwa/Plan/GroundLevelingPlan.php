@@ -31,22 +31,22 @@ class GroundLevelingPlan extends Plan
         $this->usePoint = self::USE_POINT;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): PlanExecuteResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
     {
         $cell = $terrain->getCell($this->point);
         if ($status->getFunds() < self::PRICE) {
             $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
-            return new PlanExecuteResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, self::GRADABLE_CELLS, true)) {
             $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
-            return new PlanExecuteResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         $terrain->setCell($this->point, new Plain(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
-        return new PlanExecuteResult($terrain, $status, $logs, false);
+        return new ExecutePlanResult($terrain, $status, $logs, false);
     }
 }

@@ -6,7 +6,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-class PlanExecuteResult
+class ExecutePlanResult
 {
     private Terrain $terrain;
     private Status $status;

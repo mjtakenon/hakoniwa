@@ -3,7 +3,7 @@
 namespace App\Services\Hakoniwa\Terrain;
 
 use App\Models\Island;
-use App\Models\IslandStatus;
+use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\Factory;
@@ -16,7 +16,11 @@ use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Village;
 use App\Services\Hakoniwa\Cell\Wasteland;
+use App\Services\Hakoniwa\Disaster\DisasterConst;
+use App\Services\Hakoniwa\Disaster\DisasterResult;
+use App\Services\Hakoniwa\Disaster\IDisaster;
 use App\Services\Hakoniwa\JsonEncodable;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Util\Normal;
 use App\Services\Hakoniwa\Util\Point;
@@ -317,5 +321,20 @@ class Terrain implements JsonEncodable
             $point = Point::fromString($key);
             $this->setCell($point, new Lake(point: $point));
         });
+    }
+
+    public function occurDisaster(Island $island, Status $status, Turn $turn)
+    {
+        $logs = Logs::create();
+
+        /** @var IDisaster $disaster */
+        foreach (DisasterConst::DISASTERS as $disaster) {
+            $disasterResult = $disaster::occur($island, $this, $status, $turn);
+            $this->terrain = $disasterResult->getTerrain()->terrain;
+            $status = $disasterResult->getStatus();
+            $logs->merge($disasterResult->getLogs());
+        }
+
+        return new DisasterResult($this, $status, $logs);
     }
 }

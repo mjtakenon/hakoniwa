@@ -8,7 +8,7 @@ use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
-abstract class Cell
+abstract class Cell implements ICell
 {
     public const IMAGE_PATH = '';
     public const TYPE = '';
@@ -63,35 +63,21 @@ abstract class Cell
         return $this->point;
     }
 
-    public function getInfoString(): string
-    {
-        return '';
-    }
-
     public function getPopulation(): int
     {
         return $this->population;
     }
 
-    /**
-     * @return int
-     */
     public function getFoodsProductionNumberOfPeople(): int
     {
         return $this->foodsProductionNumberOfPeople;
     }
 
-    /**
-     * @return int
-     */
     public function getFundsProductionNumberOfPeople(): int
     {
         return $this->fundsProductionNumberOfPeople;
     }
 
-    /**
-     * @return int
-     */
     public function getResourcesProductionNumberOfPeople(): int
     {
         return $this->resourcesProductionNumberOfPeople;
@@ -102,9 +88,6 @@ abstract class Cell
         return $this->woods;
     }
 
-    /**
-     * @return int
-     */
     public function getMaintenanceNumberOfPeople(): int
     {
         return $this->maintenanceNumberOfPeople;
@@ -115,7 +98,5 @@ abstract class Cell
         return new (CellTypeConst::getClassByType($type))(...get_object_vars($data));
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
-    {
-    }
+    public function passTime(Island $island, Terrain $terrain, Status $status): void {}
 }
