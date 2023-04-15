@@ -9,6 +9,7 @@ services:
     working_dir: /app
     volumes:
       - ./app/:/app
+      - sqlite:/app/database/sqlite/
       # - exclude-mount:/app/vendor
     privileged: true
     tty: true
@@ -76,4 +77,6 @@ volumes:
   db-testing-data:
     driver: local
   exclude-mount:
+    driver: local
+  sqlite:
     driver: local
