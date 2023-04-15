@@ -13,5 +13,6 @@ class DisasterConst
         Meteorite::class,
         HugeMeteorite::class,
         Riot::class,
+        LandSubsidence::class,
     ];
 }

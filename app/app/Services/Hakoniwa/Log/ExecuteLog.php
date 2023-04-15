@@ -31,7 +31,7 @@ class ExecuteLog implements ILog
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'にて'],
-            ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_LINK ],
+            ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],
             ['text' => 'が行われました。'],
         ]);
     }
