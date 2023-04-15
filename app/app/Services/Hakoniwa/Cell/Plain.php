@@ -6,6 +6,7 @@ use App\Models\Island;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
+use App\Services\Hakoniwa\Util\Rand;
 
 class Plain extends Cell
 {
@@ -53,7 +54,7 @@ class Plain extends Cell
     {
         $cells = $terrain->getAroundCells($this->point);
         $immigrableCells = $cells->filter(function ($cell) { return in_array($cell::TYPE, self::IMMIGRABLE_TYPE, true); });
-        if ($immigrableCells->count() * self::IMMIGRATE_COEF * 100 >= mt_rand(0, 100)) {
+        if ($immigrableCells->count() * self::IMMIGRATE_COEF > Rand::mt_rand_float()) {
             $terrain->setCell($this->point, new Village(point:$this->point));
         }
     }

@@ -13,6 +13,7 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
+use App\Services\Hakoniwa\Log\AbortNoLandsLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
@@ -47,6 +48,15 @@ class LandfillPlan extends Plan
 
         if (!in_array($cell::TYPE, [Shallow::TYPE, Sea::TYPE, Lake::TYPE], true)) {
             $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            return new ExecutePlanResult($terrain, $status, $logs, false);
+        }
+
+        $landCells = $terrain->getAroundCells($cell->getPoint())->filter(function ($cell) {
+            return $cell::ATTRIBUTE[CellTypeConst::IS_LAND];
+        });
+
+        if ($landCells->count() === 0) {
+            $logs = Logs::create()->add(new AbortNoLandsLog($island, $turn, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
