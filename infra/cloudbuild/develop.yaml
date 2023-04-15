@@ -19,11 +19,6 @@ steps:
     entrypoint: 'bash'
     args: [ '-c', 'docker pull ${_NODE_IMAGE_NAME}:latest || exit 0' ]
     waitFor: [ '-' ]
-#  - id: ''
-#    name: ''
-#    entrypoint: ''
-#    args: ''
-#    waitFor: [ '-' ]
 
   - id: 'build-image-frontend-build-stage'
     name: 'gcr.io/cloud-builders/docker'
@@ -62,13 +57,12 @@ steps:
     waitFor: [ 'build-image-app-deploy-stage' ]
 
 images:
-  - '${_NODE_IMAGE_NAME}:latest'
-  - '${_COMPOSER_IMAGE_NAME}:latest'
-  - '${_IMAGE_FRONTEND_BUILD_STAGE}:latest'
-  - '${_IMAGE_APP_DEPLOY_STAGE}:latest'
+  - '${_NODE_IMAGE_NAME}'
+  - '${_COMPOSER_IMAGE_NAME}'
+  - '${_IMAGE_FRONTEND_BUILD_STAGE}'
+  - '${_IMAGE_APP_DEPLOY_STAGE}'
 substitutions:
   _NODE_IMAGE_NAME: 'node:18.15.0-bullseye'
   _COMPOSER_IMAGE_NAME: 'composer:2.5.5'
-  _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/frontend_build_stage'
-  _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/app_deploy_stage'
-
+  _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/frontend_build_stage:latest'
+  _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/app_deploy_stage:latest'
