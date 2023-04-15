@@ -4,6 +4,7 @@ services:
     build: 
       context: ./
       dockerfile: ./infra/app/Dockerfile
+      target: backend_local_stage
     ports:
       - "${APP_PORT:-54380}:80"
     working_dir: /app
@@ -66,6 +67,7 @@ services:
     build: 
       context: ./
       dockerfile: ./infra/frontend/Dockerfile
+      target: frontend_local_stage
     tty: true
     volumes:
       - ./app/:/app

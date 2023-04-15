@@ -1,8 +1,5 @@
-FROM node:18.15.0-bullseye
+FROM node:18.15.0-bullseye AS frontend_local_stage
 
 EXPOSE 54373
 
 WORKDIR /app
-
-# RUN yarn add global @vue/cli @vue/cli-init
-

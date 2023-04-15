@@ -12,7 +12,7 @@ RUN \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install zip
 
-COPY --from=composer:2.3.7 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 
 ARG USERNAME=debian
 ARG GROUPNAME=debian
