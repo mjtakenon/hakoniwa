@@ -62,7 +62,7 @@ steps:
     args: [
       '-i', '${_IMAGE_APP_DEPLOY_STAGE}',
       '-e', 'APP_ENV=${_APP_ENV}',
-      '-e', 'DB_PASSWORD=${DB_PASSWORD}',
+      '-e', 'DB_PASSWORD=$${DB_PASSWORD}',
       '--', 'php', 'artisan', 'migrate'
     ]
     secretEnv: [ 'DB_PASSWORD' ]
