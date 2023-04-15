@@ -10,6 +10,12 @@ RUN NODE_ENV=production yarn install && \
 
 FROM php:8.2.4-fpm AS deploy_stage
 
+ARG APP_ENV
+ARG DB_PASSWORD
+
+ENV APP_ENV=${APP_ENV}
+ENV DB_PASSWORD=${DB_PASSWORD}
+
 WORKDIR /app
 
 COPY ./infra/app/sources.list /etc/apt/sources.list
