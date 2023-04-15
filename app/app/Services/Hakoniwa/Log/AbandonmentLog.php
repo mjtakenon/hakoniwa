@@ -7,7 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class OccurRiotLog implements ILog
+class AbandonmentLog implements ILog
 {
     private Island $island;
     private Turn $turn;
@@ -28,9 +28,7 @@ class OccurRiotLog implements ILog
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
-            ['text' => 'にて'],
-            ['text' => '住民による暴動' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
-            ['text' => 'が発生！'],
+            ['text' => 'は放棄され、無人島になりました...'],
         ]);
     }
 }

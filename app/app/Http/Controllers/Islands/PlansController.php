@@ -19,14 +19,14 @@ class PlansController extends Controller
 
     public function get(int $islandId)
     {
-        if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $islandId) {
-            abort(403);
-        }
-
         $island = Island::find($islandId);
 
         if (is_null($island) || !is_null($island->deleted_at)) {
             abort(404);
+        }
+
+        if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $island->id) {
+            abort(403);
         }
 
         $turn = Turn::latest()->firstOrFail();

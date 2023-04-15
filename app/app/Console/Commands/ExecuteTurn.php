@@ -3,15 +3,21 @@
 namespace App\Console\Commands;
 
 use App\Models\Island;
+use App\Models\IslandHistory;
 use App\Models\IslandLog;
 use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Log\AbandonmentLog;
+use App\Services\Hakoniwa\Log\ExecuteLog;
 use App\Services\Hakoniwa\Log\ILog;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
+use App\Services\Hakoniwa\Plan\AbandonmentPlan;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Console\Command;
 
 class ExecuteTurn extends Command
@@ -93,8 +99,16 @@ class ExecuteTurn extends Command
                 // 湖判定
                 $terrain->checkIsLake();
 
-                // 再集計
+                // 災害と湖判定による影響を考慮した再集計
                 $status->aggregate($terrain);
+
+                // 人口0による島の放棄
+                if ($status->getPopulation() === 0) {
+                    $island->deleted_at = now();
+                    IslandHistory::createFromIsland($island);
+                    $logs = Logs::create();
+                    $logs->add(new AbandonmentLog($island, $turn));
+                }
 
                 // 集計ログ
                 $logs->add(new SummaryLog($status, $prevStatus, $turn));
