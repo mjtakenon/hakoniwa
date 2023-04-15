@@ -65,7 +65,7 @@ steps:
       '-e', 'DB_PASSWORD=${DB_PASSWORD}',
       '--', 'php', 'artisan', 'migrate'
     ]
-    secretEnv: ['DB_PASSWORD']
+    secretEnv: [ 'DB_PASSWORD' ]
     waitFor: [ 'push-image-app-deploy-stage' ]
 
   - id: 'deploy-image'
@@ -88,7 +88,7 @@ substitutions:
   _CLOUD_RUN_INSTANCE_NAME: 'hakoniwa-develop'
 availableSecrets:
   secretManager:
-    - versionName: projects/171731211938/secrets/hakoniwa-develop-db-pass/versions/latest
-      env: 'DB_PASSWORD'
+  - versionName: projects/171731211938/secrets/hakoniwa-develop-db-pass/versions/latest
+    env: 'DB_PASSWORD'
 timeout:
   1800s
