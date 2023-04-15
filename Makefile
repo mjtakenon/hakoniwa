@@ -29,20 +29,20 @@ logs-watch:
 	docker compose logs -f
 
 exec-app: 
-	docker compose exec --user debian app /bin/bash
+	docker compose exec --user www-data app /bin/bash
 migrate:
-	docker compose exec --user debian app php artisan migrate
+	docker compose exec --user www-data app php artisan migrate
 migrate-testing:
-	docker compose exec --user debian app php artisan migrate --env=testing
+	docker compose exec --user www-data app php artisan migrate --env=testing
 seeding:
-	docker compose exec --user debian app php artisan db:seed
+	docker compose exec --user www-data app php artisan db:seed
 seeding-testing:
-	docker compose exec --user debian app php artisan db:seed --env=testing
+	docker compose exec --user www-data app php artisan db:seed --env=testing
 ide-helper-generate:
-	docker compose exec --user debian app sudo php artisan ide-helper:generate
-	docker compose exec --user debian app sudo php artisan ide-helper:model --nowrite
+	docker compose exec --user www-data app sudo php artisan ide-helper:generate
+	docker compose exec --user www-data app sudo php artisan ide-helper:model --nowrite
 next-turn:
-	docker compose exec --user debian app php artisan execute:turn
+	docker compose exec --user www-data app php artisan execute:turn
 
 exec-composer:
 	docker compose run --user debian composer bash
@@ -55,6 +55,7 @@ exec-mysql:
 	docker compose exec db bash -c "mysql -h localhost -u\$$MYSQL_USER -D \$$MYSQL_DATABASE -p\$$MYSQL_PASSWORD"
 init-db:
 	docker compose exec db bash -c "mysql -h localhost -uroot -p\$$MYSQL_ROOT_PASSWORD --execute 'source /tmp/init.sql'"
+	docker compose exec app bash -c "echo "" > /app/database/sqlite/database.sqlite && chmod 755 /app/database/sqlite/ -R && chown www-data:www-data /app/database/sqlite/ -R"
 
 exec-db-testing:
 	docker compose exec db-testing bash
