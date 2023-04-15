@@ -57,6 +57,17 @@ steps:
     args: [ '-c', 'docker push ${_IMAGE_APP_DEPLOY_STAGE} || exit 0' ]
     waitFor: [ 'build-image-app-deploy-stage' ]
 
+#  - id: 'migrate'
+
+  - id: 'deploy-image'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', '${_CLOUD_RUN_INSTANCE_NAME}',
+      '--image', '${_IMAGE_APP_DEPLOY_STAGE}',
+      '--region', 'asia-northeast1'
+    ]
+    waitFor: [ 'push-image-app-deploy-stage' ] #, 'migrate'
+
 images:
   - '${_IMAGE_FRONTEND_BUILD_STAGE}:latest'
   - '${_IMAGE_APP_DEPLOY_STAGE}:latest'
