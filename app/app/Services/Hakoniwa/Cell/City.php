@@ -5,7 +5,6 @@ namespace App\Services\Hakoniwa\Cell;
 use App\Models\Island;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class City extends Cell
 {
@@ -16,6 +15,11 @@ class City extends Cell
     public const MIN_POPULATION = 10000;
     public const MAX_POPULATION = 20000;
 
+    private const DEFAULT_MIN_POPULATION_INCREMENTAL_RATE = 1;
+    private const DEFAULT_MAX_POPULATION_INCREMENTAL_RATE = 10;
+    private const FOOD_SHORTAGES_MIN_POPULATION_INCREMENTAL_RATE = -30;
+    private const FOOD_SHORTAGES_MAX_POPULATION_INCREMENTAL_RATE = -1;
+
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::HAS_POPULATION => true,
@@ -25,6 +29,7 @@ class City extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_HUGE_METEORITE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
         CellTypeConst::PREVENTING_FIRE => false,
         CellTypeConst::PREVENTING_TYPHOON => false,
@@ -60,19 +65,22 @@ class City extends Cell
     public function getInfoString(): string
     {
         return
-            '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . self::NAME . PHP_EOL .
             '人口 ' . $this->population . '人';
     }
 
     public function passTime(Island $island, Terrain $terrain, Status $status): void
     {
-        $this->incrementPopulation($terrain);
-    }
+        if ($status->getFoods() > 0) {
+            $minPopulationIncrementalRate = self::DEFAULT_MIN_POPULATION_INCREMENTAL_RATE;
+            $maxPopulationIncrementalRate = self::DEFAULT_MAX_POPULATION_INCREMENTAL_RATE;
+        } else {
+            $minPopulationIncrementalRate = self::FOOD_SHORTAGES_MIN_POPULATION_INCREMENTAL_RATE;
+            $maxPopulationIncrementalRate = self::FOOD_SHORTAGES_MAX_POPULATION_INCREMENTAL_RATE;
+        }
 
-    protected function incrementPopulation(Terrain $terrain)
-    {
         if ($this->population < City::MIN_POPULATION) {
-            $this->population += random_int(1,3) * 100;
+            $this->population += random_int($minPopulationIncrementalRate, $maxPopulationIncrementalRate) * 100;
 
             if ($this->population >= City::MIN_POPULATION) {
                 $this->population = City::MIN_POPULATION;

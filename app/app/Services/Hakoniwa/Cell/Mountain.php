@@ -18,6 +18,7 @@ class Mountain extends Cell
         CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellTypeConst::DESTRUCTIBLE_BY_HUGE_METEORITE => false,
+        CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellTypeConst::PREVENTING_FIRE => false,
         CellTypeConst::PREVENTING_TYPHOON => false,

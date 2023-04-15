@@ -29,6 +29,7 @@ class CellTypeConst
     const DESTRUCTIBLE_BY_TYPHOON = 'destructible_by_typhoon';
     const DESTRUCTIBLE_BY_METEORITE = 'destructible_by_meteorite';
     const DESTRUCTIBLE_BY_HUGE_METEORITE = 'destructible_by_huge_meteorite';
+    const DESTRUCTIBLE_BY_RIOT = 'destructible_by_riot';
     const DESTRUCTIBLE_BY_MONSTER = 'destructible_by_monster';
     const PREVENTING_FIRE = 'preventing_fire';
     const PREVENTING_TYPHOON = 'preventing_typhoon';

@@ -111,6 +111,10 @@ class Status
         // 食料消費
         $this->foods -= $this->population * self::FOODS_CONSUMPTION_COEF;
 
+        if ($this->foods <= 0) {
+            $this->foods = 0;
+        }
+
         $this->foods = (int)round($this->foods);
         $this->funds = (int)round($this->funds);
         $this->resources = (int)round($this->resources);

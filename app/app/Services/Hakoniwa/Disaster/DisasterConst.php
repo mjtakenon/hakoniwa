@@ -12,5 +12,6 @@ class DisasterConst
         Typhoon::class,
         Meteorite::class,
         HugeMeteorite::class,
+        Riot::class,
     ];
 }
