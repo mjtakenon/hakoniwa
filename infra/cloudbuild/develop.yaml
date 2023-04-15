@@ -57,7 +57,16 @@ steps:
     args: [ '-c', 'docker push ${_IMAGE_APP_DEPLOY_STAGE} || exit 0' ]
     waitFor: [ 'build-image-app-deploy-stage' ]
 
-#  - id: 'migrate'
+  - id: 'migrate'
+    name: 'gcr.io/google-appengine/exec-wrapper'
+    args: [
+      '-i', '${_IMAGE_APP_DEPLOY_STAGE}'
+      '-e', 'APP_ENV=${_APP_ENV}'
+      '-e', 'DB_PASSWORD=${DB_PASSWORD}'
+      '--', 'php', 'artisan', 'migrate'
+    ]
+    secretEnv: ['DB_PASSWORD']
+    waitFor: [ 'push-image-app-deploy-stage' ]
 
   - id: 'deploy-image'
     name: 'gcr.io/cloud-builders/gcloud'
@@ -77,5 +86,9 @@ substitutions:
   _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/develop/cache/frontend_build_stage'
   _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/develop/app_deploy_stage'
   _CLOUD_RUN_INSTANCE_NAME: 'hakoniwa-develop'
+availableSecrets:
+  secretManager:
+    - versionName: projects/171731211938/secrets/hakoniwa-develop-db-pass
+      env: 'DB_PASSWORD'
 timeout:
   1800s
