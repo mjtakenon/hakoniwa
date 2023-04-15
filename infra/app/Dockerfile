@@ -1,4 +1,4 @@
-FROM php:8.2.4-fpm AS backend_local_stage
+FROM php:8.2.4-fpm
 
 WORKDIR /app
 
@@ -17,6 +17,12 @@ RUN \
     vim \
     emacs \
     sudo
+
+RUN \
+  echo 'deb http://packages.cloud.google.com/apt gcsfuse-bullseye main' >> /etc/apt/sources.list && \
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+  apt-get update && \
+  apt-get install -y gcsfuse
 
 RUN docker-php-ext-install \
   bcmath \
@@ -38,7 +44,9 @@ ARG PASSWORD=debian
 RUN groupadd -g $GID $GROUPNAME && \
     useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USERNAME && \
     echo $USERNAME:$PASSWORD | chpasswd && \
-    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    echo www-data:$PASSWORD | chpasswd && \
+    echo "www-data ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 COPY ./infra/app/nginx.conf /etc/nginx/nginx.conf
 COPY ./infra/app/nginx-default.conf /etc/nginx/conf.d/

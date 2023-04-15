@@ -21,7 +21,8 @@ RUN \
     libzip-dev \
     cron \
     nginx \
-    supervisor
+    supervisor \
+    gcsfuse
 
 RUN docker-php-ext-install \
   bcmath \

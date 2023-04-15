@@ -4,14 +4,13 @@ services:
     build: 
       context: ./
       dockerfile: ./infra/app/Dockerfile
-      target: backend_local_stage
     ports:
       - "${APP_PORT:-54380}:80"
     working_dir: /app
     volumes:
       - ./app/:/app
       - sqlite:/app/database/sqlite/
-      # - exclude-mount:/app/vendor
+      - node_modules:/app/node_modules
     privileged: true
     tty: true
     # environment:
@@ -22,6 +21,7 @@ services:
       dockerfile: ./infra/composer/Dockerfile
     volumes:
       - ./app/:/app/
+      - node_modules:/app/node_modules
     working_dir: /app
   db:
     image: mysql:8
@@ -67,10 +67,10 @@ services:
     build: 
       context: ./
       dockerfile: ./infra/frontend/Dockerfile
-      target: frontend_local_stage
     tty: true
     volumes:
       - ./app/:/app
+      - node_modules:/app/node_modules
     ports:
       - "${FRONT_PORT:-54373}:54373"
 volumes:
@@ -78,7 +78,9 @@ volumes:
     driver: local
   db-testing-data:
     driver: local
-  exclude-mount:
+  vendor:
+    driver: local
+  node_modules:
     driver: local
   sqlite:
     driver: local

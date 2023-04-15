@@ -1,4 +1,4 @@
-FROM node:18.15.0-bullseye AS frontend_local_stage
+FROM node:18.15.0-bullseye
 
 EXPOSE 54373
 
