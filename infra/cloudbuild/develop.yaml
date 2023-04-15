@@ -62,7 +62,7 @@ images:
 substitutions:
   _NODE_IMAGE_NAME: 'node:18.15.0-bullseye'
   _COMPOSER_IMAGE_NAME: 'composer:2.5.5'
-  _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/frontend_build_stage'
-  _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/app_deploy_stage'
+  _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/develop/cache/frontend_build_stage'
+  _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/develop/app_deploy_stage'
 timeout:
   1800s
