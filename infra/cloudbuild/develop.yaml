@@ -12,19 +12,19 @@ steps:
   - id: 'pull-image-composer'
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: [ '-c', 'docker pull ${_COMPOSER_IMAGE_NAME}:latest || exit 0' ]
+    args: [ '-c', 'docker pull ${_COMPOSER_IMAGE_NAME} || exit 0' ]
     waitFor: [ '-' ]
   - id: 'pull-image-node'
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: [ '-c', 'docker pull ${_NODE_IMAGE_NAME}:latest || exit 0' ]
+    args: [ '-c', 'docker pull ${_NODE_IMAGE_NAME} || exit 0' ]
     waitFor: [ '-' ]
 
   - id: 'build-image-frontend-build-stage'
     name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '-f', './infra/app/Dockerfile',
+      '-f', './infra/cloudbuild/Dockerfile',
       '--target', 'frontend_build_stage',
       '--cache-from', '${_IMAGE_FRONTEND_BUILD_STAGE}',
       '-t', '${_IMAGE_FRONTEND_BUILD_STAGE}',
@@ -36,7 +36,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '-f', './infra/app/Dockerfile',
+      '-f', './infra/cloudbuild/Dockerfile',
       '--target', 'deploy_stage',
       '--cache-from', '${_IMAGE_APP_DEPLOY_STAGE}',
       '-t', '${_IMAGE_APP_DEPLOY_STAGE}',
@@ -47,22 +47,22 @@ steps:
   - id: 'push-image-frontend-build-stage'
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: [ '-c', 'docker push ${_IMAGE_FRONTEND_BUILD_STAGE}:latest || exit 0' ]
+    args: [ '-c', 'docker push ${_IMAGE_FRONTEND_BUILD_STAGE} || exit 0' ]
     waitFor: [ 'build-image-frontend-build-stage' ]
 
   - id: 'push-image-app-deploy-stage'
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: [ '-c', 'docker push ${_IMAGE_APP_DEPLOY_STAGE}:latest || exit 0' ]
+    args: [ '-c', 'docker push ${_IMAGE_APP_DEPLOY_STAGE} || exit 0' ]
     waitFor: [ 'build-image-app-deploy-stage' ]
 
 images:
-  - '${_NODE_IMAGE_NAME}'
-  - '${_COMPOSER_IMAGE_NAME}'
-  - '${_IMAGE_FRONTEND_BUILD_STAGE}'
-  - '${_IMAGE_APP_DEPLOY_STAGE}'
+  - '${_IMAGE_FRONTEND_BUILD_STAGE}:latest'
+  - '${_IMAGE_APP_DEPLOY_STAGE}:latest'
 substitutions:
   _NODE_IMAGE_NAME: 'node:18.15.0-bullseye'
   _COMPOSER_IMAGE_NAME: 'composer:2.5.5'
-  _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/frontend_build_stage:latest'
-  _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/app_deploy_stage:latest'
+  _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/frontend_build_stage'
+  _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/cache/app_deploy_stage'
+timeout:
+  1800s
