@@ -88,7 +88,7 @@ substitutions:
   _CLOUD_RUN_INSTANCE_NAME: 'hakoniwa-develop'
 availableSecrets:
   secretManager:
-    - versionName: projects/171731211938/secrets/hakoniwa-develop-db-pass
+    - versionName: projects/171731211938/secrets/hakoniwa-develop-db-pass/versions/latest
       env: 'DB_PASSWORD'
 timeout:
   1800s
