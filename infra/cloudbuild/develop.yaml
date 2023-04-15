@@ -38,6 +38,7 @@ steps:
       'build',
       '-f', './infra/cloudbuild/Dockerfile',
       '--target', 'deploy_stage',
+      '--cache-from', '${_IMAGE_FRONTEND_BUILD_STAGE}',
       '--cache-from', '${_IMAGE_APP_DEPLOY_STAGE}',
       '-t', '${_IMAGE_APP_DEPLOY_STAGE}',
       '.'
