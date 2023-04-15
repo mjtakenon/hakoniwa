@@ -39,8 +39,8 @@ seeding:
 seeding-testing:
 	docker compose exec --user www-data app php artisan db:seed --env=testing
 ide-helper-generate:
-	docker compose exec --user www-data app sudo php artisan ide-helper:generate
-	docker compose exec --user www-data app sudo php artisan ide-helper:model --nowrite
+	docker compose exec --user debian app sudo php artisan ide-helper:generate
+	docker compose exec --user debian app sudo php artisan ide-helper:model --nowrite
 next-turn:
 	docker compose exec --user www-data app php artisan execute:turn
 
