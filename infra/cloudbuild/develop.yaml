@@ -40,6 +40,7 @@ steps:
       '--target', 'deploy_stage',
       '--build-arg', 'APP_ENV=${_APP_ENV}',
       '--build-arg', 'DB_PASSWORD=$${DB_PASSWORD}',
+      '--build-arg', 'DB_HOST=$${DB_HOST}',
       '--cache-from', '${_IMAGE_FRONTEND_BUILD_STAGE}',
       '--cache-from', '${_IMAGE_APP_DEPLOY_STAGE}',
       '-t', '${_IMAGE_APP_DEPLOY_STAGE}',
@@ -65,9 +66,10 @@ steps:
       '-i', '${_IMAGE_APP_DEPLOY_STAGE}',
       '-e', 'APP_ENV=${_APP_ENV}',
       '-e', 'DB_PASSWORD=$${DB_PASSWORD}',
+      '-e', 'DB_HOST=$${DB_HOST}',
       '--', 'php', 'artisan', 'migrate'
     ]
-    secretEnv: [ 'DB_PASSWORD' ]
+    secretEnv: [ 'DB_PASSWORD', 'DB_HOST' ]
     waitFor: [ 'push-image-app-deploy-stage' ]
 
   - id: 'deploy-image'
@@ -92,5 +94,7 @@ availableSecrets:
   secretManager:
   - versionName: projects/171731211938/secrets/hakoniwa-develop-db-pass/versions/latest
     env: 'DB_PASSWORD'
+  - versionName: projects/171731211938/secrets/hakoniwa-develop-db-ip/versions/latest
+    env: 'DB_HOST'
 timeout:
   1800s
