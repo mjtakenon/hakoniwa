@@ -69,7 +69,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: [
       'run',
-      '-v', 'cloudsql:/cloudsql'
+      '-v', 'cloudsql:/cloudsql',
       '${_IMAGE_APP_DEPLOY_STAGE}',
       'bash', '-c', 'php artisan migrate --env=develop'
     ]
