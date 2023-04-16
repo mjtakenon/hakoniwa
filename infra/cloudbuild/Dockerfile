@@ -11,8 +11,8 @@ RUN NODE_ENV=production yarn install && \
 FROM php:8.2.4-fpm AS deploy_stage
 
 ARG APP_ENV
-ARG DB_PASSWORD=test1
-ARG DB_HOST=test2
+ARG DB_PASSWORD
+ARG DB_HOST
 
 WORKDIR /app
 
@@ -57,14 +57,5 @@ RUN chmod -R ug+w /app/storage && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache
-
-
-RUN echo ${APP_ENV}
-RUN echo $DB_PASSWORD
-RUN echo ${DB_HOST}
-
-RUN env
-RUN DB_HOST=${DB_HOST} env
-RUN cat ./bootstrap/cache/config.php
 
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
