@@ -46,8 +46,6 @@ steps:
       '-t', '${_IMAGE_APP_DEPLOY_STAGE}',
       '.'
     ]
-    env:
-      - 'test2=$$DB_HOST'
     secretEnv: [ 'DB_PASSWORD', 'DB_HOST' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer', 'build-image-frontend-build-stage' ]
 

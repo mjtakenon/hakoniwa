@@ -14,6 +14,9 @@ ARG APP_ENV
 ARG DB_PASSWORD
 ARG DB_HOST
 
+ENV DB_PASSWORD=$DB_PASSWORD
+ENV DB_HOST=$DB_HOST
+
 WORKDIR /app
 
 COPY ./infra/app/sources.list /etc/apt/sources.list
