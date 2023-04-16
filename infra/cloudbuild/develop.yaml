@@ -50,7 +50,7 @@ steps:
       '-c',
       'docker build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .'
     ]
-    secretEnv: [ 'DB_PASSWORD', 'DB_SOCKET' ]
+    secretEnv: [ 'DB_PASSWORD' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer', 'build-image-frontend-build-stage' ]
 
   - id: 'push-image-frontend-build-stage'
