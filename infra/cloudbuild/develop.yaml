@@ -42,7 +42,7 @@ steps:
       '--build-arg', 'DB_PASSWORD=$${DB_PASSWORD}',
       '--build-arg', 'DB_HOST=$${DB_HOST}',
       '--cache-from', '${_IMAGE_FRONTEND_BUILD_STAGE}',
-      '--cache-from', '${_IMAGE_APP_DEPLOY_STAGE}',
+#      '--cache-from', '${_IMAGE_APP_DEPLOY_STAGE}',
       '-t', '${_IMAGE_APP_DEPLOY_STAGE}',
       '.'
     ]
