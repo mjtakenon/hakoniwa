@@ -47,7 +47,6 @@ steps:
       '.'
     ]
     env:
-      - 'test1=$DB_HOST'
       - 'test2=$$DB_HOST'
       - 'test3=$$$DB_HOST'
     secretEnv: [ 'DB_PASSWORD', 'DB_HOST' ]
