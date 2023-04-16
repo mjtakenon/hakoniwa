@@ -66,12 +66,16 @@ steps:
     waitFor: [ 'build-image-app-deploy-stage' ]
 
   - id: 'migrate'
-    name: 'gcr.io/google-appengine/exec-wrapper'
+    name: 'gcr.io/cloud-builders/docker'
     args: [
-      '-i', '${_IMAGE_APP_DEPLOY_STAGE}',
-      '-e', 'APP_ENV=${_APP_ENV}',
-      '--', 'php', 'artisan', 'migrate'
+      'run',
+      '-v', 'cloudsql:/cloudsql'
+      '${_IMAGE_APP_DEPLOY_STAGE}',
+      'bash', '-c', 'php artisan migrate --env=develop'
     ]
+    volumes:
+      - name: cloudsql
+        path: /cloudsql
     waitFor: [ 'push-image-app-deploy-stage' ]
 
   - id: 'stop-cloud-proxy'
