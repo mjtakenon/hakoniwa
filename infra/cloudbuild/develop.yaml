@@ -37,9 +37,9 @@ steps:
     entrypoint: 'bash'
     args: [
       '-c',
-      'docker build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --build-arg DB_HOST=$${DB_HOST} --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .'
+      'docker build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --build-arg DB_HOST=$${DB_SOCKET} --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .'
     ]
-    secretEnv: [ 'DB_PASSWORD', 'DB_HOST' ]
+    secretEnv: [ 'DB_PASSWORD', 'DB_SOCKET' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer', 'build-image-frontend-build-stage' ]
 
   - id: 'push-image-frontend-build-stage'
@@ -53,6 +53,15 @@ steps:
     entrypoint: 'bash'
     args: [ '-c', 'docker push ${_IMAGE_APP_DEPLOY_STAGE} || exit 0' ]
     waitFor: [ 'build-image-app-deploy-stage' ]
+
+  - id: 'test'
+    name: 'gcr.io/google-appengine/exec-wrapper'
+    args: [
+      '-i', '${_IMAGE_APP_DEPLOY_STAGE}',
+      '-e', 'APP_ENV=${_APP_ENV}',
+      '--', 'env'
+    ]
+    waitFor: [ 'push-image-app-deploy-stage' ]
 
   - id: 'migrate'
     name: 'gcr.io/google-appengine/exec-wrapper'
@@ -87,5 +96,7 @@ availableSecrets:
     env: 'DB_PASSWORD'
   - versionName: projects/171731211938/secrets/hakoniwa-develop-db-ip/versions/latest
     env: 'DB_HOST'
+  - versionName: projects/171731211938/secrets/hakoniwa-develop-db-socket/versions/latest
+    env: 'DB_SOCKET'
 timeout:
   1800s
