@@ -11,11 +11,8 @@ RUN NODE_ENV=production yarn install && \
 FROM php:8.2.4-fpm AS deploy_stage
 
 ARG APP_ENV
-ARG DB_PASSWORD
-ARG DB_HOST
-
-ENV DB_PASSWORD=$DB_PASSWORD
-ENV DB_HOST=$DB_HOST
+ARG DB_PASSWORD=test1
+ARG DB_HOST=test2
 
 WORKDIR /app
 

@@ -34,17 +34,10 @@ steps:
 
   - id: 'build-image-app-deploy-stage'
     name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
     args: [
-      'build',
-      '-f', './infra/cloudbuild/Dockerfile',
-      '--target', 'deploy_stage',
-      '--build-arg', 'APP_ENV=${_APP_ENV}',
-      '--build-arg', 'DB_PASSWORD="$$DB_PASSWORD"',
-      '--build-arg', 'DB_HOST=$${DB_HOST}',
-      '--cache-from', '${_IMAGE_FRONTEND_BUILD_STAGE}',
-#      '--cache-from', '${_IMAGE_APP_DEPLOY_STAGE}',
-      '-t', '${_IMAGE_APP_DEPLOY_STAGE}',
-      '.'
+      '-c',
+      'build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --build-arg DB_HOST=$${DB_HOST} --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .'
     ]
     secretEnv: [ 'DB_PASSWORD', 'DB_HOST' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer', 'build-image-frontend-build-stage' ]
