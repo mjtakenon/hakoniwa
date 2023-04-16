@@ -37,9 +37,9 @@ steps:
     entrypoint: 'bash'
     args: [
       '-c',
-      'docker build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --build-arg DB_HOST=$${DB_SOCKET} --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .'
+      'docker build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .'
     ]
-    secretEnv: [ 'DB_PASSWORD', 'DB_HOST', 'DB_SOCKET' ]
+    secretEnv: [ 'DB_PASSWORD' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer', 'build-image-frontend-build-stage' ]
 
   - id: 'push-image-frontend-build-stage'
@@ -94,9 +94,5 @@ availableSecrets:
   secretManager:
   - versionName: projects/171731211938/secrets/hakoniwa-develop-db-pass/versions/latest
     env: 'DB_PASSWORD'
-  - versionName: projects/171731211938/secrets/hakoniwa-develop-db-ip/versions/latest
-    env: 'DB_HOST'
-  - versionName: projects/171731211938/secrets/hakoniwa-develop-db-socket/versions/latest
-    env: 'DB_SOCKET'
 timeout:
   1800s
