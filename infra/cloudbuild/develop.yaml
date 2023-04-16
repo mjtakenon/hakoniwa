@@ -48,7 +48,6 @@ steps:
     ]
     env:
       - 'test2=$$DB_HOST'
-      - 'test3=$$$DB_HOST'
     secretEnv: [ 'DB_PASSWORD', 'DB_HOST' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer', 'build-image-frontend-build-stage' ]
 
