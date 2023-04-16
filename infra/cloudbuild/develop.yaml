@@ -71,7 +71,7 @@ steps:
       'run',
       '-v', 'cloudsql:/cloudsql',
       '${_IMAGE_APP_DEPLOY_STAGE}',
-      'bash', '-c', 'php artisan migrate --env=develop'
+      'bash', '-c', 'php artisan migrate --env=develop && php artisan db:seed --env=develop'
     ]
     volumes:
       - name: cloudsql
