@@ -30,7 +30,8 @@ RUN \
     cron \
     nginx \
     supervisor \
-    sudo
+    sudo \
+    git
 
 RUN docker-php-ext-install \
   bcmath \
@@ -60,5 +61,10 @@ RUN chmod -R ug+w /app/storage && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache
+
+RUN env
+RUN ls -la /app
+RUN ls -la /app/app
+RUN cat ./app/bootstrap/cache/config.php
 
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
