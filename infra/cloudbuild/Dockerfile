@@ -14,10 +14,6 @@ ARG APP_ENV
 ARG DB_PASSWORD
 ARG DB_HOST
 
-ENV APP_ENV=${APP_ENV}
-ENV DB_PASSWORD=${DB_PASSWORD}
-ENV DB_HOST=${DB_HOST}
-
 WORKDIR /app
 
 COPY ./infra/app/sources.list /etc/apt/sources.list
@@ -62,9 +58,13 @@ RUN chmod -R ug+w /app/storage && \
     php artisan route:cache && \
     php artisan view:cache
 
+
+RUN echo ${APP_ENV}
+RUN echo $DB_PASSWORD
+RUN echo ${DB_HOST}
+
 RUN env
-RUN ls -la /app
-RUN ls -la /app/app
-RUN cat ./app/bootstrap/cache/config.php
+RUN DB_HOST=${DB_HOST} env
+RUN cat ./bootstrap/cache/config.php
 
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
