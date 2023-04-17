@@ -71,12 +71,14 @@ steps:
       'run',
       '-v', 'cloudsql:/cloudsql',
       '--env', 'DB_SOCKET=${_DB_SOCKET}',
+      '--env', 'DB_PASSWORD=$${DB_PASSWORD}'
       '${_IMAGE_APP_DEPLOY_STAGE}',
       'bash', '-c', 'php artisan config:clear && php artisan migrate --env=${_ENV} && php artisan db:seed --env=${_ENV}'
     ]
     volumes:
       - name: cloudsql
         path: /cloudsql
+    secretEnv: [ 'DB_PASSWORD' ]
     waitFor: [ 'push-image-app-deploy-stage' ]
 
   - id: 'stop-cloud-proxy'
