@@ -36,6 +36,12 @@ RUN docker-php-ext-install \
   zip \
   opcache
 
+#RUN \
+#  echo 'deb http://packages.cloud.google.com/apt gcsfuse-bullseye main' >> /etc/apt/sources.list && \
+#  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+#  apt-get update && \
+#  apt-get install -y gcsfuse
+
 RUN mkdir -p /var/run/php-fpm && \
     touch /var/run/php-fpm/php-fpm.sock && \
     chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \
