@@ -77,7 +77,7 @@ steps:
     volumes:
       - name: cloudsql
         path: /cloudsql
-    waitFor: [ 'push-image-app-deploy-stage' ]
+    waitFor: [ 'push-image-app-deploy-stage', 'start-cloud-proxy' ]
 
   - id: 'stop-cloud-proxy'
     name: 'gcr.io/cloud-builders/docker'
