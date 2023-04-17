@@ -70,7 +70,7 @@ steps:
     args: [
       'run',
       '-v', 'cloudsql:/cloudsql',
-      '--env' 'DB_SOCKET=${_DB_SOCKET}',
+      '--env', 'DB_SOCKET=${_DB_SOCKET}',
       '${_IMAGE_APP_DEPLOY_STAGE}',
       'bash', '-c', 'php artisan config:clear && php artisan migrate --env=develop && php artisan db:seed --env=develop'
     ]
