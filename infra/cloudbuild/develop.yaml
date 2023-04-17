@@ -70,7 +70,7 @@ steps:
     entrypoint: 'bash'
     args: [
       '-c',
-      'docker run -v cloudsql:/cloudsql --env DB_SOCKET=${_DB_SOCKET} --env=DB_PASSWORD=$${DB_PASSWORD} ${_IMAGE_APP_DEPLOY_STAGE} bash -c php artisan config:clear && php artisan migrate --env=${_ENV} && php artisan db:seed --env=${_ENV}'
+      'docker run -v cloudsql:/cloudsql --env DB_SOCKET=${_DB_SOCKET} --env DB_PASSWORD=$${DB_PASSWORD} ${_IMAGE_APP_DEPLOY_STAGE} bash -c php artisan config:clear && php artisan migrate --env=${_ENV} && php artisan db:seed --env=${_ENV}'
     ]
     volumes:
       - name: cloudsql
