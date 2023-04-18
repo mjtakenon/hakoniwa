@@ -31,17 +31,17 @@ steps:
         path: /cloudsql
     waitFor: [ '-' ]
 
-  - id: 'build-image-frontend-build-stage'
-    name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '-f', './infra/cloudbuild/Dockerfile',
-      '--target', 'frontend_build_stage',
-      '--cache-from', '${_IMAGE_FRONTEND_BUILD_STAGE}',
-      '-t', '${_IMAGE_FRONTEND_BUILD_STAGE}',
-      '.'
-    ]
-    waitFor: [ 'pull-image-frontend-build-stage', 'pull-image-node' ]
+#  - id: 'build-image-frontend-build-stage'
+#    name: 'gcr.io/cloud-builders/docker'
+#    args: [
+#      'build',
+#      '-f', './infra/cloudbuild/Dockerfile',
+#      '--target', 'frontend_build_stage',
+#      '--cache-from', '${_IMAGE_FRONTEND_BUILD_STAGE}',
+#      '-t', '${_IMAGE_FRONTEND_BUILD_STAGE}',
+#      '.'
+#    ]
+#    waitFor: [ 'pull-image-frontend-build-stage', 'pull-image-node' ]
 
   - id: 'build-image-app-deploy-stage'
     name: 'gcr.io/cloud-builders/docker'
@@ -53,11 +53,11 @@ steps:
     secretEnv: [ 'DB_PASSWORD', 'GOOGLE_CLIENT_SECRET' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer', 'build-image-frontend-build-stage' ]
 
-  - id: 'push-image-frontend-build-stage'
-    name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'docker push ${_IMAGE_FRONTEND_BUILD_STAGE} || exit 0' ]
-    waitFor: [ 'build-image-frontend-build-stage' ]
+#  - id: 'push-image-frontend-build-stage'
+#    name: 'gcr.io/cloud-builders/docker'
+#    entrypoint: 'bash'
+#    args: [ '-c', 'docker push ${_IMAGE_FRONTEND_BUILD_STAGE} || exit 0' ]
+#    waitFor: [ 'build-image-frontend-build-stage' ]
 
   - id: 'push-image-app-deploy-stage'
     name: 'gcr.io/cloud-builders/docker'
