@@ -71,4 +71,9 @@ RUN chmod -R ug+w /app/storage
 RUN cp /app/.env.develop /app/.env
 RUN touch /app/storage/logs/laravel.log && chown www-data:www-data /app/storage/logs/laravel.log && chmod 755 /app/storage/logs/laravel.log
 
+RUN chmod -R ug+w /app/storage && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
+
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
