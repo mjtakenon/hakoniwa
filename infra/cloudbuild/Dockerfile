@@ -63,12 +63,8 @@ COPY ./infra/app/php.ini /usr/local/etc/php/php.ini
 COPY ./infra/app/supervisor-app.conf /etc/supervisor/conf.d/
 
 COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
-#COPY --chown=www-data ./app ./
+COPY --chown=www-data ./app ./
 COPY --from=frontend_build_stage --chown=www-data /app/public/build /app/public/build
-
-RUN ls -la
-RUN ls -la /
-RUN ls -la /app
 
 RUN composer install # --optimize-autoloader --no-dev
 #RUN chmod -R ug+w /app/storage
