@@ -67,6 +67,7 @@ COPY --chown=www-data ./app ./
 COPY --from=frontend_build_stage --chown=www-data /app/public/build /app/public/build
 
 RUN composer install # --optimize-autoloader --no-dev
-RUN chmod -R ug+w /app/storage
+#RUN chmod -R ug+w /app/storage
+RUN cp /app/.env.develop /app/.env
 
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
