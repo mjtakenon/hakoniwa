@@ -67,7 +67,8 @@ COPY --chown=www-data ./app ./
 COPY --from=frontend_build_stage --chown=www-data /app/public/build /app/public/build
 
 RUN composer install # --optimize-autoloader --no-dev
-#RUN chmod -R ug+w /app/storage
+RUN chmod -R ug+w /app/storage
 RUN cp /app/.env.develop /app/.env
+RUN touch /app/storage/logs/laravel.log && chown www-data:www-data /app/storage/logs/laravel.log && chmod 755 /app/storage/logs/laravel.log
 
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
