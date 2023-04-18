@@ -97,7 +97,7 @@ class ExecuteTurn extends Command
                 $terrain->passTime($island, $status);
 
                 // 湖判定
-                $terrain->checkIsLake();
+                $terrain->replaceShallowByLake();
 
                 // 災害と湖判定による影響を考慮した再集計
                 $status->aggregate($terrain);

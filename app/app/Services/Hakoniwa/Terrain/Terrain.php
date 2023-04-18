@@ -113,7 +113,7 @@ class Terrain implements JsonEncodable
             }
         }
 
-        return $this;
+        return $this->replaceShallowByLake();
     }
 
     public function getTerrain(): Collection
@@ -289,7 +289,7 @@ class Terrain implements JsonEncodable
         return $cells;
     }
 
-    public function checkIsLake()
+    public function replaceShallowByLake(): static
     {
         $isChecked = new Collection();
         $lakeCandidate = new Collection();
@@ -337,6 +337,8 @@ class Terrain implements JsonEncodable
             $point = Point::fromString($key);
             $this->setCell($point, new Lake(point: $point));
         });
+
+        return $this;
     }
 
     public function occurDisaster(Island $island, Status $status, Turn $turn)
