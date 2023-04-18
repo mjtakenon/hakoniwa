@@ -95,9 +95,9 @@ steps:
     ]
     waitFor: [ 'migrate' ]
 
-images:
-  - '${_IMAGE_FRONTEND_BUILD_STAGE}:latest'
-  - '${_IMAGE_APP_DEPLOY_STAGE}:latest'
+#images:
+#  - '${_IMAGE_FRONTEND_BUILD_STAGE}:latest'
+#  - '${_IMAGE_APP_DEPLOY_STAGE}:latest'
 substitutions:
   _NODE_IMAGE_NAME: 'node:18.15.0-bullseye'
   _COMPOSER_IMAGE_NAME: 'composer:2.5.5'
