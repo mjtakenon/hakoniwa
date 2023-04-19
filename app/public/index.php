@@ -48,10 +48,8 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
-echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.PHP_EOL.'>>/app/storage/logs/laravel.log');
 $response = $kernel->handle(
     $request = Request::capture()
 )->send();
 
-echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.PHP_EOL.'>>/app/storage/logs/laravel.log');
 $kernel->terminate($request, $response);
