@@ -31,6 +31,7 @@ steps:
         path: /cloudsql
     waitFor: [ '-' ]
 
+# フロントイメージのキャッシュは高いのでお財布に余裕が出るまではやらない
 #  - id: 'build-image-frontend-build-stage'
 #    name: 'gcr.io/cloud-builders/docker'
 #    args: [

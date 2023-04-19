@@ -26,11 +26,8 @@ RUN \
     cron \
     nginx \
     supervisor \
-    iputils-ping net-tools \
-    htop \
-    vim \
-    emacs \
-    sudo
+    sudo \
+    git
 
 RUN docker-php-ext-install \
   bcmath \
@@ -44,18 +41,6 @@ RUN mkdir -p /var/run/php-fpm && \
     chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \
     chmod 660 /var/run/php-fpm/php-fpm.sock
 
-ARG USERNAME=debian
-ARG GROUPNAME=debian
-ARG UID=1000
-ARG GID=1000
-ARG PASSWORD=debian
-RUN groupadd -g $GID $GROUPNAME && \
-    useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USERNAME && \
-    echo $USERNAME:$PASSWORD | chpasswd && \
-    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
-    echo www-data:$PASSWORD | chpasswd && \
-    echo "www-data ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
 COPY ./infra/app/nginx.conf /etc/nginx/nginx.conf
 COPY ./infra/app/nginx-default.conf /etc/nginx/conf.d/
 COPY ./infra/app/php-fpm.conf /usr/local/etc/php-fpm.d/php-fpm.conf
@@ -66,10 +51,7 @@ COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 COPY --chown=www-data ./app ./
 COPY --from=frontend_build_stage --chown=www-data /app/public/build /app/public/build
 
-RUN composer install # --optimize-autoloader --no-dev
-RUN chmod -R ug+w /app/storage
-RUN cp /app/.env.develop /app/.env
-RUN touch /app/storage/logs/laravel.log && chown www-data:www-data /app/storage/logs/laravel.log && chmod 755 /app/storage/logs/laravel.log
+RUN composer install --optimize-autoloader --no-dev
 
 RUN chmod -R ug+w /app/storage && \
     php artisan config:cache && \
