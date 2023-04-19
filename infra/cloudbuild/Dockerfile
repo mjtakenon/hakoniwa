@@ -51,6 +51,10 @@ COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
 COPY --chown=www-data ./app ./
 COPY --from=frontend_build_stage --chown=www-data /app/public/build /app/public/build
 
+RUN touch /app/storage/logs/laravel.log && \
+    chown www-data:www-data /app/storage/logs/laravel.log && \
+    chmod 755 /app/storage/logs/laravel.log
+
 RUN composer install --optimize-autoloader --no-dev
 
 RUN chmod -R ug+w /app/storage && \
