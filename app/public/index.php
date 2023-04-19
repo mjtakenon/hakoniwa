@@ -1,10 +1,13 @@
 <?php
 
+echo 'debug: ' . __LINE__;
+
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+echo 'debug: ' . __LINE__;
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
@@ -20,6 +23,7 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
     require $maintenance;
 }
 
+echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.'>>/app/storage/logs/laravel.log');
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
@@ -33,6 +37,7 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 
 require __DIR__.'/../vendor/autoload.php';
 
+echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.'>>/app/storage/logs/laravel.log');
 /*
 |--------------------------------------------------------------------------
 | Run The Application
@@ -46,10 +51,13 @@ require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.'>>/app/storage/logs/laravel.log');
 $kernel = $app->make(Kernel::class);
 
+echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.'>>/app/storage/logs/laravel.log');
 $response = $kernel->handle(
     $request = Request::capture()
 )->send();
 
+echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.'>>/app/storage/logs/laravel.log');
 $kernel->terminate($request, $response);
