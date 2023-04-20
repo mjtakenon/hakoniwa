@@ -44,6 +44,19 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
+register_shutdown_function(function() {
+    $error = error_get_last();
+    if ($error === null) {
+        return;
+    }
+    // タイムアウトの検出
+    if ($error['type'] === E_ERROR) {
+        echo 'timeout';
+    }
+});
+
+set_time_limit(5);
+
 echo 'debug: ' . __LINE__; system('echo debug: '.__LINE__.'>>/app/storage/logs/laravel.log');
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
