@@ -12,6 +12,7 @@ class CallbackController extends Controller
     {
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__ . PHP_EOL);
         if (\Auth::check()) {
+            \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__ . PHP_EOL);
             return redirect(route('home'));
         }
 
