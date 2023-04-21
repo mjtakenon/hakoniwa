@@ -11,4 +11,7 @@ class DetailController extends Controller
     public function get1() {
         return response()->json(['test' => 1]);
     }
+    public function get2() {
+        return response()->json(['test' => 1]);
+    }
 }
