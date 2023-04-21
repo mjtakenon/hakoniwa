@@ -128,11 +128,6 @@ return [
             'handler' => NullHandler::class,
         ],
 
-        'file' => [
-            'driver' => 'monolog',
-            'path' => storage_path('logs/laravel.log'),
-        ],
-
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
