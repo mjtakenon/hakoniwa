@@ -55,7 +55,8 @@ RUN touch /app/storage/logs/laravel.log && \
     chown www-data:www-data /app/storage/logs/laravel.log && \
     chmod 755 /app/storage/logs/laravel.log
 
-RUN composer install --optimize-autoloader --no-dev
+RUN composer install --optimize-autoloader --no-dev && \
+    chown www-data:www-data /app/vendor -R
 
 RUN chmod -R ug+w /app/storage && \
     php artisan config:cache && \
