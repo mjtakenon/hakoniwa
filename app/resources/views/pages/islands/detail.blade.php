@@ -4,18 +4,11 @@
     <div id="app">
         @include('components.header')
         <sightseeing-page
-            :hakoniwa="[]"
-            :island="[]"
-            :island-status="[]"
-            :island-terrain="[]"
-            :island-log="[]"
+            :hakoniwa="{{ json_encode($hakoniwa) }}"
+            :island="{{ json_encode($island) }}"
+            :island-status="{{ json_encode($islandStatus) }}"
+            :island-terrain="{{ json_encode($terrain) }}"
+            :island-log="{{ json_encode($islandLog) }}"
         ></sightseeing-page>
-{{--        <sightseeing-page--}}
-{{--            :hakoniwa="{{ $hakoniwa }}"--}}
-{{--            :island="{{ $island }}"--}}
-{{--            :island-status="{{ $islandStatus }}"--}}
-{{--            :island-terrain="{{ $terrain }}"--}}
-{{--            :island-log="{{ $islandLog }}"--}}
-{{--        ></sightseeing-page>--}}
     </div>
 @endsection
