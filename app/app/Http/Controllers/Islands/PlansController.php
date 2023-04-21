@@ -19,20 +19,25 @@ class PlansController extends Controller
 
     public function get(int $islandId)
     {
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         $island = Island::find($islandId);
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         if (is_null($island) || !is_null($island->deleted_at)) {
             abort(404);
         }
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $island->id) {
             abort(403);
         }
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         $turn = Turn::latest()->firstOrFail();
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         //
 //        $islandTerrain = IslandTerrain::find($islandId);
 //        $islandTerrain->terrain = Terrain::create()->init()->toJson();
@@ -49,6 +54,7 @@ class PlansController extends Controller
 
         $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         return view('pages.islands.plans', [
             'user' => \Auth::user(),
             'hakoniwa' => json_encode([

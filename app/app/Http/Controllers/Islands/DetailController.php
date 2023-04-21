@@ -9,16 +9,20 @@ use App\Models\Turn;
 class DetailController extends Controller
 {
     public function get($islandId) {
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         $island = Island::find($islandId);
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         if (is_null($island) || !is_null($island->deleted_at)) {
             abort(404);
         }
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         $turn = Turn::latest()->firstOrFail();
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         return view('pages.islands.detail', [
             'user' => \Auth::user(),
             'hakoniwa' => json_encode([
