@@ -61,5 +61,8 @@ Route::prefix('/test/')->middleware(array_merge($baseMiddleware, ['auth:sanctum'
 Route::prefix('/test/')->middleware($baseMiddleware)->group( function() {
     Route::get('3', [\App\Http\Controllers\Test\DetailController::class, 'get3']);
 });
+Route::prefix('/test/')->middleware($baseMiddleware)->group( function() {
+    Route::get('4', [\App\Http\Controllers\Test\DetailController::class, 'get4']);
+});
 
 //, ['auth:sanctum']

@@ -17,4 +17,10 @@ class DetailController extends Controller
     public function get3() {
         return redirect(route('home'));
     }
+    public function get4() {
+        if (\HakoniwaService::isIslandRegistered()) {
+            return redirect(config('app.url') . '/islands/' . \Auth::user()->island->id . '/plans');
+        }
+        return redirect(route('home'));
+    }
 }
