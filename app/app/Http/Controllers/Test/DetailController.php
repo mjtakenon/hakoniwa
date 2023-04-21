@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Http\Controllers\Test;
+
+use App\Http\Controllers\Controller;
+use App\Models\Island;
+use App\Models\Turn;
+
+class DetailController extends Controller
+{
+    public function get1() {
+        return response()->json(['test' => 1]);
+    }
+}

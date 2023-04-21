@@ -52,4 +52,8 @@ Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->gr
     Route::get('callback', [\App\Http\Controllers\Auth\Google\CallbackController::class, 'get']);
 });
 
+Route::prefix('/test/')->middleware($baseMiddleware)->group( function() {
+    Route::get('1', [\App\Http\Controllers\Test\DetailController::class, 'get1']);
+});
+
 //, ['auth:sanctum']
