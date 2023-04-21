@@ -129,6 +129,7 @@ return [
         ],
 
         'file' => [
+            'driver' => 'monolog',
             'path' => storage_path('logs/laravel.log'),
         ],
 

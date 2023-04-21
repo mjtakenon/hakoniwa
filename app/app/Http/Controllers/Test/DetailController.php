@@ -12,6 +12,9 @@ class DetailController extends Controller
         return response()->json(['test' => 1]);
     }
     public function get2() {
-        return response()->json(['test' => 1]);
+        return response()->json(['test' => 2]);
+    }
+    public function get3() {
+        return redirect(route('home'));
     }
 }
