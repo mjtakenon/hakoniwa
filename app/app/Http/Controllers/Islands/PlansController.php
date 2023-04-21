@@ -19,6 +19,7 @@ class PlansController extends Controller
 
     public function get(int $islandId)
     {
+        \DB::enableQueryLog();
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         $island = Island::find($islandId);
 
@@ -55,20 +56,35 @@ class PlansController extends Controller
         $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
 
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
-        return view('pages.islands.plans', [
-            'user' => \Auth::user(),
+        $user = \Auth::user();
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        $islandPlans = Plans::fromJson($islandPlan->plan)->toJsonWithStatic();
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        $islandStatuses = $island->islandStatuses->where('turn_id', $turn->id)->first();
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        $islandTerrains = $island->islandTerrains->where('turn_id', $turn->id)->first();
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        $islandLog = $island->islandLogs()->whereIn('turn_id',
+            Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
+        )->orderByDesc('id')->get('log');
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+
+        \Log::debug(print_r(\DB::getQueryLog(),true));
+        $view = view('pages.islands.plans', [
+            'user' => $user,
             'hakoniwa' => json_encode([
                 'width' => \HakoniwaService::getMaxWidth(),
                 'height' => \HakoniwaService::getMaxHeight(),
             ]),
             'island' => $island,
-            'islandPlans' => Plans::fromJson($islandPlan->plan)->toJsonWithStatic(),
-            'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
-            'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
-            'islandLog' => $island->islandLogs()->whereIn('turn_id',
-                Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
-            )->orderByDesc('id')->get('log'),
+            'islandPlans' => $islandPlans,
+            'islandStatus' => $islandStatuses,
+            'islandTerrain' => $islandTerrains,
+            'islandLog' => $islandLog,
         ]);
+        \Log::debug(print_r(\DB::getQueryLog(),true));
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        return $view;
     }
 
     public function put(int $islandId): \Illuminate\Http\JsonResponse
