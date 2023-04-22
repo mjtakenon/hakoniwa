@@ -4,11 +4,11 @@
     <div id="app">
         @include('components.header')
         <sightseeing-page
-            :hakoniwa="{{ Js::from($hakoniwa) }}"
-            :island="{{ Js::from($island) }}"
-            :island-status="{{ Js::from($islandStatus) }}"
-            :island-terrain="{{ Js::from($islandTerrain->terrain) }}"
-            :island-log="{{ Js::from($islandLog) }}"
+            :hakoniwa="@js($hakoniwa)"
+            :island="@js($island)"
+            :island-status="@js($islandStatus)"
+            :island-terrain="@js($islandTerrain->terrain)"
+            :island-log="@js($islandLog)"
         ></sightseeing-page>
     </div>
 @endsection

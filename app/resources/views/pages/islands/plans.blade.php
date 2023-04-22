@@ -4,6 +4,11 @@
     <div id="app">
         @include('components.header')
         島エディットコメントアウト中
+        @js($hakoniwa)
+        @js($island)
+        @js($islandStatus)
+        @js($islandTerrain->terrain)
+        @js($islandLog)
 {{--        <plan-page--}}
 {{--            :hakoniwa="{{ $hakoniwa }}"--}}
 {{--            :island="{{ $island }}"--}}
