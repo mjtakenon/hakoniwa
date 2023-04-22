@@ -25,16 +25,16 @@ class DetailController extends Controller
 
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
 
-        var_dump(json_encode([
+        var_dump(\Js::from(json_encode([
             'width' => \HakoniwaService::getMaxWidth(),
             'height' => \HakoniwaService::getMaxHeight(),
-        ]));
-        var_dump($island);
-        var_dump($island->islandStatuses->where('turn_id', $turn->id)->first());
-        var_dump($island->islandTerrains->where('turn_id', $turn->id)->first()->terrain);
-        var_dump($island->islandLogs()->whereIn('turn_id',
+        ])));
+        var_dump(\Js::from($island));
+        var_dump(\Js::from($island->islandStatuses->where('turn_id', $turn->id)->first()));
+        var_dump(\Js::from($island->islandTerrains->where('turn_id', $turn->id)->first()->terrain));
+        var_dump(\Js::from($island->islandLogs()->whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
-        )->orderByDesc('id')->get('log'));
+        )->orderByDesc('id')->get('log')));
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
 
         return response()->json();
