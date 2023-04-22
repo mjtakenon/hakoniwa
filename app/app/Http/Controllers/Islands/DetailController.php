@@ -11,7 +11,7 @@ class DetailController extends Controller
 {
     public function get($islandId) {
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
-        $island = Island::find($islandId);
+        $island = Island::find($islandId)->firstOrFail();
 
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         if (is_null($island) || !is_null($island->deleted_at)) {
@@ -25,19 +25,19 @@ class DetailController extends Controller
 
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
 
-        var_dump(\Js::from(json_encode([
-            'width' => \HakoniwaService::getMaxWidth(),
-            'height' => \HakoniwaService::getMaxHeight(),
-        ])));
-        var_dump(\Js::from($island));
-        var_dump(\Js::from($island->islandStatuses->where('turn_id', $turn->id)->first()));
-        var_dump(\Js::from($island->islandTerrains->where('turn_id', $turn->id)->first()->terrain));
-        var_dump(\Js::from($island->islandLogs()->whereIn('turn_id',
-            Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
-        )->orderByDesc('id')->get('log')));
+//        var_dump(\Js::from(json_encode([
+//            'width' => \HakoniwaService::getMaxWidth(),
+//            'height' => \HakoniwaService::getMaxHeight(),
+//        ])));
+//        var_dump(\Js::from($island));
+//        var_dump(\Js::from($island->islandStatuses->where('turn_id', $turn->id)->first()));
+//        var_dump(\Js::from($island->islandTerrains->where('turn_id', $turn->id)->first()->terrain));
+//        var_dump(\Js::from($island->islandLogs()->whereIn('turn_id',
+//            Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
+//        )->orderByDesc('id')->get('log')));
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
 
-        return response()->json();
+//        return response()->json();
 
         return view('pages.islands.detail', [
             'user' => \Auth::user(),
