@@ -4,11 +4,11 @@
     <div id="app">
         @include('components.header')
         <sightseeing-page
-            :hakoniwa="{{ json_encode($hakoniwa) }}"
-            :island="{{ json_encode($island) }}"
-            :island-status="{{ json_encode($islandStatus) }}"
-            :island-terrain="{{ json_encode($islandTerrain->terrain) }}"
-            :island-log="{{ json_encode($islandLog) }}"
+            :hakoniwa="{{ Js::from($hakoniwa) }}"
+            :island="{{ Js::from($island) }}"
+            :island-status="{{ Js::from($islandStatus) }}"
+            :island-terrain="{{ Js::from($islandTerrain->terrain) }}"
+            :island-log="{{ Js::from($islandLog) }}"
         ></sightseeing-page>
     </div>
 @endsection

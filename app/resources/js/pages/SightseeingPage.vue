@@ -6,10 +6,7 @@
         <hr/>
         <island-viewer></island-viewer>
         <hr/>
-        <log-viewer
-            :island="$store.state.island"
-            :island-log="$store.state.islandLog"
-        ></log-viewer>
+        <log-viewer></log-viewer>
     </div>
 </template>
 
