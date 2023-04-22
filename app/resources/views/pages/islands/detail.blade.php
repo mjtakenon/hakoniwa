@@ -8,14 +8,14 @@
 //            var_dump($island);
             var_dump($islandStatus);
 //            var_dump($islandTerrain->terrain);
-            var_dump($islandLog);
-//        @endphp
+//            var_dump($islandLog);
+        @endphp
         <sightseeing-page
             :hakoniwa="@js($hakoniwa)"
 {{--            :island="@js($island)"--}}
             :island-status="@js($islandStatus)"
 {{--            :island-terrain="@js($islandTerrain->terrain)"--}}
-            :island-log="@js($islandLog)"
+{{--            :island-log="@js($islandLog)"--}}
         ></sightseeing-page>
     </div>
 @endsection
