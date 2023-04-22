@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Islands;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Terrain\Terrain;
 
 class DetailController extends Controller
 {
@@ -22,8 +23,6 @@ class DetailController extends Controller
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 
-        $terrain = $island->islandTerrains->where('turn_id', $turn->id)->first()->terrain;
-
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         return view('pages.islands.detail', [
             'user' => \Auth::user(),
@@ -33,7 +32,7 @@ class DetailController extends Controller
             ]),
             'island' => $island,
             'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
-            'terrain' => $terrain,
+            'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
             'islandLog' => $island->islandLogs()->whereIn('turn_id',
                 Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
             )->orderByDesc('id')->get('log'),

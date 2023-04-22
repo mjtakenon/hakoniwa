@@ -7,7 +7,7 @@
             :hakoniwa="{{ json_encode($hakoniwa) }}"
             :island="{{ json_encode($island) }}"
             :island-status="{{ json_encode($islandStatus) }}"
-            :island-terrain="{{ json_encode($terrain) }}"
+            :island-terrain="{{ json_encode($islandTerrain->terrain) }}"
             :island-log="{{ json_encode($islandLog) }}"
         ></sightseeing-page>
     </div>

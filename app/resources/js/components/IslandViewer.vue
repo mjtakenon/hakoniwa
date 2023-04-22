@@ -1,10 +1,10 @@
 <template>
     <div id="island">
-        <div class="row m-0 p-0" v-for="y of hakoniwa.height" :key="y">
+        <div class="row m-0 p-0" v-for="y of $store.state.hakoniwa.height" :key="y">
             <div class="right-padding" v-if="y%2 === 1">
                 {{ y-1 }}
             </div>
-            <div class="cell" v-for="x of hakoniwa.width" :key="x">
+            <div class="cell" v-for="x of $store.state.hakoniwa.width" :key="x">
                 <img
                     @mouseover="onMouseOverCell(x-1, y-1)"
                     @mouseleave="onMouseLeaveCell(x-1, y-1)"
@@ -20,10 +20,10 @@
             <div class="is-flex">
                 <img
                     class="is-flex-direction-column hover-window-img"
-                    :src="getIslandTerrain(hoverCell.x, hoverCell.y).data.image_path"
+                    :src="getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.image_path"
                 >
                 <div class="is-flex-direction-column hover-window-info">
-                    {{ (getIslandTerrain(hoverCell.x, hoverCell.y).data.info) }}
+                    {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
                 </div>
             </div>
         </div>
@@ -31,12 +31,14 @@
 </template>
 
 <script lang="ts">
+import { Terrain } from "../store/Terrain";
+
 export default {
     components: {},
     data() {
         return {
             showHoverWindow: false,
-            hoverCell: {
+            hoverCellPoint: {
                 "x": 0,
                 "y": 0,
             },
@@ -47,18 +49,18 @@ export default {
     setup() {
     },
     methods: {
-        getIslandTerrain(x, y) {
-            return this.islandTerrain.filter(function(item, idx){
+        getIslandTerrain(x, y): Terrain {
+            return this.$store.state.islandTerrain.filter(function(item, idx){
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
         },
         onMouseOverCell(x, y) {
             this.showHoverWindow = true;
-            this.hoverCell.x = x;
-            this.hoverCell.y = y;
+            this.hoverCellPoint.x = x;
+            this.hoverCellPoint.y = y;
 
             // 左半分
-            if (this.hoverCell.x < this.hakoniwa.width / 2) {
+            if (this.hoverCellPoint.x < this.$store.state.hakoniwa.width / 2) {
                 this.hoverWindowLeft = 250;
             } else {
                 this.hoverWindowLeft = 0;
@@ -76,7 +78,7 @@ export default {
         // console.log(this.$props)
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog'],
+    props: [],
 };
 </script>
 

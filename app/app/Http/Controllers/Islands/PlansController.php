@@ -40,7 +40,7 @@ class PlansController extends Controller
 
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
         //
-//        $islandTerrain = IslandTerrain::find($islandId);
+//        $islandTerrain = Terrain::find($islandId);
 //        $islandTerrain->terrain = Terrain::create()->init()->toJson();
 //        $islandTerrain->save();
 //

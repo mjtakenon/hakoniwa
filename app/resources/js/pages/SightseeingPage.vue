@@ -2,21 +2,13 @@
     <div id="sightseeing-page" class="wrapper">
         <div class="title">{{ island.name }}島へようこそ！</div>
         <div class="subtitle"><a href="/">トップへ戻る</a></div>
-        <status-table
-            :island-status="islandStatus"
-        ></status-table>
+        <status-table></status-table>
         <hr/>
-        <island-viewer
-            :hakoniwa="hakoniwa"
-            :island="island"
-            :island-status="islandStatus"
-            :island-terrain="islandTerrain"
-            :island-log="islandLog"
-        ></island-viewer>
+        <island-viewer></island-viewer>
         <hr/>
         <log-viewer
-            :island="island"
-            :island-log="islandLog"
+            :island="$store.state.island"
+            :island-log="$store.state.islandLog"
         ></log-viewer>
     </div>
 </template>
@@ -25,6 +17,7 @@
 import StatusTable from "../components/StatusTable.vue";
 import LogViewer from "../components/LogViewer.vue";
 import IslandViewer from "../components/IslandViewer.vue";
+import lodash from "lodash";
 
 export default {
     components: {
@@ -45,30 +38,13 @@ export default {
     },
     setup() {
     },
-    methods: {
-        getIslandTerrain(x, y) {
-            return this.islandTerrain.filter(function(item, idx){
-                if (item.data.point.x === x && item.data.point.y === y) return true;
-            }).pop();
-        },
-        onMouseOverCell(x, y) {
-            this.showHoverWindow = true;
-            this.hoverCell.x = x;
-            this.hoverCell.y = y;
-
-            // 左半分
-            if (this.hoverCell.x < this.hakoniwa.width / 2) {
-                this.hoverWindowLeft = 250;
-            } else {
-                this.hoverWindowLeft = 0;
-            }
-        },
-        onMouseLeaveCell(x, y) {
-            this.showHoverWindow = false;
-        }
-    },
-    mounted() {
-        // console.log(this.$props)
+    methods: {},
+    beforeMount() {
+        this.$store.state.hakoniwa = JSON.parse(this.hakoniwa)
+        this.$store.state.island = this.island
+        this.$store.state.islandStatus = this.islandStatus
+        this.$store.state.islandTerrain = JSON.parse(this.islandTerrain)
+        this.$store.state.islandLog = this.islandLog
     },
     computed: {
         // showHoverWindow() { return true; }

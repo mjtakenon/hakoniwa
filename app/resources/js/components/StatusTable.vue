@@ -11,11 +11,11 @@
         </thead>
         <tbody>
         <tr>
-            <td> {{ islandStatus.development_points }} pts</td>
-            <td> {{ islandStatus.population }} 人</td>
-            <td> {{ islandStatus.funds }} 億円</td>
-            <td> {{ islandStatus.foods }} ㌧</td>
-            <td> {{ islandStatus.resources }} ㌧</td>
+            <td> {{ $store.state.islandStatus.development_points }} pts</td>
+            <td> {{ $store.state.islandStatus.population }} 人</td>
+            <td> {{ $store.state.islandStatus.funds }} 億円</td>
+            <td> {{ $store.state.islandStatus.foods }} ㌧</td>
+            <td> {{ $store.state.islandStatus.resources }} ㌧</td>
         </tr>
         <tr>
             <th> 環境 </th>
@@ -25,11 +25,11 @@
             <th> 資源生産 </th>
         </tr>
         <tr>
-            <td> {{ ENVIRONMENT[islandStatus.environment] }}</td>
-            <td> {{ islandStatus.area }} 万坪</td>
-            <td> {{ islandStatus.foods_production_number_of_people }} 人規模</td>
-            <td> {{ islandStatus.funds_production_number_of_people }} 人規模</td>
-            <td> {{ islandStatus.resources_production_number_of_people }} 人規模</td>
+            <td> {{ ENVIRONMENT[$store.state.islandStatus.environment] }}</td>
+            <td> {{ $store.state.islandStatus.area }} 万坪</td>
+            <td> {{ $store.state.islandStatus.foods_production_number_of_people }} 人規模</td>
+            <td> {{ $store.state.islandStatus.funds_production_number_of_people }} 人規模</td>
+            <td> {{ $store.state.islandStatus.resources_production_number_of_people }} 人規模</td>
         </tr>
         </tbody>
     </table>
@@ -46,7 +46,7 @@ export default {
             },
         }
     },
-    props: ['islandStatus', ],
+    props: [],
 }
 </script>
 
