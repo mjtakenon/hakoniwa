@@ -9,13 +9,11 @@ class Turn extends Model
 {
     use HasFactory;
 
-    protected $dates = [
-        'created_at',
-        'next_turn_scheduled_at'
-    ];
 
     protected $casts = [
         'turn' => 'integer',
+        'created_at' => 'datetime',
+        'next_turn_scheduled_at' => 'datetime',
     ];
 
     const UPDATED_AT = null;
