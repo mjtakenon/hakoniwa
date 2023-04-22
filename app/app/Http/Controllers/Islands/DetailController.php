@@ -24,6 +24,21 @@ class DetailController extends Controller
         $getLogRecentTurns = 5;
 
         \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+
+        var_dump(json_encode([
+            'width' => \HakoniwaService::getMaxWidth(),
+            'height' => \HakoniwaService::getMaxHeight(),
+        ]));
+        var_dump($island);
+        var_dump($island->islandStatuses->where('turn_id', $turn->id)->first());
+        var_dump($island->islandTerrains->where('turn_id', $turn->id)->first()->terrain);
+        var_dump($island->islandLogs()->whereIn('turn_id',
+            Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
+        )->orderByDesc('id')->get('log'));
+        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+
+        return response()->json();
+
         return view('pages.islands.detail', [
             'user' => \Auth::user(),
             'hakoniwa' => json_encode([
