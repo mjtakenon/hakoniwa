@@ -10,12 +10,12 @@
 //            var_dump($islandTerrain->terrain);
 //            var_dump($islandLog);
         @endphp
-{{--        <sightseeing-page--}}
-{{--            :hakoniwa="@js($hakoniwa)"--}}
+        <sightseeing-page
+            :hakoniwa="@js($hakoniwa)"
 {{--            :island="@js($island)"--}}
 {{--            :island-status="@js($islandStatus)"--}}
 {{--            :island-terrain="@js($islandTerrain->terrain)"--}}
 {{--            :island-log="@js($islandLog)"--}}
-{{--        ></sightseeing-page>--}}
+        ></sightseeing-page>
     </div>
 @endsection
