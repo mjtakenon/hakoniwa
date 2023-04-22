@@ -20,25 +20,25 @@ class PlansController extends Controller
     public function get(int $islandId)
     {
         \DB::enableQueryLog();
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $island = Island::find($islandId);
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         if (is_null($island) || !is_null($island->deleted_at)) {
             abort(404);
         }
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $island->id) {
             abort(403);
         }
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $turn = Turn::latest()->firstOrFail();
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         //
 //        $islandTerrain = Terrain::find($islandId);
 //        $islandTerrain->terrain = Terrain::create()->init()->toJson();
@@ -55,19 +55,19 @@ class PlansController extends Controller
 
         $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $user = \Auth::user();
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $islandPlans = Plans::fromJson($islandPlan->plan)->toJsonWithStatic();
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $islandStatuses = $island->islandStatuses->where('turn_id', $turn->id)->first();
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $islandTerrains = $island->islandTerrains->where('turn_id', $turn->id)->first();
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $islandLog = $island->islandLogs()->whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
         )->orderByDesc('id')->get('log');
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
 
         \Log::debug(print_r(\DB::getQueryLog(),true));
         $view = view('pages.islands.plans', [
@@ -83,7 +83,7 @@ class PlansController extends Controller
             'islandLog' => $islandLog,
         ]);
         \Log::debug(print_r(\DB::getQueryLog(),true));
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         return $view;
     }
 

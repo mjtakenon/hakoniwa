@@ -10,20 +10,20 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 class DetailController extends Controller
 {
     public function get($islandId) {
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $island = Island::find($islandId)->firstOrFail();
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         if (is_null($island) || !is_null($island->deleted_at)) {
             abort(404);
         }
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
         $turn = Turn::latest()->firstOrFail();
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
 
 //        var_dump(\Js::from(json_encode([
 //            'width' => \HakoniwaService::getMaxWidth(),
@@ -35,7 +35,7 @@ class DetailController extends Controller
 //        var_dump(\Js::from($island->islandLogs()->whereIn('turn_id',
 //            Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
 //        )->orderByDesc('id')->get('log')));
-        \Log::debug(__CLASS__ . ' ' . __METHOD__ . ' ' . __LINE__);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
 
 //        return response()->json();
 
