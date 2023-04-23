@@ -3,20 +3,14 @@
 @section('contents')
     <div id="app">
         @include('components.header')
-        島エディットコメントアウト中
-        @js($hakoniwa)
-        @js($island)
-        @js($islandStatus)
-        @js($islandTerrain->terrain)
-        @js($islandLog)
-{{--        <plan-page--}}
-{{--            :hakoniwa="{{ $hakoniwa }}"--}}
-{{--            :island="{{ $island }}"--}}
-{{--            :island-status="{{ $islandStatus }}"--}}
-{{--            :island-plans="{{ $islandPlans }}"--}}
-{{--            :island-terrain="{{ $islandTerrain->terrain }}"--}}
-{{--            :island-log="{{ $islandLog }}"--}}
-{{--            :plan-list="{{ json_encode(\PlanService::getAllPlans()) }}"--}}
-{{--        ></plan-page>--}}
+        <plan-page
+            :hakoniwa="@js($hakoniwa)"
+            :island="@js($island)"
+            :island-status="@js($islandStatus)"
+            :island-plans="@js($islandPlans)"
+            :island-terrain="@js($islandTerrain->terrain)"
+            :island-log="@js($islandLog)"
+            :plan-list="@js(\PlanService::getAllPlans())"
+        ></plan-page>
     </div>
 @endsection

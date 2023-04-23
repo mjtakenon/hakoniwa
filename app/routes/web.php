@@ -29,10 +29,16 @@ Route::prefix('/islands')->middleware(array_merge($baseMiddleware))->group( func
         ->where('island_id', '[0-9]+');
 });
 
-Route::prefix('/islands')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
-    Route::get('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'get'])
-        ->where('island_id', '[0-9]+');
-    Route::put('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'put'])
+Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
+
+    Route::middleware(['auth:sanctum'])->group(function() {
+        Route::get('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'get'])
+            ->where('island_id', '[0-9]+');
+        Route::put('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'put'])
+            ->where('island_id', '[0-9]+');
+    });
+
+    Route::get('{island_id}/terrains', [\App\Http\Controllers\Islands\TerrainController::class, 'get'])
         ->where('island_id', '[0-9]+');
 //    Route::get('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'get']);
 //    Route::post('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'post']);
