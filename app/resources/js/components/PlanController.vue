@@ -71,7 +71,7 @@
                 数量：
             </span>
             <div class="select is-small">
-                <select v-model="selectedAmount">
+                <select v-model="$store.state.selectedAmount">
                     <option v-for="n of 99" :key="n" :value="n">
                         {{ n }}
                     </option>
@@ -117,7 +117,6 @@ export default {
         return {
             MAX_PLAN_NUMBER: 30,
             selectedPlan: 'grading',
-            selectedAmount: 1,
             selectedTargetIsland: this.$store.state.island.name,
         }
     },
@@ -132,8 +131,9 @@ export default {
                         x: this.$store.state.selectedPoint.x,
                         y: this.$store.state.selectedPoint.y,
                     },
-                    amount: this.selectedAmount,
+                    amount: this.$store.state.selectedAmount,
                     usePoint: this.$store.state.planCandidate[this.selectedPlan].usePoint,
+                    priceString: ''
                 }
             };
         },

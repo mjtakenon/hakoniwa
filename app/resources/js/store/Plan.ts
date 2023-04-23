@@ -5,6 +5,7 @@ export interface Plan {
         point: Point,
         amount: number,
         usePoint: boolean,
+        priceString: string,
     },
 }
 
@@ -19,6 +20,7 @@ export function getDefaultPlan(): Plan {
             },
             amount: 1,
             usePoint: false,
+            priceString: '(+10億円)',
         }
     }
 }

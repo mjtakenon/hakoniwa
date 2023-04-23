@@ -6,7 +6,7 @@
         <hr/>
         <div class="is-flex is-flex-direction-row">
             <plan-controller></plan-controller>
-            <island-viewer></island-viewer>
+            <island-editor></island-editor>
             <plan-list></plan-list>
         </div>
         <hr/>
@@ -17,14 +17,14 @@
 <script lang="ts">
 import StatusTable from "../components/StatusTable.vue";
 import LogViewer from "../components/LogViewer.vue";
-import IslandViewer from "../components/IslandViewer.vue";
+import IslandEditor from "../components/IslandEditor.vue";
 import PlanController from "../components/PlanController.vue";
 import PlanList from "../components/PlanList.vue";
 import lodash from 'lodash';
 
 export default {
     components: {
-        IslandViewer,
+        IslandEditor,
         PlanController,
         StatusTable,
         LogViewer,
