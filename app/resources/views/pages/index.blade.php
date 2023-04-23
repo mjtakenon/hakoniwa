@@ -34,11 +34,11 @@
                     <tr>
                         <td> {{ $index+1 }} </td>
                         <td> <a href="{{ '/islands/' . $island->id }}"> {{ $island->name }}島 </a> </td>
-                        <td> {{ $island->islandStatuses->first()->development_points }} pts </td>
-                        <td> {{ $island->islandStatuses->first()->population }} 人 </td>
-                        <td> {{ $island->islandStatuses->first()->funds }} 億円 </td>
-                        <td> {{ $island->islandStatuses->first()->foods }} ㌧ </td>
-                        <td> {{ $island->islandStatuses->first()->resources }} ㌧ </td>
+                        <td> {{ $island->development_points }} pts </td>
+                        <td> {{ $island->population }} 人 </td>
+                        <td> {{ $island->funds }} 億円 </td>
+                        <td> {{ $island->foods }} ㌧ </td>
+                        <td> {{ $island->resources }} ㌧ </td>
                     </tr>
                 @endforeach
                 </tbody>
