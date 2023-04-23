@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         getIslandTerrain(x, y): Terrain {
-            return this.$store.state.islandTerrain.filter(function(item, idx){
+            return this.$store.state.terrains.filter(function(item, idx){
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
         },

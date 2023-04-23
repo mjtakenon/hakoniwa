@@ -6,17 +6,17 @@ import { api } from "./api";
 import { Island } from "./Island";
 import lodash from "lodash";
 import { Terrain } from "./Terrain";
-import { IslandStatus } from "./IslandStatus";
+import { Status } from "./Status";
 import { Hakoniwa } from "./Hakoniwa";
-import { IslandLog } from "./Log";
+import { Log } from "./Log";
 
 // ストアのステートに対して型を定義します
 export interface State {
     hakoniwa: Hakoniwa,
     island: Island,
-    islandTerrain: Array<Terrain>,
-    islandStatus: IslandStatus,
-    islandLog: Array<IslandLog>,
+    terrains: Array<Terrain>,
+    status: Status,
+    logs: Array<Log>,
     plan: Plan[],
     sentPlan: Plan[],
     selectedPoint: Point,
@@ -38,9 +38,9 @@ export const store = createStore<State>({
         isSendingPlan: false,
         hakoniwa: { width: 0, height: 0 },
         island: { id: 0, name: '', owner_name: ''},
-        islandTerrain: [],
-        islandStatus: { area: 0, development_points: 0, environment: '', foods: 0, foods_production_number_of_people: 0, funds: 0, funds_production_number_of_people: 0, population: 0, resources: 0, resources_production_number_of_people: 0 },
-        islandLog: [],
+        terrains: [],
+        status: { area: 0, development_points: 0, environment: '', foods: 0, foods_production_number_of_people: 0, funds: 0, funds_production_number_of_people: 0, population: 0, resources: 0, resources_production_number_of_people: 0 },
+        logs: [],
     },
     actions: {
         async sendPlan(context, payload) {
@@ -56,12 +56,12 @@ export const store = createStore<State>({
     },
     mutations: {
         sentPlan(state, payload) {
+
+            // TODO: storeは消す
             console.log(payload)
             store.state.plan = JSON.parse(payload.plan);
             store.state.isSendingPlan = false
             store.state.sentPlan = lodash.cloneDeep(store.state.plan)
-            // console.log('mutations')
-            // state.user.name = payload.name // ➂stateの更新
         }
     }
 })

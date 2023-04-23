@@ -11,11 +11,11 @@
         </thead>
         <tbody>
         <tr>
-            <td> {{ $store.state.islandStatus.development_points }} pts</td>
-            <td> {{ $store.state.islandStatus.population }} 人</td>
-            <td> {{ $store.state.islandStatus.funds }} 億円</td>
-            <td> {{ $store.state.islandStatus.foods }} ㌧</td>
-            <td> {{ $store.state.islandStatus.resources }} ㌧</td>
+            <td> {{ $store.state.status.development_points }} pts</td>
+            <td> {{ $store.state.status.population }} 人</td>
+            <td> {{ $store.state.status.funds }} 億円</td>
+            <td> {{ $store.state.status.foods }} ㌧</td>
+            <td> {{ $store.state.status.resources }} ㌧</td>
         </tr>
         <tr>
             <th> 環境 </th>
@@ -25,11 +25,11 @@
             <th> 資源生産 </th>
         </tr>
         <tr>
-            <td> {{ ENVIRONMENT[$store.state.islandStatus.environment] }}</td>
-            <td> {{ $store.state.islandStatus.area }} 万坪</td>
-            <td> {{ $store.state.islandStatus.foods_production_number_of_people }} 人規模</td>
-            <td> {{ $store.state.islandStatus.funds_production_number_of_people }} 人規模</td>
-            <td> {{ $store.state.islandStatus.resources_production_number_of_people }} 人規模</td>
+            <td> {{ ENVIRONMENT[$store.state.status.environment] }}</td>
+            <td> {{ $store.state.status.area }} 万坪</td>
+            <td> {{ $store.state.status.foods_production_number_of_people }} 人規模</td>
+            <td> {{ $store.state.status.funds_production_number_of_people }} 人規模</td>
+            <td> {{ $store.state.status.resources_production_number_of_people }} 人規模</td>
         </tr>
         </tbody>
     </table>

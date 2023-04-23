@@ -37,16 +37,17 @@ export default {
     },
     methods: {},
     beforeMount() {
+        console.log(JSON.parse(this.island.terrains));
         this.$store.state.hakoniwa = JSON.parse(this.hakoniwa)
         this.$store.state.island = this.island
-        this.$store.state.islandStatus = this.islandStatus
-        this.$store.state.islandTerrain = JSON.parse(this.islandTerrain)
-        this.$store.state.islandLog = this.islandLog
+        this.$store.state.status = this.island.status
+        this.$store.state.terrains = JSON.parse(this.island.terrains)
+        this.$store.state.logs = this.island.logs
     },
     computed: {
         // showHoverWindow() { return true; }
     },
-    props: ['hakoniwa', 'island', 'islandStatus', 'islandTerrain', 'islandLog'],
+    props: ['hakoniwa', 'island'],
 };
 </script>
 

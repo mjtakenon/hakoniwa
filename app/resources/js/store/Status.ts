@@ -1,4 +1,4 @@
-export interface IslandStatus {
+export interface Status {
     area: number,
     development_points: number,
     environment: string,

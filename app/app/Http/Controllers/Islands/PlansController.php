@@ -37,7 +37,7 @@ class PlansController extends Controller
 //        $islandTerrain->terrain = Terrains::create()->init()->toJson();
 //        $islandTerrain->save();
 //
-//        $islandStatus = IslandStatus::find($islandId);
+//        $islandStatus = Status::find($islandId);
 //        $islandStatus->setInitialStatus(Terrains::create()->fromJson($islandTerrain->terrain));
 //        $islandStatus->save();
 //

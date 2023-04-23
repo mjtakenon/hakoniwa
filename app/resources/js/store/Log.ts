@@ -1,3 +1,3 @@
-export interface IslandLog {
+export interface Log {
     log: string,
 }
