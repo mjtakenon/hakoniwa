@@ -10,15 +10,13 @@ use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\AbandonmentLog;
-use App\Services\Hakoniwa\Log\ExecuteLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
-use App\Services\Hakoniwa\Plan\AbandonmentPlan;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class ExecuteTurn extends Command
 {
@@ -46,30 +44,30 @@ class ExecuteTurn extends Command
         \Log::info('start ' . $this->signature);
         $now = hrtime(true);
 
-        \DB::transaction(function() {
+        \DB::transaction(function () {
             $turn = Turn::latest()->firstOrFail();
 
             // ターン更新
             $newTurn = new Turn();
-            $newTurn->turn = $turn->turn+1;
-            $newTurn->next_turn_scheduled_at = $turn->next_turn_scheduled_at->addHour();
+            $newTurn->turn = $turn->turn + 1;
+            $newTurn->next_turn_scheduled_at = now()->addMinutes(config('app.turn_update_minutes'));
             $newTurn->save();
 
             $islands = Island::with([
-                    'islandStatuses' => function ($query) use ($turn) {
-                        $query->where('turn_id', $turn->id);
-                    },
-                    'islandTerrains' => function ($query) use ($turn) {
-                        $query->where('turn_id', $turn->id);
-                    },
-                    'islandPlans' => function ($query) use ($turn) {
-                        $query->where('turn_id', $turn->id);
-                    },
-                ])->whereNull('deleted_at')->get();
+                'islandStatuses' => function ($query) use ($turn) {
+                    $query->where('turn_id', $turn->id);
+                },
+                'islandTerrains' => function ($query) use ($turn) {
+                    $query->where('turn_id', $turn->id);
+                },
+                'islandPlans' => function ($query) use ($turn) {
+                    $query->where('turn_id', $turn->id);
+                },
+            ])->whereNull('deleted_at')->get();
 
             // 生産・消費
             /** @var Island $island */
-            foreach($islands as $island) {
+            foreach ($islands as $island) {
                 $islandPlan = $island->islandPlans->firstOrFail();
                 $islandTerrain = $island->islandTerrains->firstOrFail();
                 $islandStatus = $island->islandStatuses->firstOrFail();
@@ -152,7 +150,7 @@ class ExecuteTurn extends Command
             }
 
             // 放棄された島はログに入れ、物理削除する
-            foreach($islands as $island) {
+            foreach ($islands as $island) {
                 if (!is_null($island->deleted_at)) {
                     $island->forceDelete();
                 }

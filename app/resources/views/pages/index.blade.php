@@ -7,6 +7,7 @@
             <h1 class="title"> やまにてぃ </h1>
             <h2 class="subtitle"> ターン: {{ $turn->turn }}  </h2>
             <h2 class="subtitle"> 次回更新 {{ $turn->next_turn_scheduled_at }}  </h2>
+            <p class="subtitle" style="color: orangered">現在開発中のため、多くの機能が未実装です。何があっても許せる方のみ登録してください。</p>
             <p> TAITOの島育成ゲームソーシャルネットワークサービス「しまにてぃ」の要素を取り入れた平和系箱庭です。更新は1時間ごとです。 </p>
             <p> フルスクラッチで実装しているため、既存の箱庭と仕様が違う点はご容赦ください。 </p>
             <p> 管理人の懐事情により閉じるかもしれない点もご容赦ください。 </p>

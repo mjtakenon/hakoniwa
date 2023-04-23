@@ -221,4 +221,7 @@ return [
 
     ])->toArray(),
 
+    'hakoniwa' => [
+        'turn_update_minutes' => env('TURN_UPDATE_MINUTES')
+    ],
 ];
