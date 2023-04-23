@@ -85,6 +85,8 @@ class City extends Cell
             if ($this->population >= City::MIN_POPULATION) {
                 $this->population = City::MIN_POPULATION;
             }
+        } else {
+            $this->population += random_int($minPopulationIncrementalRate, $maxPopulationIncrementalRate) * 100;
         }
 
         if ($this->population >= City::MIN_POPULATION) {
