@@ -54,7 +54,7 @@ class DetailController extends Controller
                 'area' => $islandStatus->area,
             ],
             'islandTerrain' => [
-                'terrain' => substr($islandTerrain->terrain,0,10000),
+                'terrain' => $islandTerrain->terrain,
             ],
             'islandLog' => [
                 'log' => $islandLog->log,
