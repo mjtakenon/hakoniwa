@@ -30,7 +30,7 @@ class DetailController extends Controller
             ],
         );
 
-        $view = view('pages.tests.'.$id, [
+        $json = response()->json([
             'user' => \Auth::user(),
             'hakoniwa' => [
                 'width' => \HakoniwaService::getMaxWidth(),
@@ -53,14 +53,14 @@ class DetailController extends Controller
                 'environment' => $islandStatus->environment,
                 'area' => $islandStatus->area,
             ],
-//            'islandTerrain' => [
-//                'terrain' => substr($islandTerrain->terrain,0,10000),
-//            ],
+            'islandTerrain' => [
+                'terrain' => substr($islandTerrain->terrain,0,10000),
+            ],
             'islandLog' => [
                 'log' => $islandLog->log,
             ]
         ]);
         \Log::debug(__METHOD__ . ' ' . __LINE__);
-        return $view;
+        return $json;
     }
 }
