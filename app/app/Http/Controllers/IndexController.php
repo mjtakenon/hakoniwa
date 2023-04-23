@@ -11,7 +11,8 @@ class IndexController extends Controller
     {
         $turn = Turn::latest()->firstOrFail();
 
-        $islands = Island::where('turn_id', $turn->id)
+        $islands = Island::select('*', 'islands.id as id')
+            ->where('turn_id', $turn->id)
             ->whereNull('deleted_at')
             ->join('island_statuses','islands.id','=','island_statuses.island_id')
             ->orderBy('island_statuses.development_points', 'desc')
