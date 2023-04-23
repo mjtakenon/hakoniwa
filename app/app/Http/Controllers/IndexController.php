@@ -9,9 +9,11 @@ class IndexController extends Controller
 {
     public function get()
     {
-        $islands = Island::with(['islandStatuses' => function ($query) {
+        $islands = Island::with(['orderByDevelopmentPoints' => function ($query) {
             $query->where('turn_id', Turn::latest()->firstOrFail()->id);
-        }])->whereNull('deleted_at')->get();
+        }])
+        ->whereNull('deleted_at')
+        ->get();
 
         return view('pages.index', [
             'islands' => $islands,

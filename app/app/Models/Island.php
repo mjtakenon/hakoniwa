@@ -25,6 +25,14 @@ class Island extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function orderByDevelopmentPoints() {
+        return $this->hasMany(IslandStatus::class)
+            ->orderBy('development_points', 'desc');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function islandTerrains() {
         return $this->hasMany(IslandTerrain::class);
     }
