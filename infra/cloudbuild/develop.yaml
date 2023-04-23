@@ -96,7 +96,7 @@ steps:
     ]
     waitFor: [ 'migrate' ]
 
-  - id: 'deploy-cloud-run-jobgs'
+  - id: 'deploy-cloud-run-jobs'
     name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'beta', 'run', 'jobs', 'update', '${_CLOUD_RUN_JOB_NAME}',
