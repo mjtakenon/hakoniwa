@@ -24,6 +24,13 @@
                 >
                 <div class="is-flex-direction-column hover-window-info">
                     {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
+                    <div v-for="(plan, index) of $store.state.plans">
+                        <div v-if="plan.data.point.x === hoverCellPoint.x && plan.data.point.y === hoverCellPoint.y && plan.data.usePoint">
+                            <span>[{{ index + 1 }}] </span>
+                            <span>{{ plan.data.name }}</span>
+                            <span v-if="plan.data.amount >= 2"> ({{ plan.data.amount }}回実施)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
