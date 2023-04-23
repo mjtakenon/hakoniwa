@@ -52,7 +52,7 @@ Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->gr
     Route::get('callback', [\App\Http\Controllers\Auth\Google\CallbackController::class, 'get']);
 });
 
-Route::prefix('/test/')->middleware($baseMiddleware)->group( function() {
+Route::prefix('/test/')->middleware()->group( function() {
     Route::get('{id}', [\App\Http\Controllers\Test\DetailController::class, 'get']);
 });
 
