@@ -4,7 +4,6 @@
             {{ $store.state.island.name }}島の近況
         </div>
         <div v-for="log of $store.state.logs" :key="log.id">
-<!--            ターン {{ log.turn_id }} :-->
             <span v-for="context of JSON.parse(log.log)" :key="context.text">
                 <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">
                     {{ context.text }}

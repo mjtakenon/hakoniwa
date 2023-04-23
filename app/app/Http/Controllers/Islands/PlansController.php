@@ -17,6 +17,8 @@ class PlansController extends Controller
 {
     use WebApi;
 
+    const DEFAULT_SHOW_LOG_TURNS = 5;
+
     public function get(int $islandId)
     {
         $island = Island::find($islandId);
@@ -45,29 +47,54 @@ class PlansController extends Controller
 //        $islandPlan->plan = Plans::init()->toJson();
 //        $islandPlan->save();
 
-        $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
-
         $user = \Auth::user();
-        $islandPlans = Plans::fromJson($islandPlan->plan)->toJsonWithStatic();
-        $islandStatuses = $island->islandStatuses->where('turn_id', $turn->id)->first();
-        $islandTerrains = $island->islandTerrains->where('turn_id', $turn->id)->first();
-        $islandLog = $island->islandLogs()->whereIn('turn_id',
+        $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail()->plan;
+        $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
+        $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
+        $islandLogs = $island->islandLogs()->whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
         )->orderByDesc('id')->get('log');
 
-        $view = view('pages.islands.plans', [
-            'user' => $user,
-            'hakoniwa' => json_encode([
+//        $view = view('pages.islands.plans', [
+//            'user' => $user,
+//            'hakoniwa' => json_encode([
+//                'width' => \HakoniwaService::getMaxWidth(),
+//                'height' => \HakoniwaService::getMaxHeight(),
+//            ]),
+//            'island' => $island,
+//            'islandPlans' => $islandPlans,
+//            'islandStatus' => $islandStatuses,
+//            'islandTerrain' => $islandTerrains,
+//            'islandLog' => $islandLog,
+//        ]);
+//        return $view;
+
+        return view('pages.islands.plans', [
+            'hakoniwa' => [
                 'width' => \HakoniwaService::getMaxWidth(),
                 'height' => \HakoniwaService::getMaxHeight(),
-            ]),
-            'island' => $island,
-            'islandPlans' => $islandPlans,
-            'islandStatus' => $islandStatuses,
-            'islandTerrain' => $islandTerrains,
-            'islandLog' => $islandLog,
+            ],
+            'island' => [
+                'id' => $island->id,
+                'name' => $island->name,
+                'owner_name' => $island->owner_name,
+                'status' => [
+                    'development_points' => $islandStatus->development_points,
+                    'funds' => $islandStatus->funds,
+                    'foods' => $islandStatus->foods,
+                    'resources' => $islandStatus->resources,
+                    'population' => $islandStatus->population,
+                    'funds_production_number_of_people' => $islandStatus->funds_production_number_of_people,
+                    'foods_production_number_of_people' => $islandStatus->foods_production_number_of_people,
+                    'resources_production_number_of_people' => $islandStatus->resources_production_number_of_people,
+                    'environment' => $islandStatus->environment,
+                    'area' => $islandStatus->area,
+                ],
+                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(),
+                'plans' => Plans::fromJson($islandPlans)->toArrayWithStatic(),
+                'logs' => $islandLogs
+            ],
         ]);
-        return $view;
     }
 
     public function put(int $islandId): \Illuminate\Http\JsonResponse
@@ -107,6 +134,6 @@ class PlansController extends Controller
         $islandPlan->plan = $plans->toJson();
         $islandPlan->save();
 
-        return response()->json(['plan' => $plans->toJsonWithStatic()]);
+        return response()->json(['plan' => $plans->toArrayWithStatic()]);
     }
 }

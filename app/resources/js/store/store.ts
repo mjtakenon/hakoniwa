@@ -1,10 +1,10 @@
 // store.ts
 import { InjectionKey } from 'vue'
 import { createStore, Store } from 'vuex'
+import lodash from "lodash";
 import { Plan } from "./Plan";
 import { api } from "./api";
 import { Island } from "./Island";
-import lodash from "lodash";
 import { Terrain } from "./Terrain";
 import { Status } from "./Status";
 import { Hakoniwa } from "./Hakoniwa";
@@ -17,12 +17,13 @@ export interface State {
     terrains: Array<Terrain>,
     status: Status,
     logs: Array<Log>,
-    plan: Plan[],
-    sentPlan: Plan[],
+    plans: Plan[],
+    sentPlans: Plan[],
     selectedPoint: Point,
     selectedPlanNumber: number,
     isPlanSent: boolean,
     isSendingPlan: boolean,
+    planCandidate: object,
 }
 
 // インジェクションキーを定義します
@@ -30,8 +31,8 @@ export const key: InjectionKey<Store<State>> = Symbol()
 
 export const store = createStore<State>({
     state: {
-        plan: [],
-        sentPlan: [],
+        plans: [],
+        sentPlans: [],
         selectedPoint: {x: 0, y: 0},
         selectedPlanNumber: 1,
         isPlanSent: true,
@@ -41,11 +42,13 @@ export const store = createStore<State>({
         terrains: [],
         status: { area: 0, development_points: 0, environment: '', foods: 0, foods_production_number_of_people: 0, funds: 0, funds_production_number_of_people: 0, population: 0, resources: 0, resources_production_number_of_people: 0 },
         logs: [],
+        planCandidate: {},
     },
     actions: {
-        async sendPlan(context, payload) {
-            await api.sendPlan()
+        async putPlan(context, payload) {
+            await api.putPlan()
                 .then(res => {
+                    console.debug(res)
                     context.commit('sentPlan', res.data)
                 })
                 .catch(err => {
@@ -56,12 +59,9 @@ export const store = createStore<State>({
     },
     mutations: {
         sentPlan(state, payload) {
-
-            // TODO: storeは消す
-            console.log(payload)
-            store.state.plan = JSON.parse(payload.plan);
-            store.state.isSendingPlan = false
-            store.state.sentPlan = lodash.cloneDeep(store.state.plan)
+            state.plans = payload.plan
+            state.isSendingPlan = false
+            state.sentPlans = lodash.cloneDeep(state.plans)
         }
     }
 })

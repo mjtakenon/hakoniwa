@@ -1,52 +1,33 @@
 <template>
     <div id="plan-page" class="wrapper">
-        <div class="title">{{ island.name }}島開発計画</div>
+        <div class="title">{{ $store.state.island.name }}島開発計画</div>
         <div class="subtitle"><a href="/">トップへ戻る</a></div>
-        <status-table
-            :island-status="islandStatus"
-        ></status-table>
+        <status-table></status-table>
         <hr/>
         <div class="is-flex is-flex-direction-row">
-            <plan-controller
-                :hakoniwa="hakoniwa"
-                :island="island"
-                :island-status="islandStatus"
-                :plan-list="planList"
-            ></plan-controller>
-            <island-editor
-                :hakoniwa="hakoniwa"
-                :island="island"
-                :island-status="islandStatus"
-                :island-terrain="islandTerrain"
-                :island-log="islandLog"
-            ></island-editor>
-            <plan-list
-                :hakoniwa="hakoniwa"
-                :island="island"
-            ></plan-list>
+            <plan-controller></plan-controller>
+            <island-viewer></island-viewer>
+            <plan-list></plan-list>
         </div>
         <hr/>
-        <log-viewer
-            :island="island"
-            :island-log="islandLog"
-        ></log-viewer>
+        <log-viewer></log-viewer>
     </div>
 </template>
 
 <script lang="ts">
 import StatusTable from "../components/StatusTable.vue";
 import LogViewer from "../components/LogViewer.vue";
-import IslandEditor from "../components/IslandEditor.vue";
+import IslandViewer from "../components/IslandViewer.vue";
 import PlanController from "../components/PlanController.vue";
 import PlanList from "../components/PlanList.vue";
 import lodash from 'lodash';
 
 export default {
     components: {
+        IslandViewer,
         PlanController,
         StatusTable,
         LogViewer,
-        IslandEditor,
         PlanList,
     },
     data() {
@@ -63,34 +44,19 @@ export default {
     setup() {
     },
     methods: {
-        getIslandTerrain(x, y) {
-            return this.islandTerrain.filter(function(item, idx){
-                if (item.data.point.x === x && item.data.point.y === y) return true;
-            }).pop();
-        },
-        onMouseOverCell(x, y) {
-            this.showHoverWindow = true;
-            this.hoverCell.x = x;
-            this.hoverCell.y = y;
-
-            // 左半分
-            if (this.hoverCell.x < this.hakoniwa.width / 2) {
-                this.hoverWindowLeft = 250;
-            } else {
-                this.hoverWindowLeft = 0;
-            }
-        },
-        onMouseLeaveCell(x, y) {
-            this.showHoverWindow = false;
-        }
     },
-    mounted() {
-        this.$store.state.plan = lodash.cloneDeep(this.islandPlans)
-        this.$store.state.sentPlan = lodash.cloneDeep(this.islandPlans)
+    beforeMount() {
+        this.$store.state.hakoniwa = this.hakoniwa
         this.$store.state.island = this.island
+        this.$store.state.status = this.island.status
+        this.$store.state.terrains = this.island.terrains
+        this.$store.state.logs = this.island.logs
+        this.$store.state.plans = lodash.cloneDeep(this.island.plans)
+        this.$store.state.sentPlans = lodash.cloneDeep(this.island.plans)
+        this.$store.state.planCandidate = this.planCandidate;
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'islandStatus', 'islandPlans', 'islandTerrain', 'islandLog', 'planList'],
+    props: ['hakoniwa', 'island', 'planCandidate'],
 };
 </script>
 

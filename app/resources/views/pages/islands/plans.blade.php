@@ -6,11 +6,7 @@
         <plan-page
             :hakoniwa="@js($hakoniwa)"
             :island="@js($island)"
-            :island-status="@js($islandStatus)"
-            :island-plans="@js($islandPlans)"
-            :island-terrain="@js($islandTerrain->terrain)"
-            :island-log="@js($islandLog)"
-            :plan-list="@js(\PlanService::getAllPlans())"
+            :plan-candidate="@js(\PlanService::getAllPlans())"
         ></plan-page>
     </div>
 @endsection

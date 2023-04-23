@@ -28,7 +28,7 @@
             <div class="select is-small">
                 <select v-model="selectedPlan">
                     <option
-                        v-for="plan of planList"
+                        v-for="plan of $store.state.planCandidate"
                         :key="plan.key"
                         :value="plan.key"
                     > {{ plan.name }} {{ plan.priceString }} </option>
@@ -44,7 +44,7 @@
             </span>
             <span class="select is-small">
                 <select v-model="$store.state.selectedPoint.x">
-                    <option v-for="x of hakoniwa.height" :key="x" :value="x-1">
+                    <option v-for="x of $store.state.hakoniwa.height" :key="x" :value="x-1">
                         {{ x-1 }}
                     </option>
                 </select>
@@ -54,7 +54,7 @@
             </span>
             <span class="select is-small">
                 <select v-model="$store.state.selectedPoint.y">
-                    <option v-for="y of hakoniwa.height" :key="y" :value="y-1">
+                    <option v-for="y of $store.state.hakoniwa.height" :key="y" :value="y-1">
                         {{ y-1 }}
                     </option>
                 </select>
@@ -85,7 +85,7 @@
             目標の島 <br/>
             <div class="select is-small">
                 <select v-model="selectedTargetIsland">
-                    <option :value="island.name"> {{ island.name }} 島 </option>
+                    <option :value="$store.state.island.name"> {{ $store.state.island.name }} 島 </option>
                 </select>
             </div>
         </div>
@@ -118,7 +118,7 @@ export default {
             MAX_PLAN_NUMBER: 30,
             selectedPlan: 'grading',
             selectedAmount: 1,
-            selectedTargetIsland: this.island.name,
+            selectedTargetIsland: this.$store.state.island.name,
         }
     },
     setup() {},
@@ -127,59 +127,59 @@ export default {
             return {
                 key: this.selectedPlan,
                 data: {
-                    name: this.planList[this.selectedPlan].name,
+                    name: this.$store.state.planCandidate[this.selectedPlan].name,
                     point: {
                         x: this.$store.state.selectedPoint.x,
                         y: this.$store.state.selectedPoint.y,
                     },
                     amount: this.selectedAmount,
-                    usePoint: this.planList[this.selectedPlan].usePoint,
+                    usePoint: this.$store.state.planCandidate[this.selectedPlan].usePoint,
                 }
             };
         },
         onClickInsert() {
-            this.$store.state.plan.splice(this.$store.state.selectedPlanNumber-1, 0, this.getSelectedPlan());
-            this.$store.state.plan.pop();
+            this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 0, this.getSelectedPlan());
+            this.$store.state.plans.pop();
             if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                 this.$store.state.selectedPlanNumber++;
             }
         },
         onClickOverwrite() {
-            this.$store.state.plan[this.$store.state.selectedPlanNumber-1] = this.getSelectedPlan();
+            this.$store.state.plans[this.$store.state.selectedPlanNumber-1] = this.getSelectedPlan();
 
             if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                 this.$store.state.selectedPlanNumber++;
             }
         },
         onClickDelete() {
-            this.$store.state.plan.splice(this.$store.state.selectedPlanNumber-1, 1);
-            this.$store.state.plan.push(getDefaultPlan());
+            this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 1);
+            this.$store.state.plans.push(getDefaultPlan());
         },
         onClickMoveUp() {
             if (this.$store.state.selectedPlanNumber <= 1) {
                 return
             }
-            [this.$store.state.plan[this.$store.state.selectedPlanNumber-2], this.$store.state.plan[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plan[this.$store.state.selectedPlanNumber-1], this.$store.state.plan[this.$store.state.selectedPlanNumber-2]];
+            [this.$store.state.plans[this.$store.state.selectedPlanNumber-2], this.$store.state.plans[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plans[this.$store.state.selectedPlanNumber-1], this.$store.state.plans[this.$store.state.selectedPlanNumber-2]];
             this.$store.state.selectedPlanNumber--;
         },
         onClickMoveDown() {
             if (this.$store.state.selectedPlanNumber >= 30) {
                 return
             }
-            [this.$store.state.plan[this.$store.state.selectedPlanNumber], this.$store.state.plan[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plan[this.$store.state.selectedPlanNumber-1], this.$store.state.plan[this.$store.state.selectedPlanNumber]];
+            [this.$store.state.plans[this.$store.state.selectedPlanNumber], this.$store.state.plans[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plans[this.$store.state.selectedPlanNumber-1], this.$store.state.plans[this.$store.state.selectedPlanNumber]];
             if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                 this.$store.state.selectedPlanNumber++;
             }
         },
         onClickSendPlan() {
             this.$store.state.isSendingPlan = true
-            this.$store.dispatch('sendPlan')
+            this.$store.dispatch('putPlan')
         }
     },
     mounted() {
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'islandStatus', 'planList'],
+    props: [],
 };
 </script>
 

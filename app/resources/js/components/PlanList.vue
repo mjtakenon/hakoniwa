@@ -8,9 +8,10 @@
         <table class="list-body">
             <tbody>
                 <tr
-                    v-for="[index, plan] of Object.entries($store.state.plan)"
-                    :key="$store.state.plan.name"
+                    v-for="[index, plan] of Object.entries($store.state.plans)"
+                    :key="plan"
                     @click="onClickPlan(index)"
+                    :style="[ parseInt(index)+1 === $store.state.selectedPlanNumber ? { textDecoration: 'underline' } : '']"
                 >
                     <td><a>{{ parseInt(index)+1 }}</a></td>
                     <td><a>：</a></td>
@@ -42,9 +43,7 @@ export default {
     mounted() {},
     computed: {
         isPlanSent: function() {
-            // console.log(JSON.stringify(this.$store.state.plan))
-            // console.log(JSON.stringify(this.$store.state.sentPlan))
-            return JSON.stringify(this.$store.state.plan) === JSON.stringify(this.$store.state.sentPlan)
+            return JSON.stringify(this.$store.state.plans) === JSON.stringify(this.$store.state.sentPlans)
         }
     },
     props: ['hakoniwa', 'island'],

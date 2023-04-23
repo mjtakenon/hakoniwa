@@ -69,14 +69,14 @@ class Plans implements JsonEncodable
         return json_encode($plans);
     }
 
-    public function toJsonWithStatic(): string
+    public function toArrayWithStatic(): array
     {
         $plans = [];
         /** @var Plan $plan */
         foreach ($this->plans as $plan) {
             $plans[] = $plan->toArrayWithStatic();
         }
-        return json_encode($plans);
+        return $plans;
     }
 
     private function shift()
