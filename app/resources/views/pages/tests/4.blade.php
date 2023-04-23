@@ -7,7 +7,7 @@
 //            var_dump($hakoniwa);
 //            var_dump($island);
 //            var_dump($islandStatus);
-            var_dump($islandTerrain->terrain);
+            var_dump($islandTerrain);
 //            var_dump($islandLog);
         @endphp
     </div>

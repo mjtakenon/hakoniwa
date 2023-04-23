@@ -17,6 +17,13 @@ class DetailController extends Controller
         $turn = Turn::latest()->firstOrFail();
         $getLogRecentTurns = 5;
         \Log::debug(__METHOD__ . ' ' . __LINE__);
+
+        $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->first();
+        $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->first();
+        $islandLog = $island->islandLogs()->whereIn('turn_id',
+            Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
+        )->orderByDesc('id')->first();
+
         $view = view('pages.tests.'.$id, [
             'user' => \Auth::user(),
             'hakoniwa' => [
@@ -28,11 +35,24 @@ class DetailController extends Controller
                 'name' => $island->name,
                 'owner_name' => $island->owner_name,
             ],
-            'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
-            'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
-            'islandLog' => $island->islandLogs()->whereIn('turn_id',
-                Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
-            )->orderByDesc('id')->get('log'),
+            'islandStatus' => [
+                'development_points' => $islandStatus->development_points,
+                'funds' => $islandStatus->funds,
+                'foods' => $islandStatus->foods,
+                'resources' => $islandStatus->resources,
+                'population' => $islandStatus->population,
+                'funds_production_number_of_people' => $islandStatus->funds_production_number_of_people,
+                'foods_production_number_of_people' => $islandStatus->foods_production_number_of_people,
+                'resources_production_number_of_people' => $islandStatus->resources_production_number_of_people,
+                'environment' => $islandStatus->environment,
+                'area' => $islandStatus->area,
+            ],
+            'islandTerrain' => [
+                'terrain' => $islandTerrain->terrain,
+            ],
+            'islandLog' => [
+                'log' => $islandLog->log,
+            ]
         ]);
         \Log::debug(__METHOD__ . ' ' . __LINE__);
         return $view;
