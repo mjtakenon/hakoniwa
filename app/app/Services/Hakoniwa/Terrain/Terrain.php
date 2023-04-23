@@ -50,6 +50,11 @@ class Terrain implements JsonEncodable
 
     public function toJson(): string
     {
+        return json_encode($this->toArray());
+    }
+
+    public function toArray(): array
+    {
         $terrain = [];
         foreach ($this->terrain as $row) {
             /** @var Cell $cell */
@@ -57,9 +62,8 @@ class Terrain implements JsonEncodable
                 $terrain[] = $cell->toArray();
             }
         }
-        return json_encode($terrain);
+        return $terrain;
     }
-
     public static function fromJson(string $json): Terrain
     {
         $objects = json_decode($json);

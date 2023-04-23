@@ -9,6 +9,7 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 
 class DetailController extends Controller
 {
+    const DEFAULT_SHOW_LOG_TURNS = 5;
     public function get($islandId) {
         $island = Island::find($islandId);
 
@@ -17,18 +18,15 @@ class DetailController extends Controller
         }
 
         $turn = Turn::latest()->firstOrFail();
-        // TODO 直近取得ターンの変数切り出し
-        $getLogRecentTurns = 5;
 
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
 
         return view('pages.islands.detail', [
-            'user' => \Auth::user(),
-            'hakoniwa' => json_encode([
+            'hakoniwa' => [
                 'width' => \HakoniwaService::getMaxWidth(),
                 'height' => \HakoniwaService::getMaxHeight(),
-            ]),
+            ],
             'island' => [
                 'id' => $island->id,
                 'name' => $island->name,
@@ -45,9 +43,9 @@ class DetailController extends Controller
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                 ],
-                'terrains' => $islandTerrain->terrain,
+                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(),
                 'logs' => $island->islandLogs()->whereIn('turn_id',
-                    Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
+                    Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id')
                 )->orderByDesc('id')->get('log'),
             ],
         ]);

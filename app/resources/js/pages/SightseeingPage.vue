@@ -1,6 +1,6 @@
 <template>
     <div id="sightseeing-page" class="wrapper">
-        <div class="title">{{ island.name }}島へようこそ！</div>
+        <div class="title">{{ $store.state.island.name }}島へようこそ！</div>
         <div class="subtitle"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <hr/>
@@ -37,11 +37,10 @@ export default {
     },
     methods: {},
     beforeMount() {
-        console.log(JSON.parse(this.island.terrains));
-        this.$store.state.hakoniwa = JSON.parse(this.hakoniwa)
+        this.$store.state.hakoniwa = this.hakoniwa
         this.$store.state.island = this.island
         this.$store.state.status = this.island.status
-        this.$store.state.terrains = JSON.parse(this.island.terrains)
+        this.$store.state.terrains = this.island.terrains
         this.$store.state.logs = this.island.logs
     },
     computed: {
