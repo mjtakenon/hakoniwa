@@ -87,7 +87,7 @@ steps:
       - 'docker ps -q --filter ancestor="gcr.io/cloudsql-docker/gce-proxy:1.15" | xargs docker stop'
     waitFor: [ 'migrate' ]
 
-  - id: 'deploy-image'
+  - id: 'deploy-cloud-run'
     name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'run', 'deploy', '${_CLOUD_RUN_INSTANCE_NAME}',
@@ -96,7 +96,7 @@ steps:
     ]
     waitFor: [ 'migrate' ]
 
-  - id: 'deploy-image'
+  - id: 'deploy-cloud-run-jobgs'
     name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'beta', 'run', 'jobs', 'update', '${_CLOUD_RUN_JOB_NAME}',
