@@ -87,6 +87,11 @@ class City extends Cell
             }
         } else {
             $this->population += random_int($minPopulationIncrementalRate, $maxPopulationIncrementalRate) * 100;
+
+            // 仮
+            if ($this->population >= City::MIN_POPULATION) {
+                $this->population = City::MIN_POPULATION;
+            }
         }
 
         if ($this->population >= City::MIN_POPULATION) {
