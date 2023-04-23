@@ -30,7 +30,7 @@ class DetailController extends Controller
             ],
         );
 
-        $json = response()->json([
+        $json = response()->view('pages.tests.' . $id, [
             'user' => \Auth::user(),
             'hakoniwa' => [
                 'width' => \HakoniwaService::getMaxWidth(),
@@ -54,7 +54,7 @@ class DetailController extends Controller
                 'area' => $islandStatus->area,
             ],
             'islandTerrain' => [
-                'terrain' => $islandTerrain->terrain,
+                'terrain' => substr($islandTerrain->terrain,0,10000),
             ],
             'islandLog' => [
                 'log' => $islandLog->log,
