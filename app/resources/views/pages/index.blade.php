@@ -7,7 +7,7 @@
             <h1 class="title"> やまにてぃ </h1>
             <hr/>
             <h2 class="subtitle"> ターン：{{ $turn->turn }}  </h2>
-            <h2 class="subtitle"> 次回更新予定：{{ $turn->next_turn_scheduled_at->format('Y-m-d h:m') }}  </h2>
+            <h2 class="subtitle"> 次回更新予定：{{ $turn->next_turn_scheduled_at->format('Y-m-d H:i') }}  </h2>
             <p class="subtitle" style="color: orangered"> 現在開発中のため、多くの機能が未実装です。</p>
             <p class="subtitle" style="color: orangered"> テスト中にデータが消える可能性が高いため、何があっても許せる方のみ登録してください。</p>
             <p> TAITOの島育成ゲームソーシャルネットワークサービス「しまにてぃ」の要素を取り入れた平和系箱庭です。更新は約{{config('app.hakoniwa.turn_update_minutes')}}分毎です。 </p>
