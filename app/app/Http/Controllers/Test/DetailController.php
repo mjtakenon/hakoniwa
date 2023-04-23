@@ -24,6 +24,12 @@ class DetailController extends Controller
             Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
         )->orderByDesc('id')->first();
 
+        view()->share(
+            'islandTerrain', [
+                'terrain' => substr($islandTerrain->terrain,0,10000),
+            ],
+        );
+
         $view = view('pages.tests.'.$id, [
             'user' => \Auth::user(),
             'hakoniwa' => [
@@ -47,9 +53,9 @@ class DetailController extends Controller
                 'environment' => $islandStatus->environment,
                 'area' => $islandStatus->area,
             ],
-            'islandTerrain' => [
-                'terrain' => substr($islandTerrain->terrain,0,10000),
-            ],
+//            'islandTerrain' => [
+//                'terrain' => substr($islandTerrain->terrain,0,10000),
+//            ],
             'islandLog' => [
                 'log' => $islandLog->log,
             ]
