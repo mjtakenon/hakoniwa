@@ -38,8 +38,6 @@ Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
             ->where('island_id', '[0-9]+');
     });
 
-    Route::get('{island_id}/terrains', [\App\Http\Controllers\Islands\TerrainController::class, 'get'])
-        ->where('island_id', '[0-9]+');
 //    Route::get('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'get']);
 //    Route::post('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'post']);
 });
