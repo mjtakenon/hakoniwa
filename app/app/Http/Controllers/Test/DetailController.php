@@ -8,19 +8,33 @@ use App\Models\Turn;
 
 class DetailController extends Controller
 {
-    public function get1() {
-        return response()->json(['test' => 1]);
-    }
-    public function get2() {
-        return response()->json(['test' => 2]);
-    }
-    public function get3() {
-        return redirect(route('home'));
-    }
-    public function get4() {
-        if (\HakoniwaService::isIslandRegistered()) {
-            return redirect(config('app.url') . '/islands/' . \Auth::user()->island->id . '/plans');
+    public function get($id) {
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
+        $island = Island::find(1)->firstOrFail();
+        if (is_null($island) || !is_null($island->deleted_at)) {
+            abort(404);
         }
-        return redirect(route('home'));
+        $turn = Turn::latest()->firstOrFail();
+        $getLogRecentTurns = 5;
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
+        $view = view('pages.tests.'.$id, [
+            'user' => \Auth::user(),
+            'hakoniwa' => [
+                'width' => \HakoniwaService::getMaxWidth(),
+                'height' => \HakoniwaService::getMaxHeight(),
+            ],
+            'island' => [
+                'id' => $island->id,
+                'name' => $island->name,
+                'owner_name' => $island->owner_name,
+            ],
+            'islandStatus' => $island->islandStatuses->where('turn_id', $turn->id)->first(),
+            'islandTerrain' => $island->islandTerrains->where('turn_id', $turn->id)->first(),
+            'islandLog' => $island->islandLogs()->whereIn('turn_id',
+                Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
+            )->orderByDesc('id')->get('log'),
+        ]);
+        \Log::debug(__METHOD__ . ' ' . __LINE__);
+        return $view;
     }
 }

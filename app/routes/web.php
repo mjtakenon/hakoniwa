@@ -53,16 +53,7 @@ Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->gr
 });
 
 Route::prefix('/test/')->middleware($baseMiddleware)->group( function() {
-    Route::get('1', [\App\Http\Controllers\Test\DetailController::class, 'get1']);
-});
-Route::prefix('/test/')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
-    Route::get('2', [\App\Http\Controllers\Test\DetailController::class, 'get2']);
-});
-Route::prefix('/test/')->middleware($baseMiddleware)->group( function() {
-    Route::get('3', [\App\Http\Controllers\Test\DetailController::class, 'get3']);
-});
-Route::prefix('/test/')->middleware($baseMiddleware)->group( function() {
-    Route::get('4', [\App\Http\Controllers\Test\DetailController::class, 'get4']);
+    Route::get('{id}', [\App\Http\Controllers\Test\DetailController::class, 'get']);
 });
 
 //, ['auth:sanctum']
