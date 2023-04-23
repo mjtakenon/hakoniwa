@@ -47,6 +47,13 @@ abstract class Plan implements IPlan
         Wasteland::TYPE,
     ];
 
+    public const REMOVABLE_CELLS = [
+        Factory::TYPE,
+        Farm::TYPE,
+        Oilfield::TYPE,
+        Mine::TYPE,
+    ];
+
     public const CONSTRUCTABLE_CELLS = [
         Plain::TYPE,
         City::TYPE,

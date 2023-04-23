@@ -5,7 +5,6 @@ namespace App\Services\Hakoniwa\Plan;
 class PlanConst
 {
     const PLAN_LIST = [
-        CashFlowPlan::KEY => CashFlowPlan::class,
         GradingPlan::KEY => GradingPlan::class,
         GroundLevelingPlan::KEY => GroundLevelingPlan::class,
         LandfillPlan::KEY => LandfillPlan::class,
@@ -16,6 +15,8 @@ class PlanConst
         ConstructFactoryPlan::KEY => ConstructFactoryPlan::class,
         ConstructMinePlan::KEY => ConstructMinePlan::class,
         ConstructOilfieldPlan::KEY => ConstructOilfieldPlan::class,
+        RemovalFacility::KEY => RemovalFacility::class,
+        CashFlowPlan::KEY => CashFlowPlan::class,
         AbandonmentPlan::KEY => AbandonmentPlan::class,
     ];
 
