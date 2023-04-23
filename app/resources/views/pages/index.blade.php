@@ -5,12 +5,13 @@
         @include('components.header')
         <div class="home-wrapper">
             <h1 class="title"> やまにてぃ </h1>
-            <h2 class="subtitle"> ターン: {{ $turn->turn }}  </h2>
-            <h2 class="subtitle"> 次回更新 {{ $turn->next_turn_scheduled_at }}  </h2>
-            <p class="subtitle" style="color: orangered">現在開発中のため、多くの機能が未実装です。何があっても許せる方のみ登録してください。</p>
-            <p> TAITOの島育成ゲームソーシャルネットワークサービス「しまにてぃ」の要素を取り入れた平和系箱庭です。更新は1時間ごとです。 </p>
-            <p> フルスクラッチで実装しているため、既存の箱庭と仕様が違う点はご容赦ください。 </p>
-            <p> 管理人の懐事情により閉じるかもしれない点もご容赦ください。 </p>
+            <hr/>
+            <h2 class="subtitle"> ターン：{{ $turn->turn }}  </h2>
+            <h2 class="subtitle"> 次回更新予定：{{ $turn->next_turn_scheduled_at->format('Y-m-d h:m') }}  </h2>
+            <p class="subtitle" style="color: orangered"> 現在開発中のため、多くの機能が未実装です。</p>
+            <p class="subtitle" style="color: orangered"> テスト中にデータが消える可能性が高いため、何があっても許せる方のみ登録してください。</p>
+            <p> TAITOの島育成ゲームソーシャルネットワークサービス「しまにてぃ」の要素を取り入れた平和系箱庭です。更新は約{{config('app.hakoniwa.turn_update_minutes')}}分毎です。 </p>
+            <p> フルスクラッチで実装しているため、既存の箱庭と仕様が違う点はご容赦ください。連絡いただければ検討します。 </p>
             <p> ログインは（今のところ）Google連携のみ利用できます。メールアドレスとユーザー名をサーバーで保持するので、気になる人は捨て垢の利用を推奨します（パスワードはこちらでは保持しません）。 </p>
             <p> 不具合・不明点はツイッターからご連絡ください。 </p>
             <p style="color: orangered">重複登録は禁止です。1人1島でお願いします。</p>

@@ -50,7 +50,7 @@ class ExecuteTurn extends Command
             // ターン更新
             $newTurn = new Turn();
             $newTurn->turn = $turn->turn + 1;
-            $newTurn->next_turn_scheduled_at = now()->addMinutes(config('app.turn_update_minutes'));
+            $newTurn->next_turn_scheduled_at = now()->addMinutes(config('app.hakoniwa.turn_update_minutes'));
             $newTurn->save();
 
             $islands = Island::with([
