@@ -1,0 +1,56 @@
+<template>
+    <div>
+        <div v-show="$store.state.showNotification" :class="notificationClass">
+<!--            <button class="delete" @click="onClickNotificationClose()"></button>-->
+            {{ notificationMessage }}
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+export default {
+    components: {},
+    data() {
+        return {
+            STATUS_PAGE_EXPIRED: 419
+        }
+    },
+    setup() {
+    },
+    methods: {
+        onClickNotificationClose() {
+            this.$store.state.showNotification = false;
+        },
+    },
+    mounted() {
+        // console.log(this.$props)
+    },
+    computed: {
+        notificationMessage() {
+            const status = this.$store.state.planSendingResult
+            if (status === this.STATUS_PAGE_EXPIRED) return 'セッションの有効期限が切れているため、ページを再読み込みしてください。解決しない場合は、管理者にご連絡ください。(status: ' + status + ')';
+
+            if (status >= 200 && status < 300) {
+                return ''
+            }
+            if (status >= 300 && status < 500) {
+                return '不明なエラーが発生しました。時間をおいて再度お試しください。解決しない場合は、管理者にご連絡ください。(status: ' + status + ')';
+            }
+            return 'サーバーエラーが発生しました。時間をおいて再度お試しください。解決しない場合は、管理者にご連絡ください。(status: ' + status + ')';
+        },
+        notificationClass() {
+            console.log(this.$store.state.planSendingResult)
+            return [
+                // 'notification',
+                this.$store.state.planSendingResult >= 200 && this.$store.state.planSendingResult < 300 ?
+                'has-text-success' : 'has-text-danger'
+            ];
+        }
+    },
+    props: [],
+};
+</script>
+
+<style lang="scss" scoped>
+
+</style>

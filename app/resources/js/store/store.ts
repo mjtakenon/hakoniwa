@@ -25,6 +25,8 @@ export interface State {
     isPlanSent: boolean,
     isSendingPlan: boolean,
     planCandidate: object,
+    planSendingResult: number,
+    showNotification: boolean,
 }
 
 // インジェクションキーを定義します
@@ -39,6 +41,8 @@ export const store = createStore<State>({
         selectedAmount: 1,
         isPlanSent: true,
         isSendingPlan: false,
+        planSendingResult: 200,
+        showNotification: false,
         hakoniwa: { width: 0, height: 0 },
         island: { id: 0, name: '', owner_name: ''},
         terrains: [],
@@ -51,19 +55,26 @@ export const store = createStore<State>({
             await api.putPlan()
                 .then(res => {
                     console.debug(res)
-                    context.commit('sentPlan', res.data)
+                    context.commit('sentPlanSuccess', res)
                 })
                 .catch(err => {
-                    store.state.isSendingPlan = false
-                    console.error(err)
+                    context.commit('sentPlanFailed', err)
                 })
         }
     },
     mutations: {
-        sentPlan(state, payload) {
-            state.plans = payload.plan
+        sentPlanSuccess(state, res) {
             state.isSendingPlan = false
+            state.plans = res.data.plan
             state.sentPlans = lodash.cloneDeep(state.plans)
-        }
+            state.planSendingResult = res.status
+            state.showNotification = true
+        },
+        sentPlanFailed(state, err) {
+            state.isSendingPlan = false
+            state.planSendingResult = err.response.status
+            state.showNotification = true
+            console.log(err)
+        },
     }
 })

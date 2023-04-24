@@ -104,15 +104,18 @@
         <div>
             <button :class="['button','is-small','is-primary', this.$store.state.isSendingPlan ? 'is-loading' : '']" @click="onClickSendPlan">計画送信</button>
         </div>
+        <div class="pt-2"></div>
+        <send-notification></send-notification>
     </div>
 </template>
 
 <script lang="ts">
 
 import { getDefaultPlan, Plan } from "../store/Entity/Plan";
+import SendNotification from "./SendNotification.vue";
 
 export default {
-    components: {  },
+    components: {SendNotification},
     data() {
         return {
             MAX_PLAN_NUMBER: 30,
@@ -191,7 +194,7 @@ export default {
     padding: 10px;
     min-width: 230px;
     max-width: 230px;
-    max-height: 496px;
+    //max-height: 496px;
 }
 
 hr {
