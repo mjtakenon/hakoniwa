@@ -9,24 +9,31 @@ class IslandFoundLog implements ILog
 {
     private Island $island;
     private Turn $turn;
+    private string $visibility;
 
-    public function __construct(Island $island, Turn $turn)
+    public function __construct(Island $island, Turn $turn, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
         $this->island = $island;
         $this->turn = $turn;
+        $this->visibility = $visibility;
     }
 
-    public static function create(Island $island, Turn $turn)
+    public static function create(Island $island, Turn $turn, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
-        return new static($island, $turn);
+        return new static($island, $turn, $visibility);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD.StyleConst::COLOR_LINK ],
             ['text' => 'が発見されました！'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return $this->visibility;
     }
 }

@@ -26,7 +26,7 @@ class DestructionByFireLog implements ILog
         return new static($island, $turn, $cell);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -37,5 +37,10 @@ class DestructionByFireLog implements ILog
             ['text' => '火災により崩壊' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             ['text' => 'しました。'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

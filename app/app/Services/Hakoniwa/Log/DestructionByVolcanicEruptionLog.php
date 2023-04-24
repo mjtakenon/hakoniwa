@@ -26,7 +26,7 @@ class DestructionByVolcanicEruptionLog implements ILog
         return new static($island, $turn, $cell);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -37,5 +37,10 @@ class DestructionByVolcanicEruptionLog implements ILog
             $this->cell::ELEVATION < 0 ? ['text' => '海底が隆起'] : ['text' => '火砕流', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             $this->cell::ELEVATION < 0 ? ['text' => 'しました。'] : ['text' => 'にのみこまれました。'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

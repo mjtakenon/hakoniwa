@@ -26,7 +26,7 @@ class DestructionByLandSubsidenceLog implements ILog
         return new static($island, $turn, $cell);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -37,5 +37,10 @@ class DestructionByLandSubsidenceLog implements ILog
             ['text' => '地盤が沈下' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             $this->cell::ELEVATION < 0 ? ['text' => 'しました'] : ['text' => 'し、一帯が水没しました。'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

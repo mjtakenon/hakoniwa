@@ -23,7 +23,7 @@ class OccurLandSubsidenceLog implements ILog
         return new static($island, $turn);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -32,5 +32,10 @@ class OccurLandSubsidenceLog implements ILog
             ['text' => '地盤沈下が発生', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
             ['text' => '！'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

@@ -13,5 +13,6 @@ class IslandLog extends Model
 
     protected $visible = [
         'log',
+        'visibility',
     ];
 }

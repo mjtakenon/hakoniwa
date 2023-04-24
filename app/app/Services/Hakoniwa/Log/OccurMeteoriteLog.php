@@ -23,7 +23,7 @@ class OccurMeteoriteLog implements ILog
         return new static($island, $turn);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -32,5 +32,10 @@ class OccurMeteoriteLog implements ILog
             ['text' => '隕石群' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             ['text' => 'が襲来！'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

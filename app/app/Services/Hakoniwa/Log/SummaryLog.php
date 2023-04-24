@@ -24,7 +24,7 @@ class SummaryLog implements ILog
         return new static($status, $prevStatus, $turn);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         $foods = $this->status->getFoods() - $this->prevStatus->getFoods();
         $funds = $this->status->getFunds() - $this->prevStatus->getFunds();
@@ -47,5 +47,10 @@ class SummaryLog implements ILog
             ['text' => 'ポイント：', 'style' => StyleConst::BOLD],
             $developmentPoints < 0 ? ['text' => '' . $developmentPoints . 'pts', 'style' => StyleConst::COLOR_DANGER] : ($developmentPoints === 0 ? ['text' => '' . $developmentPoints . 'pts']:['text' => '+' . $developmentPoints . 'pts', 'style' => StyleConst::COLOR_LINK]),
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_PUBLIC;
     }
 }

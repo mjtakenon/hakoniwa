@@ -23,7 +23,7 @@ class OccurTyphoonLog implements ILog
         return new static($island, $turn);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -32,5 +32,10 @@ class OccurTyphoonLog implements ILog
             ['text' => '台風' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             ['text' => 'が上陸！'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

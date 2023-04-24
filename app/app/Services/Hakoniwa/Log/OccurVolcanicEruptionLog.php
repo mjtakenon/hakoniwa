@@ -25,7 +25,7 @@ class OccurVolcanicEruptionLog implements ILog
         return new static($island, $turn, $point);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -34,5 +34,10 @@ class OccurVolcanicEruptionLog implements ILog
             ['text' => '火山が噴火', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
             ['text' => '！'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

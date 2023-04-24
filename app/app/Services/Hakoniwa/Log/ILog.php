@@ -6,5 +6,6 @@ use App\Services\Hakoniwa\Util\Point;
 
 interface ILog
 {
-    public function get();
+    public function generate(): string;
+    public function getVisibility(): string;
 }

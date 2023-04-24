@@ -43,6 +43,43 @@
                 @endforeach
                 </tbody>
             </table>
+            <hr/>
+
+            <div>
+                <span class="subtitle"> 最近の出来事 </span>
+                <div class="pb-4"></div>
+{{--                <div v-for="log of $store.state.logs" :key="log.id">--}}
+{{--            <span v-for="context of JSON.parse(log.log)" :key="context.text">--}}
+{{--                <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">--}}
+{{--                    {{ context.text }}--}}
+{{--                </a>--}}
+{{--                <span v-else :style="context.style">--}}
+{{--                    {{ context.text }}--}}
+{{--                </span>--}}
+{{--            </span>--}}
+{{--                </div>--}}
+                @foreach($logs as $log)
+                    <div>
+                        @foreach(json_decode($log->log) as $context)
+                            <span>
+                            @if(property_exists($context, 'link'))
+                                <a href="{{$context->link}}" style="{{$context->style}}">
+                                    {{ $context->text }}
+                                </a>
+                            @else
+                                @if(property_exists($context, 'style'))
+                                    <span style="{{$context->style}}">
+                                        {{ $context->text }}
+                                    </span>
+                                @else
+                                    <span>{{ $context->text }}</span>
+                                @endif
+                            @endif
+                            </span>
+                        @endforeach
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 @endsection

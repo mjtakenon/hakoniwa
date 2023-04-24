@@ -26,7 +26,7 @@ class DestructionByMeteoriteLog implements ILog
         return new static($island, $turn, $cell);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -37,5 +37,10 @@ class DestructionByMeteoriteLog implements ILog
             ['text' => '隕石が落下' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             $this->cell::ELEVATION < 0 ? ['text' => 'し、海底がえぐられました。'] : ($this->cell::ELEVATION === 0 ? ['text' => 'し、一帯が水没しました。'] : ['text' => 'し、山が消し飛びました。']),
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

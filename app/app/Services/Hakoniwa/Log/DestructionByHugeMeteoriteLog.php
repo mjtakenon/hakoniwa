@@ -28,7 +28,7 @@ class DestructionByHugeMeteoriteLog implements ILog
         return new static($island, $turn, $cell, $range);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         if ($this->range === 0 || $this->range === 1) {
             return json_encode([
@@ -51,5 +51,10 @@ class DestructionByHugeMeteoriteLog implements ILog
             ['text' => '一帯が壊滅', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             ['text' => 'しました。'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

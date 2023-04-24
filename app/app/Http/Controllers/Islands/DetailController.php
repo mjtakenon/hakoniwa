@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Islands;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Log\LogVisibility;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
 class DetailController extends Controller
@@ -22,8 +23,10 @@ class DetailController extends Controller
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
         $islandLogs = $island->islandLogs()->whereIn('turn_id',
-            Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id')
-        )->orderByDesc('id')->get('log');
+            Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
+        ->whereIn('visibility', [LogVisibility::VISIBILITY_GLOBAL, LogVisibility::VISIBILITY_PUBLIC])
+        ->orderByDesc('id')
+        ->get('log');
 
         return view('pages.islands.detail', [
             'hakoniwa' => [

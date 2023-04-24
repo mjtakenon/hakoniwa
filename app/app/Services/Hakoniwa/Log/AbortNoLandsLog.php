@@ -28,7 +28,7 @@ class AbortNoLandsLog implements ILog
         return new static($island, $turn, $point, $plan);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -39,5 +39,10 @@ class AbortNoLandsLog implements ILog
             ['text' => '中止', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
             ['text' => 'されました。'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

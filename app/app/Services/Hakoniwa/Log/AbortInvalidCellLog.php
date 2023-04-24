@@ -30,7 +30,7 @@ class AbortInvalidCellLog implements ILog
         return new static($island, $turn, $point, $plan, $cell);
     }
 
-    public function get(): string
+    public function generate(): string
     {
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
@@ -43,5 +43,10 @@ class AbortInvalidCellLog implements ILog
             ['text' => '中止', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
             ['text' => 'されました。'],
         ]);
+    }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

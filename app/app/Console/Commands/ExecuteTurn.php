@@ -144,7 +144,8 @@ class ExecuteTurn extends Command
                     $newLog = new IslandLog();
                     $newLog->island_id = $island->id;
                     $newLog->turn_id = $newTurn->id;
-                    $newLog->log = $log->get();
+                    $newLog->log = $log->generate();
+                    $newLog->visibility = $log->getVisibility();
                     $newLog->save();
                 }
             }
