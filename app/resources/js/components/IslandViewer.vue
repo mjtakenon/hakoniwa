@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { Terrain } from "../store/Terrain";
+import { Terrain } from "../store/Entity/Terrain";
 
 export default {
     components: {},

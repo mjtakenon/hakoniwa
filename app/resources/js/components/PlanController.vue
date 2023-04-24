@@ -109,7 +109,7 @@
 
 <script lang="ts">
 
-import { getDefaultPlan, Plan } from "../store/Plan";
+import { getDefaultPlan, Plan } from "../store/Entity/Plan";
 
 export default {
     components: {  },

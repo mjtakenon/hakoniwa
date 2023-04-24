@@ -58,8 +58,8 @@
 </template>
 
 <script lang="ts">
-import { Terrain } from "../store/Terrain";
-import {Plan} from "../store/Plan";
+import { Terrain } from "../store/Entity/Terrain";
+import {Plan} from "../store/Entity/Plan";
 
 export default {
     components: {},

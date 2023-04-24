@@ -2,13 +2,13 @@
 import { InjectionKey } from 'vue'
 import { createStore, Store } from 'vuex'
 import lodash from "lodash";
-import { Plan } from "./Plan";
+import { Plan } from "./Entity/Plan";
 import { api } from "./api";
-import { Island } from "./Island";
-import { Terrain } from "./Terrain";
-import { Status } from "./Status";
-import { Hakoniwa } from "./Hakoniwa";
-import { Log } from "./Log";
+import { Island } from "./Entity/Island";
+import { Terrain } from "./Entity/Terrain";
+import { Status } from "./Entity/Status";
+import { Hakoniwa } from "./Entity/Hakoniwa";
+import { Log } from "./Entity/Log";
 
 // ストアのステートに対して型を定義します
 export interface State {
