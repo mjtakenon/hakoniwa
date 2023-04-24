@@ -98,6 +98,13 @@ export default {
             this.showHoverWindow = false;
         },
         onClickCell(x, y, event) {
+            if (this.showPlanWindow &&
+                this.$store.state.selectedPoint.x === x &&
+                this.$store.state.selectedPoint.y === y
+            ) {
+                this.showPlanWindow = false;
+                return;
+            }
             this.$store.state.selectedPoint.x = x;
             this.$store.state.selectedPoint.y = y;
             this.showPlanWindow = true;
