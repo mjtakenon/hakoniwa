@@ -11,7 +11,11 @@
                     @click="onClickCell(x-1, y-1, $event)"
                     :src="getIslandTerrain(x-1,y-1).data.image_path"
                     :alt="getIslandTerrain(x-1,y-1).type"
-                    :class="['cell', x-1 === this.$store.state.selectedPoint.x && y-1 === this.$store.state.selectedPoint.y && this.showPlanWindow ? 'cell-is-selected' : '']"
+                    :class="[
+                        'cell',
+                        isSelectedCell(x-1, y-1) && this.showPlanWindow ? 'cell-is-selected' : '',
+                        isReferencedCell(x-1, y-1) ? 'cell-is-referenced' : '',
+                    ]"
                 >
             </div>
             <div class="left-padding" v-if="y%2 === 0"></div>
@@ -143,7 +147,19 @@ export default {
     mounted() {
         // console.log(this.$props)
     },
-    computed: {},
+    computed: {
+        isSelectedCell() {
+            return (x, y) => {
+                return x === this.$store.state.selectedPoint.x && y === this.$store.state.selectedPoint.y
+            }
+        },
+        isReferencedCell() {
+            return (x, y) => {
+                let referencedPlan = this.$store.state.plans[this.$store.state.selectedPlanNumber-1]
+                return x === referencedPlan.data.point.x && y === referencedPlan.data.point.y && referencedPlan.data.usePoint
+            }
+        },
+    },
     props: [],
 };
 </script>
@@ -171,6 +187,21 @@ export default {
 .cell-is-selected {
     border: 1px solid white;
 }
+
+.cell-is-referenced {
+    border: 1px solid red;
+    //animation: fadeout-keyframes 1s ease 0s 1 forwards;
+}
+
+//@keyframes fadeout-keyframes {
+//    0% {
+//        opacity: 0.8;
+//    }
+//
+//    100% {
+//        opacity: 1;
+//    }
+//}
 
 .left-padding {
     width: 16px;
