@@ -24,6 +24,7 @@ class IndexController extends Controller
         $logs = IslandLog::whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
         ->where('visibility', LogVisibility::VISIBILITY_GLOBAL)
+        ->orderByDesc('id')
         ->get('log');
 
         return view('pages.index', [
