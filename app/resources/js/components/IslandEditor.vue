@@ -11,7 +11,7 @@
                     @click="onClickCell(x-1, y-1, $event)"
                     :src="getIslandTerrain(x-1,y-1).data.image_path"
                     :alt="getIslandTerrain(x-1,y-1).type"
-                    class="cell"
+                    :class="['cell', x-1 === this.$store.state.selectedPoint.x && y-1 === this.$store.state.selectedPoint.y && this.showPlanWindow ? 'cell-is-selected' : '']"
                 >
             </div>
             <div class="left-padding" v-if="y%2 === 0"></div>
@@ -159,6 +159,10 @@ export default {
 .cell {
     width: 32px;
     height: 32px;
+}
+
+.cell-is-selected {
+    border: 1px solid white;
 }
 
 .left-padding {
