@@ -52,14 +52,14 @@ abstract class Cell implements ICell
         return new static($data);
     }
 
-    public function toArray(): array
+    public function toArray(bool $isPrivate = false): array
     {
         return [
             'type' => $this->type,
             'data' => [
                 'point' => $this->point,
                 'image_path' => $this->imagePath,
-                'info' => $this->getInfoString(),
+                'info' => $this->getInfoString($isPrivate),
             ]
         ];
     }

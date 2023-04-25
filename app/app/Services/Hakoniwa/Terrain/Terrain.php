@@ -53,13 +53,13 @@ class Terrain implements JsonEncodable
         return json_encode($this->toArray());
     }
 
-    public function toArray(): array
+    public function toArray(bool $isPrivate = false): array
     {
         $terrain = [];
         foreach ($this->terrain as $row) {
             /** @var Cell $cell */
             foreach ($row as $cell) {
-                $terrain[] = $cell->toArray();
+                $terrain[] = $cell->toArray($isPrivate);
             }
         }
         return $terrain;

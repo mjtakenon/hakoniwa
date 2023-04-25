@@ -11,11 +11,11 @@ interface ICell
 {
 
     public static function create($data);
-    public function toArray(): array;
+    public function toArray(bool $isPrivate = false): array;
 
     public function getPoint(): Point;
 
-    public function getInfoString(): string;
+    public function getInfoString(bool $isPrivate = false): string;
 
     public function getPopulation(): int;
 

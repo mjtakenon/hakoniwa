@@ -35,7 +35,7 @@ class Oilfield extends Cell
         $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
     }
 
-    public function getInfoString(): string
+    public function getInfoString(bool $isPrivate = false): string
     {
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .

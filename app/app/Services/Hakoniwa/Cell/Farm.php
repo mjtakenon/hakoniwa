@@ -42,20 +42,20 @@ class Farm extends Cell
         }
     }
 
-    public function toArray(): array
+    public function toArray(bool $isPrivate = false): array
     {
         return [
             'type' => $this->type,
             'data' => [
                 'point' => $this->point,
                 'image_path' => $this->imagePath,
-                'info' => $this->getInfoString(),
+                'info' => $this->getInfoString($isPrivate),
                 'foodsProductionNumberOfPeople' => $this->foodsProductionNumberOfPeople,
             ]
         ];
     }
 
-    public function getInfoString(): string
+    public function getInfoString(bool $isPrivate = false): string
     {
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .

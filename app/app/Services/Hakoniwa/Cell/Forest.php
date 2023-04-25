@@ -47,24 +47,27 @@ class Forest extends Cell
         }
     }
 
-    public function toArray(): array
+    public function toArray(bool $isPrivate = false): array
     {
         return [
             'type' => $this->type,
             'data' => [
                 'point' => $this->point,
                 'image_path' => $this->imagePath,
-                'info' => $this->getInfoString(),
+                'info' => $this->getInfoString($isPrivate),
                 'woods' => $this->woods,
             ]
         ];
     }
 
-    public function getInfoString(): string
+    public function getInfoString(bool $isPrivate = false): string
     {
-        return
-            '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
-            $this->woods . '本';
+        if ($isPrivate) {
+            return
+                '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
+                $this->woods . '本';
+        }
+        return '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME;
     }
 
     public function passTime(Island $island, Terrain $terrain, Status $status): void
