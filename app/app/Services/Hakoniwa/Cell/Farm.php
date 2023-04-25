@@ -9,7 +9,7 @@ use App\Services\Hakoniwa\Util\Point;
 
 class Farm extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land7.gif';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land72.gif';
     public const TYPE = 'farm';
     public const NAME = '農場';
     const PRODUCTION_NUMBER_OF_PEOPLE = 20000;
