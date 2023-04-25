@@ -53,7 +53,8 @@ class PlansController extends Controller
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
         $islandLogs = $island->islandLogs()->whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
-        )->orderByDesc('id')->get('log');
+        )->orderByDesc('id')
+        ->get('log');
 
 //        $view = view('pages.islands.plans', [
 //            'user' => $user,
