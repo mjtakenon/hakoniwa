@@ -7,6 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Forest;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
+use App\Services\Hakoniwa\Log\DeforestationLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
@@ -34,15 +35,19 @@ class DeforestationPlan extends Plan
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
     {
         $cell = $terrain->getCell($this->point);
+        $logs = Logs::create();
 
         if (!in_array($cell::TYPE, [Forest::TYPE], true)) {
-            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
+        $amount = $cell->getWoods();
         $terrain->setCell($this->point, new Plain(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $status->setResources($status->getResources() + ($amount * Forest::WOODS_TO_RESOURCES_COEF));
+        $logs->add(new DeforestationLog($turn,  $amount * Forest::WOODS_TO_RESOURCES_COEF));
+        $logs->add(new ExecuteCellLog($island, $turn, $this->point, $this));
         return new ExecutePlanResult($terrain, $status, $logs, false);
     }
 }

@@ -159,6 +159,14 @@ class Status
     }
 
     /**
+     * @param int $resources
+     */
+    public function setResources(int $resources): void
+    {
+        $this->resources = $resources;
+    }
+
+    /**
      * @return int
      */
     public function getFoods(): int

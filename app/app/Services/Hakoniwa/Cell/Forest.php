@@ -15,6 +15,7 @@ class Forest extends Cell
     public const INITIAL_WOODS = 100;
     private const INCREMENT_WOODS = 100;
     private const MAX_WOODS = 100000;
+    public const WOODS_TO_RESOURCES_COEF = 0.5;
 
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
