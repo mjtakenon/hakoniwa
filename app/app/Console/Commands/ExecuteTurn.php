@@ -16,7 +16,6 @@ use App\Services\Hakoniwa\Log\SummaryLog;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 
 class ExecuteTurn extends Command
 {

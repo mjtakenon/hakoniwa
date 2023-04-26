@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class PlanServiceTest extends TestCase
 {
-    public function testGetAllPlans()
+    public function testGetExecutablePlans()
     {
         $this->assertTrue(true);
     }

@@ -11,18 +11,30 @@ class PlanService extends ServiceProvider
 {
     const MAX_PLANS = 30;
 
-    public function getAllPlans(): array
+    public function getExecutablePlans($developmentPoint): array
     {
-        return array_map(function ($plan) {
-            /** @var Plan $plan */
-            return [
-                'key' => $plan::KEY,
-                'name' => $plan::NAME,
-                'price' => $plan::PRICE,
-                'priceString' => $plan::PRICE_STRING,
-                'usePoint' => $plan::USE_POINT,
-            ];
-        }, PlanConst::getPlanList());
+        return
+            array_filter(
+                array_map(function ($plan) use ($developmentPoint) {
+                    /** @var Plan $plan */
+                    if ($developmentPoint >= $plan::EXECUTABLE_DEVELOPMENT_POINT) {
+                        return [
+                            'key' => $plan::KEY,
+                            'name' => $plan::NAME,
+                            'price' => $plan::PRICE,
+                            'priceString' => $plan::PRICE_STRING,
+                            'usePoint' => $plan::USE_POINT,
+                            'useAmount' => $plan::USE_AMOUNT,
+                            'useTargetIsland' => $plan::USE_TARGET_ISLAND,
+                        ];
+                    }
+                },
+                PlanConst::getPlanList()),
+            function ($plan) {
+                return !is_null($plan);
+            }
+        )
+        ;
     }
 
     public function isValidPlans(string $plans): bool

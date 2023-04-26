@@ -4,10 +4,11 @@ namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class AbortLackOfFundsLog implements ILog
+class AbortNoDevelopmentPointsLog implements ILog
 {
     private Island $island;
     private Turn $turn;
@@ -34,9 +35,7 @@ class AbortLackOfFundsLog implements ILog
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => '(' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],
-            ['text' => 'は、'],
-            ['text' => '資金不足', 'style' => StyleConst::BOLD ],
-            ['text' => 'により', ],
+            ['text' => 'は、発展ポイントが不足していたため'],
             ['text' => '中止', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
             ['text' => 'されました。'],
         ]);

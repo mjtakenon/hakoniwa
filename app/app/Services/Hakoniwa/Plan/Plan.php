@@ -27,12 +27,18 @@ abstract class Plan implements IPlan
     public const PRICE = 0;
     public const PRICE_STRING = '(+' . self::PRICE . '億円)';
     public const USE_POINT = false;
+    public const USE_AMOUNT = false;
+    public const USE_TARGET_ISLAND = false;
+    public const EXECUTABLE_DEVELOPMENT_POINT = 0;
 
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
     protected string $priceString = self::PRICE_STRING;
     protected bool $usePoint = self::USE_POINT;
+    protected bool $useAmount = self::USE_AMOUNT;
+    protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
+    protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
 
     protected int $amount;
     protected Point $point;
@@ -68,6 +74,12 @@ abstract class Plan implements IPlan
     {
         $this->point = $point;
         $this->amount = $amount;
+        $this->key = self::KEY;
+        $this->name = self::NAME;
+        $this->price = self::PRICE;
+        $this->usePoint = self::USE_POINT;
+        $this->useTargetIsland = self::USE_TARGET_ISLAND;
+        $this->executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
     }
 
     public function getKey(): string
@@ -95,6 +107,21 @@ abstract class Plan implements IPlan
         return $this->usePoint;
     }
 
+    public function useAmount(): bool
+    {
+        return $this->useAmount;
+    }
+
+    public function useTargetIsland(): bool
+    {
+        return $this->useTargetIsland;
+    }
+
+    public function getExecutableDevelopmentPoint(): int
+    {
+        return $this->executableDevelopmentPoint;
+    }
+
     public function priceString(): string
     {
         return $this->priceString;
@@ -115,6 +142,8 @@ abstract class Plan implements IPlan
                 'point' => $this->getPoint(),
                 'amount' => $this->getAmount(),
                 'usePoint' => $this->usePoint(),
+                'useAmount' => $this->useAmount(),
+                'useTargetIsland' => $this->useTargetIsland(),
             ]
         ];
     }

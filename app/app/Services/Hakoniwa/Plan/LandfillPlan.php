@@ -7,12 +7,12 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\Lake;
-use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
+use App\Services\Hakoniwa\Log\AbortNoDevelopmentPointsLog;
 use App\Services\Hakoniwa\Log\AbortNoLandsLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
@@ -28,6 +28,7 @@ class LandfillPlan extends Plan
     public const PRICE = 150;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
     public const USE_POINT = true;
+    public const EXECUTABLE_DEVELOPMENT_POINT = 5000;
 
     public function __construct(Point $point, int $amount = 1)
     {
@@ -36,18 +37,26 @@ class LandfillPlan extends Plan
         $this->name = self::NAME;
         $this->price = self::PRICE;
         $this->usePoint = self::USE_POINT;
+        $this->executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
     }
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
     {
         $cell = $terrain->getCell($this->point);
+        $logs = Logs::create();
+
         if ($status->getFunds() < self::PRICE) {
-            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            return new ExecutePlanResult($terrain, $status, $logs, false);
+        }
+
+        if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
+            $logs->add(new AbortNoDevelopmentPointsLog($island, $turn, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, [Shallow::TYPE, Sea::TYPE, Lake::TYPE], true)) {
-            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -56,7 +65,7 @@ class LandfillPlan extends Plan
         });
 
         if ($landCells->count() === 0) {
-            $logs = Logs::create()->add(new AbortNoLandsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortNoLandsLog($island, $turn, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -68,13 +77,13 @@ class LandfillPlan extends Plan
             $aroundGroundCount = 0;
             /** @var Cell $c */
             foreach ($cells as $c) {
-                if ($c::ATTRIBUTE[CellTypeConst::IS_LAND]){
+                if ($c::ATTRIBUTE[CellTypeConst::IS_LAND]) {
                     $aroundGroundCount += 1;
                 }
             }
             if ($aroundGroundCount >= 3) {
                 foreach ($cells as $c) {
-                    if ($c::TYPE === Sea::TYPE){
+                    if ($c::TYPE === Sea::TYPE) {
                         $terrain->setCell($c->getPoint(), new Shallow(point: $c->getPoint()));
                     }
                 }
@@ -84,7 +93,7 @@ class LandfillPlan extends Plan
         }
 
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $logs->add(new ExecuteCellLog($island, $turn, $this->point, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

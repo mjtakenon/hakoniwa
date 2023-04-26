@@ -95,6 +95,7 @@ class PlansController extends Controller
                 'plans' => Plans::fromJson($islandPlans)->toArrayWithStatic(),
                 'logs' => $islandLogs
             ],
+            'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),
         ]);
     }
 

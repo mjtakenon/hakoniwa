@@ -3,15 +3,13 @@
 namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
-use App\Models\IslandHistory;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Plain;
+use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
-use App\Services\Hakoniwa\Log\AbandonmentLog;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
-use App\Services\Hakoniwa\Log\ExecuteLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -26,7 +24,7 @@ class RemovalFacility extends Plan
     public const PRICE_STRING = '(無料)';
     public const USE_POINT = true;
 
-    public function __construct(Point $point = (new Point(0,0)), int $amount = 1)
+    public function __construct(Point $point = (new Point(0, 0)), int $amount = 1)
     {
         parent::__construct($point, $amount);
         $this->key = self::KEY;
