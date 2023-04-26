@@ -96,6 +96,25 @@ class City extends Cell
         return $maxPopulation;
     }
 
+    private function getMaxPopulation(Terrain $terrain, Status $status): int
+    {
+        $maxPopulation = 20000;
+
+        if ($status->getDevelopmentPoints() >= 3000000) {
+            $maxPopulation = 30000;
+        } else if ($status->getDevelopmentPoints() >= 700000) {
+            $maxPopulation = 26000;
+        } else if ($status->getDevelopmentPoints() >= 150000) {
+            $maxPopulation = 23000;
+        }
+
+        // 内陸部の最大人口は沿岸部の半分
+        if (!$this->isSeaside($terrain)) {
+            $maxPopulation *= 0.5;
+        }
+
+        return $maxPopulation;
+    }
     public function passTime(Island $island, Terrain $terrain, Status $status): void
     {
         if ($status->getFoods() > 0) {
@@ -122,7 +141,10 @@ class City extends Cell
                 $this->population = $naturalIncreasePopulation;
             }
         } else {
-            $this->population = $naturalIncreasePopulation;
+            $maxPopulation = $this->getMaxPopulation($terrain, $status);
+            if ($this->population >= $maxPopulation) {
+                $this->population = $maxPopulation;
+            }
         }
 
         // マップチップ入れ替え

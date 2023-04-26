@@ -18,6 +18,7 @@ class PlanConst
         ConstructMissileBasePlan::KEY => ConstructMissileBasePlan::class,
         RemovalFacility::KEY => RemovalFacility::class,
         CashFlowPlan::KEY => CashFlowPlan::class,
+        AttractActivitiesPlan::KEY => AttractActivitiesPlan::class,
         AbandonmentPlan::KEY => AbandonmentPlan::class,
     ];
 

@@ -74,6 +74,11 @@ abstract class Cell implements ICell
         return $this->population;
     }
 
+    public function setPopulation($population)
+    {
+        $this->population = $population;
+    }
+
     public function getFoodsProductionNumberOfPeople(): int
     {
         return $this->foodsProductionNumberOfPeople;
