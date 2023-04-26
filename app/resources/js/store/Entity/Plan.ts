@@ -5,6 +5,8 @@ export interface Plan {
         point: Point,
         amount: number,
         usePoint: boolean,
+        useAmount: boolean,
+        useTargetIsland: boolean,
         priceString: string,
     },
 }
@@ -20,6 +22,8 @@ export function getDefaultPlan(): Plan {
             },
             amount: 1,
             usePoint: false,
+            useAmount: false,
+            useTargetIsland: false,
             priceString: '(+10億円)',
         }
     }

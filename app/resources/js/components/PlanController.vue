@@ -136,6 +136,8 @@ export default {
                     },
                     amount: this.$store.state.selectedAmount,
                     usePoint: this.$store.state.planCandidate[this.selectedPlan].usePoint,
+                    useAmount: this.$store.state.planCandidate[this.selectedPlan].useAmount,
+                    useTargetIsland: this.$store.state.planCandidate[this.selectedPlan].useTargetIsland,
                     priceString: ''
                 }
             };

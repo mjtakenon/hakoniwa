@@ -78,6 +78,7 @@ abstract class Plan implements IPlan
         $this->name = self::NAME;
         $this->price = self::PRICE;
         $this->usePoint = self::USE_POINT;
+        $this->useAmount = self::USE_AMOUNT;
         $this->useTargetIsland = self::USE_TARGET_ISLAND;
         $this->executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
     }

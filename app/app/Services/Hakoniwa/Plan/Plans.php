@@ -99,6 +99,11 @@ class Plans implements JsonEncodable
             $status = $executePlanResult->getStatus();
             $logs->merge($executePlanResult->getLogs());
 
+            if ($plan->useAmount() && $plan->getAmount() >= 1) {
+                $this->plans->prepend($plan);
+                $this->plans->pop();
+            }
+
             // 2回以上行動できる場合はループ
             if ($executePlanResult->isTurnSpending()) {
                 break;
