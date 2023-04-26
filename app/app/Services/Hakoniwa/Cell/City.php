@@ -5,6 +5,7 @@ namespace App\Services\Hakoniwa\Cell;
 use App\Models\Island;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use League\CommonMark\Environment\Environment;
 
 class City extends Cell
 {
@@ -69,31 +70,62 @@ class City extends Cell
             '人口 ' . $this->population . '人';
     }
 
+    private function isSeaside(Terrain $terrain){
+        $cells = $terrain->getAroundCells($this->point);
+        $seasideCells = $cells->reject(function ($cell) { return $cell::ATTRIBUTE[CellTypeConst::IS_LAND]; });
+        return $seasideCells->count() >= 1;
+    }
+
+    private function getNaturalIncreasePopulation(Terrain $terrain, Status $status): int
+    {
+        $maxPopulation = 10000;
+
+        if ($status->getDevelopmentPoints() >= 3000000) {
+            $maxPopulation = 16000;
+        } else if ($status->getDevelopmentPoints() >= 700000) {
+            $maxPopulation = 14000;
+        } else if ($status->getDevelopmentPoints() >= 150000) {
+            $maxPopulation = 12000;
+        }
+
+        // 内陸部の最大人口は沿岸部の半分
+        if (!$this->isSeaside($terrain)) {
+            $maxPopulation *= 0.5;
+        }
+
+        return $maxPopulation;
+    }
+
     public function passTime(Island $island, Terrain $terrain, Status $status): void
     {
         if ($status->getFoods() > 0) {
+            // 通常時
             $minPopulationIncrementalRate = self::DEFAULT_MIN_POPULATION_INCREMENTAL_RATE;
             $maxPopulationIncrementalRate = self::DEFAULT_MAX_POPULATION_INCREMENTAL_RATE;
+            // 環境が通常の場合、人口増加率を半分にする
+            if ($status->getEnvironment() === Status::ENVIRONMENT_NORMAL) {
+                $minPopulationIncrementalRate *= 0.5;
+                $maxPopulationIncrementalRate *= 0.5;
+            }
         } else {
+            // 食料不足時
             $minPopulationIncrementalRate = self::FOOD_SHORTAGES_MIN_POPULATION_INCREMENTAL_RATE;
             $maxPopulationIncrementalRate = self::FOOD_SHORTAGES_MAX_POPULATION_INCREMENTAL_RATE;
         }
 
-        if ($this->population < City::MIN_POPULATION) {
+        $naturalIncreasePopulation = $this->getNaturalIncreasePopulation($terrain, $status);
+        // 自然増加/減少
+        if ($this->population < $naturalIncreasePopulation) {
             $this->population += random_int($minPopulationIncrementalRate, $maxPopulationIncrementalRate) * 100;
 
-            if ($this->population >= City::MIN_POPULATION) {
-                $this->population = City::MIN_POPULATION;
+            if ($this->population >= $naturalIncreasePopulation) {
+                $this->population = $naturalIncreasePopulation;
             }
         } else {
-            $this->population += random_int($minPopulationIncrementalRate, $maxPopulationIncrementalRate) * 100;
-
-            // 仮
-            if ($this->population >= City::MIN_POPULATION) {
-                $this->population = City::MIN_POPULATION;
-            }
+            $this->population = $naturalIncreasePopulation;
         }
 
+        // マップチップ入れ替え
         if ($this->population >= City::MIN_POPULATION) {
             $terrain->setCell($this->point, new City(point: $this->point, population: $this->population));
             return;
