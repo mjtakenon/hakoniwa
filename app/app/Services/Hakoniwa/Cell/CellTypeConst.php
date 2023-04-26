@@ -20,6 +20,7 @@ class CellTypeConst
         Village::TYPE => Village::class,
         Wasteland::TYPE => Wasteland::class,
         MissileBase::TYPE => MissileBase::class,
+        SeabedBase::TYPE => SeabedBase::class,
     ];
 
     const IS_LAND = 'is_land';

@@ -16,6 +16,7 @@ class PlanConst
         ConstructMinePlan::KEY => ConstructMinePlan::class,
         ConstructOilfieldPlan::KEY => ConstructOilfieldPlan::class,
         ConstructMissileBasePlan::KEY => ConstructMissileBasePlan::class,
+        ConstructSeabedBasePlan::KEY => ConstructSeabedBasePlan::class,
         RemovalFacility::KEY => RemovalFacility::class,
         CashFlowPlan::KEY => CashFlowPlan::class,
         AttractActivitiesPlan::KEY => AttractActivitiesPlan::class,

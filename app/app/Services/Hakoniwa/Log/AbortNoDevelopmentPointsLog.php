@@ -33,7 +33,7 @@ class AbortNoDevelopmentPointsLog implements ILog
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
-            ['text' => '(' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
+            ['text' => ' (' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],
             ['text' => 'は、発展ポイントが不足していたため'],
             ['text' => '中止', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
