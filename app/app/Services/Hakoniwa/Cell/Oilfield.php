@@ -2,6 +2,9 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Models\Island;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
 class Oilfield extends Cell
@@ -32,7 +35,25 @@ class Oilfield extends Cell
         parent::__construct(...$data);
         $this->imagePath = self::IMAGE_PATH;
         $this->type = self::TYPE;
-        $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+
+        if (array_key_exists('resourcesProductionNumberOfPeople', $data)) {
+            $this->resourcesProductionNumberOfPeople = $data['resourcesProductionNumberOfPeople'];
+        } else {
+            $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+        }
+    }
+
+    public function toArray(bool $isPrivate = false): array
+    {
+        return [
+            'type' => $this->type,
+            'data' => [
+                'point' => $this->point,
+                'image_path' => $this->imagePath,
+                'info' => $this->getInfoString($isPrivate),
+                'resourcesProductionNumberOfPeople' => $this->resourcesProductionNumberOfPeople,
+            ]
+        ];
     }
 
     public function getInfoString(bool $isPrivate = false): string
@@ -40,5 +61,14 @@ class Oilfield extends Cell
         return
             '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
             $this->resourcesProductionNumberOfPeople . '人規模';
+    }
+
+    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    {
+        $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+
+        if ($status->getDevelopmentPoints() >= 1800000) {
+            $this->resourcesProductionNumberOfPeople *= 2;
+        }
     }
 }

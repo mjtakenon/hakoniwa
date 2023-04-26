@@ -71,5 +71,9 @@ class Farm extends Cell
         } else {
             $this->foodsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
         }
+
+        if ($status->getDevelopmentPoints() >= 1500000) {
+            $this->foodsProductionNumberOfPeople *= 2;
+        }
     }
 }
