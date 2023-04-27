@@ -15,6 +15,7 @@ class Plain extends Cell
     public const NAME = '平地';
     public const IMMIGRATE_COEF = 0.2;
     public const IMMIGRABLE_TYPE = [
+        Metropolis::TYPE,
         City::TYPE,
         Town::TYPE,
         Village::TYPE,
