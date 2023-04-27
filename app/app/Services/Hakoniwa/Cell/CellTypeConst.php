@@ -9,6 +9,7 @@ class CellTypeConst
         Factory::TYPE => Factory::class,
         Farm::TYPE => Farm::class,
         Forest::TYPE => Forest::class,
+        Metropolis::TYPE => Metropolis::class,
         Mountain::TYPE => Mountain::class,
         Mine::TYPE => Mine::class,
         Oilfield::TYPE => Oilfield::class,

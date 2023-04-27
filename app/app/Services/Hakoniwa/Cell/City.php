@@ -143,6 +143,11 @@ class City extends Cell
         }
 
         // マップチップ入れ替え
+        if ($this->population >= Metropolis::MIN_POPULATION) {
+            $terrain->setCell($this->point, new Metropolis(point: $this->point, population: $this->population));
+            return;
+        }
+
         if ($this->population >= City::MIN_POPULATION) {
             $terrain->setCell($this->point, new City(point: $this->point, population: $this->population));
             return;
