@@ -13,6 +13,11 @@ use App\Services\Hakoniwa\Cell\Metropolis;
 use App\Services\Hakoniwa\Cell\Mine;
 use App\Services\Hakoniwa\Cell\MissileBase;
 use App\Services\Hakoniwa\Cell\MonumentOfAgriculture;
+use App\Services\Hakoniwa\Cell\MonumentOfMaster;
+use App\Services\Hakoniwa\Cell\MonumentOfMining;
+use App\Services\Hakoniwa\Cell\MonumentOfPeace;
+use App\Services\Hakoniwa\Cell\MonumentOfWar;
+use App\Services\Hakoniwa\Cell\MonumentOfWinner;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\Park;
@@ -64,6 +69,11 @@ abstract class Plan implements IPlan
         MissileBase::TYPE,
         Park::TYPE,
         MonumentOfAgriculture::TYPE,
+        MonumentOfMining::TYPE,
+        MonumentOfMaster::TYPE,
+        MonumentOfPeace::TYPE,
+        MonumentOfWar::TYPE,
+        MonumentOfWinner::TYPE,
     ];
 
     public const REMOVABLE_CELLS = [
@@ -77,6 +87,11 @@ abstract class Plan implements IPlan
         SeabedBase::TYPE,
         Park::TYPE,
         MonumentOfAgriculture::TYPE,
+        MonumentOfMining::TYPE,
+        MonumentOfMaster::TYPE,
+        MonumentOfPeace::TYPE,
+        MonumentOfWar::TYPE,
+        MonumentOfWinner::TYPE,
     ];
 
     public const CONSTRUCTABLE_CELLS = [

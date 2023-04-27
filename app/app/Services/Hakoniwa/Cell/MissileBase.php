@@ -97,7 +97,7 @@ class MissileBase extends Cell
         }
     }
 
-    private function getLevel(): int
+    public function getLevel(): int
     {
         foreach(self::EXPERIENCE_TABLE as $exp => $level) {
             if ($this->experience >= $exp) {

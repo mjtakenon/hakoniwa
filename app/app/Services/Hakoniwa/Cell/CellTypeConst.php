@@ -26,6 +26,11 @@ class CellTypeConst
         SeabedBase::TYPE => SeabedBase::class,
         Park::TYPE => Park::class,
         MonumentOfAgriculture::TYPE => MonumentOfAgriculture::class,
+        MonumentOfMining::TYPE => MonumentOfMining::class,
+        MonumentOfMaster::TYPE => MonumentOfMaster::class,
+        MonumentOfPeace::TYPE => MonumentOfPeace::class,
+        MonumentOfWar::TYPE => MonumentOfWar::class,
+        MonumentOfWinner::TYPE => MonumentOfWinner::class,
     ];
 
     const IS_LAND = 'is_land';

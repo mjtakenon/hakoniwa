@@ -6,6 +6,11 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\MonumentOfAgriculture;
+use App\Services\Hakoniwa\Cell\MonumentOfMaster;
+use App\Services\Hakoniwa\Cell\MonumentOfMining;
+use App\Services\Hakoniwa\Cell\MonumentOfPeace;
+use App\Services\Hakoniwa\Cell\MonumentOfWar;
+use App\Services\Hakoniwa\Cell\MonumentOfWinner;
 use App\Services\Hakoniwa\Cell\Park;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
@@ -26,6 +31,11 @@ class ConstructParkPlan extends Plan
 
     public const PARKS = [
         MonumentOfAgriculture::class,
+        MonumentOfMining::class,
+        MonumentOfMaster::class,
+        MonumentOfPeace::class,
+        MonumentOfWar::class,
+        MonumentOfWinner::class,
         Park::class,
     ];
 
