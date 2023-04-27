@@ -47,6 +47,10 @@ class Status
     private string $environment;
     private int $area;
 
+    private int $producedFoods = 0;
+    private int $producedFunds = 0;
+    private int $producedResources = 0;
+
     public static function create(): static
     {
         return new static;
@@ -113,16 +117,19 @@ class Status
             $farmRatio = $farmProductionNumberOfPeople / ($farmProductionNumberOfPeople + $farmDomeProductionNumberOfPeople);
             $farmDomeRatio = $farmDomeProductionNumberOfPeople / ($farmProductionNumberOfPeople + $farmDomeProductionNumberOfPeople);
 
-            $this->foods += $realFoodsProductionNumberOfPeople * $farmRatio * self::FOODS_PRODUCTION_COEF[$this->environment];
-            $this->foods += $realFoodsProductionNumberOfPeople * $farmDomeRatio * self::FOODS_PRODUCTION_COEF[self::ENVIRONMENT_BEST];
+            $this->producedFoods = $realFoodsProductionNumberOfPeople * $farmRatio * self::FOODS_PRODUCTION_COEF[$this->environment];
+            $this->producedFoods += $realFoodsProductionNumberOfPeople * $farmDomeRatio * self::FOODS_PRODUCTION_COEF[self::ENVIRONMENT_BEST];
+            $this->foods += $this->producedFoods;
         }
 
         // 資源生産
-        $this->resources += $realResourcesProductionNumberOfPeople * self::RESOURCES_PRODUCTION_COEF;
+        $this->producedResources = $realResourcesProductionNumberOfPeople * self::RESOURCES_PRODUCTION_COEF;
+        $this->resources += $this->producedResources;
 
         // 資金生産
         $realFundsProductionNumberOfPeople = min([$this->resources / self::RESOURCES_CONSUMPTION_COEF, $realFundsProductionNumberOfPeople]);
-        $this->funds += $realFundsProductionNumberOfPeople * self::FUNDS_PRODUCTION_COEF;
+        $this->producedFunds = $realFundsProductionNumberOfPeople * self::FUNDS_PRODUCTION_COEF;
+        $this->funds += $this->producedFunds;
         $this->resources -= $realFundsProductionNumberOfPeople * self::RESOURCES_CONSUMPTION_COEF;
 
         // 食料消費
@@ -181,6 +188,14 @@ class Status
     public function setResources(int $resources): void
     {
         $this->resources = $resources;
+    }
+
+    /**
+     * @param int $developmentPoints
+     */
+    public function setDevelopmentPoints(int $developmentPoints): void
+    {
+        $this->developmentPoints = $developmentPoints;
     }
 
     /**

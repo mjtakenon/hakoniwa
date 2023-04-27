@@ -14,6 +14,7 @@ use App\Services\Hakoniwa\Cell\Mine;
 use App\Services\Hakoniwa\Cell\MissileBase;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
+use App\Services\Hakoniwa\Cell\Park;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\SeabedBase;
@@ -60,6 +61,7 @@ abstract class Plan implements IPlan
         Village::TYPE,
         Wasteland::TYPE,
         MissileBase::TYPE,
+        Park::TYPE,
     ];
 
     public const REMOVABLE_CELLS = [
@@ -71,6 +73,7 @@ abstract class Plan implements IPlan
         Mine::TYPE,
         MissileBase::TYPE,
         SeabedBase::TYPE,
+        Park::TYPE,
     ];
 
     public const CONSTRUCTABLE_CELLS = [

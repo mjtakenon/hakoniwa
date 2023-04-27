@@ -17,6 +17,7 @@ class PlanConst
         ConstructLargeFactoryPlan::KEY => ConstructLargeFactoryPlan::class,
         ConstructMinePlan::KEY => ConstructMinePlan::class,
         ConstructOilfieldPlan::KEY => ConstructOilfieldPlan::class,
+        ConstructParkPlan::KEY => ConstructParkPlan::class,
         ConstructMissileBasePlan::KEY => ConstructMissileBasePlan::class,
         ConstructSeabedBasePlan::KEY => ConstructSeabedBasePlan::class,
         RemovalFacility::KEY => RemovalFacility::class,

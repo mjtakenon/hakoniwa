@@ -92,7 +92,6 @@ class Plans implements JsonEncodable
         while (true) {
             /** @var Plan $plan */
             $plan = $this->shift();
-            // TODO: 各コマンド実装
             $executePlanResult = $plan->execute($island, $terrain, $status, $turn);
 
             $terrain = $executePlanResult->getTerrain();
