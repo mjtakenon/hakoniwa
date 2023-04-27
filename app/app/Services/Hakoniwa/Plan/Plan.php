@@ -5,14 +5,18 @@ namespace App\Services\Hakoniwa\Plan;
 use App\Services\Hakoniwa\Cell\City;
 use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\Farm;
+use App\Services\Hakoniwa\Cell\FarmDome;
 use App\Services\Hakoniwa\Cell\Forest;
 use App\Services\Hakoniwa\Cell\Lake;
+use App\Services\Hakoniwa\Cell\LargeFactory;
+use App\Services\Hakoniwa\Cell\Metropolis;
 use App\Services\Hakoniwa\Cell\Mine;
 use App\Services\Hakoniwa\Cell\MissileBase;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
+use App\Services\Hakoniwa\Cell\SeabedBase;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Town;
 use App\Services\Hakoniwa\Cell\Village;
@@ -44,9 +48,12 @@ abstract class Plan implements IPlan
     protected Point $point;
 
     public const GRADABLE_CELLS = [
+        Metropolis::TYPE,
         City::TYPE,
         Factory::TYPE,
+        LargeFactory::TYPE,
         Farm::TYPE,
+        FarmDome::TYPE,
         Forest::TYPE,
         Oilfield::TYPE,
         Town::TYPE,
@@ -57,14 +64,18 @@ abstract class Plan implements IPlan
 
     public const REMOVABLE_CELLS = [
         Factory::TYPE,
+        LargeFactory::TYPE,
         Farm::TYPE,
+        FarmDome::TYPE,
         Oilfield::TYPE,
         Mine::TYPE,
         MissileBase::TYPE,
+        SeabedBase::TYPE,
     ];
 
     public const CONSTRUCTABLE_CELLS = [
         Plain::TYPE,
+        Metropolis::TYPE,
         City::TYPE,
         Town::TYPE,
         Village::TYPE,

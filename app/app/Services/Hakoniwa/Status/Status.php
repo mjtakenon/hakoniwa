@@ -3,6 +3,9 @@
 namespace App\Services\Hakoniwa\Status;
 
 use App\Models\IslandStatus;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\Farm;
+use App\Services\Hakoniwa\Cell\FarmDome;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
@@ -22,7 +25,11 @@ class Status
         self::ENVIRONMENT_NORMAL => '通常',
     ];
 
-    private const FOODS_PRODUCTION_COEF = 0.6;
+    private const FOODS_PRODUCTION_COEF = [
+        self::ENVIRONMENT_NORMAL => 0.3,
+        self::ENVIRONMENT_GOOD => 0.6,
+        self::ENVIRONMENT_BEST => 1.2,
+    ];
     private const FOODS_CONSUMPTION_COEF = 0.1;
     private const RESOURCES_PRODUCTION_COEF = 0.02;
     private const RESOURCES_CONSUMPTION_COEF = 0.02;
@@ -91,13 +98,23 @@ class Status
                 min([((float)($this->resourcesProductionNumberOfPeople) / $sumProductionNumberOfPeople) * $workablePeople, $this->resourcesProductionNumberOfPeople]);
         }
 
-        // 食料生産
-        if ($this->environment === self::ENVIRONMENT_BEST) {
-            $this->foods += $realFoodsProductionNumberOfPeople * self::FOODS_PRODUCTION_COEF * 2;
-        } else if ($this->environment === self::ENVIRONMENT_GOOD) {
-            $this->foods += $realFoodsProductionNumberOfPeople * self::FOODS_PRODUCTION_COEF;
-        } else {
-            $this->foods += $realFoodsProductionNumberOfPeople * self::FOODS_PRODUCTION_COEF * 0.5;
+        if ($this->foodsProductionNumberOfPeople > 0) {
+            // 食料生産
+            $farmProductionNumberOfPeople = $terrain
+                ->getTerrain()->flatten(1)
+                ->filter(function($cell) { /** @var Cell $cell */return $cell::TYPE === Farm::TYPE; })
+                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionNumberOfPeople(); });
+
+            $farmDomeProductionNumberOfPeople = $terrain
+                ->getTerrain()->flatten(1)
+                ->filter(function($cell) { /** @var Cell $cell */return $cell::TYPE === FarmDome::TYPE; })
+                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionNumberOfPeople(); });
+
+            $farmRatio = $farmProductionNumberOfPeople / ($farmProductionNumberOfPeople + $farmDomeProductionNumberOfPeople);
+            $farmDomeRatio = $farmDomeProductionNumberOfPeople / ($farmProductionNumberOfPeople + $farmDomeProductionNumberOfPeople);
+
+            $this->foods += $realFoodsProductionNumberOfPeople * $farmRatio * self::FOODS_PRODUCTION_COEF[$this->environment];
+            $this->foods += $realFoodsProductionNumberOfPeople * $farmDomeRatio * self::FOODS_PRODUCTION_COEF[self::ENVIRONMENT_BEST];
         }
 
         // 資源生産

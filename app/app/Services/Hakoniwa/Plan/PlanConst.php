@@ -12,6 +12,7 @@ class PlanConst
         AfforestationPlan::KEY => AfforestationPlan::class,
         DeforestationPlan::KEY => DeforestationPlan::class,
         ConstructFarmPlan::KEY => ConstructFarmPlan::class,
+        ConstructFarmDomePlan::KEY => ConstructFarmDomePlan::class,
         ConstructFactoryPlan::KEY => ConstructFactoryPlan::class,
         ConstructLargeFactoryPlan::KEY => ConstructLargeFactoryPlan::class,
         ConstructMinePlan::KEY => ConstructMinePlan::class,
