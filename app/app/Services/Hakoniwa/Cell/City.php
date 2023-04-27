@@ -96,7 +96,7 @@ class City extends Cell
         return $maxPopulation;
     }
 
-    private function getMaxPopulation(Terrain $terrain, Status $status): int
+    private function getMaxPopulation(Status $status): int
     {
         $maxPopulation = 20000;
 
@@ -106,11 +106,6 @@ class City extends Cell
             $maxPopulation = 26000;
         } else if ($status->getDevelopmentPoints() >= 150000) {
             $maxPopulation = 23000;
-        }
-
-        // 内陸部の最大人口は沿岸部の半分
-        if (!$this->isSeaside($terrain)) {
-            $maxPopulation *= 0.5;
         }
 
         return $maxPopulation;
@@ -141,7 +136,7 @@ class City extends Cell
                 $this->population = $naturalIncreasePopulation;
             }
         } else {
-            $maxPopulation = $this->getMaxPopulation($terrain, $status);
+            $maxPopulation = $this->getMaxPopulation($status);
             if ($this->population >= $maxPopulation) {
                 $this->population = $maxPopulation;
             }
