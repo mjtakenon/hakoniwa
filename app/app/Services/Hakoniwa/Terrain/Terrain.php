@@ -9,6 +9,7 @@ use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\Forest;
 use App\Services\Hakoniwa\Cell\Lake;
+use App\Services\Hakoniwa\Cell\LargeFactory;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\Plain;
@@ -197,7 +198,7 @@ class Terrain implements JsonEncodable
 
         /** @var Cell $cell */
         foreach ($this->terrain->flatten(1) as $cell) {
-            if ($cell::TYPE === Factory::TYPE) {
+            if (in_array($cell::TYPE, [Factory::TYPE, LargeFactory::TYPE], true)) {
                 $hasFactory = true;
             }
             if ($cell::TYPE === Oilfield::TYPE) {
