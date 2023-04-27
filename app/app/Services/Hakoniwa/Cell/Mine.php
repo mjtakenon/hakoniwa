@@ -3,6 +3,7 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -67,7 +68,7 @@ class Mine extends Cell
     {
         $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
 
-        if ($status->getDevelopmentPoints() >= 1800000) {
+        if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_MINE_AND_OILFIELD_CAPACITY_AVAILABLE_POINTS) {
             $this->resourcesProductionNumberOfPeople *= 2;
         }
     }

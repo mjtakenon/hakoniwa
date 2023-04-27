@@ -16,6 +16,7 @@ use App\Services\Hakoniwa\Log\AbortNoDevelopmentPointsLog;
 use App\Services\Hakoniwa\Log\AbortNoLandsLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -28,7 +29,7 @@ class LandfillPlan extends Plan
     public const PRICE = 150;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
     public const USE_POINT = true;
-    public const EXECUTABLE_DEVELOPMENT_POINT = 5000;
+    public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::LANDFILL_AVAILABLE_POINTS;
 
     public function __construct(Point $point, int $amount = 1)
     {

@@ -3,6 +3,7 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -72,7 +73,7 @@ class Farm extends Cell
             $this->foodsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
         }
 
-        if ($status->getDevelopmentPoints() >= 1500000) {
+        if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_FARM_CAPACITY_AVAILABLE_POINTS) {
             $this->foodsProductionNumberOfPeople *= 2;
         }
     }

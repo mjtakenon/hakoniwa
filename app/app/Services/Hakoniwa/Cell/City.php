@@ -3,6 +3,7 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use League\CommonMark\Environment\Environment;
@@ -80,11 +81,11 @@ class City extends Cell
     {
         $maxPopulation = 10000;
 
-        if ($status->getDevelopmentPoints() >= 3000000) {
+        if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_CITY_CAPACITY_3_AVAILABLE_POINTS) {
             $maxPopulation = 16000;
-        } else if ($status->getDevelopmentPoints() >= 700000) {
+        } else if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_CITY_CAPACITY_2_AVAILABLE_POINTS) {
             $maxPopulation = 14000;
-        } else if ($status->getDevelopmentPoints() >= 150000) {
+        } else if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_CITY_CAPACITY_1_AVAILABLE_POINTS) {
             $maxPopulation = 12000;
         }
 
@@ -100,11 +101,11 @@ class City extends Cell
     {
         $maxPopulation = 20000;
 
-        if ($status->getDevelopmentPoints() >= 3000000) {
+        if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_CITY_CAPACITY_3_AVAILABLE_POINTS) {
             $maxPopulation = 30000;
-        } else if ($status->getDevelopmentPoints() >= 700000) {
+        } else if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_CITY_CAPACITY_2_AVAILABLE_POINTS) {
             $maxPopulation = 26000;
-        } else if ($status->getDevelopmentPoints() >= 150000) {
+        } else if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_CITY_CAPACITY_1_AVAILABLE_POINTS) {
             $maxPopulation = 23000;
         }
 

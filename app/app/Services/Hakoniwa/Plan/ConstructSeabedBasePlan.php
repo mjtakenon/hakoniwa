@@ -15,6 +15,7 @@ use App\Services\Hakoniwa\Log\AfforestationLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\LogVisibility;
+use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -27,7 +28,7 @@ class ConstructSeabedBasePlan extends Plan
     public const PRICE = 2000;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
     public const USE_POINT = true;
-    public const EXECUTABLE_DEVELOPMENT_POINT = 400000;
+    public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::CONSTRUCT_SEABED_BASE_AVAILABLE_POINTS;
 
     public function __construct(Point $point, int $amount = 1)
     {
