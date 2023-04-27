@@ -17,6 +17,7 @@ class CellTypeConst
         Sea::TYPE => Sea::class,
         Shallow::TYPE => Shallow::class,
         Lake::TYPE => Lake::class,
+        LargeFactory::TYPE => LargeFactory::class,
         Town::TYPE => Town::class,
         Village::TYPE => Village::class,
         Wasteland::TYPE => Wasteland::class,
