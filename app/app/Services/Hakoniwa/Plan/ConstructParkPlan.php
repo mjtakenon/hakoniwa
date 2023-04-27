@@ -5,6 +5,7 @@ namespace App\Services\Hakoniwa\Plan;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Factory;
+use App\Services\Hakoniwa\Cell\MonumentOfAgriculture;
 use App\Services\Hakoniwa\Cell\Park;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
@@ -24,6 +25,7 @@ class ConstructParkPlan extends Plan
     public const USE_POINT = true;
 
     public const PARKS = [
+        MonumentOfAgriculture::class,
         Park::class,
     ];
 

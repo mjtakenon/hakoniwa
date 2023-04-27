@@ -262,6 +262,21 @@ class Status
         return $this->area;
     }
 
+    public function getProducedFoods(): int
+    {
+        return $this->producedFoods;
+    }
+
+    public function getProducedFunds(): int
+    {
+        return $this->producedFunds;
+    }
+
+    public function getProducedResources(): int
+    {
+        return $this->producedResources;
+    }
+
     private function sumDevelopmentPoints(Terrain $terrain): int
     {
         // TODO: 公園

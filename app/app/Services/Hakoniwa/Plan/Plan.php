@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Cell\LargeFactory;
 use App\Services\Hakoniwa\Cell\Metropolis;
 use App\Services\Hakoniwa\Cell\Mine;
 use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\MonumentOfAgriculture;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\Park;
@@ -62,6 +63,7 @@ abstract class Plan implements IPlan
         Wasteland::TYPE,
         MissileBase::TYPE,
         Park::TYPE,
+        MonumentOfAgriculture::TYPE,
     ];
 
     public const REMOVABLE_CELLS = [
@@ -74,6 +76,7 @@ abstract class Plan implements IPlan
         MissileBase::TYPE,
         SeabedBase::TYPE,
         Park::TYPE,
+        MonumentOfAgriculture::TYPE,
     ];
 
     public const CONSTRUCTABLE_CELLS = [

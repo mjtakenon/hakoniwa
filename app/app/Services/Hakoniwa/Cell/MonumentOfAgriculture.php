@@ -7,12 +7,13 @@ use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
-class Park extends Cell implements IPark
+class MonumentOfAgriculture extends Cell implements IPark
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument0.gif';
-    public const TYPE = 'park';
-    public const NAME = '公園';
-    public const PRODUCT_DEVELOPMENT_POINTS = 100;
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument49.gif';
+    public const TYPE = 'monument_of_agriculture';
+    public const NAME = '農の碑';
+    public const PRODUCT_DEVELOPMENT_POINTS = 250;
+    public const CONSTRUCTABLE_FOODS_THRESHOLD = 120000;
 
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
@@ -56,6 +57,12 @@ class Park extends Cell implements IPark
 
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
+        if ($status->getProducedFoods() <= self::CONSTRUCTABLE_FOODS_THRESHOLD) {
+            return false;
+        }
+        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === self::TYPE; })->count() >= 1 ) {
+            return false;
+        }
         return true;
     }
 
