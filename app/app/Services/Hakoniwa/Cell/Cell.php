@@ -29,15 +29,16 @@ abstract class Cell implements ICell
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
+        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellTypeConst::DESTRUCTIBLE_BY_METEORITE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_HUGE_METEORITE => false,
+        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => false,
+        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => false,
         CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
         CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellTypeConst::PREVENTING_FIRE => false,
         CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => true,
+        CellTypeConst::PREVENTING_TSUNAMI => false,
     ];
 
     public const ELEVATION = 0;

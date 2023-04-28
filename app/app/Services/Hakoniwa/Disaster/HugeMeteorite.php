@@ -57,7 +57,7 @@ class HugeMeteorite implements IDisaster
 
         // 周囲2hex
         foreach ($around2HexCells as $cell) {
-            if ($cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_HUGE_METEORITE]) {
+            if ($cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX]) {
                 $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 2));
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             }
