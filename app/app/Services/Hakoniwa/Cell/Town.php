@@ -45,28 +45,8 @@ class Town extends City
         }
     }
 
-    public function toArray(bool $isPrivate = false): array
+    protected function getName(): string
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'population' => $this->population,
-            ]
-        ];
-    }
-
-    public function getInfoString(bool $isPrivate = false): string
-    {
-        return
-            '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
-            '人口 ' . $this->population . '人';
-    }
-
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
-    {
-        parent::passTime($island, $terrain, $status);
+        return self::NAME;
     }
 }
