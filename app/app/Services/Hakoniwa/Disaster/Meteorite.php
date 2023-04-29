@@ -6,6 +6,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
@@ -15,6 +16,7 @@ use App\Services\Hakoniwa\Log\DestructionByMeteoriteLog;
 use App\Services\Hakoniwa\Log\OccurEarthquakeLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\OccurMeteoriteLog;
+use App\Services\Hakoniwa\Log\ScatterAwayByHugeMeteoriteLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -39,7 +41,11 @@ class Meteorite implements IDisaster
                 continue;
             }
 
-            $logs->add(new DestructionByMeteoriteLog($island, $turn, $cell));
+            if (in_array(Monster::class, class_parents($cell), true)) {
+                $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
+            } else {
+                $logs->add(new DestructionByMeteoriteLog($island, $turn, $cell));
+            }
 
             if ($cell::ELEVATION === 1) {
                 $terrain->setCell($point, new Wasteland(point: $point));

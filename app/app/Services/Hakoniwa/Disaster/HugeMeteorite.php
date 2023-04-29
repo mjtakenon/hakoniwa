@@ -6,12 +6,14 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\DestructionByHugeMeteoriteLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\OccurHugeMeteoriteLog;
+use App\Services\Hakoniwa\Log\ScatterAwayByHugeMeteoriteLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -43,13 +45,21 @@ class HugeMeteorite implements IDisaster
             });
 
             if ($cell::ELEVATION === -1) {
-                $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
+                if (in_array(Monster::class, class_parents($cell), true)) {
+                    $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
+                } else {
+                    $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
+                }
                 $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
                 continue;
             }
 
             if ($cell::ELEVATION === 0 || $cell::ELEVATION === 1) {
-                $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
+                if (in_array(Monster::class, class_parents($cell), true)) {
+                    $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
+                } else {
+                    $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
+                }
                 $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
                 continue;
             }
@@ -58,7 +68,11 @@ class HugeMeteorite implements IDisaster
         // 周囲2hex
         foreach ($around2HexCells as $cell) {
             if ($cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX]) {
-                $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 2));
+                if (in_array(Monster::class, class_parents($cell), true)) {
+                    $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
+                } else {
+                    $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 2));
+                }
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             }
         }

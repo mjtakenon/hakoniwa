@@ -5,12 +5,15 @@ namespace App\Services\Hakoniwa\Disaster;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\DestructionByVolcanicEruptionLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\OccurVolcanicEruptionLog;
+use App\Services\Hakoniwa\Log\ScatterAwayByHugeMeteoriteLog;
+use App\Services\Hakoniwa\Log\ScatterAwayByVolcanicEruptionLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -41,7 +44,11 @@ class VolcanicEruption implements IDisaster
                 continue;
             }
             if ($cell::ELEVATION === -1 || $cell::ELEVATION === 0) {
-                $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));
+                if (in_array(Monster::class, class_parents($cell), true)) {
+                    $logs->add(new ScatterAwayByVolcanicEruptionLog($island, $turn, $cell));
+                } else {
+                    $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));
+                }
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
                 continue;
             }
