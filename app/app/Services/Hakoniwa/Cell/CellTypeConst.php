@@ -2,6 +2,8 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Services\Hakoniwa\Cell\Monster\Inora;
+
 class CellTypeConst
 {
     const CELL_TYPE_LIST = [
@@ -31,6 +33,7 @@ class CellTypeConst
         MonumentOfPeace::TYPE => MonumentOfPeace::class,
         MonumentOfWar::TYPE => MonumentOfWar::class,
         MonumentOfWinner::TYPE => MonumentOfWinner::class,
+        Inora::TYPE => Inora::class,
     ];
 
     const IS_LAND = 'is_land';

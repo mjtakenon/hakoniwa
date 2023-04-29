@@ -9,6 +9,7 @@ use App\Services\Hakoniwa\Cell\IMissileFireable;
 use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\Mine;
 use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\OutOfRegion;
 use App\Services\Hakoniwa\Cell\Plain;
@@ -22,8 +23,10 @@ use App\Services\Hakoniwa\Log\AbortNoMissileBaseLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\MissileFiringLog;
+use App\Services\Hakoniwa\Log\MissileHitToMonsterLog;
 use App\Services\Hakoniwa\Log\MissileOutOfRegionLog;
 use App\Services\Hakoniwa\Log\MissileSelfDestructLog;
+use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -106,12 +109,24 @@ class FiringHighAccuracyMissilePlan extends Plan
 
                 if ($targetCell::TYPE === OutOfRegion::TYPE) {
                     $logs->add(new MissileOutOfRegionLog($island, $turn, $targetCell->getPoint(), $this));
+                } else if (in_array(Monster::class, class_parents($targetCell), true)) {
+                    /** @var Monster $targetCell */
+                    $targetCell->setHitPoints($targetCell->getHitPoints()-1);
+                    $logs->add(new MissileHitToMonsterLog($island, $turn, $targetCell, $this));
+                    if ($targetCell->getHitPoints() >= 1) {
+                        $terrain->setCell($targetCell->getPoint(), $targetCell);
+                    } else {
+                        $terrain->setCell($targetCell->getPoint(), new Wasteland(point: $targetCell->getPoint()));
+
+                        $logs->add(new SoldMonsterCorpseLog($turn, $targetCell));
+                        $status->setFunds($status->getFunds() + $targetCell->getCorpsePrice());
+
+                        $missileBase->setExperience($missileBase->getExperience() + $targetCell->getExperience());
+                        $terrain->setCell($missileBase->getPoint(), $missileBase);
+                    }
                 } else {
                     $logs->add(new MissileSelfDestructLog($island, $turn, $targetCell->getPoint(), $this));
                 }
-                // if !isMonster
-
-                // $terrain->setCell($this->point, new Wasteland(point: $this->point));
             }
         }
 

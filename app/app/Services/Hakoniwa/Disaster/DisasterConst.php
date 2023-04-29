@@ -14,5 +14,6 @@ class DisasterConst
         HugeMeteorite::class,
         Riot::class,
         LandSubsidence::class,
+        AppearanceMonster::class,
     ];
 }

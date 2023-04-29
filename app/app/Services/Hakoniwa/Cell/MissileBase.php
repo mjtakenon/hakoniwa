@@ -126,8 +126,8 @@ class MissileBase extends Cell implements IMissileFireable
         $this->experience = $experience;
     }
 
-    public function getExperience(int $experience): int
+    public function getExperience(): int
     {
-        return $experience;
+        return $this->experience;
     }
 }

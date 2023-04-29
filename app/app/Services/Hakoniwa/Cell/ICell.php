@@ -9,7 +9,6 @@ use App\Services\Hakoniwa\Util\Point;
 
 interface ICell
 {
-
     public static function create($data);
     public function toArray(bool $isPrivate = false): array;
 
