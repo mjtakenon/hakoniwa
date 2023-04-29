@@ -28,12 +28,12 @@ use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
-class FiringMissilePlan extends Plan
+class FiringHighAccuracyMissilePlan extends Plan
 {
-    public const KEY = 'firing_missile';
+    public const KEY = 'firing_high_accuracy_missile';
 
-    public const NAME = 'ミサイル発射';
-    public const PRICE = 20;
+    public const NAME = '高精度ミサイル発射';
+    public const PRICE = 50;
     public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
     public const USE_POINT = true;
     public const USE_AMOUNT = true;

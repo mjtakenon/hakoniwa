@@ -21,6 +21,7 @@ class PlanConst
         ConstructMissileBasePlan::KEY => ConstructMissileBasePlan::class,
         ConstructSeabedBasePlan::KEY => ConstructSeabedBasePlan::class,
         FiringMissilePlan::KEY => FiringMissilePlan::class,
+        FiringHighAccuracyMissilePlan::KEY => FiringHighAccuracyMissilePlan::class,
         RemovalFacility::KEY => RemovalFacility::class,
         CashFlowPlan::KEY => CashFlowPlan::class,
         AttractActivitiesPlan::KEY => AttractActivitiesPlan::class,
