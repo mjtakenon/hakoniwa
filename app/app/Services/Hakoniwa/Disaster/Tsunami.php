@@ -41,7 +41,7 @@ class Tsunami implements IDisaster
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {
-            $aroundCells = $terrain->getAroundCells($cell->getPoint());
+            $aroundCells = $terrain->getAroundCells($cell->getPoint(), 1, true);
             $preventCells = $aroundCells->filter(function ($cell) {
                 return $cell::ATTRIBUTE[CellTypeConst::PREVENTING_TSUNAMI];
             });
