@@ -10,7 +10,7 @@
                     @mouseleave="onMouseLeaveCell(x-1, y-1)"
                     @click="onMouseClick(x-1, y-1)"
                     :src="getIslandTerrain(x-1,y-1).data.image_path"
-                    :alt="getIslandTerrain(x-1,y-1).type"
+                    :alt="getIslandTerrain(x-1,y-1).data.info"
                     class="cell"
                 >
             </div>
