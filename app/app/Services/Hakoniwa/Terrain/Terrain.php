@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\LargeFactory;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
+use App\Services\Hakoniwa\Cell\OutOfRegion;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
@@ -236,41 +237,66 @@ class Terrain implements JsonEncodable
         return $this;
     }
 
-    public function getAroundCells(Point $point, int $range = 1): Collection
+    private function inRange(int $n, int $min, int $max): bool
+    {
+        return $n >= $min && $n < $max;
+    }
+
+    public function getAroundCells(Point $point, int $range = 1, bool $includeOutOfRegion = false): Collection
     {
         $cells = new Collection();
-        if ($point->x >= 1) {
+
+        if ($this->inRange($point->x, 1, \HakoniwaService::getMaxWidth()+1) && $this->inRange($point->y, 0, \HakoniwaService::getMaxHeight())) {
             $cells[] = $this->terrain[$point->y][$point->x-1];
+        } else if ($includeOutOfRegion) {
+            $cells[] = new OutOfRegion(point: new Point($point->x-1, $point->y));
         }
-        if ($point->x <= \HakoniwaService::getMaxWidth()-2) {
+
+        if ($this->inRange($point->x, -1, \HakoniwaService::getMaxWidth()-1) && $this->inRange($point->y, 0, \HakoniwaService::getMaxHeight())) {
             $cells[] = $this->terrain[$point->y][$point->x+1];
+        } else if ($includeOutOfRegion) {
+            $cells[] = new OutOfRegion(point: new Point($point->x+1, $point->y));
         }
-        if ($point->y >= 1) {
+
+        if ($this->inRange($point->x, 0, \HakoniwaService::getMaxWidth()) && $this->inRange($point->y, 1, \HakoniwaService::getMaxHeight()+1)) {
             $cells[] = $this->terrain[$point->y-1][$point->x];
+        } else if ($includeOutOfRegion) {
+            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y-1));
         }
-        if ($point->y <= \HakoniwaService::getMaxHeight()-2) {
+
+        if ($this->inRange($point->x, 0, \HakoniwaService::getMaxWidth()) && $this->inRange($point->y, -1, \HakoniwaService::getMaxHeight()-1)) {
             $cells[] = $this->terrain[$point->y+1][$point->x];
+        } else if ($includeOutOfRegion) {
+            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y-1));
         }
 
         // yが偶数 => (+1:-1), (+1:+1)
         if ($point->y % 2 === 0) {
             //
-            if ($point->x <= \HakoniwaService::getMaxWidth()-2) {
-                if ($point->y >= 1) {
+            if ($this->inRange($point->x, -1, \HakoniwaService::getMaxWidth()-1)) {
+                if ($this->inRange($point->y, 1, \HakoniwaService::getMaxHeight()+1)) {
                     $cells[] = $this->terrain[$point->y-1][$point->x+1];
+                } else if ($includeOutOfRegion) {
+                    $cells[] = new OutOfRegion(point: new Point($point->x+1,$point->y-1));
                 }
-                if ($point->y <= \HakoniwaService::getMaxHeight()-2) {
+                if ($this->inRange($point->y, -1, \HakoniwaService::getMaxHeight()-1)) {
                     $cells[] = $this->terrain[$point->y+1][$point->x+1];
+                } else if ($includeOutOfRegion) {
+                    $cells[] = new OutOfRegion(point: new Point($point->x+1,$point->y+1));
                 }
             }
         } else {
             // yが偶数 => (-1:-1), (-1:+1)
-            if ($point->x >= 1) {
-                if ($point->y >= 1) {
+            if ($this->inRange($point->x, 1, \HakoniwaService::getMaxWidth()+1)) {
+                if ($this->inRange($point->y, 1, \HakoniwaService::getMaxHeight()+1)) {
                     $cells[] = $this->terrain[$point->y-1][$point->x-1];
+                } else if ($includeOutOfRegion) {
+                    $cells[] = new OutOfRegion(point: new Point($point->x-1,$point->y-1));
                 }
-                if ($point->y <= \HakoniwaService::getMaxHeight()-2) {
+                if ($this->inRange($point->y, -1, \HakoniwaService::getMaxHeight()-1)) {
                     $cells[] = $this->terrain[$point->y+1][$point->x-1];
+                } else if ($includeOutOfRegion) {
+                    $cells[] = new OutOfRegion(point: new Point($point->x-1,$point->y+1));
                 }
             }
         }

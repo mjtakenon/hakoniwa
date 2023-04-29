@@ -7,7 +7,7 @@ use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
-class MissileBase extends Cell
+class MissileBase extends Cell implements IMissileFireable
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land9.gif';
     public const TYPE = 'missile_base';
@@ -119,5 +119,15 @@ class MissileBase extends Cell
             }
         }
         return 1;
+    }
+
+    public function setExperience(int $experience)
+    {
+        $this->experience = $experience;
+    }
+
+    public function getExperience(int $experience): int
+    {
+        return $experience;
     }
 }
