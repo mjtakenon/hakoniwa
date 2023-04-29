@@ -69,7 +69,7 @@ class MonumentOfMining extends Cell implements IPark
         if ($status->getProducedResources() <= self::CONSTRUCTABLE_RESOURCES_THRESHOLD) {
             return false;
         }
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === $this->getType(); })->count() >= 1 ) {
+        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === self::TYPE; })->count() >= 1 ) {
             return false;
         }
         return true;

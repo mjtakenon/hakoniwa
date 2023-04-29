@@ -66,7 +66,7 @@ class MonumentOfWinner extends Cell implements IPark
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
         // TODO: 実装
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === $this->getType(); })->count() >= 1 ) {
+        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === self::TYPE; })->count() >= 1 ) {
             return false;
         }
         return false;
