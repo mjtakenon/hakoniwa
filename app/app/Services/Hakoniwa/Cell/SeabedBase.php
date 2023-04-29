@@ -7,7 +7,7 @@ use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
-class SeabedBase extends Cell
+class SeabedBase extends Cell implements IMissileFireable
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land12.gif';
     public const TYPE = 'seabed_base';
@@ -101,7 +101,7 @@ class SeabedBase extends Cell
     {
     }
 
-    private function getLevel(): int
+    public function getLevel(): int
     {
         foreach(self::EXPERIENCE_TABLE as $exp => $level) {
             if ($this->experience >= $exp) {
@@ -109,5 +109,15 @@ class SeabedBase extends Cell
             }
         }
         return 1;
+    }
+
+    public function setExperience(int $experience)
+    {
+        $this->experience = $experience;
+    }
+
+    public function getExperience(int $experience): int
+    {
+        return $experience;
     }
 }
