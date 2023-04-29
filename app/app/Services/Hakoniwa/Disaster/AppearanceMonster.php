@@ -32,7 +32,6 @@ use Illuminate\Support\Collection;
 class AppearanceMonster implements IDisaster
 {
     const OCCUR_PROBABILITY = 0.004;
-//    const OCCUR_PROBABILITY = 0.1;
 
     const MONSTER_LIST = [
         Inora::class,
