@@ -10,12 +10,8 @@ use App\Services\Hakoniwa\Util\Point;
 
 abstract class Cell implements ICell
 {
-    public const IMAGE_PATH = '';
-    public const TYPE = '';
-    public const NAME = '';
-
-    protected ?string $imagePath = null;
-    protected ?string $type;
+    protected string $imagePath;
+    protected string $type;
     protected Point $point;
 
     protected int $population = 0;
@@ -46,6 +42,8 @@ abstract class Cell implements ICell
     public function __construct(...$data)
     {
         $this->point = new Point($data['point']->x, $data['point']->y);
+        $this->imagePath = $this->getImagePath();
+        $this->type = $this->getType();
     }
 
     public static function create($data)
@@ -56,13 +54,18 @@ abstract class Cell implements ICell
     public function toArray(bool $isPrivate = false): array
     {
         return [
-            'type' => $this->type,
+            'type' => $this->getType(),
             'data' => [
                 'point' => $this->point,
-                'image_path' => $this->imagePath,
+                'image_path' => $this->getImagePath(),
                 'info' => $this->getInfoString($isPrivate),
             ]
         ];
+    }
+
+    public function getElevation(): int
+    {
+        return self::ELEVATION;
     }
 
     public function getPoint(): Point
@@ -103,6 +106,12 @@ abstract class Cell implements ICell
     public function getMaintenanceNumberOfPeople(): int
     {
         return $this->maintenanceNumberOfPeople;
+    }
+
+    public function getInfoString(bool $isPrivate = false): string
+    {
+        return
+            '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName();
     }
 
     static public function fromJson(string $type, $data): Cell

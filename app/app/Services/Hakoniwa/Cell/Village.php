@@ -34,8 +34,6 @@ class Village extends City
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-        $this->imagePath = self::IMAGE_PATH;
-        $this->type = self::TYPE;
 
         if (array_key_exists('population', $data)) {
             $this->population = $data['population'];
@@ -44,8 +42,18 @@ class Village extends City
         }
     }
 
-    protected function getName(): string
+    public function getName(): string
     {
         return self::NAME;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getImagePath(): string
+    {
+        return self::IMAGE_PATH;
     }
 }

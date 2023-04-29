@@ -35,8 +35,21 @@ class MonumentOfPeace extends Cell implements IPark
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-        $this->imagePath = self::IMAGE_PATH;
-        $this->type = self::TYPE;
+    }
+
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getImagePath(): string
+    {
+        return self::IMAGE_PATH;
     }
 
     public function toArray(bool $isPrivate = false): array
@@ -51,17 +64,12 @@ class MonumentOfPeace extends Cell implements IPark
         ];
     }
 
-    public function getInfoString(bool $isPrivate = false): string
-    {
-        return '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME;
-    }
-
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
         if ($status->getPopulation() <= self::CONSTRUCTABLE_POPULATION_THRESHOLD) {
             return false;
         }
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === self::TYPE; })->count() >= 1 ) {
+        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === $this->getType(); })->count() >= 1 ) {
             return false;
         }
         return true;

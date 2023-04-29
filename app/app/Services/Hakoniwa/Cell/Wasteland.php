@@ -29,13 +29,20 @@ class Wasteland extends Cell
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-        $this->imagePath = self::IMAGE_PATH;
-        $this->type = self::TYPE;
     }
 
-    public function getInfoString(bool $isPrivate = false): string
+    public function getName(): string
     {
-        return
-            '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME;
+        return self::NAME;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getImagePath(): string
+    {
+        return self::IMAGE_PATH;
     }
 }

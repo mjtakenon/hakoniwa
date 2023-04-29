@@ -38,8 +38,6 @@ class Forest extends Cell
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-        $this->imagePath = self::IMAGE_PATH;
-        $this->type = self::TYPE;
 
         if (array_key_exists('woods', $data)) {
             $this->woods = $data['woods'];
@@ -61,14 +59,29 @@ class Forest extends Cell
         ];
     }
 
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getImagePath(): string
+    {
+        return self::IMAGE_PATH;
+    }
+
     public function getInfoString(bool $isPrivate = false): string
     {
         if ($isPrivate) {
             return
-                '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
+                '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
                 $this->woods . '本';
         }
-        return '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME;
+        return '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName();
     }
 
     public function passTime(Island $island, Terrain $terrain, Status $status): void

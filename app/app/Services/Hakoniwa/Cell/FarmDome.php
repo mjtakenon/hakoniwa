@@ -35,8 +35,6 @@ class FarmDome extends Cell
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-        $this->imagePath = self::IMAGE_PATH;
-        $this->type = self::TYPE;
         if (array_key_exists('foodsProductionNumberOfPeople', $data)) {
             $this->foodsProductionNumberOfPeople = $data['foodsProductionNumberOfPeople'];
         } else {
@@ -57,10 +55,25 @@ class FarmDome extends Cell
         ];
     }
 
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getImagePath(): string
+    {
+        return self::IMAGE_PATH;
+    }
+
     public function getInfoString(bool $isPrivate = false): string
     {
         return
-            '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
+            '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
             $this->foodsProductionNumberOfPeople . '人規模';
     }
 

@@ -2,8 +2,6 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
-use App\Services\Hakoniwa\Util\Point;
-
 class Mountain extends Cell
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land11.gif';
@@ -30,13 +28,25 @@ class Mountain extends Cell
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-        $this->imagePath = self::IMAGE_PATH;
-        $this->type = self::TYPE;
     }
 
-    public function getInfoString(bool $isPrivate = false): string
+    public function getName(): string
     {
-        return
-            '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME;
+        return self::NAME;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getImagePath(): string
+    {
+        return self::IMAGE_PATH;
+    }
+
+    public function getElevation(): int
+    {
+        return self::ELEVATION;
     }
 }

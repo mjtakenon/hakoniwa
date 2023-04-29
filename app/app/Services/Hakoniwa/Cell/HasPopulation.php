@@ -52,8 +52,6 @@ abstract class HasPopulation extends Cell
             '人口 ' . $this->population . '人';
     }
 
-    abstract protected function getName(): string;
-
     private function isSeaside(Terrain $terrain): bool
     {
         $cells = $terrain->getAroundCells($this->point);

@@ -57,8 +57,6 @@ class SeabedBase extends Cell
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-        $this->imagePath = self::IMAGE_PATH;
-        $this->type = self::TYPE;
         $this->maintenanceNumberOfPeople = self::MAINTENANCE_NUMBER_OF_PEOPLE;
 
         if (array_key_exists('experience', $data)) {
@@ -68,11 +66,31 @@ class SeabedBase extends Cell
         }
     }
 
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function getImagePath(): string
+    {
+        return self::IMAGE_PATH;
+    }
+
+    public function getElevation(): int
+    {
+        return self::ELEVATION;
+    }
+
     public function getInfoString(bool $isPrivate = false): string
     {
         if ($isPrivate) {
             return
-                '('. $this->point->x . ',' . $this->point->y .') ' . self::NAME . PHP_EOL .
+                '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
                 '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL .
                 'レベル' . $this->getLevel() . ' 経験値:' . $this->experience;
         }

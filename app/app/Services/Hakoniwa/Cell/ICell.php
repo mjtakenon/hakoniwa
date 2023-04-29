@@ -13,6 +13,11 @@ interface ICell
     public static function create($data);
     public function toArray(bool $isPrivate = false): array;
 
+    public function getType();
+    public function getImagePath();
+    public function getName();
+    public function getElevation();
+
     public function getPoint(): Point;
 
     public function getInfoString(bool $isPrivate = false): string;
