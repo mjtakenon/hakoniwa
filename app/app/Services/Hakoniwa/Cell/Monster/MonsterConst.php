@@ -7,6 +7,7 @@ use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 class MonsterConst
 {
@@ -18,40 +19,29 @@ class MonsterConst
     public const MONSTERS_LIST_LV1 = [
         Inora::class,
     ];
-
     public const MONSTERS_LIST_LV2 = [];
     public const MONSTERS_LIST_LV3 = [];
     public const MONSTERS_LIST_LV4 = [];
 
-    public static function getAppearableMonsters(int $population): array {
+    public static function getAppearableMonsters(int $population): Collection {
+        $appearableMonsters = new Collection();
+
         if ($population >= self::APPEARANCE_POPULATION_LV4) {
-            return array_merge(
-                self::MONSTERS_LIST_LV1,
-                self::MONSTERS_LIST_LV2,
-                self::MONSTERS_LIST_LV3,
-                self::MONSTERS_LIST_LV4,
-            );
+            $appearableMonsters->merge(self::MONSTERS_LIST_LV4);
         }
 
         if ($population >= self::APPEARANCE_POPULATION_LV3) {
-            return array_merge(
-                self::MONSTERS_LIST_LV1,
-                self::MONSTERS_LIST_LV2,
-                self::MONSTERS_LIST_LV3,
-            );
+            $appearableMonsters->merge(self::MONSTERS_LIST_LV3);
         }
 
         if ($population >= self::APPEARANCE_POPULATION_LV2) {
-            return array_merge(
-                self::MONSTERS_LIST_LV1,
-                self::MONSTERS_LIST_LV2,
-            );
+            $appearableMonsters->merge(self::MONSTERS_LIST_LV2);
         }
 
-        if ($population >= self::APPEARANCE_POPULATION_LV2) {
-            return self::MONSTERS_LIST_LV1;
+        if ($population >= self::APPEARANCE_POPULATION_LV1) {
+            $appearableMonsters->merge(self::MONSTERS_LIST_LV1);
         }
 
-        return [];
+        return $appearableMonsters;
     }
 }

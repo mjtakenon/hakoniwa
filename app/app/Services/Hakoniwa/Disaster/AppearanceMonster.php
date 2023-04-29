@@ -33,15 +33,11 @@ class AppearanceMonster implements IDisaster
 {
     const OCCUR_PROBABILITY = 0.004;
 
-    const MONSTER_LIST = [
-        Inora::class,
-    ];
-
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
         $logs = Logs::create();
 
-        $appearableMonsters = new Collection(MonsterConst::getAppearableMonsters($status->getPopulation()));
+        $appearableMonsters = MonsterConst::getAppearableMonsters($status->getPopulation());
         if ($appearableMonsters->count() <= 0) {
             return new DisasterResult($terrain, $status, $logs);
         }
