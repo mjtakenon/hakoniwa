@@ -224,4 +224,7 @@ return [
     'hakoniwa' => [
         'turn_update_minutes' => env('TURN_UPDATE_MINUTES')
     ],
+
+    'notification_webhook_url' => env('NOTIFICATION_WEBHOOK_URL')
+
 ];
