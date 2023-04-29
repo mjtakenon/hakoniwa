@@ -123,9 +123,15 @@ abstract class HasPopulation extends Cell
                 $this->population = $naturalIncreasePopulation;
             }
         } else {
-            $maxPopulation = $this->getMaxPopulation($status);
-            if ($this->population >= $maxPopulation) {
-                $this->population = $maxPopulation;
+            if ($status->getFoods() > 0) {
+                // 自然増加上限を超えている場合、かつ食料がある場合は自然増加しない
+                $maxPopulation = $this->getMaxPopulation($status);
+                if ($this->population >= $maxPopulation) {
+                    $this->population = $maxPopulation;
+                }
+            } else {
+                // 食糧不足時には減少させる
+                $this->population += random_int($minPopulationIncrementalRate, $maxPopulationIncrementalRate) * 100;
             }
         }
 
