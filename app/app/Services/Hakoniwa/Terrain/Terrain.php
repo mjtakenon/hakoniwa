@@ -13,6 +13,7 @@ use App\Services\Hakoniwa\Cell\LargeFactory;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\OutOfRegion;
+use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
@@ -119,7 +120,7 @@ class Terrain implements JsonEncodable
             }
         }
 
-        return $this->replaceShallowByLake();
+        return $this->replaceShallowToLake();
     }
 
     public function getTerrain(): Collection
@@ -228,13 +229,25 @@ class Terrain implements JsonEncodable
         return $area;
     }
 
-    public function passTime(Island $island, Status $status): Terrain
+    public function passTurn(Island $island, Status $status, Turn $turn): PassTurnResult
     {
+        $logs = Logs::create();
+
+        /** @var Cell $cell */
         foreach ($this->terrain->flatten(1) as $cell) {
-            $cell->passTime($island, $this, $status);
+
+            if ($cell->getType() !== $this->getCell($cell->getPoint())->getType()) {
+                continue;
+            }
+
+            $passTurnResult = $cell->passTurn($island, $this, $status, $turn);
+
+            $this->terrain = $passTurnResult->getTerrain()->getTerrain();
+            $status = $passTurnResult->getStatus();
+            $logs->merge($passTurnResult->getLogs());
         }
 
-        return $this;
+        return new PassTurnResult($this, $status, $logs);
     }
 
     private function inRange(int $n, int $min, int $max): bool
@@ -320,7 +333,7 @@ class Terrain implements JsonEncodable
         return $cells;
     }
 
-    public function replaceShallowByLake(): static
+    public function replaceShallowToLake(): static
     {
         $isChecked = new Collection();
         $lakeCandidate = new Collection();

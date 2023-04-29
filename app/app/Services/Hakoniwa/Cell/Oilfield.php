@@ -3,10 +3,11 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class Oilfield extends Cell
 {
@@ -79,16 +80,18 @@ class Oilfield extends Cell
     public function getInfoString(bool $isPrivate = false): string
     {
         return
-            '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
             $this->resourcesProductionNumberOfPeople . '人規模';
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
 
         if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_MINE_AND_OILFIELD_CAPACITY_AVAILABLE_POINTS) {
             $this->resourcesProductionNumberOfPeople *= 2;
         }
+
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

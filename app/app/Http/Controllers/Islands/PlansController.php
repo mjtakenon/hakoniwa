@@ -56,20 +56,6 @@ class PlansController extends Controller
         )->orderByDesc('id')
         ->get('log');
 
-//        $view = view('pages.islands.plans', [
-//            'user' => $user,
-//            'hakoniwa' => json_encode([
-//                'width' => \HakoniwaService::getMaxWidth(),
-//                'height' => \HakoniwaService::getMaxHeight(),
-//            ]),
-//            'island' => $island,
-//            'islandPlans' => $islandPlans,
-//            'islandStatus' => $islandStatuses,
-//            'islandTerrain' => $islandTerrains,
-//            'islandLog' => $islandLog,
-//        ]);
-//        return $view;
-
         return view('pages.islands.plans', [
             'hakoniwa' => [
                 'width' => \HakoniwaService::getMaxWidth(),

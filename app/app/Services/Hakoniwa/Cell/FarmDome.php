@@ -3,10 +3,11 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class FarmDome extends Cell
 {
@@ -73,14 +74,16 @@ class FarmDome extends Cell
     public function getInfoString(bool $isPrivate = false): string
     {
         return
-            '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
             $this->foodsProductionNumberOfPeople . '人規模';
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
-        $lakesideCells = $cells->filter(function ($cell) { return $cell::TYPE === Lake::TYPE; });
+        $lakesideCells = $cells->filter(function ($cell) {
+            return $cell::TYPE === Lake::TYPE;
+        });
         if ($lakesideCells->count() >= 1) {
             $this->foodsProductionNumberOfPeople = self::LAKESIDE_PRODUCTION_NUMBER_OF_PEOPLE;
         } else {
@@ -90,5 +93,6 @@ class FarmDome extends Cell
         if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_FARM_CAPACITY_AVAILABLE_POINTS) {
             $this->foodsProductionNumberOfPeople *= 2;
         }
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

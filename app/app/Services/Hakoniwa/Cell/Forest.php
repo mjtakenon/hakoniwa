@@ -3,9 +3,10 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class Forest extends Cell
 {
@@ -78,17 +79,18 @@ class Forest extends Cell
     {
         if ($isPrivate) {
             return
-                '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
+                '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
                 $this->woods . '本';
         }
-        return '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName();
+        return '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName();
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         if ($this->woods >= self::MAX_WOODS) {
-            return;
+            return new PassTurnResult($terrain, $status, Logs::create());
         }
         $this->woods += self::INCREMENT_WOODS;
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

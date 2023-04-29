@@ -32,6 +32,7 @@ use Illuminate\Support\Collection;
 class AppearanceMonster implements IDisaster
 {
     const OCCUR_PROBABILITY = 0.004;
+//    const OCCUR_PROBABILITY = 0.1;
 
     const MONSTER_LIST = [
         Inora::class,
@@ -68,7 +69,7 @@ class AppearanceMonster implements IDisaster
 
             $monster = $appearableMonsters->random();
             /** @var Monster $monsterCell */
-            $monsterCell = new $monster(point: $cell->getPoint(), already_moved: true);
+            $monsterCell = new $monster(point: $cell->getPoint(), remain_move_times: 0);
             $logs->add(new AppeardMonsterLog($island, $turn, $cell, $monsterCell));
 
             $terrain->setCell($cell->getPoint(), $monsterCell);

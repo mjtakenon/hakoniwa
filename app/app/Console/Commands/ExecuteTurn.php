@@ -92,10 +92,12 @@ class ExecuteTurn extends Command
 
                     // セル処理
                     // FIXME: 本来災害はセル処理の後だが、隕石→湖判定の順番を考慮し逆にしている
-                    $terrain->passTime($island, $status);
+                    $passTurnResult = $terrain->passTurn($island, $status, $turn);
+                    $status = $passTurnResult->getStatus();
+                    $logs->merge($passTurnResult->getLogs());
 
                     // 湖判定
-                    $terrain->replaceShallowByLake();
+                    $terrain->replaceShallowToLake();
 
                     // 災害と湖判定による影響を考慮した再集計
                     $status->aggregate($terrain);

@@ -3,9 +3,10 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class LargeFactory extends Cell
 {
@@ -74,18 +75,21 @@ class LargeFactory extends Cell
     public function getInfoString(bool $isPrivate = false): string
     {
         return
-            '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
             $this->fundsProductionNumberOfPeople . '人規模';
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
-        $seasideCells = $cells->reject(function ($cell) { return $cell::ATTRIBUTE[CellTypeConst::IS_LAND]; });
+        $seasideCells = $cells->reject(function ($cell) {
+            return $cell::ATTRIBUTE[CellTypeConst::IS_LAND];
+        });
         if ($seasideCells->count() >= 1) {
             $this->fundsProductionNumberOfPeople = self::SEASIDE_PRODUCTION_NUMBER_OF_PEOPLE;
         } else {
             $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
         }
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

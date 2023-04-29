@@ -3,9 +3,10 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use App\Services\Hakoniwa\Util\Rand;
 
 class Plain extends Cell
@@ -59,12 +60,15 @@ class Plain extends Cell
         return self::IMAGE_PATH;
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
-        $immigrableCells = $cells->filter(function ($cell) { return in_array($cell::TYPE, self::IMMIGRABLE_TYPE, true); });
+        $immigrableCells = $cells->filter(function ($cell) {
+            return in_array($cell::TYPE, self::IMMIGRABLE_TYPE, true);
+        });
         if ($immigrableCells->count() * self::IMMIGRATE_COEF > Rand::mt_rand_float()) {
-            $terrain->setCell($this->point, new Village(point:$this->point));
+            $terrain->setCell($this->point, new Village(point: $this->point));
         }
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

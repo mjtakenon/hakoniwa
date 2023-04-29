@@ -3,6 +3,8 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -100,7 +102,7 @@ class MissileBase extends Cell implements IMissileFireable
         return '('. $this->point->x . ',' . $this->point->y .') ' . Forest::NAME;
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $seasideCells = $cells->reject(function ($cell) { return $cell::ATTRIBUTE[CellTypeConst::IS_LAND]; });
@@ -109,6 +111,7 @@ class MissileBase extends Cell implements IMissileFireable
         } else {
             $this->maintenanceNumberOfPeople = self::MAINTENANCE_NUMBER_OF_PEOPLE;
         }
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 
     public function getLevel(): int

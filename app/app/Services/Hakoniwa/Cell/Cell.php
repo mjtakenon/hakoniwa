@@ -3,7 +3,9 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
-use App\Models\IslandStatus;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Plan\ExecutePlanResult;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -111,7 +113,7 @@ abstract class Cell implements ICell
     public function getInfoString(bool $isPrivate = false): string
     {
         return
-            '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName();
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName();
     }
 
     static public function fromJson(string $type, $data): Cell
@@ -119,5 +121,8 @@ abstract class Cell implements ICell
         return new (CellTypeConst::getClassByType($type))(...get_object_vars($data));
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void {}
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    {
+        return new PassTurnResult($terrain, $status, Logs::create());
+    }
 }

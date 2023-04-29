@@ -3,9 +3,10 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class MonumentOfMining extends Cell implements IPark
 {
@@ -69,14 +70,17 @@ class MonumentOfMining extends Cell implements IPark
         if ($status->getProducedResources() <= self::CONSTRUCTABLE_RESOURCES_THRESHOLD) {
             return false;
         }
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === self::TYPE; })->count() >= 1 ) {
+        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+                return $cell::TYPE === self::TYPE;
+            })->count() >= 1) {
             return false;
         }
         return true;
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $status->setDevelopmentPoints($status->getDevelopmentPoints() + self::PRODUCT_DEVELOPMENT_POINTS);
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

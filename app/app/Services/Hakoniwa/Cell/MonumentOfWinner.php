@@ -3,9 +3,10 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class MonumentOfWinner extends Cell implements IPark
 {
@@ -66,14 +67,17 @@ class MonumentOfWinner extends Cell implements IPark
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
         // TODO: 実装
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) { return $cell::TYPE === self::TYPE; })->count() >= 1 ) {
+        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+                return $cell::TYPE === self::TYPE;
+            })->count() >= 1) {
             return false;
         }
         return false;
     }
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $status->setDevelopmentPoints($status->getDevelopmentPoints() + self::PRODUCT_DEVELOPMENT_POINTS);
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

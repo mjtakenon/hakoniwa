@@ -2,11 +2,8 @@
 
 namespace App\Services\Hakoniwa\Cell\Monster;
 
-use App\Models\Island;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
-use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
 
 abstract class Monster extends Cell
 {
@@ -28,7 +25,7 @@ abstract class Monster extends Cell
     ];
 
     public int $hitPoints;
-    public bool $alreadyMoved = false;
+    public int $remainMoveTimes = 1;
 
     public function __construct(...$data)
     {
@@ -40,8 +37,10 @@ abstract class Monster extends Cell
             $this->hitPoints = $this->getDefaultHitPoints();
         }
 
-        if (array_key_exists('already_moved', $data)) {
-            $this->alreadyMoved = $data['already_moved'];
+        if (array_key_exists('remain_move_times', $data)) {
+            $this->remainMoveTimes = $data['remain_move_times'];
+        } else {
+            $this->remainMoveTimes = $this->getDefaultMoveTimes();
         }
     }
 
@@ -73,6 +72,7 @@ abstract class Monster extends Cell
     }
 
     abstract public function getExperience(): int;
+
     abstract public function getCorpsePrice(): int;
 
     public function getHitPoints(): int
@@ -87,5 +87,5 @@ abstract class Monster extends Cell
 
     abstract public function getDefaultHitPoints(): int;
 
-    public function passTime(Island $island, Terrain $terrain, Status $status): void {}
+    abstract public function getDefaultMoveTimes(): int;
 }

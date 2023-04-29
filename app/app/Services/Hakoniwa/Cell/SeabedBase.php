@@ -2,11 +2,6 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
-use App\Models\Island;
-use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
-
 class SeabedBase extends Cell implements IMissileFireable
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land12.gif';
@@ -90,20 +85,16 @@ class SeabedBase extends Cell implements IMissileFireable
     {
         if ($isPrivate) {
             return
-                '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
+                '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
                 '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL .
                 'レベル' . $this->getLevel() . ' 経験値:' . $this->experience;
         }
-        return '('. $this->point->x . ',' . $this->point->y .') ' . Forest::NAME;
-    }
-
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
-    {
+        return '(' . $this->point->x . ',' . $this->point->y . ') ' . Forest::NAME;
     }
 
     public function getLevel(): int
     {
-        foreach(self::EXPERIENCE_TABLE as $exp => $level) {
+        foreach (self::EXPERIENCE_TABLE as $exp => $level) {
             if ($this->experience >= $exp) {
                 return $level;
             }

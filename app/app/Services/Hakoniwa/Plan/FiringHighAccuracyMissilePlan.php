@@ -118,6 +118,9 @@ class FiringHighAccuracyMissilePlan extends Plan
                     } else {
                         $terrain->setCell($targetCell->getPoint(), new Wasteland(point: $targetCell->getPoint()));
 
+                        $targetCells = $terrain->getAroundCells($this->point, 2, true);
+                        $targetCells->add($terrain->getCell($this->point));
+
                         $logs->add(new SoldMonsterCorpseLog($turn, $targetCell));
                         $status->setFunds($status->getFunds() + $targetCell->getCorpsePrice());
 

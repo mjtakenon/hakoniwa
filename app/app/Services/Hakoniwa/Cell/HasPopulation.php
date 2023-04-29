@@ -3,10 +3,11 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use League\CommonMark\Environment\Environment;
 
 abstract class HasPopulation extends Cell
 {
@@ -55,7 +56,9 @@ abstract class HasPopulation extends Cell
     private function isSeaside(Terrain $terrain): bool
     {
         $cells = $terrain->getAroundCells($this->point);
-        $seasideCells = $cells->reject(function ($cell) { return $cell::ATTRIBUTE[CellTypeConst::IS_LAND]; });
+        $seasideCells = $cells->reject(function ($cell) {
+            return $cell::ATTRIBUTE[CellTypeConst::IS_LAND];
+        });
         return $seasideCells->count() >= 1;
     }
 
@@ -93,7 +96,8 @@ abstract class HasPopulation extends Cell
 
         return $maxPopulation;
     }
-    public function passTime(Island $island, Terrain $terrain, Status $status): void
+
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         if ($status->getFoods() > 0) {
             // 通常時
@@ -128,24 +132,25 @@ abstract class HasPopulation extends Cell
         // マップチップ入れ替え
         if ($this->population >= Metropolis::MIN_POPULATION) {
             $terrain->setCell($this->point, new Metropolis(point: $this->point, population: $this->population));
-            return;
+            return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= City::MIN_POPULATION) {
             $terrain->setCell($this->point, new City(point: $this->point, population: $this->population));
-            return;
+            return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= Town::MIN_POPULATION) {
             $terrain->setCell($this->point, new Town(point: $this->point, population: $this->population));
-            return;
+            return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= Village::MIN_POPULATION) {
             $terrain->setCell($this->point, new Village(point: $this->point, population: $this->population));
-            return;
+            return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         $terrain->setCell($this->point, new Plain(point: $this->point));
+        return new PassTurnResult($terrain, $status, Logs::create());
     }
 }
