@@ -9,7 +9,7 @@
 - 以下を実行し.envを作成
 
 ```shell
-cp /app/.local.env /app/.env
+cp app/.env.local app/.env
 ```
 
 - `GOOGLE_CLIENT_SECRET`の値をシークレットマネージャから取得しセット
