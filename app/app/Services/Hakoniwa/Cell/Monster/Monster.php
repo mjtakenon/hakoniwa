@@ -2,8 +2,17 @@
 
 namespace App\Services\Hakoniwa\Cell\Monster;
 
+use App\Models\Island;
+use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\PassTurnResult;
+use App\Services\Hakoniwa\Cell\Wasteland;
+use App\Services\Hakoniwa\Log\DestructionByMonsterLog;
+use App\Services\Hakoniwa\Log\DisappearMonsterLog;
+use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 
 abstract class Monster extends Cell
 {
@@ -88,4 +97,41 @@ abstract class Monster extends Cell
     abstract public function getDefaultHitPoints(): int;
 
     abstract public function getDefaultMoveTimes(): int;
+
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    {
+        if ($this->remainMoveTimes <= 0) {
+            return new PassTurnResult($terrain, $status, Logs::create());
+        }
+
+        if ($this->getDisappearancePopulation() > $status->getPopulation()) {
+            $logs = Logs::create();
+            $logs->add(new DisappearMonsterLog($island, $turn, $this));
+            $terrain->setCell($this->point, new Wasteland(point: $this->point));
+            return new PassTurnResult($terrain, $status, $logs);
+        }
+
+        $this->remainMoveTimes -= 1;
+
+        $aroundCells = $terrain->getAroundCells($this->point);
+        /** @var Cell $moveTarget */
+        $moveTarget = $aroundCells->random();
+        if (!$moveTarget::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER]) {
+            return new PassTurnResult($terrain, $status, Logs::create());
+        }
+
+        $logs = Logs::create();
+        $monster = $this;
+        $terrain->setCell($this->point, new Wasteland(point: $this->point));
+
+        $logs->add(new DestructionByMonsterLog($island, $turn, $moveTarget, $this));
+        $monster->point = $moveTarget->point;
+        $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn);
+
+        $terrain = $passTurnResult->getTerrain();
+        $status = $passTurnResult->getStatus();
+        $logs->merge($passTurnResult->getLogs());
+
+        return new PassTurnResult($terrain, $status, $logs);
+    }
 }

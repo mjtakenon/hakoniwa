@@ -9,6 +9,7 @@ use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\DestructionByMonsterLog;
+use App\Services\Hakoniwa\Log\DisappearMonsterLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Plan\ExecutePlanResult;
 use App\Services\Hakoniwa\Status\Status;
@@ -62,34 +63,5 @@ class Inora extends Monster
     public function getDefaultMoveTimes(): int
     {
         return self::DEFAULT_MOVE_TIMES;
-    }
-
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
-    {
-        if ($this->remainMoveTimes <= 0) {
-            return new PassTurnResult($terrain, $status, Logs::create());
-        }
-        $this->remainMoveTimes -= 1;
-
-        $aroundCells = $terrain->getAroundCells($this->point);
-        /** @var Cell $moveTarget */
-        $moveTarget = $aroundCells->random();
-        if (!$moveTarget::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER]) {
-            return new PassTurnResult($terrain, $status, Logs::create());
-        }
-
-        $logs = Logs::create();
-        $monster = $this;
-        $terrain->setCell($this->point, new Wasteland(point: $this->point));
-
-        $logs->add(new DestructionByMonsterLog($island, $turn, $moveTarget, $this));
-        $monster->point = $moveTarget->point;
-        $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn);
-
-        $terrain = $passTurnResult->getTerrain();
-        $status = $passTurnResult->getStatus();
-        $logs->merge($passTurnResult->getLogs());
-
-        return new PassTurnResult($terrain, $status, $logs);
     }
 }

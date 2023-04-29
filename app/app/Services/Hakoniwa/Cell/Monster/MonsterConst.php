@@ -27,19 +27,19 @@ class MonsterConst
         $appearableMonsters = new Collection();
 
         if ($population >= self::APPEARANCE_POPULATION_LV4) {
-            $appearableMonsters->merge(self::MONSTERS_LIST_LV4);
+            $appearableMonsters = $appearableMonsters->merge(self::MONSTERS_LIST_LV4);
         }
 
         if ($population >= self::APPEARANCE_POPULATION_LV3) {
-            $appearableMonsters->merge(self::MONSTERS_LIST_LV3);
+            $appearableMonsters = $appearableMonsters->merge(self::MONSTERS_LIST_LV3);
         }
 
         if ($population >= self::APPEARANCE_POPULATION_LV2) {
-            $appearableMonsters->merge(self::MONSTERS_LIST_LV2);
+            $appearableMonsters = $appearableMonsters->merge(self::MONSTERS_LIST_LV2);
         }
 
         if ($population >= self::APPEARANCE_POPULATION_LV1) {
-            $appearableMonsters->merge(self::MONSTERS_LIST_LV1);
+            $appearableMonsters = $appearableMonsters->merge(self::MONSTERS_LIST_LV1);
         }
 
         return $appearableMonsters;
