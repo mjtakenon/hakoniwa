@@ -48,7 +48,7 @@ class AppearanceMonster implements IDisaster
         });
 
         $monsterCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return in_array(Monster::class, class_parents($cell), true);
+            return $cell::ATTRIBUTE[CellTypeConst::IS_MONSTER];
         });
         $occurProbability = self::OCCUR_PROBABILITY / pow(2, $monsterCells->count());
 
