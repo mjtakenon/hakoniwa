@@ -32,6 +32,15 @@
                         :key="plan.key"
                         :value="plan.key"
                     > {{ plan.name }} {{ plan.priceString }} </option>
+                    <option
+                        value="all_grading"
+                    > 全荒地に整地入力 (荒地x5億円) </option>
+                    <option
+                        value="all_ground_leveling"
+                    > 全荒地に高速整地入力 (荒地x100億円) </option>
+                    <option
+                        value="all_excavation"
+                    > 全浅瀬に掘削入力 (浅瀬x200億円) </option>
                 </select>
             </div>
         </div>
@@ -142,7 +151,61 @@ export default {
                 }
             };
         },
+        getCustomPlan(key: string, point: Point): Plan {
+            return {
+                key: key,
+                data: {
+                    name: this.$store.state.planCandidate[key].name,
+                    point: {
+                        x: point.x,
+                        y: point.y,
+                    },
+                    amount: this.$store.state.selectedAmount,
+                    usePoint: this.$store.state.planCandidate[key].usePoint,
+                    useAmount: this.$store.state.planCandidate[key].useAmount,
+                    useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
+                    priceString: ''
+                }
+            };
+        },
+        insertPlanAutomatically(source: string, target: string) {
+            for (let terrain of this.$store.state.terrains) {
+                if (terrain.type === source) {
+                    let plan = this.getCustomPlan(target, terrain.data.point)
+
+                    this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 0, plan);
+                    this.$store.state.plans.pop();
+                    if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                        this.$store.state.selectedPlanNumber++;
+                    }
+                }
+            }
+        },
+        overwritePlanAutomatically(source: string, target: string) {
+            for (let terrain of this.$store.state.terrains) {
+                if (terrain.type === source) {
+                    let plan = this.getCustomPlan(target, terrain.data.point)
+
+                    this.$store.state.plans[this.$store.state.selectedPlanNumber-1] = plan;
+
+                    if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                        this.$store.state.selectedPlanNumber++;
+                    }
+                }
+            }
+        },
         onClickInsert() {
+            if (this.selectedPlan === 'all_grading') {
+                this.insertPlanAutomatically('wasteland','grading');
+                return;
+            } else if (this.selectedPlan === 'all_ground_leveling') {
+                this.insertPlanAutomatically('wasteland','ground_leveling');
+                return;
+            } else if (this.selectedPlan === 'all_excavation') {
+                this.insertPlanAutomatically('shallow','excavation');
+                return;
+            }
+
             this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 0, this.getSelectedPlan());
             this.$store.state.plans.pop();
             if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
@@ -150,6 +213,17 @@ export default {
             }
         },
         onClickOverwrite() {
+            if (this.selectedPlan === 'all_grading') {
+                this.overwritePlanAutomatically('wasteland','grading');
+                return;
+            } else if (this.selectedPlan === 'all_ground_leveling') {
+                this.overwritePlanAutomatically('wasteland','ground_leveling');
+                return;
+            } else if (this.selectedPlan === 'all_excavation') {
+                this.overwritePlanAutomatically('shallow','excavation');
+                return;
+            }
+
             this.$store.state.plans[this.$store.state.selectedPlanNumber-1] = this.getSelectedPlan();
 
             if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
