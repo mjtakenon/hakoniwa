@@ -29,6 +29,7 @@ class SummaryLog implements ILog
         $foods = $this->status->getFoods() - $this->prevStatus->getFoods();
         $funds = $this->status->getFunds() - $this->prevStatus->getFunds();
         $population = $this->status->getPopulation() - $this->prevStatus->getPopulation();
+        $resources = $this->status->getResources() - $this->prevStatus->getResources();
         $developmentPoints = $this->status->getDevelopmentPoints() - $this->prevStatus->getDevelopmentPoints();
 
         return json_encode([
@@ -40,6 +41,9 @@ class SummaryLog implements ILog
             ['text' => '　'],
             ['text' => '資金：', 'style' => StyleConst::BOLD],
             $funds < 0 ? ['text' => '' . $funds . '億円', 'style' => StyleConst::COLOR_DANGER] : ($funds === 0 ? ['text' => '' . $funds . '億円'] : ['text' => '+' . $funds . '億円', 'style' => StyleConst::COLOR_LINK]),
+            ['text' => '　'],
+            ['text' => '資源：', 'style' => StyleConst::BOLD],
+            $resources < 0 ? ['text' => '' . $resources . '㌧', 'style' => StyleConst::COLOR_DANGER] : ($resources === 0 ? ['text' => '' . $resources . '㌧'] : ['text' => '+' . $resources . '㌧', 'style' => StyleConst::COLOR_LINK]),
             ['text' => '　'],
             ['text' => '人口：', 'style' => StyleConst::BOLD],
             $population < 0 ? ['text' => '' . $population . '人', 'style' => StyleConst::COLOR_DANGER] : ($population === 0 ? ['text' => '' . $population . '人']:['text' => '+' . $population . '人', 'style' => StyleConst::COLOR_LINK]),
