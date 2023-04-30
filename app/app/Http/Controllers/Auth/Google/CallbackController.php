@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Google;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserAuth;
 
 
 class CallbackController extends Controller
@@ -17,12 +18,20 @@ class CallbackController extends Controller
         $token = \DB::transaction(function () {
             $googleUser = \Socialite::driver('google')->user();//->stateless()
 
+            // ユーザー情報登録
             $user = User::firstOrCreate([
                 'email' => $googleUser->email,
             ], [
                 'name' => $googleUser->name,
                 'email' => $googleUser->email,
             ]);
+
+            // 認証情報登録
+            $userAuth = new UserAuth();
+            $userAuth->provider = 'google';
+            $userAuth->identify = $googleUser->id;
+            $userAuth->user_id = $user->getAuthIdentifier();
+            $userAuth->save();
 
             $token = $user->createToken('token')->plainTextToken;
             \Auth::login($user);
