@@ -81,8 +81,8 @@
             </span>
             <div class="select is-small">
                 <select v-model="$store.state.selectedAmount">
-                    <option v-for="n of 99" :key="n" :value="n">
-                        {{ n }}
+                    <option v-for="n of 100" :key="n-1" :value="n-1">
+                        {{ n-1 }}
                     </option>
                 </select>
             </div>
@@ -120,7 +120,7 @@
 
 <script lang="ts">
 
-import { getDefaultPlan, Plan } from "../store/Entity/Plan";
+import {getDefaultPlan, Plan} from "../store/Entity/Plan";
 import SendNotification from "./SendNotification.vue";
 
 export default {
@@ -147,6 +147,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[this.selectedPlan].usePoint,
                     useAmount: this.$store.state.planCandidate[this.selectedPlan].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[this.selectedPlan].useTargetIsland,
+                    isFiring: this.$store.state.planCandidate[this.selectedPlan].isFiring,
                     priceString: ''
                 }
             };
@@ -164,6 +165,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[key].usePoint,
                     useAmount: this.$store.state.planCandidate[key].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
+                    isFiring: this.$store.state.planCandidate[key].isFiring,
                     priceString: ''
                 }
             };
@@ -184,9 +186,7 @@ export default {
         overwritePlanAutomatically(source: string, target: string) {
             for (let terrain of this.$store.state.terrains) {
                 if (terrain.type === source) {
-                    let plan = this.getCustomPlan(target, terrain.data.point)
-
-                    this.$store.state.plans[this.$store.state.selectedPlanNumber-1] = plan;
+                    this.$store.state.plans[this.$store.state.selectedPlanNumber-1] = this.getCustomPlan(target, terrain.data.point);
 
                     if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                         this.$store.state.selectedPlanNumber++;

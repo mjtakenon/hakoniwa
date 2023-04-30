@@ -38,7 +38,7 @@ export const store = createStore<State>({
         sentPlans: [],
         selectedPoint: {x: 0, y: 0},
         selectedPlanNumber: 1,
-        selectedAmount: 1,
+        selectedAmount: 0,
         isPlanSent: true,
         isSendingPlan: false,
         planSendingResult: 200,

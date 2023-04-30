@@ -41,6 +41,7 @@ class FiringHighAccuracyMissilePlan extends Plan
     public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
     public const USE_POINT = true;
     public const USE_AMOUNT = true;
+    public const IS_FIRING = true;
 
     public function __construct(Point $point, int $amount = 1)
     {
@@ -50,6 +51,7 @@ class FiringHighAccuracyMissilePlan extends Plan
         $this->price = self::PRICE;
         $this->usePoint = self::USE_POINT;
         $this->useAmount = self::USE_AMOUNT;
+        $this->isFiring = self::IS_FIRING;
     }
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
