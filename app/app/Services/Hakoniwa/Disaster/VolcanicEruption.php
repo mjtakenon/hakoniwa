@@ -5,6 +5,7 @@ namespace App\Services\Hakoniwa\Disaster;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Shallow;
@@ -44,7 +45,7 @@ class VolcanicEruption implements IDisaster
                 continue;
             }
             if ($cell::ELEVATION === -1 || $cell::ELEVATION === 0) {
-                if (in_array(Monster::class, class_parents($cell), true)) {
+                if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     $logs->add(new ScatterAwayByVolcanicEruptionLog($island, $turn, $cell));
                 } else {
                     $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));

@@ -37,6 +37,7 @@ class CellTypeConst
     ];
 
     const IS_LAND = 'is_land';
+    const IS_MONSTER = 'is_monster';
     const HAS_POPULATION = 'has_population';
     const DESTRUCTIBLE_BY_FIRE = 'destructible_by_fire';
     const DESTRUCTIBLE_BY_TSUNAMI = 'destructible_by_tsunami';

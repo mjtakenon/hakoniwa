@@ -17,6 +17,7 @@ class Oilfield extends Cell
     const PRODUCTION_NUMBER_OF_PEOPLE = 20000;
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
+        CellTypeConst::IS_MONSTER => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,

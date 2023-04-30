@@ -5,6 +5,7 @@ namespace App\Services\Hakoniwa\Plan;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\IMissileFireable;
 use App\Services\Hakoniwa\Cell\MissileBase;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
@@ -100,7 +101,7 @@ class FiringMissilePlan extends Plan
 
                 if ($targetCell::TYPE === OutOfRegion::TYPE) {
                     $logs->add(new MissileOutOfRegionLog($island, $turn, $targetCell->getPoint(), $this));
-                } else if (in_array(Monster::class, class_parents($targetCell), true)) {
+                } else if ($targetCell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     /** @var Monster $targetCell */
                     $targetCell->setHitPoints($targetCell->getHitPoints()-1);
                     $logs->add(new MissileHitToMonsterLog($island, $turn, $targetCell, $this));

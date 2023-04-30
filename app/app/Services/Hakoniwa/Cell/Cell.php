@@ -24,6 +24,7 @@ abstract class Cell implements ICell
     protected int $woods = 0;
     public const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
+        CellTypeConst::IS_MONSTER => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
