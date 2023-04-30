@@ -39,7 +39,6 @@ export default {
             return 'サーバーエラーが発生しました。時間をおいて再度お試しください。解決しない場合は、管理者にご連絡ください。(status: ' + status + ')';
         },
         notificationClass() {
-            console.log(this.$store.state.planSendingResult)
             return [
                 // 'notification',
                 this.$store.state.planSendingResult >= 200 && this.$store.state.planSendingResult < 300 ?

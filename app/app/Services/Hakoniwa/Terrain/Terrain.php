@@ -10,6 +10,7 @@ use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\Forest;
 use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\LargeFactory;
+use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\OutOfRegion;
@@ -27,6 +28,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Util\Normal;
 use App\Services\Hakoniwa\Util\Point;
+use App\Services\Hakoniwa\Util\Rand;
 use Illuminate\Support\Collection;
 
 class Terrain implements JsonEncodable
@@ -237,6 +239,10 @@ class Terrain implements JsonEncodable
         foreach ($this->terrain->flatten(1) as $cell) {
 
             if ($cell->getType() !== $this->getCell($cell->getPoint())->getType()) {
+                continue;
+            }
+
+            if (in_array(Monster::class, class_parents($cell), true) && (float)config('app.hakoniwa.monster_action_probably') <= Rand::mt_rand_float()) {
                 continue;
             }
 

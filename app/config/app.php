@@ -222,7 +222,8 @@ return [
     ])->toArray(),
 
     'hakoniwa' => [
-        'turn_update_minutes' => env('TURN_UPDATE_MINUTES')
+        'turn_update_minutes' => env('TURN_UPDATE_MINUTES'),
+        'monster_action_probably' => env('MONSTER_ACTION_PROBABLY', 1)
     ],
 
     'notification_webhook_url' => env('NOTIFICATION_WEBHOOK_URL')
