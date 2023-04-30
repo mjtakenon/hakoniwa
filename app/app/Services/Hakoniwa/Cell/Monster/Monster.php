@@ -99,6 +99,10 @@ abstract class Monster extends Cell
     abstract public function getDefaultHitPoints(): int;
 
     abstract public function getDefaultMoveTimes(): int;
+    public function isAttackDisabled(): bool
+    {
+        return false;
+    }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {

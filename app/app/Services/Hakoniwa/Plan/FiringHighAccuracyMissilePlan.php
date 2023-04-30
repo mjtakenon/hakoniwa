@@ -23,6 +23,7 @@ use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
 use App\Services\Hakoniwa\Log\AbortNoMissileBaseLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Log\MissileDisabledToMonsterLog;
 use App\Services\Hakoniwa\Log\MissileFiringLog;
 use App\Services\Hakoniwa\Log\MissileHitToMonsterLog;
 use App\Services\Hakoniwa\Log\MissileOutOfRegionLog;
@@ -114,6 +115,13 @@ class FiringHighAccuracyMissilePlan extends Plan
                     $logs->add(new MissileOutOfRegionLog($island, $turn, $targetCell->getPoint(), $this));
                 } else if ($targetCell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     /** @var Monster $targetCell */
+                    // 硬化などによる無効化
+                    if ($targetCell->isAttackDisabled()) {
+                        $logs->add(new MissileDisabledToMonsterLog($island, $turn, $targetCell, $this));
+                        continue;
+                    }
+
+                    // 命中
                     $targetCell->setHitPoints($targetCell->getHitPoints()-1);
                     $logs->add(new MissileHitToMonsterLog($island, $turn, $targetCell, $this));
                     if ($targetCell->getHitPoints() >= 1) {
