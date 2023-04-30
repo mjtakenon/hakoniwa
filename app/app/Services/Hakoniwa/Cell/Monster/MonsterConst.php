@@ -22,8 +22,11 @@ class MonsterConst
     public const MONSTERS_LIST_LV2 = [
         RedInora::class,
         DarkInora::class,
+        Sanjira::class,
     ];
-    public const MONSTERS_LIST_LV3 = [];
+    public const MONSTERS_LIST_LV3 = [
+        Kujira::class,
+    ];
     public const MONSTERS_LIST_LV4 = [
         KingInora::class,
     ];
