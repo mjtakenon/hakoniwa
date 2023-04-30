@@ -19,9 +19,14 @@ class MonsterConst
     public const MONSTERS_LIST_LV1 = [
         Inora::class,
     ];
-    public const MONSTERS_LIST_LV2 = [];
+    public const MONSTERS_LIST_LV2 = [
+        RedInora::class,
+        DarkInora::class,
+    ];
     public const MONSTERS_LIST_LV3 = [];
-    public const MONSTERS_LIST_LV4 = [];
+    public const MONSTERS_LIST_LV4 = [
+        KingInora::class,
+    ];
 
     public static function getAppearableMonsters(int $population): Collection {
         $appearableMonsters = new Collection();
