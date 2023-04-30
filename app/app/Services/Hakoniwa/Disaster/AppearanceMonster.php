@@ -47,9 +47,14 @@ class AppearanceMonster implements IDisaster
             return in_array($cell::TYPE, [Village::TYPE, Town::TYPE, City::TYPE, Metropolis::TYPE]);
         });
 
+        $monsterCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+            return in_array(Monster::class, class_parents($cell), true);
+        });
+        $occurProbability = self::OCCUR_PROBABILITY / pow(2, $monsterCells->count());
+
         foreach ($candidates as $cell) {
 
-            if (self::OCCUR_PROBABILITY <= Rand::mt_rand_float()) {
+            if ($occurProbability <= Rand::mt_rand_float()) {
                 continue;
             }
 

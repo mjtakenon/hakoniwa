@@ -54,7 +54,7 @@ class FiringHighAccuracyMissilePlan extends Plan
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
     {
         // TODO: 他の島の場合の考慮
-        $targetCells = $terrain->getAroundCells($this->point, 2, true);
+        $targetCells = $terrain->getAroundCells($this->point, 1, true);
         $targetCells->add($terrain->getCell($this->point));
 
         $logs = Logs::create();
