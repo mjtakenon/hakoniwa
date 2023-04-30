@@ -2,19 +2,6 @@
 
 namespace App\Services\Hakoniwa\Cell\Monster;
 
-use App\Models\Island;
-use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Cell;
-use App\Services\Hakoniwa\Cell\CellTypeConst;
-use App\Services\Hakoniwa\Cell\PassTurnResult;
-use App\Services\Hakoniwa\Cell\Wasteland;
-use App\Services\Hakoniwa\Log\DestructionByMonsterLog;
-use App\Services\Hakoniwa\Log\DisappearMonsterLog;
-use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ExecutePlanResult;
-use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
-
 class Inora extends Monster
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster0.gif';

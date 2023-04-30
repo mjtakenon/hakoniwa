@@ -31,7 +31,7 @@ use Illuminate\Support\Collection;
 
 class AppearanceMonster implements IDisaster
 {
-    const OCCUR_PROBABILITY = 0.004;
+    const OCCUR_PROBABILITY = 0.002;
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
