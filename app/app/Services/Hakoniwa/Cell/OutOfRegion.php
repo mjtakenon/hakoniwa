@@ -11,6 +11,7 @@ class OutOfRegion extends Cell
     public const NAME = '領域外';
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
+        CellTypeConst::IS_MONSTER => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,

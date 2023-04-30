@@ -242,7 +242,7 @@ class Terrain implements JsonEncodable
                 continue;
             }
 
-            if (in_array(Monster::class, class_parents($cell), true) && (float)config('app.hakoniwa.monster_action_probably') <= Rand::mt_rand_float()) {
+            if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER] && (float)config('app.hakoniwa.monster_action_probably') <= Rand::mt_rand_float()) {
                 continue;
             }
 

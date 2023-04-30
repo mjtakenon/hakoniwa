@@ -19,6 +19,7 @@ class MonumentOfWar extends Cell implements IPark
 
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
+        CellTypeConst::IS_MONSTER => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,

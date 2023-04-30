@@ -19,7 +19,14 @@
 <!--                        <span v-if="plan.data.useTargetIsland"> {{ plan.data.island }} </span>-->
                         <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span>
                         <span>{{ plan.data.name }}</span>
-                        <span v-if="plan.data.useAmount"> ({{ plan.data.amount }}回実施)</span></a></td>
+                        <span v-if="plan.data.isFiring">
+                            <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}発発射)</span>
+                            <span v-else-if="plan.data.amount === 0 && plan.data.useAmount"> (無制限)</span>
+                        </span>
+                        <span v-else>
+                            <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}回実施)</span>
+                        </span>
+                    </a></td>
                 </tr>
             </tbody>
         </table>

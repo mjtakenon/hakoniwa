@@ -41,7 +41,7 @@ class Meteorite implements IDisaster
                 continue;
             }
 
-            if (in_array(Monster::class, class_parents($cell), true)) {
+            if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                 $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
             } else {
                 $logs->add(new DestructionByMeteoriteLog($island, $turn, $cell));

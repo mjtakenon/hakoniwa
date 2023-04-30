@@ -40,6 +40,7 @@ abstract class Plan implements IPlan
     public const USE_POINT = false;
     public const USE_AMOUNT = false;
     public const USE_TARGET_ISLAND = false;
+    public const IS_FIRING = false;
     public const EXECUTABLE_DEVELOPMENT_POINT = 0;
 
     protected string $key = self::KEY;
@@ -49,6 +50,7 @@ abstract class Plan implements IPlan
     protected bool $usePoint = self::USE_POINT;
     protected bool $useAmount = self::USE_AMOUNT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
+    protected bool $isFiring = self::IS_FIRING;
     protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
 
     protected int $amount;
@@ -143,6 +145,10 @@ abstract class Plan implements IPlan
         return $this->useTargetIsland;
     }
 
+    public function isFiring(): bool
+    {
+        return $this->isFiring;
+    }
     public function getExecutableDevelopmentPoint(): int
     {
         return $this->executableDevelopmentPoint;
@@ -169,6 +175,7 @@ abstract class Plan implements IPlan
                 'usePoint' => $this->usePoint(),
                 'useAmount' => $this->useAmount(),
                 'useTargetIsland' => $this->useTargetIsland(),
+                'isFiring' => $this->isFiring(),
             ]
         ];
     }

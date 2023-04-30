@@ -45,7 +45,7 @@ class HugeMeteorite implements IDisaster
             });
 
             if ($cell::ELEVATION === -1) {
-                if (in_array(Monster::class, class_parents($cell), true)) {
+                if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
                 } else {
                     $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
@@ -55,7 +55,7 @@ class HugeMeteorite implements IDisaster
             }
 
             if ($cell::ELEVATION === 0 || $cell::ELEVATION === 1) {
-                if (in_array(Monster::class, class_parents($cell), true)) {
+                if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
                 } else {
                     $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 1));
@@ -68,7 +68,7 @@ class HugeMeteorite implements IDisaster
         // 周囲2hex
         foreach ($around2HexCells as $cell) {
             if ($cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX]) {
-                if (in_array(Monster::class, class_parents($cell), true)) {
+                if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
                 } else {
                     $logs->add(new DestructionByHugeMeteoriteLog($island, $turn, $cell, 2));

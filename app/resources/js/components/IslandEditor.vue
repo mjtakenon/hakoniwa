@@ -32,7 +32,13 @@
                         <div v-if="plan.data.point.x === hoverCellPoint.x && plan.data.point.y === hoverCellPoint.y && plan.data.usePoint">
                             <span>[{{ index + 1 }}] </span>
                             <span>{{ plan.data.name }}</span>
-                            <span v-if="plan.data.amount >= 2"> ({{ plan.data.amount }}回実施)</span>
+                            <span v-if="plan.data.isFiring">
+                                <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}発発射)</span>
+                                <span v-else-if="plan.data.amount === 0 && plan.data.useAmount"> (無制限)</span>
+                            </span>
+                            <span v-else>
+                                <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}回実施)</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -138,6 +144,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[key].usePoint,
                     useAmount: this.$store.state.planCandidate[key].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
+                    isFiring: this.$store.state.planCandidate[key].isFiring,
                     priceString: ''
                 }
             };

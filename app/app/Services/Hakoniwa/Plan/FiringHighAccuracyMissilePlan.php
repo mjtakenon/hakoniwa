@@ -5,6 +5,7 @@ namespace App\Services\Hakoniwa\Plan;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\IMissileFireable;
 use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\Mine;
@@ -40,6 +41,7 @@ class FiringHighAccuracyMissilePlan extends Plan
     public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
     public const USE_POINT = true;
     public const USE_AMOUNT = true;
+    public const IS_FIRING = true;
 
     public function __construct(Point $point, int $amount = 1)
     {
@@ -49,6 +51,7 @@ class FiringHighAccuracyMissilePlan extends Plan
         $this->price = self::PRICE;
         $this->usePoint = self::USE_POINT;
         $this->useAmount = self::USE_AMOUNT;
+        $this->isFiring = self::IS_FIRING;
     }
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
@@ -109,7 +112,7 @@ class FiringHighAccuracyMissilePlan extends Plan
 
                 if ($targetCell::TYPE === OutOfRegion::TYPE) {
                     $logs->add(new MissileOutOfRegionLog($island, $turn, $targetCell->getPoint(), $this));
-                } else if (in_array(Monster::class, class_parents($targetCell), true)) {
+                } else if ($targetCell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     /** @var Monster $targetCell */
                     $targetCell->setHitPoints($targetCell->getHitPoints()-1);
                     $logs->add(new MissileHitToMonsterLog($island, $turn, $targetCell, $this));
