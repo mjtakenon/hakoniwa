@@ -3,6 +3,8 @@
 namespace App\Services\Hakoniwa\Cell;
 
 use App\Services\Hakoniwa\Cell\Monster\DarkInora;
+use App\Services\Hakoniwa\Cell\Monster\GhostInora;
+use App\Services\Hakoniwa\Cell\Monster\Hamunemu;
 use App\Services\Hakoniwa\Cell\Monster\Inora;
 use App\Services\Hakoniwa\Cell\Monster\KingInora;
 use App\Services\Hakoniwa\Cell\Monster\Kujira;
@@ -44,6 +46,8 @@ class CellTypeConst
         KingInora::TYPE => KingInora::class,
         Sanjira::TYPE => Sanjira::class,
         Kujira::TYPE => Kujira::class,
+        Hamunemu::TYPE => Hamunemu::class,
+        GhostInora::TYPE => GhostInora::class,
     ];
 
     const IS_LAND = 'is_land';

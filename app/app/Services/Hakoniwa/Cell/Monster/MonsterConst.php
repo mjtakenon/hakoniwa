@@ -23,9 +23,11 @@ class MonsterConst
         RedInora::class,
         DarkInora::class,
         Sanjira::class,
+        Hamunemu::class,
     ];
     public const MONSTERS_LIST_LV3 = [
         Kujira::class,
+        GhostInora::class,
     ];
     public const MONSTERS_LIST_LV4 = [
         KingInora::class,
