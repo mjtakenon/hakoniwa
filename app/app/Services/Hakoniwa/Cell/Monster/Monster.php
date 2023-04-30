@@ -13,6 +13,7 @@ use App\Services\Hakoniwa\Log\DisappearMonsterLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 abstract class Monster extends Cell
 {
@@ -114,19 +115,28 @@ abstract class Monster extends Cell
 
         $this->remainMoveTimes -= 1;
 
+        // 3回動く判定をし、すべて動けないセルだった場合は動かない
         $aroundCells = $terrain->getAroundCells($this->point);
-        /** @var Cell $moveTarget */
-        $moveTarget = $aroundCells->random();
-        if (!$moveTarget::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER]) {
+        /** @var Collection $moveTargets */
+        $moveTargets = $aroundCells->random(3)->filter(function ($cell) {
+            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER];
+        });
+
+        if ($moveTargets->count() <= 0) {
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
+        /** @var Cell $moveTarget */
+        $moveTarget = $moveTargets->random();
+
         $logs = Logs::create();
+        // 破壊する際、消えないよう元のデータを持っておく
         $monster = $this;
         $terrain->setCell($this->point, new Wasteland(point: $this->point));
 
         $logs->add(new DestructionByMonsterLog($island, $turn, $moveTarget, $this));
         $monster->point = $moveTarget->point;
+        // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
         $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn);
 
         $terrain = $passTurnResult->getTerrain();
