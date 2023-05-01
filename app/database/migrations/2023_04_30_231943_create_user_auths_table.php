@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('provider');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
+
+            $table->index('created_at');
+            $table->index('updated_at');
         });
     }
 
