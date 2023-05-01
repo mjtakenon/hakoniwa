@@ -9,6 +9,8 @@ class UserAuth extends Model
 {
     use HasFactory;
 
+    const PROVIDER_GOOGLE = 'google';
+
     protected $fillable = [
         'identify',
         'provider',

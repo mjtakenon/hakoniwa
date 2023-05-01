@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_auths', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('identify');
+            $table->string('identifier');
             $table->string('provider');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');

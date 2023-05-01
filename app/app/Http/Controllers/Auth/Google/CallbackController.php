@@ -28,8 +28,8 @@ class CallbackController extends Controller
 
             // 認証情報登録
             $userAuth = new UserAuth();
-            $userAuth->provider = 'google';
-            $userAuth->identify = $googleUser->id;
+            $userAuth->provider = UserAuth::PROVIDER_GOOGLE;
+            $userAuth->identifier = $googleUser->id;
             $userAuth->user_id = $user->getAuthIdentifier();
             $userAuth->save();
 

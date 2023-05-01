@@ -256,7 +256,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
- * @property string $identify
+ * @property string $identifier
  * @property string $provider
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
@@ -265,7 +265,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|UserAuth query()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereIdentify($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereIdentifier($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereProvider($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereUserId($value)
