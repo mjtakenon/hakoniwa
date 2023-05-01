@@ -87,7 +87,7 @@ class FiringHighAccuracyMissilePlan extends Plan
 
         /** @var MissileBase $missileBase */
         foreach ($missileBases as $missileBase) {
-            for ($n = 0; $n < $missileBase->getLevel()+10; $n++) {
+            for ($n = 0; $n < $missileBase->getLevel(); $n++) {
                 if ($this->amount === 0) {
                     if ($firingCount >= 1) {
                         $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
