@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\Google;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UserAuth;
+use App\Models\UserAuthentication;
 
 
 class CallbackController extends Controller
@@ -27,8 +27,8 @@ class CallbackController extends Controller
             ]);
 
             // 認証情報登録
-            $userAuth = new UserAuth();
-            $userAuth->provider = UserAuth::PROVIDER_GOOGLE;
+            $userAuth = new UserAuthentication();
+            $userAuth->provider = UserAuthentication::PROVIDER_GOOGLE;
             $userAuth->identifier = $googleUser->id;
             $userAuth->user_id = $user->getAuthIdentifier();
             $userAuth->save();

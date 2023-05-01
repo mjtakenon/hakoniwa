@@ -252,7 +252,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\UserAuth
+ * App\Models\UserAuthentication
  *
  * @property int $id
  * @property int $user_id
@@ -260,16 +260,16 @@ namespace App\Models{
  * @property string $provider
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth query()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereIdentifier($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereProvider($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserAuth whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication query()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication whereIdentifier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication whereProvider($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAuthentication whereUserId($value)
  */
-	class UserAuth extends \Eloquent {}
+	class UserAuthentication extends \Eloquent {}
 }
 

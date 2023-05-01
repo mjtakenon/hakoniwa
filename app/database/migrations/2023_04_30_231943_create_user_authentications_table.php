@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_auths', function (Blueprint $table) {
+        Schema::create('user_authentications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('user_id');
             $table->string('identifier');
             $table->string('provider');
             $table->dateTime('created_at');
