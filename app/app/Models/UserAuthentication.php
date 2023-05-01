@@ -12,7 +12,7 @@ class UserAuthentication extends Model
     const PROVIDER_GOOGLE = 'google';
 
     protected $fillable = [
-        'identify',
+        'identifier',
         'provider',
         'user_id'
     ];

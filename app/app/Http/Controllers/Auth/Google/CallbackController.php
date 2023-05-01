@@ -15,29 +15,34 @@ class CallbackController extends Controller
             return redirect(route('home'));
         }
 
-        $token = \DB::transaction(function () {
-            $googleUser = \Socialite::driver('google')->user();//->stateless()
+        $googleUser = \Socialite::driver('google')->user();//->stateless()
+        $userAuth = UserAuthentication::where('identifier', $googleUser->id)->where('provider', UserAuthentication::PROVIDER_GOOGLE)->first();
 
-            // ユーザー情報登録
-            $user = User::firstOrCreate([
-                'email' => $googleUser->email,
-            ], [
-                'name' => $googleUser->name,
-                'email' => $googleUser->email,
-            ]);
-
-            // 認証情報登録
-            $userAuth = new UserAuthentication();
-            $userAuth->provider = UserAuthentication::PROVIDER_GOOGLE;
-            $userAuth->identifier = $googleUser->id;
-            $userAuth->user_id = $user->getAuthIdentifier();
-            $userAuth->save();
-
-            $token = $user->createToken('token')->plainTextToken;
+        if (!is_null($userAuth)) {
+            // 既にGoogleでログイン済み
+            $user = User::where('id', $userAuth->user_id)->first();
             \Auth::login($user);
+        } else {
+            // 初回Googleログイン時
+            \DB::transaction(function () use ($googleUser) {
+                // ユーザー情報登録
+                $user = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                ]);
 
-            return $token;
-        });
+                // 認証情報登録
+                UserAuthentication::create(
+                    [
+                        'provider' => UserAuthentication::PROVIDER_GOOGLE,
+                        'identifier' => $googleUser->id,
+                        'user_id' => $user->getAuthIdentifier()
+                    ]
+                );
+
+                \Auth::login($user);
+            });
+        }
 
         if (\HakoniwaService::isIslandRegistered()) {
             return redirect(config('app.url') . '/islands/' . \Auth::user()->island->id . '/plans');
