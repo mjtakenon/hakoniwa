@@ -8,23 +8,24 @@ use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Cell\Wasteland;
+use App\Services\Hakoniwa\Log\DestructionByDividedMonsterLog;
 use App\Services\Hakoniwa\Log\DestructionByMonsterLog;
 use App\Services\Hakoniwa\Log\DisappearMonsterLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
+use App\Services\Hakoniwa\Util\Rand;
 use Illuminate\Support\Collection;
 
-class GhostInora extends Monster
+class Slime extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster8.gif';
-    public const TYPE = 'ghost_inora';
-    public const NAME = '怪獣ゴーストいのら';
-    public const DEFAULT_HIT_POINTS = 1;
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster14.gif';
+    public const TYPE = 'slime';
+    public const NAME = '奇獣スライム';
+    public const DEFAULT_HIT_POINTS = 2;
     public const DEFAULT_MOVE_TIMES = 1;
-    public const EXPERIENCE = 15;
-    public const CORPSE_PRICE = 5000;
+    public const EXPERIENCE = 2;
+    public const CORPSE_PRICE = 100;
 
     public function getName(): string
     {
@@ -66,6 +67,19 @@ class GhostInora extends Monster
         return self::DEFAULT_MOVE_TIMES;
     }
 
+    private function getDivisionProbably(Terrain $terrain): float
+    {
+        $monsterCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+            return $cell::ATTRIBUTE[CellTypeConst::IS_MONSTER];
+        });
+
+        if ($monsterCells->count() < 7) {
+            return 1.0/3;
+        }
+
+        return 0.02;
+    }
+
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         if ($this->remainMoveTimes <= 0) {
@@ -82,7 +96,7 @@ class GhostInora extends Monster
         $this->remainMoveTimes -= 1;
 
         // 3回動く判定をし、すべて動けないセルだった場合は動かない
-        $aroundCells = $terrain->getAroundCells($this->point, 4);
+        $aroundCells = $terrain->getAroundCells($this->point);
         /** @var Collection $moveTargets */
         $moveTargets = $aroundCells->random(min(3, $aroundCells->count()))->filter(function ($cell) {
             return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER];
@@ -94,21 +108,38 @@ class GhostInora extends Monster
 
         /** @var Cell $moveTarget */
         $moveTarget = $moveTargets->random();
-
         $logs = Logs::create();
         // 破壊する際、消えないよう元のデータを持っておく
         $monster = $this;
-        $terrain->setCell($this->point, new Wasteland(point: $this->point));
 
-        $logs->add(new DestructionByMonsterLog($island, $turn, $moveTarget, $this));
-        $monster->point = $moveTarget->point;
-        // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
-        $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn);
+        // 1/3の確率で分裂, 分裂確率は島のモンスター数により変化
+        // 3/2の確率で移動
+        if ($this->getDivisionProbably($terrain) <= Rand::mt_rand_float()) {
+            $terrain->setCell($this->point, new Wasteland(point: $this->point));
 
-        $terrain = $passTurnResult->getTerrain();
-        $status = $passTurnResult->getStatus();
-        $logs->merge($passTurnResult->getLogs());
+            $logs->add(new DestructionByMonsterLog($island, $turn, $moveTarget, $this));
+            $monster->point = $moveTarget->point;
+            // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
+            $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn);
 
-        return new PassTurnResult($terrain, $status, $logs);
+            $terrain = $passTurnResult->getTerrain();
+            $status = $passTurnResult->getStatus();
+            $logs->merge($passTurnResult->getLogs());
+
+            return new PassTurnResult($terrain, $status, $logs);
+        } else {
+            $terrain->setCell($this->point, new Slime(point: $this->point, remain_move_times: 0, hit_points: 1));
+
+            $logs->add(new DestructionByDividedMonsterLog($island, $turn, $moveTarget, $this));
+            $monster->point = $moveTarget->point;
+            // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
+            $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn);
+
+            $terrain = $passTurnResult->getTerrain();
+            $status = $passTurnResult->getStatus();
+            $logs->merge($passTurnResult->getLogs());
+
+            return new PassTurnResult($terrain, $status, $logs);
+        }
     }
 }

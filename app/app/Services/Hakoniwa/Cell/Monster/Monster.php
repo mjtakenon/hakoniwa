@@ -122,7 +122,7 @@ abstract class Monster extends Cell
         // 3回動く判定をし、すべて動けないセルだった場合は動かない
         $aroundCells = $terrain->getAroundCells($this->point);
         /** @var Collection $moveTargets */
-        $moveTargets = $aroundCells->random(3)->filter(function ($cell) {
+        $moveTargets = $aroundCells->random(min(3, $aroundCells->count()))->filter(function ($cell) {
             return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER];
         });
 
