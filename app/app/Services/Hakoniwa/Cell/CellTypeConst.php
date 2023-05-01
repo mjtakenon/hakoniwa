@@ -11,6 +11,7 @@ use App\Services\Hakoniwa\Cell\Monster\Kujira;
 use App\Services\Hakoniwa\Cell\Monster\RedInora;
 use App\Services\Hakoniwa\Cell\Monster\Sanjira;
 use App\Services\Hakoniwa\Cell\Monster\Slime;
+use App\Services\Hakoniwa\Cell\Monster\SlimeLegend;
 
 class CellTypeConst
 {
@@ -50,6 +51,7 @@ class CellTypeConst
         Hamunemu::TYPE => Hamunemu::class,
         GhostInora::TYPE => GhostInora::class,
         Slime::TYPE => Slime::class,
+        SlimeLegend::TYPE => SlimeLegend::class,
     ];
 
     const IS_LAND = 'is_land';

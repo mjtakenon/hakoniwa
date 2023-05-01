@@ -32,6 +32,7 @@ class MonsterConst
     ];
     public const MONSTERS_LIST_LV4 = [
         KingInora::class,
+        SlimeLegend::class,
     ];
 
     public static function getAppearableMonsters(int $population): Collection {

@@ -87,7 +87,7 @@ class FiringHighAccuracyMissilePlan extends Plan
 
         /** @var MissileBase $missileBase */
         foreach ($missileBases as $missileBase) {
-            for ($n = 0; $n < $missileBase->getLevel(); $n++) {
+            for ($n = 0; $n < $missileBase->getLevel()+10; $n++) {
                 if ($this->amount === 0) {
                     if ($firingCount >= 1) {
                         $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
@@ -129,7 +129,7 @@ class FiringHighAccuracyMissilePlan extends Plan
                     } else {
                         $terrain->setCell($targetCell->getPoint(), new Wasteland(point: $targetCell->getPoint()));
 
-                        $targetCells = $terrain->getAroundCells($this->point, 2, true);
+                        $targetCells = $terrain->getAroundCells($this->point, 1, true);
                         $targetCells->add($terrain->getCell($this->point));
 
                         $logs->add(new SoldMonsterCorpseLog($turn, $targetCell));
