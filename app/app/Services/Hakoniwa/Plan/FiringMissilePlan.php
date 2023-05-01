@@ -53,7 +53,7 @@ class FiringMissilePlan extends Plan
         $targetCells->add($terrain->getCell($this->point));
 
         $logs = Logs::create();
-        $missileBases = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+        $missileBases = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
             /** @var Cell $cell */
             return array_key_exists(IMissileFireable::class, class_implements($cell));
         });
@@ -119,6 +119,9 @@ class FiringMissilePlan extends Plan
                         $terrain->setCell($targetCell->getPoint(), $targetCell);
                     } else {
                         $terrain->setCell($targetCell->getPoint(), new Wasteland(point: $targetCell->getPoint()));
+
+                        $targetCells = $terrain->getAroundCells($this->point, 2, true);
+                        $targetCells->add($terrain->getCell($this->point));
 
                         $logs->add(new SoldMonsterCorpseLog($turn, $targetCell));
                         $status->setFunds($status->getFunds() + $targetCell->getCorpsePrice());
