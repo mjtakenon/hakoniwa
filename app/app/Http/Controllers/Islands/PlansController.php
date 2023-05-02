@@ -17,7 +17,8 @@ class PlansController extends Controller
 {
     use WebApi;
 
-    const DEFAULT_SHOW_LOG_TURNS = 5;
+    // TODO Consider to reduce count of recent turns log after making log detail page.
+    const DEFAULT_SHOW_LOG_TURNS = 20;
 
     public function get(int $islandId)
     {
@@ -32,8 +33,7 @@ class PlansController extends Controller
         }
 
         $turn = Turn::latest()->firstOrFail();
-        // TODO 直近取得ターンの変数切り出し
-        $getLogRecentTurns = 5;
+        $getLogRecentTurns = DEFAULT_SHOW_LOG_TURNS;
 
         $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail()->plan;
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
