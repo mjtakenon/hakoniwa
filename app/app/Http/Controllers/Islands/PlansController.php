@@ -32,8 +32,7 @@ class PlansController extends Controller
         }
 
         $turn = Turn::latest()->firstOrFail();
-        // TODO 直近取得ターンの変数切り出し
-        $getLogRecentTurns = 5;
+        $getLogRecentTurns = DEFAULT_SHOW_LOG_TURNS;
 
 //        $islandTerrain = Terrains::find($islandId);
 //        $islandTerrain->terrain = Terrains::create()->init()->toJson();
