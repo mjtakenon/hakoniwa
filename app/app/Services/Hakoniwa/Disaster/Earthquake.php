@@ -16,7 +16,7 @@ use App\Services\Hakoniwa\Util\Rand;
 
 class Earthquake implements IDisaster
 {
-    private const OCCUR_PROBABILITY = 0.01;
+    private const OCCUR_PROBABILITY = 0.005;
     private const DESTRUCTION_PROBABILITY = 0.25;
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
