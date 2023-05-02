@@ -29,7 +29,12 @@
                 <div class="is-flex-direction-column hover-window-info">
                     {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
                     <div v-for="(plan, index) of $store.state.plans">
-                        <div v-if="plan.data.point.x === hoverCellPoint.x && plan.data.point.y === hoverCellPoint.y && plan.data.usePoint && plan.data.targetIsland === $store.state.island.id">
+                        <div v-if="
+                            plan.data.point.x === hoverCellPoint.x &&
+                            plan.data.point.y === hoverCellPoint.y &&
+                            plan.data.usePoint &&
+                            (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === $store.state.island.id)
+                        ">
                             <span>[{{ index + 1 }}] </span>
                             <span>{{ plan.data.name }}</span>
                             <span v-if="plan.data.isFiring">
