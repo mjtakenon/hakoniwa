@@ -151,7 +151,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[this.selectedPlan].usePoint,
                     useAmount: this.$store.state.planCandidate[this.selectedPlan].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[this.selectedPlan].useTargetIsland,
-                    targetIsland: this.$store.state.island.id,
+                    targetIsland: this.$store.state.selectedTargetIsland,
                     isFiring: this.$store.state.planCandidate[this.selectedPlan].isFiring,
                     priceString: ''
                 }
@@ -170,7 +170,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[key].usePoint,
                     useAmount: this.$store.state.planCandidate[key].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
-                    targetIsland: this.$store.state.island.id,
+                    targetIsland: this.$store.state.selectedTargetIsland,
                     isFiring: this.$store.state.planCandidate[key].isFiring,
                     priceString: ''
                 }
