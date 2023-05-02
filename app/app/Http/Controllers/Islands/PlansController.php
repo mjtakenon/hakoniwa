@@ -17,7 +17,8 @@ class PlansController extends Controller
 {
     use WebApi;
 
-    const DEFAULT_SHOW_LOG_TURNS = 5;
+    // TODO Consider to reduce count of recent turns log after making log detail page.
+    const DEFAULT_SHOW_LOG_TURNS = 20;
 
     public function get(int $islandId)
     {

@@ -10,7 +10,8 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 
 class DetailController extends Controller
 {
-    const DEFAULT_SHOW_LOG_TURNS = 5;
+    // TODO Consider to reduce count of recent turns log after making log detail page.
+    const DEFAULT_SHOW_LOG_TURNS = 20;
     public function get($islandId) {
         $island = Island::find($islandId);
 
