@@ -14,8 +14,10 @@ use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
 use App\Services\Hakoniwa\Plan\Plans;
+use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 class ExecuteTurn extends Command
 {
@@ -65,25 +67,64 @@ class ExecuteTurn extends Command
                     },
                 ])->whereNull('deleted_at')->get();
 
-                // 生産・消費
+                $planList = new Collection();
+                $terrainList = new Collection();
+                $statusList = new Collection();
+                $prevStatusList = new Collection();
+                $logsList = new Collection();
+                $otherIslandTargetedPlans = new Collection();
+
                 /** @var Island $island */
                 foreach ($islands as $island) {
                     $islandPlan = $island->islandPlans->firstOrFail();
                     $islandTerrain = $island->islandTerrains->firstOrFail();
                     $islandStatus = $island->islandStatuses->firstOrFail();
-                    $terrain = Terrain::fromJson($islandTerrain->terrain);
-                    $prevStatus = $islandStatus->toStatus();
-                    $status = $islandStatus->toStatus();
+
+                    $planList->put($island->id, Plans::fromJson($islandPlan->plan));
+                    $terrainList->put($island->id, Terrain::fromJson($islandTerrain->terrain));
+                    $statusList->put($island->id, $islandStatus->toStatus());
+                    $prevStatusList->put($island->id, $islandStatus->toStatus());
+                    $logsList->put($island->id, Logs::create());
+                }
+
+                // 怪獣移動とミサイル支援の順番が混ざっているので分けて処理する
+                foreach ($islands as $island) {
+                    /** @var Plans $plans */
+                    $plans = $planList->get($island->id);
+                    /** @var Terrain $terrain */
+                    $terrain = $terrainList->get($island->id);
+                    /** @var Status $status */
+                    $status = $statusList->get($island->id);
+                    /** @var Logs $logs */
+                    $logs = $logsList->get($island->id);
 
                     // 生産・消費処理
                     $status->executeTurn($terrain);
 
                     // コマンド実行
-                    $plans = Plans::fromJson($islandPlan->plan);
-                    $executePlanResult = $plans->execute($island, $terrain, $status, $turn);
+                    $executePlanResult = $plans->execute($island, $terrain, $status, $turn, $otherIslandTargetedPlans);
                     $terrain = $executePlanResult->getTerrain();
                     $status = $executePlanResult->getStatus();
-                    $logs = $executePlanResult->getLogs();
+                    $logs->merge($executePlanResult->getLogs());
+
+                    $planList->put($island->id, $plans);
+                    $terrainList->put($island->id, $terrain);
+                    $statusList->put($island->id, $status);
+                    $logsList->put($island->id, $logs);
+                }
+
+                // 怪獣移動とミサイル支援の順番が混ざっているので分けて処理する
+                foreach ($islands as $island) {
+                    /** @var Plans $plan */
+                    $plans = $planList->get($island->id);
+                    /** @var Terrain $terrain */
+                    $terrain = $terrainList->get($island->id);
+                    /** @var Status $status */
+                    $status = $statusList->get($island->id);
+                    /** @var Status $prevStatus */
+                    $prevStatus = $prevStatusList->get($island->id);
+                    /** @var Logs $logs */
+                    $logs = $logsList->get($island->id);
 
                     // 災害
                     $occurDisasterResult = $terrain->occurDisaster($island, $status, $turn);

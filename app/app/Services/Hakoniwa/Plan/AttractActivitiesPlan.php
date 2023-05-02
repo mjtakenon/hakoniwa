@@ -13,6 +13,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
+use Illuminate\Support\Collection;
 
 class AttractActivitiesPlan extends Plan
 {
@@ -34,7 +35,7 @@ class AttractActivitiesPlan extends Plan
         $this->useAmount = self::USE_AMOUNT;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
 

@@ -7,6 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
+use Illuminate\Support\Collection;
 
 interface IPlan
 {
@@ -20,7 +21,7 @@ interface IPlan
 
     public static function create(Point $point, int $amount, ?int $targetIsland = null): static;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult;
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult;
 
     public function getName(): string;
 

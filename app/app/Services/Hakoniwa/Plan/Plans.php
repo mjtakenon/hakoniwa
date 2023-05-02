@@ -86,13 +86,13 @@ class Plans implements JsonEncodable
         return $this->plans->shift();
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
         while (true) {
             /** @var Plan $plan */
             $plan = $this->shift();
-            $executePlanResult = $plan->execute($island, $terrain, $status, $turn);
+            $executePlanResult = $plan->execute($island, $terrain, $status, $turn, $otherIslandTargetedPlans);
 
             $terrain = $executePlanResult->getTerrain();
             $status = $executePlanResult->getStatus();

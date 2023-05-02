@@ -32,6 +32,7 @@ use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
+use Illuminate\Support\Collection;
 
 class FiringHighAccuracyMissilePlan extends Plan
 {
@@ -57,7 +58,7 @@ class FiringHighAccuracyMissilePlan extends Plan
         $this->isFiring = self::IS_FIRING;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult
     {
         // TODO: 他の島の場合の考慮
         $targetCells = $terrain->getAroundCells($this->point, 1, true);
