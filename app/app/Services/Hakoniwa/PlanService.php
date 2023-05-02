@@ -25,8 +25,8 @@ class PlanService extends ServiceProvider
                             'priceString' => $plan::PRICE_STRING,
                             'usePoint' => $plan::USE_POINT,
                             'useAmount' => $plan::USE_AMOUNT,
-                            'isFiring' => $plan::IS_FIRING,
                             'useTargetIsland' => $plan::USE_TARGET_ISLAND,
+                            'isFiring' => $plan::IS_FIRING,
                         ];
                     }
                 },

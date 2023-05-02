@@ -39,7 +39,7 @@ class ConstructParkPlan extends Plan
         Park::class,
     ];
 
-    public function __construct(Point $point, int $amount = 1)
+    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
         parent::__construct($point, $amount);
         $this->key = self::KEY;

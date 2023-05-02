@@ -19,9 +19,11 @@ export interface State {
     logs: Array<Log>,
     plans: Plan[],
     sentPlans: Plan[],
+    targetIslands: Island[],
     selectedPoint: Point,
     selectedPlanNumber: number,
     selectedAmount: number,
+    selectedTargetIsland: number,
     isPlanSent: boolean,
     isSendingPlan: boolean,
     planCandidate: object,
@@ -39,6 +41,7 @@ export const store = createStore<State>({
         selectedPoint: {x: 0, y: 0},
         selectedPlanNumber: 1,
         selectedAmount: 0,
+        selectedTargetIsland: 0,
         isPlanSent: true,
         isSendingPlan: false,
         planSendingResult: 200,
@@ -49,6 +52,7 @@ export const store = createStore<State>({
         status: { area: 0, development_points: 0, environment: '', foods: 0, foods_production_number_of_people: 0, funds: 0, funds_production_number_of_people: 0, population: 0, resources: 0, resources_production_number_of_people: 0 },
         logs: [],
         planCandidate: {},
+        targetIslands: [],
     },
     actions: {
         async putPlan(context, payload) {

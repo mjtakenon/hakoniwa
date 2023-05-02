@@ -29,7 +29,7 @@
                 <div class="is-flex-direction-column hover-window-info">
                     {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
                     <div v-for="(plan, index) of $store.state.plans">
-                        <div v-if="plan.data.point.x === hoverCellPoint.x && plan.data.point.y === hoverCellPoint.y && plan.data.usePoint">
+                        <div v-if="plan.data.point.x === hoverCellPoint.x && plan.data.point.y === hoverCellPoint.y && plan.data.usePoint && plan.data.targetIsland === $store.state.island.id">
                             <span>[{{ index + 1 }}] </span>
                             <span>{{ plan.data.name }}</span>
                             <span v-if="plan.data.isFiring">
@@ -53,7 +53,7 @@
                 v-for="plan of $store.state.planCandidate"
                 :key="plan.key"
             >
-                <a @click="onClickPlan(plan.key)">
+                <a v-if="plan.usePoint" @click="onClickPlan(plan.key)">
                     <div style="border: 1px solid lightgray; padding: 2px 4px;">
                         {{ plan.name }} {{ plan.priceString }}
                     </div>
@@ -144,6 +144,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[key].usePoint,
                     useAmount: this.$store.state.planCandidate[key].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
+                    targetIsland: this.$store.state.selectedTargetIsland,
                     isFiring: this.$store.state.planCandidate[key].isFiring,
                     priceString: ''
                 }

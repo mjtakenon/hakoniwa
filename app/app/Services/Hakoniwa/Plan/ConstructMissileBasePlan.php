@@ -25,7 +25,7 @@ class ConstructMissileBasePlan extends Plan
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
     public const USE_POINT = true;
 
-    public function __construct(Point $point, int $amount = 1)
+    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
         parent::__construct($point, $amount);
         $this->key = self::KEY;

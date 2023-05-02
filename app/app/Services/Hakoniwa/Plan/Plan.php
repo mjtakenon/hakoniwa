@@ -54,6 +54,7 @@ abstract class Plan implements IPlan
     protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
 
     protected int $amount;
+    protected ?int $targetIsland;
     protected Point $point;
 
     public const GRADABLE_CELLS = [
@@ -104,10 +105,11 @@ abstract class Plan implements IPlan
         Village::TYPE,
     ];
 
-    public function __construct(Point $point, int $amount)
+    public function __construct(Point $point, int $amount, ?int $targetIsland = null)
     {
         $this->point = $point;
         $this->amount = $amount;
+        $this->targetIsland = $targetIsland;
     }
 
     public function getKey(): string
@@ -128,6 +130,11 @@ abstract class Plan implements IPlan
     public function getAmount(): int
     {
         return $this->amount;
+    }
+
+    public function getTargetIsland(): ?int
+    {
+        return $this->targetIsland;
     }
 
     public function usePoint(): bool
@@ -172,6 +179,7 @@ abstract class Plan implements IPlan
                 'name' => $this->getName(),
                 'point' => $this->getPoint(),
                 'amount' => $this->getAmount(),
+                'targetIsland' => $this->getTargetIsland(),
                 'usePoint' => $this->usePoint(),
                 'useAmount' => $this->useAmount(),
                 'useTargetIsland' => $this->useTargetIsland(),
@@ -187,17 +195,18 @@ abstract class Plan implements IPlan
             'data' => [
                 'point' => $this->getPoint(),
                 'amount' => $this->getAmount(),
+                'targetIsland' => $this->getTargetIsland(),
             ]
         ];
     }
 
-    static public function fromJson(string $key, Point $point, int $amount): IPlan
+    static public function fromJson(string $key, Point $point, int $amount, ?int $targetIsland = null): IPlan
     {
-        return new (PlanConst::getClassByType($key))($point, $amount);
+        return new (PlanConst::getClassByType($key))($point, $amount, $targetIsland);
     }
 
-    public static function create(Point $point, int $amount): static
+    public static function create(Point $point, int $amount, ?int $targetIsland = null): static
     {
-        return new static($point, $amount);
+        return new static($point, $amount, $targetIsland);
     }
 }

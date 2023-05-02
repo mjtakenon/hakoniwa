@@ -42,16 +42,18 @@ class FiringHighAccuracyMissilePlan extends Plan
     public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
     public const USE_POINT = true;
     public const USE_AMOUNT = true;
+    public const USE_TARGET_ISLAND = true;
     public const IS_FIRING = true;
 
-    public function __construct(Point $point, int $amount = 1)
+    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
-        parent::__construct($point, $amount);
+        parent::__construct($point, $amount, $targetIsland);
         $this->key = self::KEY;
         $this->name = self::NAME;
         $this->price = self::PRICE;
         $this->usePoint = self::USE_POINT;
         $this->useAmount = self::USE_AMOUNT;
+        $this->useTargetIsland = self::USE_TARGET_ISLAND;
         $this->isFiring = self::IS_FIRING;
     }
 

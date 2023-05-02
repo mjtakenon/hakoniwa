@@ -7,6 +7,7 @@
             :hakoniwa="@js($hakoniwa)"
             :island="@js($island)"
             :plan-candidate="@js($executablePlans)"
+            :target-islands="@js($targetIslands)"
         ></plan-page>
     </div>
 @endsection

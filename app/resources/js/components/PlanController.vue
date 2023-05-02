@@ -93,10 +93,15 @@
         <div>
             目標の島 <br/>
             <div class="select is-small">
-                <select v-model="selectedTargetIsland">
-                    <option :value="$store.state.island.name"> {{ $store.state.island.name }} 島 </option>
+                <select v-model="$store.state.selectedTargetIsland">
+                    <option v-for="targetIsland of $store.state.targetIslands" :key="targetIsland.id" :value="targetIsland.id">
+                        {{ targetIsland.name }} 島
+                    </option>
                 </select>
             </div>
+            <span class="p-1"></span>
+            <!-- TODO: ポップアップに変えたい -->
+            <a class="button is-small" :href="'/islands/' + $store.state.selectedTargetIsland" target="_blank"> 開く </a>
         </div>
 
         <hr/>
@@ -129,7 +134,6 @@ export default {
         return {
             MAX_PLAN_NUMBER: 30,
             selectedPlan: 'grading',
-            selectedTargetIsland: this.$store.state.island.name,
         }
     },
     setup() {},
@@ -147,6 +151,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[this.selectedPlan].usePoint,
                     useAmount: this.$store.state.planCandidate[this.selectedPlan].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[this.selectedPlan].useTargetIsland,
+                    targetIsland: this.$store.state.island.id,
                     isFiring: this.$store.state.planCandidate[this.selectedPlan].isFiring,
                     priceString: ''
                 }
@@ -165,6 +170,7 @@ export default {
                     usePoint: this.$store.state.planCandidate[key].usePoint,
                     useAmount: this.$store.state.planCandidate[key].useAmount,
                     useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
+                    targetIsland: this.$store.state.island.id,
                     isFiring: this.$store.state.planCandidate[key].isFiring,
                     priceString: ''
                 }

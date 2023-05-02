@@ -16,8 +16,11 @@
                     <td><a>{{ parseInt(index)+1 }}</a></td>
                     <td><a>：</a></td>
                     <td><a>
-<!--                        <span v-if="plan.data.useTargetIsland"> {{ plan.data.island }} </span>-->
-                        <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span>
+                        <span v-if="plan.data.useTargetIsland && plan.data.targetIsland !== null">
+                            {{ $store.state.targetIslands.filter((i) => { return i.id === plan.data.targetIsland})[0].name }}島 &#x20;
+                        </span>
+                        <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) </span>
+                        <span v-if="plan.data.useTargetIsland || plan.data.usePoint">に</span>
                         <span>{{ plan.data.name }}</span>
                         <span v-if="plan.data.isFiring">
                             <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}発発射)</span>

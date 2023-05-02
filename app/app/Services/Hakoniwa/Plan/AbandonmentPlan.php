@@ -21,7 +21,7 @@ class AbandonmentPlan extends Plan
     public const PRICE_STRING = '(無料)';
     public const USE_POINT = false;
 
-    public function __construct(Point $point = (new Point(0,0)), int $amount = 1)
+    public function __construct(Point $point = (new Point(0,0)), int $amount = 1, ?int $targetIsland = null)
     {
         parent::__construct($point, $amount);
         $this->key = self::KEY;

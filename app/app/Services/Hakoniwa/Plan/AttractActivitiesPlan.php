@@ -24,7 +24,7 @@ class AttractActivitiesPlan extends Plan
     public const USE_POINT = false;
     public const USE_AMOUNT = true;
 
-    public function __construct(Point $point = (new Point(0,0)), int $amount = 1)
+    public function __construct(Point $point = (new Point(0,0)), int $amount = 1, ?int $targetIsland = null)
     {
         parent::__construct($point, $amount);
         $this->key = self::KEY;

@@ -26,7 +26,7 @@ class ConstructFarmDomePlan extends Plan
     public const USE_POINT = true;
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::CONSTRUCT_FARM_DOME_AVAILABLE_POINTS;
 
-    public function __construct(Point $point, int $amount = 1)
+    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
         parent::__construct($point, $amount);
         $this->key = self::KEY;

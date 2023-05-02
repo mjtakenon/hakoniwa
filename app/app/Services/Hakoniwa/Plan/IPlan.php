@@ -14,11 +14,11 @@ interface IPlan
 
     public function toArrayWithStatic(): array;
 
-    static public function fromJson(string $key, Point $point, int $amount): IPlan;
+    static public function fromJson(string $key, Point $point, int $amount, ?int $targetIsland = null): IPlan;
 
-    public function __construct(Point $point, int $amount);
+    public function __construct(Point $point, int $amount, ?int $targetIsland = null);
 
-    public static function create(Point $point, int $amount): static;
+    public static function create(Point $point, int $amount, ?int $targetIsland = null): static;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn): ExecutePlanResult;
 

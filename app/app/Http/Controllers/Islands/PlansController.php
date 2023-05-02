@@ -35,19 +35,6 @@ class PlansController extends Controller
         // TODO 直近取得ターンの変数切り出し
         $getLogRecentTurns = 5;
 
-//        $islandTerrain = Terrains::find($islandId);
-//        $islandTerrain->terrain = Terrains::create()->init()->toJson();
-//        $islandTerrain->save();
-//
-//        $islandStatus = Status::find($islandId);
-//        $islandStatus->setInitialStatus(Terrains::create()->fromJson($islandTerrain->terrain));
-//        $islandStatus->save();
-//
-//        $islandPlan = IslandPlan::find($islandId);
-//        $islandPlan->plan = Plans::init()->toJson();
-//        $islandPlan->save();
-
-        $user = \Auth::user();
         $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail()->plan;
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
@@ -55,6 +42,7 @@ class PlansController extends Controller
             Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
         )->orderByDesc('id')
         ->get('log');
+        $targetIslands = Island::get();
 
         return view('pages.islands.plans', [
             'hakoniwa' => [
@@ -82,6 +70,13 @@ class PlansController extends Controller
                 'logs' => $islandLogs
             ],
             'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),
+            'targetIslands' => $targetIslands->map(function ($targetIsland) {
+                return [
+                    'id' => $targetIsland->id,
+                    'name' => $targetIsland->name,
+                    'owner_name' => $targetIsland->owner_name,
+                ];
+            })
         ]);
     }
 

@@ -54,7 +54,7 @@ class Plans implements JsonEncodable
         $objects = json_decode($json);
         foreach ($objects as $object) {
             /** @var Plan $plan */
-            $plans[] = new (PlanConst::getClassByType($object->key))(new Point($object->data->point->x, $object->data->point->y), $object->data->amount);
+            $plans[] = new (PlanConst::getClassByType($object->key))(new Point($object->data->point->x, $object->data->point->y), $object->data->amount, $object->data->targetIsland ?? null);
         }
         return new static($plans);
     }

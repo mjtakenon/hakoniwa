@@ -1,3 +1,5 @@
+import {store} from "../store";
+
 export interface Plan {
     key: string,
     data: {
@@ -7,6 +9,7 @@ export interface Plan {
         usePoint: boolean,
         useAmount: boolean,
         useTargetIsland: boolean,
+        targetIsland: number,
         isFiring: boolean,
         priceString: string,
     },
@@ -25,6 +28,7 @@ export function getDefaultPlan(): Plan {
             usePoint: false,
             useAmount: false,
             useTargetIsland: false,
+            targetIsland: store.state.island.id,
             isFiring: false,
             priceString: '(+10億円)',
         }

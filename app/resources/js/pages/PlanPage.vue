@@ -53,10 +53,12 @@ export default {
         this.$store.state.logs = this.island.logs
         this.$store.state.plans = lodash.cloneDeep(this.island.plans)
         this.$store.state.sentPlans = lodash.cloneDeep(this.island.plans)
-        this.$store.state.planCandidate = this.planCandidate;
+        this.$store.state.planCandidate = this.planCandidate
+        this.$store.state.targetIslands = this.targetIslands
+        this.$store.state.selectedTargetIsland = this.$store.state.island.id
     },
     computed: {},
-    props: ['hakoniwa', 'island', 'planCandidate'],
+    props: ['hakoniwa', 'island', 'planCandidate', 'targetIslands'],
 };
 </script>
 
