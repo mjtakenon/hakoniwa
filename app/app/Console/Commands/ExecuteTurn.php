@@ -13,6 +13,7 @@ use App\Services\Hakoniwa\Log\AbandonmentLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
+use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandTargetedPlan;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -72,7 +73,7 @@ class ExecuteTurn extends Command
                 $statusList = new Collection();
                 $prevStatusList = new Collection();
                 $logsList = new Collection();
-                $otherIslandTargetedPlans = new Collection();
+                $foreignIslandTargetedPlans = new Collection();
 
                 /** @var Island $island */
                 foreach ($islands as $island) {
@@ -102,7 +103,7 @@ class ExecuteTurn extends Command
                     $status->executeTurn($terrain);
 
                     // コマンド実行
-                    $executePlanResult = $plans->execute($island, $terrain, $status, $turn, $otherIslandTargetedPlans);
+                    $executePlanResult = $plans->execute($island, $terrain, $status, $turn, $foreignIslandTargetedPlans);
                     $terrain = $executePlanResult->getTerrain();
                     $status = $executePlanResult->getStatus();
                     $logs->merge($executePlanResult->getLogs());
@@ -111,6 +112,40 @@ class ExecuteTurn extends Command
                     $terrainList->put($island->id, $terrain);
                     $statusList->put($island->id, $status);
                     $logsList->put($island->id, $logs);
+                }
+
+                // 他の島を目標にした計画の実行
+                /** @var ForeignIslandTargetedPlan $plan */
+                foreach ($foreignIslandTargetedPlans as $plan) {
+                    /** @var Island $toIsland */
+                    $toIsland = $islands->find($plan->getToIsland());
+                    /** @var Island $fromIsland */
+                    $fromIsland = $islands->find($plan->getFromIsland());
+                    /** @var Terrain $fromTerrain */
+                    $fromTerrain = $terrainList->get($plan->getFromIsland());
+                    /** @var Terrain $toTerrain */
+                    $toTerrain = $terrainList->get($plan->getToIsland());
+                    /** @var Status $fromStatus */
+                    $fromStatus = $statusList->get($plan->getFromIsland());
+                    /** @var Status $toStatus */
+                    $toStatus = $statusList->get($plan->getToIsland());
+                    /** @var Logs $fromLogs */
+                    $fromLogs = $logsList->get($plan->getFromIsland());
+                    /** @var Logs $toLogs */
+                    $toLogs = $logsList->get($plan->getToIsland());
+
+                    /** @var ForeignIslandTargetedPlan $plan */
+                    $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
+
+                    $fromLogs->merge($executePlanResult->getFromLogs());
+                    $toLogs->merge($executePlanResult->getToLogs());
+
+                    $terrainList->put($plan->getFromIsland(), $executePlanResult->getFromTerrain());
+                    $terrainList->put($plan->getToIsland(), $executePlanResult->getToTerrain());
+                    $statusList->put($plan->getFromIsland(), $executePlanResult->getFromStatus());
+                    $statusList->put($plan->getToIsland(), $executePlanResult->getToStatus());
+                    $logsList->put($plan->getFromIsland(), $fromLogs);
+                    $logsList->put($plan->getToIsland(), $toLogs);
                 }
 
                 // 怪獣移動とミサイル支援の順番が混ざっているので分けて処理する

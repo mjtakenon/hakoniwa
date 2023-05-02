@@ -34,7 +34,7 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 
-class FiringHighAccuracyMissilePlan extends Plan
+class FiringHighAccuracyMissilePlan extends FiringMissilePlan
 {
     public const KEY = 'firing_high_accuracy_missile';
 
@@ -45,6 +45,7 @@ class FiringHighAccuracyMissilePlan extends Plan
     public const USE_AMOUNT = true;
     public const USE_TARGET_ISLAND = true;
     public const IS_FIRING = true;
+    public const ACCURACY = 1;
 
     public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
@@ -58,99 +59,13 @@ class FiringHighAccuracyMissilePlan extends Plan
         $this->isFiring = self::IS_FIRING;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult
+    public function getAccuracy(): int
     {
-        // TODO: 他の島の場合の考慮
-        $targetCells = $terrain->getAroundCells($this->point, 1, true);
-        $targetCells->add($terrain->getCell($this->point));
+        return self::ACCURACY;
+    }
 
-        $logs = Logs::create();
-        $missileBases = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
-            /** @var Cell $cell */
-            return array_key_exists(IMissileFireable::class, class_implements($cell));
-        });
-
-        if ($this->amount === 0) {
-            $this->amount = PHP_INT_MAX;
-        }
-
-        $firingCount = 0;
-
-        if ($missileBases->isEmpty()) {
-            $logs->add(new AbortNoMissileBaseLog($island, $turn, $this->point, $this));
-            $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
-        }
-
-        if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
-            $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
-        }
-
-        /** @var MissileBase $missileBase */
-        foreach ($missileBases as $missileBase) {
-            for ($n = 0; $n < $missileBase->getLevel(); $n++) {
-                if ($this->amount === 0) {
-                    if ($firingCount >= 1) {
-                        $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
-                    }
-                    $this->amount = 0;
-                    return new ExecutePlanResult($terrain, $status, $logs, true);
-                }
-
-                if ($status->getFunds() < self::PRICE) {
-                    if ($firingCount >= 1) {
-                        $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
-                    }
-                    $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
-                    $this->amount = 0;
-                    return new ExecutePlanResult($terrain, $status, $logs, true);
-                }
-                $status->setFunds($status->getFunds() - self::PRICE);
-
-                /** @var Cell $targetCell */
-                $targetCell = $targetCells->random();
-                $this->amount -= 1;
-                $firingCount += 1;
-
-                if ($targetCell::TYPE === OutOfRegion::TYPE) {
-                    $logs->add(new MissileOutOfRegionLog($island, $turn, $targetCell->getPoint(), $this));
-                } else if ($targetCell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
-                    /** @var Monster $targetCell */
-                    // 硬化などによる無効化
-                    if ($targetCell->isAttackDisabled()) {
-                        $logs->add(new MissileDisabledToMonsterLog($island, $turn, $targetCell, $this));
-                        continue;
-                    }
-
-                    // 命中
-                    $targetCell->setHitPoints($targetCell->getHitPoints()-1);
-                    $logs->add(new MissileHitToMonsterLog($island, $turn, $targetCell, $this));
-                    if ($targetCell->getHitPoints() >= 1) {
-                        $terrain->setCell($targetCell->getPoint(), $targetCell);
-                    } else {
-                        $terrain->setCell($targetCell->getPoint(), new Wasteland(point: $targetCell->getPoint()));
-
-                        $targetCells = $terrain->getAroundCells($this->point, 1, true);
-                        $targetCells->add($terrain->getCell($this->point));
-
-                        $logs->add(new SoldMonsterCorpseLog($turn, $targetCell));
-                        $status->setFunds($status->getFunds() + $targetCell->getCorpsePrice());
-
-                        $missileBase->setExperience($missileBase->getExperience() + $targetCell->getExperience());
-                        $terrain->setCell($missileBase->getPoint(), $missileBase);
-                    }
-                } else {
-                    $logs->add(new MissileSelfDestructLog($island, $turn, $targetCell->getPoint(), $this));
-                }
-            }
-        }
-
-        if ($firingCount >= 1) {
-            $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
-        }
-        $this->amount = 0;
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    {
+        return parent::execute($island, $terrain, $status, $turn, $foreignIslandTargetedPlans);
     }
 }

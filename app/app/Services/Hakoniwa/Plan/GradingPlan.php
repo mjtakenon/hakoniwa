@@ -37,7 +37,7 @@ class GradingPlan extends Plan
         $this->usePoint = self::USE_POINT;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $cell = $terrain->getCell($this->point);
         if ($status->getFunds() < self::PRICE) {

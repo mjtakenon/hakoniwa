@@ -21,7 +21,7 @@ interface IPlan
 
     public static function create(Point $point, int $amount, ?int $targetIsland = null): static;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult;
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult;
 
     public function getName(): string;
 

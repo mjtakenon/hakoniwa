@@ -20,10 +20,12 @@ use App\Services\Hakoniwa\Log\MissileHitToMonsterLog;
 use App\Services\Hakoniwa\Log\MissileOutOfRegionLog;
 use App\Services\Hakoniwa\Log\MissileSelfDestructLog;
 use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
+use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandFiringMissilePlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
+use function DeepCopy\deep_copy;
 
 class FiringMissilePlan extends Plan
 {
@@ -36,6 +38,7 @@ class FiringMissilePlan extends Plan
     public const USE_AMOUNT = true;
     public const USE_TARGET_ISLAND = true;
     public const IS_FIRING = true;
+    public const ACCURACY = 2;
 
     public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
@@ -49,14 +52,19 @@ class FiringMissilePlan extends Plan
         $this->isFiring = self::IS_FIRING;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $otherIslandTargetedPlans): ExecutePlanResult
+    public function getAccuracy(): int
     {
-        // TODO: 他の島の場合の考慮
-        $targetCells = $terrain->getAroundCells($this->point, 2, true);
+        return self::ACCURACY;
+    }
+
+    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    {
+        $logs = Logs::create();
+
+        $targetCells = $terrain->getAroundCells($this->point, $this->getAccuracy(), true);
         $targetCells->add($terrain->getCell($this->point));
 
-        $logs = Logs::create();
-        $missileBases = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
+        $missileBases = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
             /** @var Cell $cell */
             return array_key_exists(IMissileFireable::class, class_implements($cell));
         });
@@ -64,8 +72,6 @@ class FiringMissilePlan extends Plan
         if ($this->amount === 0) {
             $this->amount = PHP_INT_MAX;
         }
-
-        $firingCount = 0;
 
         if ($missileBases->isEmpty()) {
             $logs->add(new AbortNoMissileBaseLog($island, $turn, $this->point, $this));
@@ -78,6 +84,19 @@ class FiringMissilePlan extends Plan
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
+
+        // 対象が自島でない場合、後で処理する
+        if ($this->getTargetIsland() !== $island->id) {
+            $foreignIslandTargetedPlans->add(new ForeignIslandFiringMissilePlan(
+                $island->id,
+                $this->getTargetIsland(),
+                deep_copy($this),
+            ));
+            $this->amount = 0;
+            return new ExecutePlanResult($terrain, $status, $logs, true);
+        }
+
+        $firingCount = 0;
 
         /** @var MissileBase $missileBase */
         foreach ($missileBases as $missileBase) {
@@ -116,14 +135,14 @@ class FiringMissilePlan extends Plan
                     }
 
                     // 命中
-                    $targetCell->setHitPoints($targetCell->getHitPoints()-1);
+                    $targetCell->setHitPoints($targetCell->getHitPoints() - 1);
                     $logs->add(new MissileHitToMonsterLog($island, $turn, $targetCell, $this));
                     if ($targetCell->getHitPoints() >= 1) {
                         $terrain->setCell($targetCell->getPoint(), $targetCell);
                     } else {
                         $terrain->setCell($targetCell->getPoint(), new Wasteland(point: $targetCell->getPoint()));
 
-                        $targetCells = $terrain->getAroundCells($this->point, 2, true);
+                        $targetCells = $terrain->getAroundCells($this->point, $this->getAccuracy(), true);
                         $targetCells->add($terrain->getCell($this->point));
 
                         $logs->add(new SoldMonsterCorpseLog($turn, $targetCell));

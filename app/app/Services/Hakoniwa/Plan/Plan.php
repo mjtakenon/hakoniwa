@@ -122,6 +122,11 @@ abstract class Plan implements IPlan
         return $this->name;
     }
 
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
     public function getPoint(): Point
     {
         return $this->point;
