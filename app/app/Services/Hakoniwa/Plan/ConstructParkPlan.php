@@ -27,7 +27,6 @@ class ConstructParkPlan extends Plan
     public const NAME = '公園整備';
     public const PRICE = 3000;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
-    public const USE_POINT = true;
 
     public const PARKS = [
         MonumentOfAgriculture::class,
@@ -42,7 +41,6 @@ class ConstructParkPlan extends Plan
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
-    protected bool $usePoint = self::USE_POINT;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {

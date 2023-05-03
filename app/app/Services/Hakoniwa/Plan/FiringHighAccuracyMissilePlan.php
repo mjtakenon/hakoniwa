@@ -16,7 +16,6 @@ class FiringHighAccuracyMissilePlan extends FiringMissilePlan
     public const NAME = '高精度ミサイル発射';
     public const PRICE = 50;
     public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
-    public const USE_POINT = true;
     public const USE_AMOUNT = true;
     public const USE_TARGET_ISLAND = true;
     public const IS_FIRING = true;
@@ -25,7 +24,6 @@ class FiringHighAccuracyMissilePlan extends FiringMissilePlan
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
-    protected bool $usePoint = self::USE_POINT;
     protected bool $useAmount = self::USE_AMOUNT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
     protected bool $isFiring = self::IS_FIRING;

@@ -23,13 +23,11 @@ class GroundLevelingPlan extends Plan
     public const NAME = '高速整地';
     public const PRICE = 100;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
-    public const USE_POINT = true;
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::GROUND_LEVELING_AVAILABLE_POINTS;
 
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
-    protected bool $usePoint = self::USE_POINT;
     protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult

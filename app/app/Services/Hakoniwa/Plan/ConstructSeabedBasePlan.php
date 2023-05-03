@@ -25,13 +25,12 @@ class ConstructSeabedBasePlan extends Plan
     public const NAME = '海底基地建設';
     public const PRICE = 2000;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
-    public const USE_POINT = true;
+
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::CONSTRUCT_SEABED_BASE_AVAILABLE_POINTS;
 
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
-    protected bool $usePoint = self::USE_POINT;
     protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult

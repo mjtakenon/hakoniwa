@@ -33,7 +33,7 @@ abstract class Plan
     public const NAME = '';
     public const PRICE = 0;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
-    public const USE_POINT = false;
+    public const USE_POINT = true;
     public const USE_AMOUNT = false;
     public const USE_TARGET_ISLAND = false;
     public const IS_FIRING = false;

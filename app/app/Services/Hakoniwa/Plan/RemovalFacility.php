@@ -23,12 +23,10 @@ class RemovalFacility extends Plan
     public const NAME = '施設の撤去';
     public const PRICE = 0;
     public const PRICE_STRING = '(無料)';
-    public const USE_POINT = true;
 
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
-    protected bool $usePoint = self::USE_POINT;
 
     public function __construct(Point $point = (new Point(0, 0)), int $amount = 1, ?int $targetIsland = null)
     {

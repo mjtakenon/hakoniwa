@@ -24,13 +24,12 @@ class ConstructFarmDomePlan extends Plan
     public const NAME = '農場ドーム化';
     public const PRICE = 2000;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
-    public const USE_POINT = true;
+
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::CONSTRUCT_FARM_DOME_AVAILABLE_POINTS;
 
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
-    protected bool $usePoint = self::USE_POINT;
 
     public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
