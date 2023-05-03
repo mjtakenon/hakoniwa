@@ -20,14 +20,10 @@ class CashFlowPlan extends Plan
     public const PRICE_STRING = '(+' . self::PRICE*-1 . '億円)';
     public const USE_POINT = false;
 
-    public function __construct(Point $point = (new Point(0,0)), int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
+    protected bool $usePoint = self::USE_POINT;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {

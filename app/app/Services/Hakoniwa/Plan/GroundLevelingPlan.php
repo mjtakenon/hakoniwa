@@ -26,15 +26,11 @@ class GroundLevelingPlan extends Plan
     public const USE_POINT = true;
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::GROUND_LEVELING_AVAILABLE_POINTS;
 
-    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-        $this->executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
+    protected bool $usePoint = self::USE_POINT;
+    protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {

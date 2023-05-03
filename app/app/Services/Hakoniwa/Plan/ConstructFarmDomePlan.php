@@ -27,13 +27,14 @@ class ConstructFarmDomePlan extends Plan
     public const USE_POINT = true;
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::CONSTRUCT_FARM_DOME_AVAILABLE_POINTS;
 
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
+    protected bool $usePoint = self::USE_POINT;
+
     public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
     {
         parent::__construct($point, $amount);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
     }
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult

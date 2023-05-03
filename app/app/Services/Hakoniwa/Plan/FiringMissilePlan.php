@@ -40,17 +40,13 @@ class FiringMissilePlan extends Plan
     public const IS_FIRING = true;
     public const ACCURACY = 2;
 
-    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount, $targetIsland);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-        $this->useAmount = self::USE_AMOUNT;
-        $this->useTargetIsland = self::USE_TARGET_ISLAND;
-        $this->isFiring = self::IS_FIRING;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
+    protected bool $usePoint = self::USE_POINT;
+    protected bool $useAmount = self::USE_AMOUNT;
+    protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
+    protected bool $isFiring = self::IS_FIRING;
 
     public function getAccuracy(): int
     {
