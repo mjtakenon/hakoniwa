@@ -34,8 +34,11 @@ class Forest extends Cell
         CellTypeConst::PREVENTING_FIRE => true,
         CellTypeConst::PREVENTING_TYPHOON => true,
         CellTypeConst::PREVENTING_TSUNAMI => true,
-
     ];
+
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 
     public function __construct(...$data)
     {
@@ -59,21 +62,6 @@ class Forest extends Cell
                 'woods' => $this->woods,
             ]
         ];
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
     }
 
     public function getInfoString(bool $isPrivate = false): string

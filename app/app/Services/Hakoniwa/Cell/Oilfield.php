@@ -34,6 +34,10 @@ class Oilfield extends Cell
     ];
     public const ELEVATION = -1;
 
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+
     public function __construct(...$data)
     {
         parent::__construct(...$data);
@@ -56,21 +60,6 @@ class Oilfield extends Cell
                 'resourcesProductionNumberOfPeople' => $this->resourcesProductionNumberOfPeople,
             ]
         ];
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
     }
 
     public function getElevation(): int

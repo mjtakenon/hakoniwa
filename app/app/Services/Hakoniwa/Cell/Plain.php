@@ -41,24 +41,13 @@ class Plain extends Cell
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+
     public function __construct(...$data)
     {
         parent::__construct(...$data);
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult

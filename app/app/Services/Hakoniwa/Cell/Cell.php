@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Util\Point;
 
 abstract class Cell implements ICell
 {
+    protected string $name;
     protected string $imagePath;
     protected string $type;
     protected Point $point;
@@ -45,6 +46,7 @@ abstract class Cell implements ICell
     public function __construct(...$data)
     {
         $this->point = new Point($data['point']->x, $data['point']->y);
+        $this->name = $this->getName();
         $this->imagePath = $this->getImagePath();
         $this->type = $this->getType();
     }
@@ -65,6 +67,22 @@ abstract class Cell implements ICell
             ]
         ];
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getImagePath(): string
+    {
+        return $this->imagePath;
+    }
+
 
     public function getElevation(): int
     {

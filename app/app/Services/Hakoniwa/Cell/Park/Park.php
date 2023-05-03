@@ -58,21 +58,6 @@ class Park extends Cell implements IPark
         ];
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function getImagePath(): string
-    {
-        return $this->imagePath;
-    }
-
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
         return true;

@@ -15,6 +15,10 @@ class Metropolis extends City
     public const MIN_POPULATION = 20000;
     public const MAX_POPULATION = 30000;
 
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+
     public function __construct(...$data)
     {
         parent::__construct(...$data);
@@ -24,20 +28,5 @@ class Metropolis extends City
         } else {
             $this->population = self::MIN_POPULATION;
         }
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
     }
 }
