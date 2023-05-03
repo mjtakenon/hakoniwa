@@ -26,20 +26,10 @@ class GhostInora extends Monster
     public const EXPERIENCE = 15;
     public const CORPSE_PRICE = 5000;
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
-    }
 
     public function getAppearancePopulation(): int
     {

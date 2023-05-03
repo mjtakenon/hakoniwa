@@ -12,21 +12,25 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 class Kujira extends Monster
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster6.gif';
-    public const METALLIZED_IMAGE_PATH = '/img/hakoniwa/hakogif/monster4.gif';
+    public const METALIZED_IMAGE_PATH = '/img/hakoniwa/hakogif/monster4.gif';
     public const TYPE = 'kujira';
     public const NAME = '怪獣クジラ';
     public const DEFAULT_HIT_POINTS = 3;
     public const DEFAULT_MOVE_TIMES = 1;
     public const EXPERIENCE = 15;
     public const CORPSE_PRICE = 4000;
-    private bool $isMetallized;
+    private bool $isMetalized;
+
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 
     public function __construct(...$data) {
 
-        if (array_key_exists('is_metallized', $data)) {
-            $this->isMetallized = $data['is_metallized'];
+        if (array_key_exists('is_metalized', $data)) {
+            $this->isMetalized = $data['is_metalized'];
         } else {
-            $this->isMetallized = false;
+            $this->isMetalized = false;
         }
 
         parent::__construct(...$data);
@@ -41,29 +45,19 @@ class Kujira extends Monster
                 'image_path' => $this->imagePath,
                 'info' => $this->getInfoString($isPrivate),
                 'hit_points' => $this->getHitPoints(),
-                'is_metallized' => $this->isMetallized,
+                'is_metalized' => $this->isMetalized,
             ]
         ];
     }
 
     public function isAttackDisabled(): bool
     {
-        return $this->isMetallized;
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
+        return $this->isMetalized;
     }
 
     public function getImagePath(): string
     {
-        return $this->isMetallized ? self::METALLIZED_IMAGE_PATH : self::IMAGE_PATH;
+        return $this->isMetalized ? self::METALIZED_IMAGE_PATH : self::IMAGE_PATH;
     }
 
     public function getAppearancePopulation(): int
@@ -94,10 +88,10 @@ class Kujira extends Monster
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         if (($turn->turn + 1) % 3 === 0) {
-            $this->isMetallized = true;
+            $this->isMetalized = true;
             return new PassTurnResult($terrain, $status, Logs::create());
         } else {
-            $this->isMetallized = false;
+            $this->isMetalized = false;
             return parent::passTurn($island, $terrain, $status, $turn);
         }
     }

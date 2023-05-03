@@ -10,7 +10,7 @@ use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 
-abstract class Cell implements ICell
+abstract class Cell
 {
     public const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,

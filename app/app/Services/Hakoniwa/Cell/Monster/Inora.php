@@ -12,20 +12,10 @@ class Inora extends Monster
     public const EXPERIENCE = 5;
     public const CORPSE_PRICE = 1500;
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
-    }
 
     public function getAppearancePopulation(): int
     {
