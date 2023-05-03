@@ -11,6 +11,7 @@ use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\DestructionByMeteoriteLog;
+use App\Services\Hakoniwa\Log\DestructionShipLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\OccurMeteoriteLog;
 use App\Services\Hakoniwa\Log\ScatterAwayByHugeMeteoriteLog;
@@ -40,21 +41,17 @@ class Meteorite implements IDisaster
 
             if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                 $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
+            } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+                $logs->add(new DestructionShipLog($island, $turn, $cell));
             } else {
                 $logs->add(new DestructionByMeteoriteLog($island, $turn, $cell));
             }
 
             if ($cell::ELEVATION === 1) {
                 $terrain->setCell($point, new Wasteland(point: $point));
-                continue;
-            }
-
-            if ($cell::ELEVATION === 0) {
+            } else if ($cell::ELEVATION === 0) {
                 $terrain->setCell($point, new Shallow(point: $point));
-                continue;
-            }
-
-            if ($cell::ELEVATION <= -1) {
+            } else {
                 $terrain->setCell($point, new Sea(point: $point));
             }
 

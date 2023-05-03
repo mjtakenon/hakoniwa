@@ -25,6 +25,7 @@ use App\Services\Hakoniwa\Cell\Park\MonumentOfPeace;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfWar;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfWinner;
 use App\Services\Hakoniwa\Cell\Park\Park;
+use App\Services\Hakoniwa\Cell\Ship\TransportShip;
 
 class CellTypeConst
 {
@@ -65,10 +66,12 @@ class CellTypeConst
         GhostInora::TYPE => GhostInora::class,
         Slime::TYPE => Slime::class,
         SlimeLegend::TYPE => SlimeLegend::class,
+        TransportShip::TYPE => TransportShip::class,
     ];
 
     const IS_LAND = 'is_land';
     const IS_MONSTER = 'is_monster';
+    const IS_SHIP = 'is_ship';
     const HAS_POPULATION = 'has_population';
     const DESTRUCTIBLE_BY_FIRE = 'destructible_by_fire';
     const DESTRUCTIBLE_BY_TSUNAMI = 'destructible_by_tsunami';

@@ -23,6 +23,7 @@ use App\Services\Hakoniwa\Cell\Park\MonumentOfWar;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfWinner;
 use App\Services\Hakoniwa\Cell\Park\Park;
 use App\Services\Hakoniwa\Cell\Plain;
+use App\Services\Hakoniwa\Cell\Ship\TransportShip;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Util\Point;
 
@@ -91,6 +92,7 @@ abstract class Plan
         MonumentOfPeace::TYPE,
         MonumentOfWar::TYPE,
         MonumentOfWinner::TYPE,
+        TransportShip::TYPE,
     ];
 
     public const CONSTRUCTABLE_CELLS = [

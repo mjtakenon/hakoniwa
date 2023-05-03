@@ -42,11 +42,11 @@ class RemovalFacility extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        if ($cell::ELEVATION === 1) {
+        if ($cell->getElevation() === 1) {
             $terrain->setCell($this->point, new Mountain(point: $this->point));
-        } else if ($cell::ELEVATION === 0) {
+        } else if ($cell->getElevation() === 0) {
             $terrain->setCell($this->point, new Plain(point: $this->point));
-        } else if ($cell::ELEVATION === -1) {
+        } else if ($cell->getElevation() === -1) {
             $terrain->setCell($this->point, new Shallow(point: $this->point));
         } else {
             $terrain->setCell($this->point, new Sea(point: $this->point));

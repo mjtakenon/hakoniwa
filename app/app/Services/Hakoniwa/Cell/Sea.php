@@ -10,6 +10,7 @@ class Sea extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
