@@ -60,12 +60,12 @@ abstract class Cell
         $arr = [
             'type' => $this->getType(),
             'data' => [
-                'point' => $this->point,
+                'point' => $this->getPoint(),
             ]
         ];
 
         if ($withStatic) {
-            $arr['data']['image_path'] = $this->imagePath;
+            $arr['data']['image_path'] = $this->getImagePath();
             $arr['data']['info'] = $this->getInfoString($isPrivate);
         }
 
