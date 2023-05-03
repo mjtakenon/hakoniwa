@@ -4,8 +4,7 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Factory;
-use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
 use App\Services\Hakoniwa\Log\AfforestationLog;

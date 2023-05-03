@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\MissileBase;
 
 interface IMissileFireable
 {

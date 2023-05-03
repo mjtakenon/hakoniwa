@@ -4,14 +4,11 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Factory;
-use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\SeabedBase;
 use App\Services\Hakoniwa\Cell\Sea;
-use App\Services\Hakoniwa\Cell\SeabedBase;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
 use App\Services\Hakoniwa\Log\AbortNoDevelopmentPointsLog;
-use App\Services\Hakoniwa\Log\AfforestationLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\LogVisibility;

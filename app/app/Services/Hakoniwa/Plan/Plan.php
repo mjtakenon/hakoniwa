@@ -12,7 +12,8 @@ use App\Services\Hakoniwa\Cell\HasPopulation\Town;
 use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Cell\LargeFactory;
 use App\Services\Hakoniwa\Cell\Mine;
-use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\SeabedBase;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfAgriculture;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfMaster;
@@ -22,7 +23,6 @@ use App\Services\Hakoniwa\Cell\Park\MonumentOfWar;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfWinner;
 use App\Services\Hakoniwa\Cell\Park\Park;
 use App\Services\Hakoniwa\Cell\Plain;
-use App\Services\Hakoniwa\Cell\SeabedBase;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Util\Point;
 

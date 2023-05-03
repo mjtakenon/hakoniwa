@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\MissileBase;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class MissileBase extends Cell implements IMissileFireable
 {

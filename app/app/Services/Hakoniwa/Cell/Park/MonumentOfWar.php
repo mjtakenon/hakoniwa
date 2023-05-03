@@ -4,7 +4,7 @@ namespace App\Services\Hakoniwa\Cell\Park;
 
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;

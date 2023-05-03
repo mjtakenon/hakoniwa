@@ -1,6 +1,11 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\MissileBase;
+
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\Sea;
 
 class SeabedBase extends Cell implements IMissileFireable
 {
