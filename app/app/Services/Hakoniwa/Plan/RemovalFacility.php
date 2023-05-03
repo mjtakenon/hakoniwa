@@ -28,11 +28,6 @@ class RemovalFacility extends Plan
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
 
-    public function __construct(Point $point = (new Point(0, 0)), int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount);
-    }
-
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $cell = $terrain->getCell($this->point);
