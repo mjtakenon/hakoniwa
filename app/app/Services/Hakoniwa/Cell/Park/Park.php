@@ -1,20 +1,27 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\Park;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-class MonumentOfMining extends Cell implements IPark
+class Park extends Cell implements IPark
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument52.gif';
-    public const TYPE = 'monument_of_mining';
-    public const NAME = '鉱の碑';
-    public const PRODUCT_DEVELOPMENT_POINTS = 250;
-    public const CONSTRUCTABLE_RESOURCES_THRESHOLD = 4000;
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument0.gif';
+    public const TYPE = 'park';
+    public const NAME = '公園';
+    public const PRODUCT_DEVELOPMENT_POINTS = 100;
+
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+
 
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
@@ -42,10 +49,10 @@ class MonumentOfMining extends Cell implements IPark
     public function toArray(bool $isPrivate = false): array
     {
         return [
-            'type' => $this->type,
+            'type' => $this->getType(),
             'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
+                'point' => $this->getPoint(),
+                'image_path' => $this->getImagePath(),
                 'info' => $this->getInfoString($isPrivate),
             ]
         ];
@@ -53,29 +60,21 @@ class MonumentOfMining extends Cell implements IPark
 
     public function getName(): string
     {
-        return self::NAME;
+        return $this->name;
     }
 
     public function getType(): string
     {
-        return self::TYPE;
+        return $this->type;
     }
 
     public function getImagePath(): string
     {
-        return self::IMAGE_PATH;
+        return $this->imagePath;
     }
 
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
-        if ($status->getProducedResources() <= self::CONSTRUCTABLE_RESOURCES_THRESHOLD) {
-            return false;
-        }
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-                return $cell::TYPE === self::TYPE;
-            })->count() >= 1) {
-            return false;
-        }
         return true;
     }
 

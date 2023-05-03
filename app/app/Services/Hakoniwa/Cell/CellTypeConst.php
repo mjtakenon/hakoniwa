@@ -12,6 +12,13 @@ use App\Services\Hakoniwa\Cell\Monster\RedInora;
 use App\Services\Hakoniwa\Cell\Monster\Sanjira;
 use App\Services\Hakoniwa\Cell\Monster\Slime;
 use App\Services\Hakoniwa\Cell\Monster\SlimeLegend;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfAgriculture;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfMaster;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfMining;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfPeace;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfWar;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfWinner;
+use App\Services\Hakoniwa\Cell\Park\Park;
 
 class CellTypeConst
 {
