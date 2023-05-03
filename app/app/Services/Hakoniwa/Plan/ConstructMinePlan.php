@@ -4,7 +4,6 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Farm;
 use App\Services\Hakoniwa\Cell\Mine;
 use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
@@ -13,7 +12,6 @@ use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 
 class ConstructMinePlan extends Plan

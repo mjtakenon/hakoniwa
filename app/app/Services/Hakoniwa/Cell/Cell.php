@@ -5,7 +5,6 @@ namespace App\Services\Hakoniwa\Cell;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ExecutePlanResult;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;

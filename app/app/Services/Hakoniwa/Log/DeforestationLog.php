@@ -2,10 +2,7 @@
 
 namespace App\Services\Hakoniwa\Log;
 
-use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Plan\Plan;
-use App\Services\Hakoniwa\Util\Point;
 
 class DeforestationLog implements ILog
 {
@@ -28,7 +25,7 @@ class DeforestationLog implements ILog
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => '伐採した木材から、'],
-            ['text' => $this->amount , 'style' => StyleConst::BOLD],
+            ['text' => $this->amount, 'style' => StyleConst::BOLD],
             ['text' => '㌧の資源を得ました。'],
         ]);
     }

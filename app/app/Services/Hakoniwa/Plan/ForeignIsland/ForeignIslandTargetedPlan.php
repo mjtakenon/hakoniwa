@@ -7,7 +7,6 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 abstract class ForeignIslandTargetedPlan
 {

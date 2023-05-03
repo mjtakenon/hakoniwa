@@ -2,8 +2,6 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
-use App\Services\Hakoniwa\Util\Point;
-
 class OutOfRegion extends Cell
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land0.gif';

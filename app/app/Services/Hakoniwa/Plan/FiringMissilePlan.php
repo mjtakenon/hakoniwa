@@ -23,7 +23,6 @@ use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
 use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandFiringMissilePlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
