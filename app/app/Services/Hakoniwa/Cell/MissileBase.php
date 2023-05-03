@@ -50,18 +50,15 @@ class MissileBase extends Cell implements IMissileFireable
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $isPrivate ? $this->imagePath : Forest::IMAGE_PATH,
-                'info' => $this->getInfoString($isPrivate),
-                'maintenanceNumberOfPeople' => $this->maintenanceNumberOfPeople,
-                'experience' => $this->experience,
-            ]
-        ];
+        if ($isPrivate) {
+            $arr = parent::toArray($isPrivate, $withStatic);
+            $arr['data']['maintenanceNumberOfPeople'] = $this->maintenanceNumberOfPeople;
+            $arr['data']['experience'] = $this->experience;
+            return $arr;
+        }
+        return (new Forest(point: $this->point))->toArray($isPrivate, $withStatic);
     }
 
     public function __construct(...$data)

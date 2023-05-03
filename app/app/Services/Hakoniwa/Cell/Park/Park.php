@@ -41,18 +41,6 @@ class Park extends Cell implements IPark
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function toArray(bool $isPrivate = false): array
-    {
-        return [
-            'type' => $this->getType(),
-            'data' => [
-                'point' => $this->getPoint(),
-                'image_path' => $this->getImagePath(),
-                'info' => $this->getInfoString($isPrivate),
-            ]
-        ];
-    }
-
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
         return true;

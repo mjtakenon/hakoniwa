@@ -52,18 +52,18 @@ class Terrain implements JsonEncodable
         return new static;
     }
 
-    public function toJson(): string
+    public function toJson(bool $isPrivate = false, bool $withStatic = false): string
     {
-        return json_encode($this->toArray());
+        return json_encode($this->toArray($isPrivate, $withStatic));
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $terrain = [];
         foreach ($this->terrain as $row) {
             /** @var Cell $cell */
             foreach ($row as $cell) {
-                $terrain[] = $cell->toArray($isPrivate);
+                $terrain[] = $cell->toArray($isPrivate, $withStatic);
             }
         }
         return $terrain;

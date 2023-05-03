@@ -55,17 +55,11 @@ abstract class Monster extends Cell
         }
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'hit_points' => $this->getHitPoints(),
-            ]
-        ];
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['hit_points'] = $this->hitPoints;
+        return $arr;
     }
 
     public function getInfoString(bool $isPrivate = false): string

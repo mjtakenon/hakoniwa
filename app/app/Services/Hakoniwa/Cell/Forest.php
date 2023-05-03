@@ -51,17 +51,11 @@ class Forest extends Cell
         }
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'woods' => $this->woods,
-            ]
-        ];
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['woods'] = $this->woods;
+        return $arr;
     }
 
     public function getInfoString(bool $isPrivate = false): string

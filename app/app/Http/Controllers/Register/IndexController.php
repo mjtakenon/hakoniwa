@@ -56,7 +56,7 @@ class IndexController extends Controller
             $islandTerrain = new IslandTerrain();
             $islandTerrain->turn_id = $turn->id;
             $islandTerrain->island_id = $island->id;
-            $islandTerrain->terrain = $terrain->toJson();
+            $islandTerrain->terrain = $terrain->toJson(true, false);
             $islandTerrain->save();
 
             $status = Status::create()->init($terrain);

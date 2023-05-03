@@ -38,17 +38,11 @@ class LargeFactory extends Cell
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'fundsProductionNumberOfPeople' => $this->fundsProductionNumberOfPeople,
-            ]
-        ];
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['fundsProductionNumberOfPeople'] = $this->fundsProductionNumberOfPeople;
+        return $arr;
     }
 
     public function __construct(...$data)

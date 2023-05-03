@@ -50,7 +50,7 @@ class DetailController extends Controller
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                 ],
-                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(),
+                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(false, true),
                 'logs' => $islandLogs,
             ],
         ]);

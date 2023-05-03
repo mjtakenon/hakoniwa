@@ -65,7 +65,7 @@ class PlansController extends Controller
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                 ],
-                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(isPrivate: true),
+                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(true, true),
                 'plans' => Plans::fromJson($islandPlans)->toArrayWithStatic(),
                 'logs' => $islandLogs
             ],

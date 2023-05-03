@@ -55,16 +55,21 @@ abstract class Cell
         return new static($data);
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
+        $arr = [
             'type' => $this->getType(),
             'data' => [
                 'point' => $this->point,
-                'image_path' => $this->getImagePath(),
-                'info' => $this->getInfoString($isPrivate),
             ]
         ];
+
+        if ($withStatic) {
+            $arr['data']['image_path'] = $this->imagePath;
+            $arr['data']['info'] = $this->getInfoString($isPrivate);
+        }
+
+        return $arr;
     }
 
     public function getName(): string

@@ -36,18 +36,11 @@ class Kujira extends Monster
         parent::__construct(...$data);
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'hit_points' => $this->getHitPoints(),
-                'is_metalized' => $this->isMetalized,
-            ]
-        ];
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['is_metalized'] = $this->isMetalized;
+        return $arr;
     }
 
     public function isAttackDisabled(): bool

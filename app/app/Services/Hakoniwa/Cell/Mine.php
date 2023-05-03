@@ -50,17 +50,11 @@ class Mine extends Cell
         }
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'resourcesProductionNumberOfPeople' => $this->resourcesProductionNumberOfPeople,
-            ]
-        ];
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['resourcesProductionNumberOfPeople'] = $this->resourcesProductionNumberOfPeople;
+        return $arr;
     }
 
     public function getInfoString(bool $isPrivate = false): string

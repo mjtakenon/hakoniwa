@@ -41,20 +41,6 @@ class SeabedBase extends Cell implements IMissileFireable
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;
 
-    public function toArray(bool $isPrivate = false): array
-    {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $isPrivate ? $this->imagePath : Sea::IMAGE_PATH,
-                'info' => $this->getInfoString($isPrivate),
-                'maintenanceNumberOfPeople' => $this->maintenanceNumberOfPeople,
-                'experience' => $this->experience,
-            ]
-        ];
-    }
-
     public function __construct(...$data)
     {
         parent::__construct(...$data);
@@ -65,6 +51,17 @@ class SeabedBase extends Cell implements IMissileFireable
         } else {
             $this->experience = 0;
         }
+    }
+
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
+    {
+        if ($isPrivate) {
+            $arr = parent::toArray($isPrivate, $withStatic);
+            $arr['data']['maintenanceNumberOfPeople'] = $this->maintenanceNumberOfPeople;
+            $arr['data']['experience'] = $this->experience;
+            return $arr;
+        }
+        return (new Sea(point: $this->point))->toArray($isPrivate, $withStatic);
     }
 
     public function getInfoString(bool $isPrivate = false): string
