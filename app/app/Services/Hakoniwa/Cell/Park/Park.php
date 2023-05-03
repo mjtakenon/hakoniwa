@@ -41,11 +41,6 @@ class Park extends Cell implements IPark
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function __construct(...$data)
-    {
-        parent::__construct(...$data);
-    }
-
     public function toArray(bool $isPrivate = false): array
     {
         return [

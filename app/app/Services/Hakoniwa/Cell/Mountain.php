@@ -29,14 +29,5 @@ class Mountain extends Cell
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
-
-    public function __construct(...$data)
-    {
-        parent::__construct(...$data);
-    }
-
-    public function getElevation(): int
-    {
-        return self::ELEVATION;
-    }
+    protected int $elevation = self::ELEVATION;
 }

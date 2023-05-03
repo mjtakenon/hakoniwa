@@ -39,6 +39,7 @@ class SeabedBase extends Cell implements IMissileFireable
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
+    protected int $elevation = self::ELEVATION;
 
     public function toArray(bool $isPrivate = false): array
     {
@@ -64,11 +65,6 @@ class SeabedBase extends Cell implements IMissileFireable
         } else {
             $this->experience = 0;
         }
-    }
-
-    public function getElevation(): int
-    {
-        return self::ELEVATION;
     }
 
     public function getInfoString(bool $isPrivate = false): string

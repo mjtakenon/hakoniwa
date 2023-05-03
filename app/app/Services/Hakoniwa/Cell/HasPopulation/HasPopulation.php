@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\HasPopulation;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\PassTurnResult;
+use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
@@ -33,6 +37,20 @@ abstract class HasPopulation extends Cell
         CellTypeConst::PREVENTING_TYPHOON => false,
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
+
+    protected int $minPopulation;
+    protected int $maxPopulation;
+
+    public function __construct(...$data)
+    {
+        parent::__construct(...$data);
+
+        if (array_key_exists('population', $data)) {
+            $this->population = $data['population'];
+        } else {
+            $this->population = $this->minPopulation;
+        }
+    }
 
     public function toArray(bool $isPrivate = false): array
     {

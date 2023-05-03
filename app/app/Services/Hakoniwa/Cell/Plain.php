@@ -4,6 +4,10 @@ namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\HasPopulation\City;
+use App\Services\Hakoniwa\Cell\HasPopulation\Metropolis;
+use App\Services\Hakoniwa\Cell\HasPopulation\Town;
+use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -44,11 +48,6 @@ class Plain extends Cell
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
-
-    public function __construct(...$data)
-    {
-        parent::__construct(...$data);
-    }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {

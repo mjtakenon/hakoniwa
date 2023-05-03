@@ -2,13 +2,15 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
-use App\Services\Hakoniwa\Cell\City;
 use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\Farm;
 use App\Services\Hakoniwa\Cell\FarmDome;
 use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\HasPopulation\City;
+use App\Services\Hakoniwa\Cell\HasPopulation\Metropolis;
+use App\Services\Hakoniwa\Cell\HasPopulation\Town;
+use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Cell\LargeFactory;
-use App\Services\Hakoniwa\Cell\Metropolis;
 use App\Services\Hakoniwa\Cell\Mine;
 use App\Services\Hakoniwa\Cell\MissileBase;
 use App\Services\Hakoniwa\Cell\Oilfield;
@@ -21,8 +23,6 @@ use App\Services\Hakoniwa\Cell\Park\MonumentOfWinner;
 use App\Services\Hakoniwa\Cell\Park\Park;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\SeabedBase;
-use App\Services\Hakoniwa\Cell\Town;
-use App\Services\Hakoniwa\Cell\Village;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Util\Point;
 

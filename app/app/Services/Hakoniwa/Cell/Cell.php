@@ -12,17 +12,6 @@ use App\Services\Hakoniwa\Util\Point;
 
 abstract class Cell implements ICell
 {
-    protected string $name;
-    protected string $imagePath;
-    protected string $type;
-    protected Point $point;
-
-    protected int $population = 0;
-    protected int $fundsProductionNumberOfPeople = 0;
-    protected int $foodsProductionNumberOfPeople = 0;
-    protected int $resourcesProductionNumberOfPeople = 0;
-    protected int $maintenanceNumberOfPeople = 0;
-    protected int $woods = 0;
     public const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::IS_MONSTER => false,
@@ -43,12 +32,22 @@ abstract class Cell implements ICell
 
     public const ELEVATION = 0;
 
+    protected string $name;
+    protected string $imagePath;
+    protected string $type;
+    protected Point $point;
+
+    protected int $population = 0;
+    protected int $fundsProductionNumberOfPeople = 0;
+    protected int $foodsProductionNumberOfPeople = 0;
+    protected int $resourcesProductionNumberOfPeople = 0;
+    protected int $maintenanceNumberOfPeople = 0;
+    protected int $woods = 0;
+    protected int $elevation = self::ELEVATION;
+
     public function __construct(...$data)
     {
         $this->point = new Point($data['point']->x, $data['point']->y);
-        $this->name = $this->getName();
-        $this->imagePath = $this->getImagePath();
-        $this->type = $this->getType();
     }
 
     public static function create($data)
@@ -86,7 +85,7 @@ abstract class Cell implements ICell
 
     public function getElevation(): int
     {
-        return self::ELEVATION;
+        return $this->elevation;
     }
 
     public function getPoint(): Point
