@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1f94e9ad93b0de190dc515206cc9d75",
+    "content-hash": "523965c9c9baddb5fc95293c25b6a28e",
     "packages": [
         {
             "name": "brick/math",
@@ -5547,7 +5547,7 @@
         },
         {
             "name": "yahoojapan/yconnect-php-sdk",
-            "version": "dev-master",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yahoojapan/yconnect-php-sdk.git",
@@ -5569,7 +5569,6 @@
                 "phpunit/phpunit": "^5",
                 "squizlabs/php_codesniffer": "^3.6"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -8857,9 +8856,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "yahoojapan/yconnect-php-sdk": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
