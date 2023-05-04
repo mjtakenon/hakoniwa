@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.8.0.
+ * Generated for Laravel 10.9.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -4341,6 +4341,18 @@
         {
                         /** @var \Illuminate\Cache\FileStore $instance */
                         return $instance->getDirectory();
+        }
+                    /**
+         * Set the cache directory where locks should be stored.
+         *
+         * @param string|null $lockDirectory
+         * @return \Illuminate\Cache\FileStore 
+         * @static 
+         */ 
+        public static function setLockDirectory($lockDirectory)
+        {
+                        /** @var \Illuminate\Cache\FileStore $instance */
+                        return $instance->setLockDirectory($lockDirectory);
         }
                     /**
          * Get the cache key prefix.
@@ -9694,7 +9706,7 @@
          * Start defining a series of piped processes.
          *
          * @param callable|array $callback
-         * @return \Illuminate\Process\Pipe 
+         * @return \Illuminate\Contracts\Process\ProcessResult 
          * @static 
          */ 
         public static function pipe($callback, $output = null)
@@ -20619,7 +20631,7 @@ namespace  {
              * Add a morph-to relationship condition to the query.
              *
              * @param \Illuminate\Database\Eloquent\Relations\MorphTo|string $relation
-             * @param \Illuminate\Database\Eloquent\Model|string $model
+             * @param \Illuminate\Database\Eloquent\Model|string|null $model
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */ 
@@ -20647,7 +20659,7 @@ namespace  {
              * Add a morph-to relationship condition to the query with an "or where" clause.
              *
              * @param \Illuminate\Database\Eloquent\Relations\MorphTo|string $relation
-             * @param \Illuminate\Database\Eloquent\Model|string $model
+             * @param \Illuminate\Database\Eloquent\Model|string|null $model
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
              */ 

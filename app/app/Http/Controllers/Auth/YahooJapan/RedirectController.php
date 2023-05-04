@@ -20,15 +20,15 @@ class RedirectController extends Controller
         session()->put('nonce', $nonce);
 
         return redirect(
-            env('YAHOO_AUTHORIZATION_ENDPOINT') .
+            config('services.yahoo.authorization_endpoint') .
             '?' .
             http_build_query(
                 array(
                     'state' => $state,
                     'nonce' => $nonce,
                     'response_type' => 'code',
-                    'client_id' => env('YAHOO_CLIENT_ID'),
-                    'redirect_uri' => env('YAHOO_REDIRECT_URI'),
+                    'client_id' => config('services.yahoo.client_id'),
+                    'redirect_uri' => config('services.yahoo.redirect'),
                     'scope' => 'openid'
                 )
 

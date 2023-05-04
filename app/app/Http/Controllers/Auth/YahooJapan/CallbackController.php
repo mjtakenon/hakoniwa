@@ -19,8 +19,8 @@ class CallbackController extends Controller
         }
 
         $cred = new ClientCredential(
-            env('YAHOO_CLIENT_ID'),
-            env('YAHOO_CLIENT_SECRET')
+            config('services.yahoo.client_id'),
+            config('services.yahoo.client_secret')
         );
         $client = new YConnectClient($cred);
 
@@ -29,7 +29,7 @@ class CallbackController extends Controller
 
         // 検証
         $code = $client->getAuthorizationCode($state);
-        $client->requestAccessToken(env('YAHOO_REDIRECT_URI'), $code);
+        $client->requestAccessToken(config('services.yahoo.redirect'), $code);
         $client->verifyIdToken($nonce, $client->getAccessToken());
 
         // identifierを取得
