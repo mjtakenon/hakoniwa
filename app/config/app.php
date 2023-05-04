@@ -199,6 +199,8 @@ return [
         App\Providers\HakoniwaServiceProvider::class,
         App\Providers\IslandServiceProvider::class,
         App\Providers\PlanServiceProvider::class,
+
+        App\Providers\YahooAuthServiceProvider::class,
     ],
 
     /*

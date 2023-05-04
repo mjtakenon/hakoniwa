@@ -18,11 +18,7 @@ class CallbackController extends Controller
             return redirect(route('home'));
         }
 
-        $cred = new ClientCredential(
-            config('services.yahoo.client_id'),
-            config('services.yahoo.client_secret')
-        );
-        $client = new YConnectClient($cred);
+        $client = app()->make(YConnectClient::class);
 
         $state = session()->pull('state');
         $nonce = session()->pull('nonce');
