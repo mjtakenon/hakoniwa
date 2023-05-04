@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth\YahooJapan;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserAuthentication;
+use Illuminate\Support\Str;
 use YConnect\Credential\ClientCredential;
 use YConnect\YConnectClient;
 
@@ -47,7 +48,7 @@ class CallbackController extends Controller
                 // ユーザー情報登録
                 $user = User::create([
                     // TODO: Yahooではusernameを取得できないので適当な値を入れておく
-                    'name' => 'mjtakenon' . mt_rand() . '号',
+                    'name' => Str::random(10),
                     'email' => '',
                 ]);
 
