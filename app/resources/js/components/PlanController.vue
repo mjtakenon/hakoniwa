@@ -79,8 +79,6 @@
             </div>
         </div>
 
-        <hr/>
-
         <div class="mb-4">
             <div class="section-header">操作</div>
             <div class="mb-2 px-2 text-left">
@@ -280,7 +278,7 @@ export default {
     }
 
     .dev-plan {
-        @apply mb-3 px-2 text-left;
+        @apply mb-2 lg:mb-3 px-2 text-left;
 
         .plan-select-develop {
             @apply w-full lg:w-3/4 text-sm lg:float-right;
@@ -291,14 +289,14 @@ export default {
         }
 
         .plan-target-island {
-            @apply w-full flex items-center;
+            @apply w-full flex items-center max-lg:flex-wrap max-lg:justify-end;
 
             .target-select {
-                @apply grow mr-2 max-lg:w-full lg:float-right text-sm;
+                @apply lg:grow lg:mr-2 max-lg:w-full lg:float-right text-sm;
             }
 
             .target-open {
-                @apply px-1 py-0.5 text-sm lg:text-sm
+                @apply px-1 py-0.5 max-lg:mt-1 text-xs lg:text-sm;
             }
         }
     }
