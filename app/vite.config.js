@@ -22,11 +22,6 @@ export default defineConfig({
     },
     build: {
         outDir: 'public/build/', // ビルド成果物の生成先
-        rollupOptions: {
-            output: {
-                entryFileNames: `assets/bundle.js`,
-                assetFileNames: `assets/asset.css`,
-            },
-        },
+        manifest: true
     },
 });
