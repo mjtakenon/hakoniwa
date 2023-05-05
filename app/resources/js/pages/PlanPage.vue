@@ -1,13 +1,15 @@
 <template>
-    <div id="plan-page" class="wrapper">
-        <div class="title">{{ $store.state.island.name }}島開発計画</div>
-        <div class="subtitle"><a href="/">トップへ戻る</a></div>
+    <div id="plan-page">
+        <div class="title mt-2">{{ $store.state.island.name }}島開発計画</div>
+        <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <hr/>
-        <div class="is-flex is-flex-direction-row">
-            <plan-controller></plan-controller>
-            <island-editor></island-editor>
-            <plan-list></plan-list>
+        <div class="flex flex-wrap items-stretch mx-auto justify-center">
+            <plan-controller class="max-lg:order-2 grow"></plan-controller>
+            <div class="max-lg:order-1 max-lg:w-full z-30">
+                <island-editor></island-editor>
+            </div>
+            <plan-list class="max-lg:order-2 grow"></plan-list>
         </div>
         <hr/>
         <log-viewer></log-viewer>
@@ -65,9 +67,7 @@ export default {
 <style lang="scss" scoped>
 
 #plan-page {
-    text-align: center;
-    margin: 0 auto;
-    max-width: 1000px;
+    @apply text-center mx-auto max-w-[1000px] max-md:overflow-x-scroll min-h-[1200px]
 }
 
 </style>

@@ -1,87 +1,47 @@
 <template>
-    <div>
-        <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar">
+        <a class="navbar-left" href="/">
             <div class="navbar-brand">
-                <a class="navbar-item" href="/">
-                    🏝️
+                <img src="/favicon.ico">
+            </div>
+            <div class="navbar-title">
+                やまにてぃ（仮）
+            </div>
+        </a>
+        <button id="hamburger-button" @click="isOpenHamburgerMenu=!isOpenHamburgerMenu">
+            <img src="/img/hakoniwa/ui/hamburger.svg">
+        </button>
+
+        <div class="md:ml-auto max-md:w-full" :class="{'max-md:hidden': !isOpenHamburgerMenu}">
+            <div v-if="isLoggedIn" class="navbar-menu">
+                <div class="navbar-item navbar-username">
+                    {{ user.name }}
+                </div>
+                <a v-if="isIslandRegistered" class="navbar-item button-primary"
+                   :href="'/islands/'+ownedIsland.id+'/plans'"> <!--fixme:island_id-->
+                    開発画面に行く
                 </a>
-
-                <button
-                    @click="isOpenHamburgerMenu=!isOpenHamburgerMenu" role="button" :class="[{'is-active':isOpenHamburgerMenu}, 'navbar-burger']" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </button>
-            </div>
-
-            <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start">
-                    <a class="navbar-item" href="/">
-                        Home
-                    </a>
-                </div>
-
-                <div v-if="isLoggedIn" class="navbar-end">
-                    <div class="navbar-item">
-                        {{ user.name }}
-                    </div>
-                    <div v-if="isIslandRegistered" class="navbar-item">
-                        <a class="button is-primary" :href="'/islands/'+ownedIsland.id+'/plans'" > <!--fixme:island_id-->
-                            開発画面に行く
-                        </a>
-                    </div>
-                    <div v-else class="navbar-item">
-                        <a class="button is-primary" href="/register">
-                            島を探しに行く（新規登録）
-                        </a>
-                    </div>
-                    <div class="navbar-item">
-                        <form method="POST" name="logout" action="/logout">
-                            <input type="hidden" name="_token" :value="csrfToken">
-                            <a class="button" href="javascript:logout.submit()">
+                <a v-else class="navbar-item button-primary" href="/register">
+                    島を探しに行く（新規登録）
+                </a>
+                <div class="navbar-item">
+                    <form method="POST" name="logout" action="/logout">
+                        <input type="hidden" name="_token" :value="csrfToken">
+                        <a href="javascript:logout.submit()">
+                            <div class="button-white">
                                 ログアウト
-                            </a>
-                        </form>
-                    </div>
-                </div>
-                <div v-else>
-                    <a href="/auth/google/redirect">
-                        <img :src="'/img/btn_google_signin_light_normal_web.png'">
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-        <nav v-show="isOpenHamburgerMenu" class="navbar" role="navigation" aria-label="dropdown navigation">
-            <div class="navbar-item has-dropdown">
-                <div class="navbar-dropdown">
-                    <div v-if="isLoggedIn" class="navbar-end">
-                        <div v-if="isIslandRegistered" class="navbar-item">
-                            <a :href="'/islands/'+ownedIsland.id+'/plans'" > <!--fixme:island_id-->
-                                開発画面に行く
-                            </a>
-                        </div>
-                        <div v-else class="navbar-item">
-                            <a href="/register">
-                                島を探しに行く（新規登録）
-                            </a>
-                        </div>
-                        <div class="navbar-item">
-                            <a href="javascript:logout.submit()">
-                                ログアウト
-                            </a>
-                        </div>
-                    </div>
-                    <div v-else>
-                        <a href="/auth/google/redirect">
-                            <img :src="'/img/btn_google_signin_light_normal_web.png'">
+                            </div>
                         </a>
-                    </div>
-                    <hr/>
+                    </form>
                 </div>
             </div>
-        </nav>
-    </div>
+            <div v-else class="navbar-menu">
+                <a class="navbar-item" href="/auth/google/redirect">
+                    <img src="/img/btn_google_signin_light_normal_web.png">
+                </a>
+            </div>
+        </div>
+    </nav>
 </template>
 
 <script lang="ts">
@@ -110,5 +70,37 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
+
+.navbar {
+    @apply min-w-full mb-3 pt-2 pb-2 md:px-5 flex flex-wrap bg-gray-100 drop-shadow-md items-center;
+
+    .navbar-left {
+        @apply inline-flex mx-3 items-center;
+
+        .navbar-brand {
+            @apply inline-block mr-5 h-full;
+        }
+
+        .navbar-title {
+            @apply max-md:hidden text-lg font-bold;
+        }
+    }
+
+    #hamburger-button {
+        @apply ml-auto mr-3 block w-7 h-7 md:hidden;
+    }
+
+    .navbar-menu {
+        @apply block max-md:mt-3 max-md:w-full md:inline-block md:ml-auto;
+
+        .navbar-item {
+            @apply block max-md:w-1/2 text-center mx-auto max-md:mb-2 md:inline-block md:mr-3;
+        }
+
+        .navbar-username {
+            @apply text-center;
+        }
+    }
+}
 </style>
