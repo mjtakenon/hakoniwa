@@ -49,7 +49,7 @@ steps:
     entrypoint: 'bash'
     args: [
       '-c',
-      'docker build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --build-arg GOOGLE_CLIENT_SECRET=$${GOOGLE_CLIENT_SECRET} YAHOO_CLIENT_SECRET=$${YAHOO_CLIENT_SECRET} --build-arg NOTIFICATION_WEBHOOK_URL=$${NOTIFICATION_WEBHOOK_URL} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .' # --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE}
+      'docker build -f ./infra/cloudbuild/Dockerfile --target deploy_stage --build-arg APP_ENV=${_APP_ENV} --build-arg DB_PASSWORD=$${DB_PASSWORD} --build-arg GOOGLE_CLIENT_SECRET=$${GOOGLE_CLIENT_SECRET} --build-arg YAHOO_CLIENT_SECRET=$${YAHOO_CLIENT_SECRET} --build-arg NOTIFICATION_WEBHOOK_URL=$${NOTIFICATION_WEBHOOK_URL} --cache-from ${_IMAGE_APP_DEPLOY_STAGE} -t ${_IMAGE_APP_DEPLOY_STAGE} .' # --cache-from ${_IMAGE_FRONTEND_BUILD_STAGE}
     ]
     secretEnv: [ 'DB_PASSWORD', 'GOOGLE_CLIENT_SECRET', 'NOTIFICATION_WEBHOOK_URL', 'YAHOO_CLIENT_SECRET' ]
     waitFor: [ 'pull-image-app-deploy-stage', 'pull-image-composer' ] # , 'build-image-frontend-build-stage'
