@@ -65,7 +65,7 @@ export default {
 
 <style lang="postcss" scoped>
 .ranking {
-    @apply flex flex-wrap p-0 rounded-xl border-2 bg-gray-100 border-gray-300 drop-shadow-md;
+    @apply flex flex-wrap mb-2 p-0 rounded-xl border-2 bg-gray-100 border-gray-300 drop-shadow-md text-black;
 
     .ranking-index {
         @apply px-3 inline-flex items-center border-gray-300;
@@ -77,7 +77,7 @@ export default {
         }
 
         .ranking-index-name {
-            @apply grow font-black text-center text-lg;
+            @apply grow font-black text-center text-lg text-link;
         }
     }
 

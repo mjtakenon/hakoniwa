@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar">
-        <a class="navbar-left" href="/">
+        <a class="navbar-left text-black" href="/">
             <div class="navbar-brand">
                 <img src="/favicon.ico">
             </div>
