@@ -12,7 +12,6 @@ use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 
 class DeforestationPlan extends Plan
@@ -22,16 +21,10 @@ class DeforestationPlan extends Plan
     public const NAME = '伐採';
     public const PRICE = 0;
     public const PRICE_STRING = '(無料)';
-    public const USE_POINT = true;
 
-    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {

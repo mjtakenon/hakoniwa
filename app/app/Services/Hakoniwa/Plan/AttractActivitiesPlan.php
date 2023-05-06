@@ -6,7 +6,6 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
-use App\Services\Hakoniwa\Cell\City;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
 use App\Services\Hakoniwa\Log\ExecuteLog;
 use App\Services\Hakoniwa\Log\Logs;
@@ -25,15 +24,11 @@ class AttractActivitiesPlan extends Plan
     public const USE_POINT = false;
     public const USE_AMOUNT = true;
 
-    public function __construct(Point $point = (new Point(0,0)), int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-        $this->useAmount = self::USE_AMOUNT;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
+    protected bool $usePoint = self::USE_POINT;
+    protected bool $useAmount = self::USE_AMOUNT;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {

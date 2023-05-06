@@ -19,6 +19,7 @@ class LargeFactory extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => true,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
@@ -34,17 +35,15 @@ class LargeFactory extends Cell
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function toArray(bool $isPrivate = false): array
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'fundsProductionNumberOfPeople' => $this->fundsProductionNumberOfPeople,
-            ]
-        ];
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['fundsProductionNumberOfPeople'] = $this->fundsProductionNumberOfPeople;
+        return $arr;
     }
 
     public function __construct(...$data)
@@ -56,21 +55,6 @@ class LargeFactory extends Cell
         } else {
             $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
         }
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
     }
 
     public function getInfoString(bool $isPrivate = false): string

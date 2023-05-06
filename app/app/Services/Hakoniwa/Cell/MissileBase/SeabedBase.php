@@ -1,6 +1,11 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\MissileBase;
+
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\Sea;
 
 class SeabedBase extends Cell implements IMissileFireable
 {
@@ -20,6 +25,7 @@ class SeabedBase extends Cell implements IMissileFireable
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
@@ -36,19 +42,10 @@ class SeabedBase extends Cell implements IMissileFireable
     ];
     public const ELEVATION = -2;
 
-    public function toArray(bool $isPrivate = false): array
-    {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $isPrivate ? $this->imagePath : Sea::IMAGE_PATH,
-                'info' => $this->getInfoString($isPrivate),
-                'maintenanceNumberOfPeople' => $this->maintenanceNumberOfPeople,
-                'experience' => $this->experience,
-            ]
-        ];
-    }
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+    protected int $elevation = self::ELEVATION;
 
     public function __construct(...$data)
     {
@@ -62,24 +59,15 @@ class SeabedBase extends Cell implements IMissileFireable
         }
     }
 
-    public function getName(): string
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
-    }
-
-    public function getElevation(): int
-    {
-        return self::ELEVATION;
+        if ($isPrivate) {
+            $arr = parent::toArray($isPrivate, $withStatic);
+            $arr['data']['maintenanceNumberOfPeople'] = $this->maintenanceNumberOfPeople;
+            $arr['data']['experience'] = $this->experience;
+            return $arr;
+        }
+        return (new Sea(point: $this->point))->toArray($isPrivate, $withStatic);
     }
 
     public function getInfoString(bool $isPrivate = false): string

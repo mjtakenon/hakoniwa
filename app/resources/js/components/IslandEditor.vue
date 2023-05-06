@@ -30,9 +30,9 @@
                     {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
                     <div v-for="(plan, index) of $store.state.plans">
                         <div v-if="
+                            plan.data.usePoint &&
                             plan.data.point.x === hoverCellPoint.x &&
                             plan.data.point.y === hoverCellPoint.y &&
-                            plan.data.usePoint &&
                             (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === $store.state.island.id)
                         ">
                             <span>[{{ index + 1 }}] </span>
@@ -165,12 +165,18 @@ export default {
     computed: {
         isSelectedCell() {
             return (x, y) => {
+                if (this.$store.state.selectedPoint === null) {
+                    return false;
+                }
                 return x === this.$store.state.selectedPoint.x && y === this.$store.state.selectedPoint.y
             }
         },
         isReferencedCell() {
             return (x, y) => {
                 let referencedPlan = this.$store.state.plans[this.$store.state.selectedPlanNumber-1]
+                if (!referencedPlan.usePoint) {
+                    return false;
+                }
                 return x === referencedPlan.data.point.x && y === referencedPlan.data.point.y && referencedPlan.data.usePoint
             }
         },

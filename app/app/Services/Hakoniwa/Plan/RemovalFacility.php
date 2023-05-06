@@ -23,16 +23,10 @@ class RemovalFacility extends Plan
     public const NAME = '施設の撤去';
     public const PRICE = 0;
     public const PRICE_STRING = '(無料)';
-    public const USE_POINT = true;
 
-    public function __construct(Point $point = (new Point(0, 0)), int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
@@ -43,11 +37,11 @@ class RemovalFacility extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        if ($cell::ELEVATION === 1) {
+        if ($cell->getElevation() === 1) {
             $terrain->setCell($this->point, new Mountain(point: $this->point));
-        } else if ($cell::ELEVATION === 0) {
+        } else if ($cell->getElevation() === 0) {
             $terrain->setCell($this->point, new Plain(point: $this->point));
-        } else if ($cell::ELEVATION === -1) {
+        } else if ($cell->getElevation() === -1) {
             $terrain->setCell($this->point, new Shallow(point: $this->point));
         } else {
             $terrain->setCell($this->point, new Sea(point: $this->point));

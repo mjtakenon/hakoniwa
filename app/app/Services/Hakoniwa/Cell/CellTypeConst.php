@@ -2,6 +2,12 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Services\Hakoniwa\Cell\HasPopulation\City;
+use App\Services\Hakoniwa\Cell\HasPopulation\Metropolis;
+use App\Services\Hakoniwa\Cell\HasPopulation\Town;
+use App\Services\Hakoniwa\Cell\HasPopulation\Village;
+use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\SeabedBase;
 use App\Services\Hakoniwa\Cell\Monster\DarkInora;
 use App\Services\Hakoniwa\Cell\Monster\GhostInora;
 use App\Services\Hakoniwa\Cell\Monster\Hamunemu;
@@ -12,6 +18,14 @@ use App\Services\Hakoniwa\Cell\Monster\RedInora;
 use App\Services\Hakoniwa\Cell\Monster\Sanjira;
 use App\Services\Hakoniwa\Cell\Monster\Slime;
 use App\Services\Hakoniwa\Cell\Monster\SlimeLegend;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfAgriculture;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfMaster;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfMining;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfPeace;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfWar;
+use App\Services\Hakoniwa\Cell\Park\MonumentOfWinner;
+use App\Services\Hakoniwa\Cell\Park\Park;
+use App\Services\Hakoniwa\Cell\Ship\TransportShip;
 
 class CellTypeConst
 {
@@ -52,10 +66,12 @@ class CellTypeConst
         GhostInora::TYPE => GhostInora::class,
         Slime::TYPE => Slime::class,
         SlimeLegend::TYPE => SlimeLegend::class,
+        TransportShip::TYPE => TransportShip::class,
     ];
 
     const IS_LAND = 'is_land';
     const IS_MONSTER = 'is_monster';
+    const IS_SHIP = 'is_ship';
     const HAS_POPULATION = 'has_population';
     const DESTRUCTIBLE_BY_FIRE = 'destructible_by_fire';
     const DESTRUCTIBLE_BY_TSUNAMI = 'destructible_by_tsunami';

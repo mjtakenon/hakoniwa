@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\HasPopulation;
 
-use App\Models\Island;
-use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
 
 class Village extends City
 {
@@ -17,6 +14,7 @@ class Village extends City
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => true,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
@@ -32,29 +30,10 @@ class Village extends City
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function __construct(...$data)
-    {
-        parent::__construct(...$data);
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 
-        if (array_key_exists('population', $data)) {
-            $this->population = $data['population'];
-        } else {
-            $this->population = self::MIN_POPULATION;
-        }
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
-    }
+    protected int $minPopulation = self::MIN_POPULATION;
+    protected int $maxPopulation = self::MAX_POPULATION;
 }

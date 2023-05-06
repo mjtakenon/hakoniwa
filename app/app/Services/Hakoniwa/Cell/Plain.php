@@ -4,6 +4,10 @@ namespace App\Services\Hakoniwa\Cell;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\HasPopulation\City;
+use App\Services\Hakoniwa\Cell\HasPopulation\Metropolis;
+use App\Services\Hakoniwa\Cell\HasPopulation\Town;
+use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -26,6 +30,7 @@ class Plain extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
@@ -41,25 +46,9 @@ class Plain extends Cell
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function __construct(...$data)
-    {
-        parent::__construct(...$data);
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
-    }
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
