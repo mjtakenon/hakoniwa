@@ -7,20 +7,20 @@
     "devDependencies": {
         "autoprefixer": "^10.4.14",
         "postcss": "^8.4.23",
-        "postcss-comment": "^2.0.0",
         "postcss-nesting": "^11.2.2",
         "sass": "^1.60.0",
         "sass-loader": "10",
         "tailwindcss": "^3.3.2"
     },
     "dependencies": {
-        "@vitejs/plugin-vue": "^4.1.0",
         "@types/lodash": "^4.14.192",
-        "vuex": "^4.1.0",
-        "vite": "^3.0.0",
+        "@vitejs/plugin-vue": "^4.1.0",
         "axios": "^1.3.5",
         "laravel-vite-plugin": "^0.7.0",
         "lodash": "^4.17.21",
-        "vue": "^3.2.47"
+        "postcss-comment": "^2.0.0",
+        "vite": "^3.0.0",
+        "vue": "^3.2.47",
+        "vuex": "^4.1.0"
     }
 }
