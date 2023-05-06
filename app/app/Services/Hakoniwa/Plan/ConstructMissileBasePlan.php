@@ -4,8 +4,7 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Factory;
-use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
 use App\Services\Hakoniwa\Log\AfforestationLog;
@@ -14,7 +13,6 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\LogVisibility;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 
 class ConstructMissileBasePlan extends Plan
@@ -24,16 +22,10 @@ class ConstructMissileBasePlan extends Plan
     public const NAME = 'ミサイル基地建設';
     public const PRICE = 300;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
-    public const USE_POINT = true;
 
-    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {

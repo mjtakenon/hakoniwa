@@ -65,8 +65,8 @@ class PlansController extends Controller
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                 ],
-                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(isPrivate: true),
-                'plans' => Plans::fromJson($islandPlans)->toArrayWithStatic(),
+                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(true, true),
+                'plans' => Plans::fromJson($islandPlans)->toArray(true),
                 'logs' => $islandLogs
             ],
             'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),
@@ -117,6 +117,6 @@ class PlansController extends Controller
         $islandPlan->plan = $plans->toJson();
         $islandPlan->save();
 
-        return response()->json(['plan' => $plans->toArrayWithStatic()]);
+        return response()->json(['plan' => $plans->toArray(true)]);
     }
 }

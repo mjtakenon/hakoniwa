@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\MissileBase;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\Forest;
+use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 
 class MissileBase extends Cell implements IMissileFireable
 {
@@ -31,6 +34,7 @@ class MissileBase extends Cell implements IMissileFireable
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
@@ -46,18 +50,19 @@ class MissileBase extends Cell implements IMissileFireable
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function toArray(bool $isPrivate = false): array
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $isPrivate ? $this->imagePath : Forest::IMAGE_PATH,
-                'info' => $this->getInfoString($isPrivate),
-                'maintenanceNumberOfPeople' => $this->maintenanceNumberOfPeople,
-                'experience' => $this->experience,
-            ]
-        ];
+        if ($isPrivate) {
+            $arr = parent::toArray($isPrivate, $withStatic);
+            $arr['data']['maintenanceNumberOfPeople'] = $this->maintenanceNumberOfPeople;
+            $arr['data']['experience'] = $this->experience;
+            return $arr;
+        }
+        return (new Forest(point: $this->point))->toArray($isPrivate, $withStatic);
     }
 
     public function __construct(...$data)
@@ -75,21 +80,6 @@ class MissileBase extends Cell implements IMissileFireable
         } else {
             $this->experience = 0;
         }
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
     }
 
     public function getInfoString(bool $isPrivate = false): string

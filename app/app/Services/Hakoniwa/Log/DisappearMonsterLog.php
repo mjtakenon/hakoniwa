@@ -4,10 +4,7 @@ namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
-use App\Services\Hakoniwa\Plan\Plan;
-use App\Services\Hakoniwa\Util\Point;
 
 class DisappearMonsterLog implements ILog
 {

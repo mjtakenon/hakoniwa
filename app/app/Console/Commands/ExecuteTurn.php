@@ -150,7 +150,7 @@ class ExecuteTurn extends Command
 
                 // 怪獣移動とミサイル支援の順番が混ざっているので分けて処理する
                 foreach ($islands as $island) {
-                    /** @var Plans $plan */
+                    /** @var Plans $plans */
                     $plans = $planList->get($island->id);
                     /** @var Terrain $terrain */
                     $terrain = $terrainList->get($island->id);
@@ -214,7 +214,7 @@ class ExecuteTurn extends Command
                     $newIslandTerrain = new IslandTerrain();
                     $newIslandTerrain->island_id = $island->id;
                     $newIslandTerrain->turn_id = $newTurn->id;
-                    $newIslandTerrain->terrain = $terrain->toJson();
+                    $newIslandTerrain->terrain = $terrain->toJson(true, false);
                     $newIslandTerrain->save();
 
                     /** @var ILog $log */

@@ -6,8 +6,8 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
-use App\Services\Hakoniwa\Cell\IMissileFireable;
-use App\Services\Hakoniwa\Cell\MissileBase;
+use App\Services\Hakoniwa\Cell\MissileBase\IMissileFireable;
+use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\OutOfRegion;
 use App\Services\Hakoniwa\Cell\Wasteland;
@@ -23,7 +23,6 @@ use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
 use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandFiringMissilePlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
@@ -34,23 +33,17 @@ class FiringMissilePlan extends Plan
     public const NAME = 'ミサイル発射';
     public const PRICE = 20;
     public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
-    public const USE_POINT = true;
     public const USE_AMOUNT = true;
     public const USE_TARGET_ISLAND = true;
     public const IS_FIRING = true;
     public const ACCURACY = 2;
 
-    public function __construct(Point $point, int $amount = 1, ?int $targetIsland = null)
-    {
-        parent::__construct($point, $amount, $targetIsland);
-        $this->key = self::KEY;
-        $this->name = self::NAME;
-        $this->price = self::PRICE;
-        $this->usePoint = self::USE_POINT;
-        $this->useAmount = self::USE_AMOUNT;
-        $this->useTargetIsland = self::USE_TARGET_ISLAND;
-        $this->isFiring = self::IS_FIRING;
-    }
+    protected string $key = self::KEY;
+    protected string $name = self::NAME;
+    protected int $price = self::PRICE;
+    protected bool $useAmount = self::USE_AMOUNT;
+    protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
+    protected bool $isFiring = self::IS_FIRING;
 
     public function getAccuracy(): int
     {

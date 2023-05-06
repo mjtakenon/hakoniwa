@@ -53,8 +53,17 @@ class Plans implements JsonEncodable
         $plans = new Collection();
         $objects = json_decode($json);
         foreach ($objects as $object) {
-            /** @var Plan $plan */
-            $plans[] = new (PlanConst::getClassByType($object->key))(new Point($object->data->point->x, $object->data->point->y), $object->data->amount, $object->data->targetIsland ?? null);
+            $point = null;
+            $amount = 0;
+            $targetIsland = null;
+
+            if (property_exists($object, 'data')) {
+                $point = property_exists($object->data,'point') ? new Point($object->data->point->x, $object->data->point->y) : null;
+                $amount = property_exists($object->data,'amount') ? $object->data->amount : 0;
+                $targetIsland = property_exists($object->data,'targetIsland') ? $object->data->targetIsland : null;
+            }
+
+            $plans[] = new (PlanConst::getClassByType($object->key))($point, $amount, $targetIsland);
         }
         return new static($plans);
     }
@@ -69,12 +78,12 @@ class Plans implements JsonEncodable
         return json_encode($plans);
     }
 
-    public function toArrayWithStatic(): array
+    public function toArray($withStatic = true): array
     {
         $plans = [];
         /** @var Plan $plan */
         foreach ($this->plans as $plan) {
-            $plans[] = $plan->toArrayWithStatic();
+            $plans[] = $plan->toArray($withStatic);
         }
         return $plans;
     }

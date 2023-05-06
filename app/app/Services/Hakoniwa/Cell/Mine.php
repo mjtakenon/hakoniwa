@@ -18,6 +18,7 @@ class Mine extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
@@ -34,6 +35,11 @@ class Mine extends Cell
     ];
     public const ELEVATION = 1;
 
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
+    protected int $elevation = self::ELEVATION;
+
     public function __construct(...$data)
     {
         parent::__construct(...$data);
@@ -45,37 +51,11 @@ class Mine extends Cell
         }
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'resourcesProductionNumberOfPeople' => $this->resourcesProductionNumberOfPeople,
-            ]
-        ];
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
-    }
-
-    public function getElevation(): int
-    {
-        return self::ELEVATION;
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['resourcesProductionNumberOfPeople'] = $this->resourcesProductionNumberOfPeople;
+        return $arr;
     }
 
     public function getInfoString(bool $isPrivate = false): string

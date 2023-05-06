@@ -2,8 +2,6 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
-use App\Services\Hakoniwa\Util\Point;
-
 class Wasteland extends Cell
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land1.gif';
@@ -12,6 +10,7 @@ class Wasteland extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
@@ -27,23 +26,7 @@ class Wasteland extends Cell
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function __construct(...$data)
-    {
-        parent::__construct(...$data);
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
-    }
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 }

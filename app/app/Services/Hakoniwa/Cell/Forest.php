@@ -21,6 +21,7 @@ class Forest extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => false,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
@@ -34,8 +35,11 @@ class Forest extends Cell
         CellTypeConst::PREVENTING_FIRE => true,
         CellTypeConst::PREVENTING_TYPHOON => true,
         CellTypeConst::PREVENTING_TSUNAMI => true,
-
     ];
+
+    protected string $imagePath = self::IMAGE_PATH;
+    protected string $type = self::TYPE;
+    protected string $name = self::NAME;
 
     public function __construct(...$data)
     {
@@ -48,32 +52,11 @@ class Forest extends Cell
         }
     }
 
-    public function toArray(bool $isPrivate = false): array
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'woods' => $this->woods,
-            ]
-        ];
-    }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
-    }
-
-    public function getImagePath(): string
-    {
-        return self::IMAGE_PATH;
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['woods'] = $this->woods;
+        return $arr;
     }
 
     public function getInfoString(bool $isPrivate = false): string

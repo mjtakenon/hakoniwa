@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Services\Hakoniwa\Cell;
+namespace App\Services\Hakoniwa\Cell\HasPopulation;
 
 use App\Models\Island;
 use App\Models\Turn;
+use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\CellTypeConst;
+use App\Services\Hakoniwa\Cell\PassTurnResult;
+use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
@@ -19,6 +23,7 @@ abstract class HasPopulation extends Cell
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,
+        CellTypeConst::IS_SHIP => false,
         CellTypeConst::HAS_POPULATION => true,
         CellTypeConst::DESTRUCTIBLE_BY_FIRE => true,
         CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
@@ -34,17 +39,25 @@ abstract class HasPopulation extends Cell
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public function toArray(bool $isPrivate = false): array
+    protected int $minPopulation;
+    protected int $maxPopulation;
+
+    public function __construct(...$data)
     {
-        return [
-            'type' => $this->type,
-            'data' => [
-                'point' => $this->point,
-                'image_path' => $this->imagePath,
-                'info' => $this->getInfoString($isPrivate),
-                'population' => $this->population,
-            ]
-        ];
+        parent::__construct(...$data);
+
+        if (array_key_exists('population', $data)) {
+            $this->population = $data['population'];
+        } else {
+            $this->population = $this->minPopulation;
+        }
+    }
+
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
+    {
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['population'] = $this->population;
+        return $arr;
     }
 
     public function getInfoString(bool $isPrivate = false): string
