@@ -47,7 +47,6 @@ class CallbackController extends Controller
                 $user = User::create([
                     // TODO: Yahooではusernameを取得できないので適当な値を入れておく
                     'name' => Str::random(10),
-                    'email' => '',
                 ]);
 
                 // 認証情報登録
