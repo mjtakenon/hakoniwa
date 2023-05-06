@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Island;
 use App\Models\IslandLog;
+use App\Models\IslandStatus;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\LogVisibility;
 
@@ -28,7 +29,24 @@ class IndexController extends Controller
         ->get('log');
 
         return view('pages.index', [
-            'islands' => $islands,
+            'islands' => $islands->map(function ($island) {
+                /** @var Island | IslandStatus $island */
+                return [
+                    'id' => $island->id,
+                    'name' => $island->name,
+                    'owner_name' => $island->owner_name,
+                    'development_points' => $island->development_points,
+                    'funds' => $island->funds,
+                    'foods' => $island->foods,
+                    'resources' => $island->resources,
+                    'population' => $island->population,
+                    'funds_production_number_of_people' => $island->funds_production_number_of_people,
+                    'foods_production_number_of_people' => $island->foods_production_number_of_people,
+                    'resources_production_number_of_people' => $island->resources_production_number_of_people,
+                    'environment' => $island->environment,
+                    'area' => $island->area
+                ];
+            }),
             'turn' => $turn,
             'logs' => $logs,
         ]);

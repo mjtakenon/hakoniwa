@@ -1,35 +1,103 @@
-@import "../../node_modules/bulma/bulma";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body {
+@layer base {
+    p {
+        @apply mb-2;
+    }
+
+    hr {
+        @apply mb-4;
+    }
+
+    a {
+        @apply text-link;
+    }
 }
 
-.home-wrapper {
-    margin: 0 auto;
-    max-width: 800px;
-    padding: 10px 24px;
+// 汎用Components
+@layer components {
+    // ----- テキスト系 -----
+    .title {
+        @apply text-2xl font-black mt-6 mb-2;
+    }
+
+    .subtitle {
+        @apply text-xl mt-6 mb-2;
+    }
+
+    .link-text {
+        @apply text-link;
+    }
+
+    // ----- InfoBox -----
+    .box-info {
+        @apply block my-3 p-4 rounded font-bold text-base drop-shadow-md text-black bg-info-light;
+    }
+
+    .box-warning {
+        @apply block my-3 p-4 rounded font-bold text-base drop-shadow-md text-white bg-warning-dark;
+    }
+
+    .box-danger {
+        @apply block my-3 p-4 rounded font-bold text-base drop-shadow-md text-white bg-danger;
+    }
+
+    // ----- ボタン -----
+    .button-primary {
+        @apply inline-block px-4 py-2 rounded text-base text-white drop-shadow-md bg-primary hover:bg-primary-dark;
+    }
+
+    .button-success {
+        @apply inline-block px-4 py-2 rounded text-base text-white drop-shadow-md bg-success hover:bg-success-dark;
+    }
+
+    .button-info {
+        @apply inline-block px-4 py-2 rounded text-base text-white drop-shadow-md bg-info hover:bg-info-dark;
+    }
+
+    .button-warning {
+        @apply inline-block px-4 py-2 rounded text-base text-white drop-shadow-md bg-warning hover:bg-warning-dark;
+    }
+
+    .button-danger {
+        @apply inline-block px-4 py-2 rounded text-base text-white drop-shadow-md bg-danger hover:bg-danger-dark;
+    }
+
+    .button-white {
+        @apply inline-block px-4 py-2 rounded text-base text-black border drop-shadow-md border-gray-400 bg-white hover:bg-gray-300;
+    }
+
+    .button-disabled {
+        @apply inline-block px-4 py-2 rounded text-base text-white drop-shadow-md bg-gray-700
+    }
 }
 
-.primary-color {
-    color: #00d1b2;
+#index {
+    @apply mx-auto max-w-[1000px] px-3;
 }
 
-.link-color {
-    color: #485fc7;
-}
+#register {
+    @apply mx-auto max-w-[600px] px-3;
 
-.success-color {
-    color: #3e8ed0;
-}
+    .title {
+        @apply mb-5 px-3 py-10 bg-success text-white rounded-md;
+    }
 
-.info-color {
-    color: #48c78e;
-}
+    .label {
+        @apply md:text-lg block mb-4 pb-2 border-b border-success;
+    }
 
-.warning-color {
-    color: #ffe08a;
-}
+    .control {
+        @apply flex items-center mb-10;
 
-.danger-color {
-    color: #f14668;
-}
+        .input {
+            @apply grow p-2 rounded-md border border-gray-400 mr-3 drop-shadow-md;
+        }
 
+        .icon {
+            @apply text-lg;
+        }
+    }
+}

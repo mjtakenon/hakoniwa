@@ -1,7 +1,7 @@
 <template>
     <div id="sightseeing-page" class="wrapper">
-        <div class="title">{{ $store.state.island.name }}島へようこそ！</div>
-        <div class="subtitle"><a href="/">トップへ戻る</a></div>
+        <div class="title mt-2">{{ $store.state.island.name }}島へようこそ！</div>
+        <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <hr/>
         <island-viewer></island-viewer>
@@ -53,9 +53,7 @@ export default {
 <style lang="scss" scoped>
 
 #sightseeing-page {
-    text-align: center;
-    margin: 0 auto;
-    max-width: 800px;
+    @apply text-center mx-auto max-w-[1000px] max-md:overflow-x-scroll min-h-[1200px]
 }
 
 </style>

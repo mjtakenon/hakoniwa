@@ -1,13 +1,17 @@
 <template>
     <div id="island">
-        <div class="row m-0 p-0" v-for="y of $store.state.hakoniwa.height" :key="y">
+        <div
+            class="row"
+            v-for="y of $store.state.hakoniwa.height"
+            :key="y"
+        >
             <div class="right-padding" v-if="y%2 === 1">
-                {{ y-1 }}
+                <span class="right-padding-text">{{ y-1 }}</span>
             </div>
             <div class="cell" v-for="x of $store.state.hakoniwa.width" :key="x">
                 <img
-                    @mouseover="onMouseOverCell(x-1, y-1)"
-                    @mouseleave="onMouseLeaveCell(x-1, y-1)"
+                    @mouseover="onMouseOverCell(x-1, y-1, $event)"
+                    @mouseleave="onMouseLeaveCell"
                     @click="onMouseClick(x-1, y-1)"
                     :src="getIslandTerrain(x-1,y-1).data.image_path"
                     :alt="getIslandTerrain(x-1,y-1).data.info"
@@ -16,13 +20,13 @@
             </div>
             <div class="left-padding" v-if="y%2 === 0"></div>
         </div>
-        <div v-show="showHoverWindow" class="hover-window" :style="{ top: hoverWindowTop+'px', left: hoverWindowLeft+'px' }">
-            <div class="is-flex">
+        <div v-show="showHoverWindow" class="hover-window" :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
+            <div class="hover-window-header">
                 <img
-                    class="is-flex-direction-column hover-window-img"
+                    class="hover-window-img"
                     :src="getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.image_path"
                 >
-                <div class="is-flex-direction-column hover-window-info">
+                <div class="grow items-center hover-window-info">
                     {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
                 </div>
             </div>
@@ -42,11 +46,19 @@ export default {
                 "x": 0,
                 "y": 0,
             },
-            hoverWindowTop: 170,
-            hoverWindowLeft: 0,
+            hoverWindowY: 170,
+            hoverWindowX: 0,
+            screenWidth: document.documentElement.clientWidth,
+            isMobile: (document.documentElement.clientWidth < 1024),
         }
     },
     setup() {
+    },
+    mounted() {
+        window.addEventListener("resize", this.onWindowSizeChanged);
+    },
+    unmounted() {
+        window.removeEventListener("resize", this.onWindowSizeChanged);
     },
     methods: {
         getIslandTerrain(x, y): Terrain {
@@ -54,91 +66,100 @@ export default {
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
         },
-        onMouseOverCell(x, y) {
+        onMouseOverCell(x, y, event: MouseEvent) {
+            const offsetY = 25;
+            this.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
+            this.hoverWindowX = event.pageX;
+
+            // Screen Overflow Check
+            if(this.isMobile) {
+                const windowSize = 200;
+                const paddingOffset = 20;
+                const leftEdge = this.hoverWindowX - (windowSize/2);
+                const rightEdge = this.hoverWindowX + (windowSize/2);
+                if (leftEdge < paddingOffset) {
+                    this.hoverWindowX += (-leftEdge) + paddingOffset;
+                }
+                else if (rightEdge > this.screenWidth) {
+                    this.hoverWindowX -= (rightEdge-this.screenWidth) + paddingOffset;
+                }
+            }
+
             this.showHoverWindow = true;
             this.hoverCellPoint.x = x;
             this.hoverCellPoint.y = y;
-
-            // 左半分
-            if (this.hoverCellPoint.x < this.$store.state.hakoniwa.width / 2) {
-                this.hoverWindowLeft = 250;
-            } else {
-                this.hoverWindowLeft = 0;
-            }
         },
-        onMouseLeaveCell(x, y) {
+        onMouseLeaveCell() {
             this.showHoverWindow = false;
         },
         onMouseClick(x, y) {
             this.$store.state.selectedPoint.x = x;
             this.$store.state.selectedPoint.y = y;
-        }
-    },
-    mounted() {
-        // console.log(this.$props)
+        },
+        onWindowSizeChanged() {
+            this.showHoverWindow = false;
+            this.isMobile = (document.documentElement.clientWidth < 1024);
+            this.screenWidth = document.documentElement.clientWidth;
+        },
     },
     computed: {},
     props: [],
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="postcss" scoped>
 #island {
-    position: relative;
     margin: 0 auto;
-    max-width: 480px;
-    min-width: 496px;
-    min-height: 496px;
+    @apply w-full md:min-w-[496px] max-w-[496px] mb-4;
+
+    .row {
+        @apply m-0 p-0 bg-black;
+        display: grid;
+
+        .cell {
+            @apply w-full aspect-square;
+        }
+
+        &:nth-child(odd) {
+            grid-template-columns: 1fr repeat(15, 2fr);
+        }
+
+        &:nth-child(even) {
+            grid-template-columns: repeat(15, 2fr) 1fr;
+        }
+
+        .left-padding {
+            @apply w-full aspect-[1/2] z-10;
+            background-image: url("/img/hakoniwa/hakogif/land0.gif");
+            background-position: left;
+        }
+
+        .right-padding {
+            @apply relative w-full aspect-[1/2] z-10;
+            background-image: url("/img/hakoniwa/hakogif/land0.gif");
+            background-position: right;
+
+            .right-padding-text {
+                @apply max-xs:hidden absolute left-1 w-full leading-none text-white text-xs md:text-sm overflow-hidden z-10
+            }
+        }
+    }
+
+    .hover-window {
+        @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
+        .hover-window-header {
+            @apply flex px-3 items-center;
+
+            .hover-window-img {
+                width:32px;
+                height:32px;
+                margin-right: 10px;
+            }
+
+            .hover-window-info {
+                white-space: pre-line;
+            }
+        }
+    }
 }
-
-.row {
-    display: grid;
-    grid-template-columns: repeat(16, 1fr);
-}
-
-.cell {
-    width: 32px;
-    height: 32px;
-}
-
-.left-padding {
-    width: 16px;
-    height: 32px;
-    background-image: url("/img/hakoniwa/hakogif/land0.gif");
-    background-position: left;
-}
-
-.right-padding {
-    width: 16px;
-    height: 32px;
-    background-image: url("/img/hakoniwa/hakogif/land0.gif");
-    background-position: right;
-
-    color: white;
-    font-size: 10px;
-    padding-top: 8px;
-}
-
-.hover-window {
-    text-align: left;
-    padding: 10px;
-    margin: 10px;
-    position: absolute;
-    border: 1px solid;
-    background-color: lightyellow;
-    min-width: 200px;
-    min-height: 50px;
-}
-
-.hover-window-img {
-    width:32px;
-    height:32px;
-    margin-right: 10px;
-}
-
-.hover-window-info {
-    white-space: pre-line;
-}
-
 </style>
