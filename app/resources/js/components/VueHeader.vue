@@ -48,6 +48,10 @@
                     <a href="/auth/google/redirect">
                         <img :src="'/img/btn_google_signin_light_normal_web.png'">
                     </a>
+                    <a href="/auth/yahoo/redirect">
+                        <img :src="'/img/yahoo_japan_icon_64.png'">
+                        ログイン
+                    </a>
                 </div>
             </div>
         </nav>
