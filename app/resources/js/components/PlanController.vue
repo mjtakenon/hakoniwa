@@ -71,7 +71,7 @@
                 <div class="plan-target-island">
                     <select class="target-select" v-model="$store.state.selectedTargetIsland">
                         <option v-for="targetIsland of $store.state.targetIslands" :key="targetIsland.id" :value="targetIsland.id">
-                            {{ $store.state.island.name }} 島
+                            {{ targetIsland.name }} 島
                         </option>
                     </select>
                     <a class="button-white target-open" :href="'/islands/' + $store.state.selectedTargetIsland" target="_blank"> 開く </a>
