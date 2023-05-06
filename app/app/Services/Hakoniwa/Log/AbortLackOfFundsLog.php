@@ -11,10 +11,10 @@ class AbortLackOfFundsLog implements ILog
 {
     private Island $island;
     private Turn $turn;
-    private Point $point;
+    private ?Point $point;
     private Plan $plan;
 
-    public function __construct(Island $island, Turn $turn, Point $point, Plan $plan)
+    public function __construct(Island $island, Turn $turn, ?Point $point, Plan $plan)
     {
         $this->island = $island;
         $this->turn = $turn;
@@ -22,7 +22,7 @@ class AbortLackOfFundsLog implements ILog
         $this->plan = $plan;
     }
 
-    public static function create(Island $island, Turn $turn, Point $point, Plan $plan)
+    public static function create(Island $island, Turn $turn, ?Point $point, Plan $plan)
     {
         return new static($island, $turn, $point, $plan);
     }
@@ -32,7 +32,8 @@ class AbortLackOfFundsLog implements ILog
         return json_encode([
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
-            ['text' => ' (' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
+            is_null($this->point) ? ['text' => ''] : ['text' => ' (' . $this->point->x . ',' . $this->point->y . ') '],
+            ['text' => 'にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],
             ['text' => 'は、'],
             ['text' => '資金不足', 'style' => StyleConst::BOLD ],

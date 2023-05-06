@@ -28,7 +28,6 @@ class CallbackController extends Controller
                 // ユーザー情報登録
                 $user = User::create([
                     'name' => $googleUser->name,
-                    'email' => $googleUser->email,
                 ]);
 
                 // 認証情報登録
