@@ -18,7 +18,7 @@ class CallbackController extends Controller
             return redirect(route('home'));
         }
 
-        $client = app()->make(YConnectClient::class);
+        $client = \YConnectClientBuilderService::build();
 
         $state = session()->pull('state');
         $nonce = session()->pull('nonce');
@@ -32,7 +32,9 @@ class CallbackController extends Controller
         $idToken = $client->getIdToken();
         $identifier = $idToken->sub;
 
-        $userAuth = UserAuthentication::where('identifier', $identifier)->where('provider', UserAuthentication::PROVIDER_YAHOO)->first();
+        $userAuth = UserAuthentication::where('identifier', $identifier)
+            ->where('provider', UserAuthentication::PROVIDER_YAHOO)
+            ->first();
 
         if (!is_null($userAuth)) {
             // 既にYahooJapanでログイン済み

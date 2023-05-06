@@ -200,7 +200,7 @@ return [
         App\Providers\IslandServiceProvider::class,
         App\Providers\PlanServiceProvider::class,
 
-        App\Providers\YahooAuthServiceProvider::class,
+        App\Providers\YConnectClientBuilderServiceProvider::class,
     ],
 
     /*
@@ -220,6 +220,7 @@ return [
         'HakoniwaService' => App\Facades\HakoniwaService::class,
         'IslandService' => App\Facades\IslandService::class,
         'PlanService' => App\Facades\PlanService::class,
+        'YConnectClientBuilderService' => App\Facades\YConnectClientBuilderService::class,
 
     ])->toArray(),
 
