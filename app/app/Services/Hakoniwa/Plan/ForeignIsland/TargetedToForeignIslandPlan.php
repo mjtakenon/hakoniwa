@@ -8,7 +8,7 @@ use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-abstract class ForeignIslandTargetedPlan
+abstract class TargetedToForeignIslandPlan
 {
     protected int $fromIsland;
     protected int $toIsland;
@@ -21,7 +21,7 @@ abstract class ForeignIslandTargetedPlan
         $this->plan = $plan;
     }
 
-    public abstract function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ForeignIslandExecutePlanResult;
+    public abstract function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult;
 
     /**
      * @return int

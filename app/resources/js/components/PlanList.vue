@@ -27,11 +27,28 @@
                          $store.state.targetIslands.filter((i) => { return i.id === plan.data.targetIsland}).length >= 1">
                         {{ $store.state.targetIslands.filter((i) => { return i.id === plan.data.targetIsland})[0].name }}島 &#x20;
                     </span>
-                    <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span>
-                    <span class="font-bold">{{ plan.data.name }}</span>
+                    <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) </span>
+                    <span v-if="plan.data.useTargetIsland">
+                        に向けて
+                    </span>
+                    <span class="font-bold">
+                        {{ plan.data.name }}
+                    </span>
                     <span v-if="plan.data.isFiring">
-                        <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}発発射)</span>
-                        <span v-else-if="plan.data.amount === 0 && plan.data.useAmount"> (無制限)</span>
+                        <span v-if="plan.data.amount >= 2 && plan.data.useAmount">
+                            ({{ plan.data.amount }}発発射)
+                        </span>
+                        <span v-else-if="plan.data.amount === 0 && plan.data.useAmount">
+                            (無制限)
+                        </span>
+                    </span>
+                    <span v-else-if="plan.data.useTargetIsland">
+                        <span v-if="plan.data.amount >= 2 && plan.data.useAmount">
+                            ({{ plan.data.amount }}0000㌧)
+                        </span>
+                        <span v-else-if="plan.data.amount === 0 && plan.data.useAmount">
+                            (1000000㌧)
+                        </span>
                     </span>
                     <span v-else>
                             <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}回実施)</span>

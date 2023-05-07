@@ -20,7 +20,7 @@ use App\Services\Hakoniwa\Log\MissileHitToMonsterLog;
 use App\Services\Hakoniwa\Log\MissileOutOfRegionLog;
 use App\Services\Hakoniwa\Log\MissileSelfDestructLog;
 use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
-use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandFiringMissilePlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\FiringMissileToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Support\Collection;
@@ -80,7 +80,7 @@ class FiringMissilePlan extends Plan
 
         // 対象が自島でない場合、後で処理する
         if ($this->getTargetIsland() !== $island->id) {
-            $foreignIslandTargetedPlans->add(new ForeignIslandFiringMissilePlan(
+            $foreignIslandTargetedPlans->add(new FiringMissileToForeignIslandPlan(
                 $island->id,
                 $this->getTargetIsland(),
                 deep_copy($this),
