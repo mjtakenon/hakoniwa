@@ -10,6 +10,7 @@ class UserAuthentication extends Model
     use HasFactory;
 
     const PROVIDER_GOOGLE = 'google';
+    const PROVIDER_YAHOO = 'yahoo';
 
     protected $fillable = [
         'identifier',

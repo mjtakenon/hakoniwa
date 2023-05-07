@@ -16,6 +16,8 @@ import { createApp } from "vue/dist/vue.esm-bundler";
 import SightseeingPage from "./pages/SightseeingPage.vue";
 import PlanPage from "./pages/PlanPage.vue";
 import VueHeader from "./components/VueHeader.vue";
+import TurnViewer from "./components/TurnViewer.vue";
+import RankingViewer from "./components/RankingViewer.vue";
 import { store, key } from "./store/store";
 
 const app = createApp({
@@ -23,6 +25,8 @@ const app = createApp({
         SightseeingPage,
         PlanPage,
         VueHeader,
+        TurnViewer,
+        RankingViewer,
     }
 });
 

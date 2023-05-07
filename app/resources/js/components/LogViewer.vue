@@ -3,7 +3,7 @@
         <div class="subtitle">
             {{ $store.state.island.name }}島の近況
         </div>
-        <div v-for="log of $store.state.logs" :key="log.id">
+        <div class="w-full" v-for="log of $store.state.logs" :key="log.id">
             <span v-for="context of JSON.parse(log.log)" :key="context.text">
                 <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">
                     {{ context.text }}
@@ -21,12 +21,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 
 #logs {
-    text-align: left;
-    margin-left: 30px;
-    max-width: 800px;
+    @apply text-left w-full px-3 mb-10
 }
 
 </style>

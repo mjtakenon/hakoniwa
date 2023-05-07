@@ -1,32 +1,25 @@
 <template>
-    <div id="plan-controller" class="box">
-
-        <div> 動作 </div>
-        <div class="is-flex">
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small" @click="onClickInsert">挿入</button></div>
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small" @click="onClickOverwrite">上書き</button></div>
-            <div class="is-flex-direction-row is-flex-grow-1"><button class="button is-small" @click="onClickDelete">削除</button></div>
-        </div>
-
-        <hr />
-
-        <div>
-            <span style="vertical-align: middle">
-                計画番号：
-            </span>
-            <div class="select is-small">
-                <select v-model="$store.state.selectedPlanNumber">
-                    <option v-for="num of MAX_PLAN_NUMBER" :value="num" :key="num"> {{ num }} </option>
-                </select>
+    <div id="plan-controller">
+        <div class="mb-4">
+            <div class="section-header">動作</div>
+            <div class="action">
+                <button class="action-button button-white" @click="onClickInsert">挿入</button>
+                <button class="action-button button-white" @click="onClickOverwrite">上書き</button>
+                <button class="action-button button-white" @click="onClickDelete">削除</button>
             </div>
         </div>
 
-        <hr/>
-
-        <div>
-            開発計画 <br/>
-            <div class="select is-small">
-                <select v-model="selectedPlan">
+        <div class="mb-4">
+            <div class="section-header">開発計画</div>
+            <div class="dev-plan">
+                <p class="title-sm-inline">計画番号:</p>
+                <select class="float-right" v-model="$store.state.selectedPlanNumber">
+                    <option v-for="num of MAX_PLAN_NUMBER" :value="num" :key="num"> {{ num }}</option>
+                </select>
+            </div>
+            <div class="dev-plan">
+                <p class="title-sm-block">開発:</p>
+                <select class="plan-select-develop" v-model="selectedPlan">
                     <option
                         v-for="plan of $store.state.planCandidate"
                         :key="plan.key"
@@ -43,82 +36,78 @@
                     > 全浅瀬に掘削入力 (浅瀬x200億円) </option>
                 </select>
             </div>
-        </div>
-
-        <hr/>
-
-        <div>
-            <span style="vertical-align: middle">
-                座標：（
-            </span>
-            <span class="select is-small">
-                <select v-model="$store.state.selectedPoint.x">
-                    <option v-for="x of $store.state.hakoniwa.height" :key="x" :value="x-1">
-                        {{ x-1 }}
-                    </option>
-                </select>
-            </span>
-            <span style="vertical-align: middle">
-                ,
-            </span>
-            <span class="select is-small">
-                <select v-model="$store.state.selectedPoint.y">
-                    <option v-for="y of $store.state.hakoniwa.height" :key="y" :value="y-1">
-                        {{ y-1 }}
-                    </option>
-                </select>
-            </span>
-            <span style="vertical-align: middle">
-                ）
-            </span>
-        </div>
-
-        <hr/>
-
-        <div>
-            <span style="vertical-align: middle">
-                数量：
-            </span>
-            <div class="select is-small">
-                <select v-model="$store.state.selectedAmount">
+            <div class="dev-plan">
+                <p class="title-sm-block">座標:</p>
+                <div class="plan-select-pos">
+                    <span>( </span>
+                    <span>
+                        <select v-model="$store.state.selectedPoint.x">
+                            <option v-for="x of $store.state.hakoniwa.height" :key="x" :value="x-1">
+                                {{ x - 1 }}
+                            </option>
+                        </select>
+                    </span>
+                    <span> , </span>
+                    <span>
+                        <select v-model="$store.state.selectedPoint.y">
+                            <option v-for="y of $store.state.hakoniwa.height" :key="y" :value="y-1">
+                                {{ y - 1 }}
+                            </option>
+                        </select>
+                    </span>
+                    <span> )</span>
+                </div>
+            </div>
+            <div class="dev-plan">
+                <p class="title-sm-block">数量</p>
+                <select class="float-right" v-model="$store.state.selectedAmount">
                     <option v-for="n of 100" :key="n-1" :value="n-1">
-                        {{ n-1 }}
+                        {{ n - 1 }}
                     </option>
                 </select>
             </div>
-        </div>
-
-        <hr/>
-
-        <div>
-            目標の島 <br/>
-            <div class="select is-small">
-                <select v-model="$store.state.selectedTargetIsland">
-                    <option v-for="targetIsland of $store.state.targetIslands" :key="targetIsland.id" :value="targetIsland.id">
-                        {{ targetIsland.name }} 島
-                    </option>
-                </select>
+            <div class="dev-plan border-t-2 pt-2 border-gray-300">
+                <p class="title-block">目標の島:</p>
+                <div class="plan-target-island">
+                    <select class="target-select" v-model="$store.state.selectedTargetIsland">
+                        <option v-for="targetIsland of $store.state.targetIslands" :key="targetIsland.id" :value="targetIsland.id">
+                            {{ targetIsland.name }} 島
+                        </option>
+                    </select>
+                    <a class="button-white target-open" :href="'/islands/' + $store.state.selectedTargetIsland" target="_blank"> 開く </a>
+                </div>
             </div>
-            <span class="p-1"></span>
-            <!-- TODO: ポップアップに変えたい -->
-            <a class="button is-small" :href="'/islands/' + $store.state.selectedTargetIsland" target="_blank"> 開く </a>
         </div>
 
-        <hr/>
+        <div class="mb-4">
+            <div class="section-header">操作</div>
+            <div class="mb-2 px-2 text-left">
+                <p class="title-sm-block">コマンド移動</p>
+                <div class="move-command">
+                    <button class="button-white move-command-button mr-2" @click="onClickMoveUp"
+                            :disabled="this.$store.state.selectedPlanNumber <= 1">▲
+                    </button>
+                    <button class="button-white move-command-button" @click="onClickMoveDown"
+                            :disabled="this.$store.state.selectedPlanNumber >= MAX_PLAN_NUMBER">▼
+                    </button>
+                </div>
+            </div>
+            <div class="send-plan">
+                <button
+                    class="send-plan-button"
+                    :class="{'button-disabled': this.$store.state.isSendingPlan}"
+                    @click="onClickSendPlan">
+                    <span v-if="!this.$store.state.isSendingPlan">計画送信</span>
+                    <div
+                        v-if="this.$store.state.isSendingPlan"
+                        class="button-circle"
+                    >
+                        <div class="button-circle-spin"></div>
+                    </div>
+                </button>
 
-        <div>
-            <span class="is-small" style="vertical-align: middle">
-                コマンド移動：
-            </span>
-            <button class="button is-small" @click="onClickMoveUp" :disabled="this.$store.state.selectedPlanNumber <= 1"> ▲ </button> - <button class="button is-small" @click="onClickMoveDown" :disabled="this.$store.state.selectedPlanNumber >= MAX_PLAN_NUMBER"> ▼ </button>
+            </div>
         </div>
-
-        <hr />
-
-        <div>
-            <button :class="['button','is-small','is-primary', this.$store.state.isSendingPlan ? 'is-loading' : '']" @click="onClickSendPlan">計画送信</button>
-        </div>
-        <div class="pt-2"></div>
         <send-notification></send-notification>
     </div>
 </template>
@@ -136,7 +125,6 @@ export default {
             selectedPlan: 'grading',
         }
     },
-    setup() {},
     methods: {
         getSelectedPlan(): Plan {
             return {
@@ -268,19 +256,81 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
 
+<style lang="postcss" scoped>
 #plan-controller {
-    background-color: #e2e8f0;
-    margin: 0 10px 16px 10px;
-    padding: 10px;
-    min-width: 230px;
-    max-width: 230px;
-    //max-height: 496px;
-}
+    @apply w-[45%] bg-gray-200 rounded-xl mx-1 lg:mr-2 mb-3 p-1 max-lg:h-fit lg:p-2 max-w-[230px] drop-shadow-md;
 
-hr {
-    margin: 8px 0;
+    .section-header {
+        @apply w-full text-left pl-2 text-gray-500 border-gray-500 border-b mb-2 text-sm;
+    }
+
+    .action {
+        @apply px-1 lg:px-2 grid grid-cols-3 gap-2;
+
+        .action-button {
+            @apply p-1 max-lg:text-xs;
+        }
+    }
+
+    .title-sm-inline {
+        @apply inline-block mr-2 max-lg:text-sm;
+    }
+
+    .title-sm-block {
+        @apply inline-block mr-2 max-lg:text-sm max-lg:mb-0;
+    }
+
+    .title-block {
+        @apply block mb-1 w-full max-lg:text-sm max-lg:mb-0
+    }
+
+    .dev-plan {
+        @apply mb-2 lg:mb-3 px-2 text-left;
+
+        .plan-select-develop {
+            @apply w-full lg:w-3/4 text-sm lg:float-right;
+        }
+
+        .plan-select-pos {
+            @apply inline-block max-lg:w-full max-lg:text-center lg:float-right;
+        }
+
+        .plan-target-island {
+            @apply w-full flex items-center max-lg:flex-wrap max-lg:justify-end;
+
+            .target-select {
+                @apply lg:grow lg:mr-2 max-lg:w-full lg:float-right text-sm;
+            }
+
+            .target-open {
+                @apply px-1 py-0.5 max-lg:mt-1 text-xs lg:text-sm;
+            }
+        }
+    }
+    .move-command {
+        @apply max-lg:w-full text-center lg:float-right;
+
+        .move-command-button {
+            @apply px-1.5 py-0.5 text-sm;
+        }
+    }
+
+    .send-plan {
+        @apply mt-8 lg:mt-4 px-2;
+
+        .send-plan-button {
+            @apply py-1 button-primary w-2/3 lg:w-1/2;
+        }
+
+        .button-circle {
+            @apply flex justify-center;
+
+            .button-circle-spin {
+                @apply animate-spin m-1 w-4 h-4 border-2 border-white rounded-full border-t-transparent;
+            }
+        }
+    }
 }
 
 </style>

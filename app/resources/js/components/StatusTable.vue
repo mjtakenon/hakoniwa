@@ -1,60 +1,114 @@
 <template>
-    <table id="status" class="table is-narrow is-striped">
-        <thead>
-        <tr>
-            <th> 発展ポイント </th>
-            <th> 人口 </th>
-            <th> 資金 </th>
-            <th> 食料 </th>
-            <th> 資源 </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td> {{ $store.state.status.development_points }} pts</td>
-            <td> {{ $store.state.status.population }} 人</td>
-            <td> {{ $store.state.status.funds }} 億円</td>
-            <td> {{ $store.state.status.foods }} ㌧</td>
-            <td> {{ $store.state.status.resources }} ㌧</td>
-        </tr>
-        <tr>
-            <th> 環境 </th>
-            <th> 面積 </th>
-            <th> 農業 </th>
-            <th> 工業 </th>
-            <th> 資源生産 </th>
-        </tr>
-        <tr>
-            <td> {{ ENVIRONMENT[$store.state.status.environment] }}</td>
-            <td> {{ $store.state.status.area }} 万坪</td>
-            <td> {{ $store.state.status.foods_production_number_of_people }} 人規模</td>
-            <td> {{ $store.state.status.funds_production_number_of_people }} 人規模</td>
-            <td> {{ $store.state.status.resources_production_number_of_people }} 人規模</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="stats">
+        <div
+            v-for="(status, index) in statuses"
+            class="stats-box"
+            :class="{'max-md:col-span-3': (index === 0)}"
+        >
+            <div class="stats-box-title">
+                {{ status.title }}
+            </div>
+            <div class="stats-box-data">
+                <div class="stats-box-data-num">
+                    {{ status.num }}
+                </div>
+                <div class="stat-box-data-unit">
+                    {{ status.unit }}
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+const ISLAND_ENVIRONMENT = {
+    'best': '最高',
+    'good': '良好',
+    'normal': '通常',
+}
+
 export default {
     data() {
         return {
-            ENVIRONMENT : {
-                'best': '最高',
-                'good': '良好',
-                'normal': '通常',
-            },
+            statuses: [
+                {
+                    title: "発展ポイント",
+                    num: this.$store.state.status.development_points,
+                    unit: "pts"
+                },
+                {
+                    title: "人口",
+                    num: this.$store.state.status.population,
+                    unit: "人"
+                },
+                {
+                    title: "資金",
+                    num: this.$store.state.status.funds,
+                    unit: "億円"
+                },
+                {
+                    title: "食料",
+                    num: this.$store.state.status.foods,
+                    unit: "㌧"
+                },
+                {
+                    title: "資源",
+                    num: this.$store.state.status.resources,
+                    unit: "㌧"
+                },
+                {
+                    title: "環境",
+                    num: ISLAND_ENVIRONMENT[this.$store.state.status.environment],
+                    unit: ""
+                },
+                {
+                    title: "面積",
+                    num: this.$store.state.status.area,
+                    unit: "万坪"
+                },
+                {
+                    title: "農業",
+                    num: this.$store.state.status.foods_production_number_of_people,
+                    unit: "人規模"
+                },
+                {
+                    title: "工業",
+                    num: this.$store.state.status.funds_production_number_of_people,
+                    unit: "人規模"
+                },
+                {
+                    title: "資源生産",
+                    num: this.$store.state.status.resources_production_number_of_people,
+                    unit: "人規模"
+                },
+            ],
         }
     },
-    props: [],
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
+.stats {
+    @apply container px-2 py-1 md:mx-auto mb-3 md:mb-6 max-w-full grid grid-cols-3 md:grid-cols-5 gap-2;
 
-#status {
-    margin: 0 auto;
-    min-width: 480px;
+    .stats-box {
+        @apply bg-gray-200 rounded-xl p-2 drop-shadow-md;
+
+        .stats-box-title {
+            @apply font-bold text-left text-gray-600 text-xs md:text-sm;
+        }
+
+        .stats-box-data {
+            @apply flex items-end;
+
+            .stats-box-data-num {
+                @apply grow text-lg text-right font-bold mr-2;
+            }
+
+            .stat-box-data-unit {
+                @apply text-xs md:text-sm text-right;
+            }
+        }
+    }
 }
-
 </style>
