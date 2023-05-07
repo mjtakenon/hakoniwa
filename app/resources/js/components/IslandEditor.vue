@@ -205,10 +205,14 @@ export default {
             this.showPlanWindow = false;
         },
         onWindowSizeChanged() {
-            this.showHoverWindow = false;
-            this.showPlanWindow = false;
-            this.isMobile = (document.documentElement.clientWidth < 1024);
-            this.screenWidth = document.documentElement.clientWidth;
+            const newScreenWidth = document.documentElement.clientWidth;
+            if(this.screenWidth != newScreenWidth) {
+                this.screenWidth = newScreenWidth;
+                this.showHoverWindow = false;
+                console.log("windowSizeChanged");
+                this.showPlanWindow = false;
+                this.isMobile = (document.documentElement.clientWidth < 1024);
+            }
         }
     },
         computed: {
