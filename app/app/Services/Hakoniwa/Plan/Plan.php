@@ -34,6 +34,8 @@ abstract class Plan
     public const NAME = '';
     public const PRICE = 0;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
+    public const DEFAULT_AMOUNT_STRING = '';
+    public const AMOUNT_STRING = '';
     public const USE_POINT = true;
     public const USE_AMOUNT = false;
     public const USE_TARGET_ISLAND = false;
@@ -44,6 +46,8 @@ abstract class Plan
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
     protected string $priceString = self::PRICE_STRING;
+    protected string $defaultAmountString = self::DEFAULT_AMOUNT_STRING;
+    protected string $amountString = self::AMOUNT_STRING;
     protected bool $usePoint = self::USE_POINT;
     protected bool $useAmount = self::USE_AMOUNT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
@@ -164,9 +168,19 @@ abstract class Plan
         return $this->executableDevelopmentPoint;
     }
 
-    public function priceString(): string
+    public function getPriceString(): string
     {
         return $this->priceString;
+    }
+
+    public function getAmountString(): string
+    {
+        return $this->amountString;
+    }
+
+    public function getDefaultAmountString(): string
+    {
+        return $this->defaultAmountString;
     }
 
     public function isTurnSpending(): bool
@@ -198,6 +212,9 @@ abstract class Plan
             $arr['data']['useAmount'] = $this->useAmount();
             $arr['data']['useTargetIsland'] = $this->useTargetIsland();
             $arr['data']['isFiring'] = $this->isFiring();
+            $arr['data']['priceString'] = $this->getPriceString();
+            $arr['data']['amountString'] = $this->getAmountString();
+            $arr['data']['defaultAmountString'] = $this->getDefaultAmountString();
         }
 
         return $arr;

@@ -36,7 +36,7 @@ class FoodsTransportationLog implements ILog
             ['text' => 'ターン ' . $this->turn->turn . ' : '],
             $this->visibility === LogVisibility::VISIBILITY_PRIVATE ? ['text' => '(極秘) '] : ['text' => '' ],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
-            $this->isFrom ? ['text' => 'に向けて'] : ['text' => 'から'],
+            $this->isFrom ? ['text' => 'へ'] : ['text' => 'から'],
             ['text' => $this->amount, 'style' => StyleConst::BOLD ],
             ['text' => '㌧の'],
             ['text' => '食料輸送', 'style' => StyleConst::BOLD ],
