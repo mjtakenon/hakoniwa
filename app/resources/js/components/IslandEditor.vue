@@ -55,7 +55,7 @@
                     </template>
 
         </div>
-        <div v-show="showPlanWindow" class="plan-window"
+        <div v-show="showPlanWindow" class="plan-window" ref="planWindow"
              :style="[
                  { top: planWindowY + 'px' },
                  !isMobile || planWindowLeftSide ? { left: planWindowX + 'px' } : { right: planWindowX + 'px' }
@@ -132,10 +132,10 @@ export default {
 
             // Screen Overflow Check
             if(this.isMobile) {
-                const windowSize = 200;
+                const elementWidth = 200;
                 const paddingOffset = 20;
-                const leftEdge = this.hoverWindowX - (windowSize/2);
-                const rightEdge = this.hoverWindowX + (windowSize/2);
+                const leftEdge = this.hoverWindowX - (elementWidth/2);
+                const rightEdge = this.hoverWindowX + (elementWidth/2);
                 if (leftEdge < paddingOffset) {
                     this.hoverWindowX += (-leftEdge) + paddingOffset;
                 }
@@ -163,15 +163,25 @@ export default {
             this.$store.state.selectedPoint.y = y;
             this.showPlanWindow = true;
 
-            this.planWindowLeftSide = (x < 7);
-
-            const offset = 15;
-            this.planWindowY = event.pageY + offset;
             if(this.isMobile) {
-                this.planWindowX = this.planWindowLeftSide ? event.pageX + offset : (document.documentElement.clientWidth - event.pageX - offset);
+                this.planWindowX = event.pageX;
+                const offsetX = 15;
+                const offsetY = 30;
+                const elementWidth = 230;
+                const leftEdge = this.planWindowX - (elementWidth/2);
+                const rightEdge = this.planWindowX + (elementWidth/2);
+                if (leftEdge < offsetX) {
+                    this.planWindowX += (-leftEdge) + offsetX;
+                }
+                else if (rightEdge > this.screenWidth) {
+                    this.planWindowX -= (rightEdge-this.screenWidth) + offsetX;
+                }
+                this.planWindowY = event.pageY + offsetY;
             }
             else {
+                const offset = 15;
                 this.planWindowX = event.pageX + offset;
+                this.planWindowY = event.pageY + offset;
             }
         },
         onClickPlan(key) {
@@ -312,7 +322,7 @@ export default {
     }
 
     .plan-window {
-        @apply block absolute bg-gray-300 w-fit lg:max-w-[240px] rounded-md drop-shadow-md text-left overflow-hidden max-md:text-sm border border-gray-800 z-30;
+        @apply block absolute bg-gray-300 w-fit max-lg:min-w-[230px] max-lg:max-w-[230px] max-lg:-translate-x-1/2 lg:max-w-[240px] rounded-md drop-shadow-md text-left overflow-hidden max-md:text-sm border border-gray-800 z-30;
         @apply animate-fadein;
 
         .plan-window-header {
