@@ -55,7 +55,7 @@
                     </template>
 
         </div>
-        <div v-show="showPlanWindow" class="plan-window" ref="planWindow"
+        <div v-show="showPlanWindow" class="plan-window"
              :style="[
                  { top: planWindowY + 'px'}, { left: planWindowX + 'px'}
              ]"
