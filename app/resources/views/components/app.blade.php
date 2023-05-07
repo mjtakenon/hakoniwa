@@ -8,7 +8,7 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <title>@yield('title')</title>
     @if(\App::environment('local'))
-        @vite(['resources/js/app.ts', 'resources/css/app.css'])
+        @vite(['resources/js/app.ts', 'resources/css/app.scss'])
     @else
         <link rel="manifest" href="/build/manifest.json"/>
         <script type="module" src="/build/assets/bundle.js"></script>
