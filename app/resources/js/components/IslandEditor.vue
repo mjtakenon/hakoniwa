@@ -57,8 +57,7 @@
         </div>
         <div v-show="showPlanWindow" class="plan-window" ref="planWindow"
              :style="[
-                 { top: planWindowY + 'px' },
-                 !isMobile || planWindowLeftSide ? { left: planWindowX + 'px' } : { right: planWindowX + 'px' }
+                 { top: planWindowY + 'px'}, { left: planWindowX + 'px'}
              ]"
         >
             <div class="plan-window-header">
@@ -107,7 +106,6 @@ export default {
             screenWidth: document.documentElement.clientWidth,
             planWindowY: 0,
             planWindowX: 0,
-            planWindowLeftSide: true,
             isMobile: (document.documentElement.clientWidth < 1024),
         }
     },
