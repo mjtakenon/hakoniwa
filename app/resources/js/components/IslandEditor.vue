@@ -44,12 +44,9 @@
                         ">
                             <span>[{{ index + 1 }}] </span>
                             <span>{{ plan.data.name }}</span>
-                            <span v-if="plan.data.isFiring">
-                                <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}発発射)</span>
-                                <span v-else-if="plan.data.amount === 0 && plan.data.useAmount"> (無制限)</span>
-                            </span>
-                            <span v-else>
-                                <span v-if="plan.data.amount >= 2 && plan.data.useAmount"> ({{ plan.data.amount }}回実施)</span>
+                            <span v-if="plan.data.useAmount">
+                                <span v-if="plan.data.amount === 0"> {{ plan.data.defaultAmountString }}</span>
+                                <span v-else> {{ plan.data.amountString.replace(':amount:', plan.data.amount) }} </span>
                             </span>
                         </div>
                     </template>
@@ -197,7 +194,9 @@ export default {
                     useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
                     targetIsland: this.$store.state.selectedTargetIsland,
                     isFiring: this.$store.state.planCandidate[key].isFiring,
-                    priceString: ''
+                    priceString: this.$store.state.planCandidate[key].priceString,
+                    amountString: this.$store.state.planCandidate[key].amountString,
+                    defaultAmountString: this.$store.state.planCandidate[key].defaultAmountString,
                 }
             };
         },

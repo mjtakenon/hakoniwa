@@ -21,6 +21,7 @@ class AttractActivitiesPlan extends Plan
     public const NAME = '誘致活動';
     public const PRICE = 1000;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
+    public const AMOUNT_STRING = '(:amount:回実施)';
     public const USE_POINT = false;
     public const USE_AMOUNT = true;
 
@@ -29,6 +30,7 @@ class AttractActivitiesPlan extends Plan
     protected int $price = self::PRICE;
     protected bool $usePoint = self::USE_POINT;
     protected bool $useAmount = self::USE_AMOUNT;
+    protected string $amountString = self::AMOUNT_STRING;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {

@@ -12,6 +12,8 @@ export interface Plan {
         useTargetIsland: boolean,
         isFiring: boolean,
         priceString: string,
+        amountString: string,
+        defaultAmountString: string,
     },
 }
 
@@ -31,6 +33,8 @@ export function getDefaultPlan(): Plan {
             targetIsland: store.state.island.id,
             isFiring: false,
             priceString: '(+10億円)',
+            amountString: '',
+            defaultAmountString: '',
         }
     }
 }

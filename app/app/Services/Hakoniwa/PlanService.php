@@ -23,6 +23,8 @@ class PlanService extends ServiceProvider
                             'name' => $plan::NAME,
                             'price' => $plan::PRICE,
                             'priceString' => $plan::PRICE_STRING,
+                            'amountString' => $plan::AMOUNT_STRING,
+                            'defaultAmountString' => $plan::DEFAULT_AMOUNT_STRING,
                             'usePoint' => $plan::USE_POINT,
                             'useAmount' => $plan::USE_AMOUNT,
                             'useTargetIsland' => $plan::USE_TARGET_ISLAND,
