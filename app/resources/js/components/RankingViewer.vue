@@ -1,5 +1,10 @@
 <template>
-    <a :href="'/islands/' + $props.island.id">
+    <a
+        :href="'/islands/' + $props.island.id"
+        :id="'ranking-' + $props.island.id"
+        class="block"
+        :class="[isAppeared ? 'animate-slide-in-left' : '']"
+    >
         <div class="ranking">
             <div class="ranking-index">
                 <div class="ranking-index-num">{{ $props.index }}</div>
@@ -59,6 +64,35 @@
 
 <script>
 export default {
+    data() {
+        return {
+            observer : IntersectionObserver,
+            isAppeared: false // スクリーン上に出てきたかどうか
+        }
+    },
+    mounted() {
+        const target = document.querySelector("#ranking-" + this.island.id);
+
+        const options = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 1
+        }
+
+        this.observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) this.onAppeared();
+            })
+        });
+        this.observer.observe(target, options);
+    },
+
+    methods: {
+        onAppeared() {
+            this.isAppeared = true;
+            this.observer.disconnect();
+        }
+    },
     props: ['index', 'island']
 }
 </script>
@@ -100,6 +134,6 @@ export default {
             }
         }
     }
-
 }
+
 </style>

@@ -283,6 +283,7 @@ export default {
 
     .hover-window {
         @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
+
         .hover-window-header {
             @apply flex px-3 items-center;
 
@@ -308,6 +309,7 @@ export default {
 
     .plan-window {
         @apply block absolute bg-gray-300 w-fit lg:max-w-[240px] rounded-md drop-shadow-md text-left overflow-hidden max-md:text-sm border border-gray-800 z-30;
+        @apply animate-fadein;
 
         .plan-window-header {
             @apply flex p-0 m-0 bg-gray-700 text-white items-center;

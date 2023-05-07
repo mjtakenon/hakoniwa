@@ -8,7 +8,7 @@ module.exports = {
     theme: {
         extend: {
             screens: {
-              xs: '350px'
+                xs: '350px'
             },
             colors: {
                 primary: {
@@ -38,6 +38,30 @@ module.exports = {
                     dark: "#a62640"
                 }
             },
+            animation: {
+                "fadein": "fadein 0.3s",
+                "slide-in-left": "slide-in-left 1.2s"
+            },
+            keyframes: {
+                "fadein": {
+                    "0%": {opacity: 0},
+                    "100%": {opacity: 1}
+                },
+                "fadeout": {
+                    "0%": {opacity: 1},
+                    "100%": {opacity: 0}
+                },
+                "slide-in-left": {
+                    "0%": {
+                        transform: "translateX(-20%)",
+                        opacity: 0,
+                    },
+                    "100%": {
+                        transform: "translateX(0%)",
+                        opacity: 1
+                    }
+                }
+            }
         },
     },
     plugins: [],

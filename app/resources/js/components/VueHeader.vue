@@ -12,7 +12,8 @@
             <img src="/img/hakoniwa/ui/hamburger.svg">
         </button>
 
-        <div class="md:ml-auto max-md:w-full" :class="{'max-md:hidden': !isOpenHamburgerMenu}">
+        <div class="hamburger-elements"
+             :class="[isOpenHamburgerMenu ? 'max-md:max-h-36' : 'max-md:max-h-0']">
             <div v-if="isLoggedIn" class="navbar-menu">
                 <div class="navbar-item navbar-username">
                     {{ user.name }}
@@ -97,6 +98,10 @@ export default {
 
     #hamburger-button {
         @apply ml-auto mr-3 block w-7 h-7 md:hidden;
+    }
+
+    .hamburger-elements {
+        @apply md:ml-auto max-md:w-full transition-all duration-500 ease-in-out overflow-hidden;
     }
 
     .navbar-menu {
