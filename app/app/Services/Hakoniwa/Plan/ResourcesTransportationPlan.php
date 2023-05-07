@@ -8,21 +8,21 @@ use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Ship\TransportShip;
-use App\Services\Hakoniwa\Log\AbortLackOfFoodsLog;
+use App\Services\Hakoniwa\Log\AbortLackOfResourcesLog;
 use App\Services\Hakoniwa\Log\AbortNoTransportShipLog;
 use App\Services\Hakoniwa\Log\AbortTargetSelfIslandLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ForeignIsland\FoodsTransportToForeignIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\ResourcesTransportToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
-class FoodsTransportationPlan extends Plan
+class ResourcesTransportationPlan extends Plan
 {
-    public const KEY = 'foods_transportation';
+    public const KEY = 'resources_transportation';
 
-    public const NAME = '食料輸送';
+    public const NAME = '資源輸送';
     public const PRICE = 0;
     public const PRICE_STRING = '(数量x10000㌧)';
     public const DEFAULT_AMOUNT_STRING = '(1000000㌧)';
@@ -60,8 +60,8 @@ class FoodsTransportationPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        if ($status->getFoods() < self::UNIT * $this->amount) {
-            $logs->add(new AbortLackOfFoodsLog($island, $turn, $this->point, $this));
+        if ($status->getResources() < self::UNIT * $this->amount) {
+            $logs->add(new AbortLackOfResourcesLog($island, $turn, $this->point, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
@@ -73,7 +73,7 @@ class FoodsTransportationPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        $foreignIslandTargetedPlans->add(new FoodsTransportToForeignIslandPlan(
+        $foreignIslandTargetedPlans->add(new ResourcesTransportToForeignIslandPlan(
             $island->id,
             $this->getTargetIsland(),
             deep_copy($this),
@@ -87,7 +87,7 @@ class FoodsTransportationPlan extends Plan
             $terrain->setCell($transportShip->getPoint(), new Sea(point: $transportShip->getPoint()));
         }
 
-        $status->setFoods($status->getFoods() - (self::UNIT * $this->amount));
+        $status->setResources($status->getResources() - (self::UNIT * $this->amount));
 
         $this->amount = 0;
         return new ExecutePlanResult($terrain, $status, $logs, false);

@@ -26,7 +26,7 @@ export interface State {
     selectedTargetIsland: number,
     isPlanSent: boolean,
     isSendingPlan: boolean,
-    planCandidate: object,
+    planCandidate: Plan[],
     planSendingResult: number,
     showNotification: boolean,
 }
@@ -51,7 +51,7 @@ export const store = createStore<State>({
         terrains: [],
         status: { area: 0, development_points: 0, environment: '', foods: 0, foods_production_number_of_people: 0, funds: 0, funds_production_number_of_people: 0, population: 0, resources: 0, resources_production_number_of_people: 0 },
         logs: [],
-        planCandidate: {},
+        planCandidate: [],
         targetIslands: [],
     },
     actions: {

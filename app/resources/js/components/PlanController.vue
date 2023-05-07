@@ -141,7 +141,9 @@ export default {
                     useTargetIsland: this.$store.state.planCandidate[this.selectedPlan].useTargetIsland,
                     targetIsland: this.$store.state.selectedTargetIsland,
                     isFiring: this.$store.state.planCandidate[this.selectedPlan].isFiring,
-                    priceString: ''
+                    priceString: this.$store.state.planCandidate[this.selectedPlan].priceString,
+                    amountString: this.$store.state.planCandidate[this.selectedPlan].amountString,
+                    defaultAmountString: this.$store.state.planCandidate[this.selectedPlan].defaultAmountString,
                 }
             };
         },
@@ -160,7 +162,9 @@ export default {
                     useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
                     targetIsland: this.$store.state.selectedTargetIsland,
                     isFiring: this.$store.state.planCandidate[key].isFiring,
-                    priceString: ''
+                    priceString: this.$store.state.planCandidate[key].priceString,
+                    amountString: this.$store.state.planCandidate[key].amountString,
+                    defaultAmountString: this.$store.state.planCandidate[key].defaultAmountString,
                 }
             };
         },
