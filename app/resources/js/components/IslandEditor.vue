@@ -70,7 +70,6 @@
                     @click="onClickClosePlan"
                 >×</button>
             </div>
-<!--            //.filter((i) => { return i.usePoint})-->
             <div
                 v-for="plan of Object.values(this.$store.state.planCandidate).filter((i) => {return i.usePoint})"
                 :key="plan.key"
