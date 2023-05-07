@@ -32,7 +32,7 @@ class FiringMissilePlan extends Plan
 
     public const NAME = 'ミサイル発射';
     public const PRICE = 20;
-    public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
+    public const PRICE_STRING = '(数量x' . self::PRICE . '億円)';
     public const DEFAULT_AMOUNT_STRING = '(無制限)';
     public const AMOUNT_STRING = '(:amount:発発射)';
     public const USE_AMOUNT = true;

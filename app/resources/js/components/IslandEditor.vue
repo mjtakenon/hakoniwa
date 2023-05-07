@@ -71,14 +71,14 @@
                 >×</button>
             </div>
             <div
-                v-for="plan of $store.state.planCandidate"
+                v-for="plan of Object.values(this.$store.state.planCandidate).filter((i) => {return i.usePoint})"
                 :key="plan.key"
                 class="plan-window-select"
             >
-                <a @click="onClickPlan(plan.key)">
-                        <span class="action-name">{{ plan.name }}</span>
-                        <span class="action-price">{{ plan.priceString }}</span>
-                </a>
+                <div @click="onClickPlan(plan.key)">
+                    <a class="action-name">{{ plan.name }}</a>
+                    <span class="action-price">{{ plan.priceString }}</span>
+                </div>
             </div>
         </div>
     </div>
