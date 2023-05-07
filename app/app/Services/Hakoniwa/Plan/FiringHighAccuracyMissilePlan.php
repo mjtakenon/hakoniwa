@@ -14,7 +14,7 @@ class FiringHighAccuracyMissilePlan extends FiringMissilePlan
 
     public const NAME = '高精度ミサイル発射';
     public const PRICE = 50;
-    public const PRICE_STRING = '(数量x' . self::PRICE . ' 億円)';
+    public const PRICE_STRING = '(数量x' . self::PRICE . '億円)';
     public const USE_AMOUNT = true;
     public const USE_TARGET_ISLAND = true;
     public const IS_FIRING = true;

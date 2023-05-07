@@ -25,6 +25,7 @@ class PlanConst
         FiringMissilePlan::KEY => FiringMissilePlan::class,
         FiringHighAccuracyMissilePlan::KEY => FiringHighAccuracyMissilePlan::class,
         FoodsTransportationPlan::KEY => FoodsTransportationPlan::class,
+        FundsTransportationPlan::KEY => FundsTransportationPlan::class,
         CashFlowPlan::KEY => CashFlowPlan::class,
         AttractActivitiesPlan::KEY => AttractActivitiesPlan::class,
         AbandonmentPlan::KEY => AbandonmentPlan::class,
