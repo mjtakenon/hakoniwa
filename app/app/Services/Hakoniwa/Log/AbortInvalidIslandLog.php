@@ -7,7 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class AbortTargetSelfIslandLog implements ILog
+class AbortInvalidIslandLog implements ILog
 {
     private Island $island;
     private Turn $turn;
@@ -33,7 +33,7 @@ class AbortTargetSelfIslandLog implements ILog
             ['text' => 'にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],
             ['text' => 'は、'],
-            ['text' => '対象が自島であった', 'style' => StyleConst::BOLD ],
+            ['text' => '対象の島が存在しなかった', 'style' => StyleConst::BOLD ],
             ['text' => 'ため', ],
             ['text' => '中止', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
             ['text' => 'されました。'],

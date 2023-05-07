@@ -38,4 +38,12 @@ abstract class ForeignIslandTargetedPlan
     {
         return $this->toIsland;
     }
+
+    /**
+     * @return Plan
+     */
+    public function getPlan(): Plan
+    {
+        return $this->plan;
+    }
 }
