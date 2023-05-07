@@ -49,6 +49,6 @@ class RemovalFacility extends Plan
 
         $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
 
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, false);
     }
 }
