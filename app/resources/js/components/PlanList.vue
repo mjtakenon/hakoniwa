@@ -21,6 +21,12 @@
                 </span>
                 <span class="plan-separator">:</span>
                 <div class="plan-desc">
+                    <span v-if="
+                        plan.data.useTargetIsland &&
+                        plan.data.targetIsland !== null &&
+                         $store.state.targetIslands.filter((i) => { return i.id === plan.data.targetIsland}).length >= 1">
+                        {{ $store.state.targetIslands.filter((i) => { return i.id === plan.data.targetIsland})[0].name }}島 &#x20;
+                    </span>
                     <span v-if="plan.data.usePoint">地点 ({{ plan.data.point.x }},{{ plan.data.point.y }}) に</span>
                     <span class="font-bold">{{ plan.data.name }}</span>
                     <span v-if="plan.data.isFiring">
