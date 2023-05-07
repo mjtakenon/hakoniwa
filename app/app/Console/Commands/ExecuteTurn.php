@@ -10,6 +10,7 @@ use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\AbandonmentLog;
+use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
@@ -134,7 +135,12 @@ class ExecuteTurn extends Command
                     /** @var Logs $toLogs */
                     $toLogs = $logsList->get($plan->getToIsland());
 
-                    /** @var ForeignIslandTargetedPlan $plan */
+                    if (is_null($toIsland)) {
+                        $fromLogs->add(new AbortInvalidIslandLog($island, $turn, $plan->getPlan()));
+                        $logsList->put($plan->getFromIsland(), $fromLogs);
+                        continue;
+                    }
+
                     $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
 
                     $fromLogs->merge($executePlanResult->getFromLogs());
