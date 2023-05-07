@@ -38,6 +38,21 @@ module.exports = {
                     dark: "#a62640"
                 }
             },
+            animation: {
+                "slide-in-left": "slide-in-left 1.2s"
+            },
+            keyframes: {
+                "slide-in-left": {
+                    "0%": {
+                        transform: "translateX(-20%)",
+                        opacity: 0,
+                    },
+                    "100%": {
+                        transform: "translateX(0%)",
+                        opacity: 1
+                    }
+                }
+            }
         },
     },
     plugins: [],
