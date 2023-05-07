@@ -92,12 +92,20 @@
                     </button>
                 </div>
             </div>
-            <div class="mt-8 lg:mt-4 px-2">
+            <div class="send-plan">
                 <button
-                    class="py-1 button-primary"
+                    class="send-plan-button"
                     :class="{'button-disabled': this.$store.state.isSendingPlan}"
-                    @click="onClickSendPlan">計画送信
+                    @click="onClickSendPlan">
+                    <span v-if="!this.$store.state.isSendingPlan">計画送信</span>
+                    <div
+                        v-if="this.$store.state.isSendingPlan"
+                        class="button-circle"
+                    >
+                        <div class="button-circle-spin"></div>
+                    </div>
                 </button>
+
             </div>
         </div>
         <send-notification></send-notification>
@@ -305,6 +313,22 @@ export default {
 
         .move-command-button {
             @apply px-1.5 py-0.5 text-sm;
+        }
+    }
+
+    .send-plan {
+        @apply mt-8 lg:mt-4 px-2;
+
+        .send-plan-button {
+            @apply py-1 button-primary w-2/3 lg:w-1/2;
+        }
+
+        .button-circle {
+            @apply flex justify-center;
+
+            .button-circle-spin {
+                @apply animate-spin m-1 w-4 h-4 border-2 border-white rounded-full border-t-transparent;
+            }
         }
     }
 }
