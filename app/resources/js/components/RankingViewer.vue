@@ -89,7 +89,6 @@ export default {
 
     methods: {
         onAppeared() {
-            console.log("appeared!")
             this.isAppeared = true;
             this.observer.disconnect();
         }
