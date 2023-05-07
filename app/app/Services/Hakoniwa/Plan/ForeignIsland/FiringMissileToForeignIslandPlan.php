@@ -22,10 +22,9 @@ use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-class ForeignIslandFiringMissilePlan extends ForeignIslandTargetedPlan
+class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
-
-    public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ForeignIslandExecutePlanResult
+    public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
     {
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
@@ -48,7 +47,7 @@ class ForeignIslandFiringMissilePlan extends ForeignIslandTargetedPlan
                     if ($firingCount >= 1) {
                         $fromLogs->add(new MissileFiringLog($toIsland, $turn, $this->plan->getPoint(), $this->plan, $firingCount));
                     }
-                    return new ForeignIslandExecutePlanResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+                    return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
                 }
 
                 if ($fromStatus->getFunds() < $this->plan->getPrice()) {
@@ -56,7 +55,7 @@ class ForeignIslandFiringMissilePlan extends ForeignIslandTargetedPlan
                         $fromLogs->add(new MissileFiringLog($toIsland, $turn, $this->plan->getPoint(), $this->plan, $firingCount));
                     }
                     $fromLogs->add(new AbortLackOfFundsLog($fromIsland, $turn, $this->plan->getPoint(), $this->plan));
-                    return new ForeignIslandExecutePlanResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+                    return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
                 }
                 $fromStatus->setFunds($fromStatus->getFunds() - $this->plan->getPrice());
 
@@ -102,6 +101,6 @@ class ForeignIslandFiringMissilePlan extends ForeignIslandTargetedPlan
             $fromLogs->add(new MissileFiringLog($toIsland, $turn, $this->plan->getPoint(), $this->plan, $firingCount));
         }
 
-        return new ForeignIslandExecutePlanResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+        return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }
 }

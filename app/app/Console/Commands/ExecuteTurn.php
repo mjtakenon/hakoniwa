@@ -14,7 +14,7 @@ use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
-use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandTargetedPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\TargetedToForeignIslandPlan;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -116,7 +116,7 @@ class ExecuteTurn extends Command
                 }
 
                 // 他の島を目標にした計画の実行
-                /** @var ForeignIslandTargetedPlan $plan */
+                /** @var TargetedToForeignIslandPlan $plan */
                 foreach ($foreignIslandTargetedPlans as $plan) {
                     /** @var Island $toIsland */
                     $toIsland = $islands->find($plan->getToIsland());

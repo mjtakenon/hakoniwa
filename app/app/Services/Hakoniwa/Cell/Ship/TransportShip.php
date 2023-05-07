@@ -17,8 +17,8 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 
 class TransportShip extends Ship
 {
-    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/fune12.gif';
-    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/fune12.gif';
+    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/transport_ship_sea.png';
+    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/transport_ship_shallow.png';
     public const TYPE = 'transport_ship';
     public const NAME = '輸送船';
     const MAINTENANCE_NUMBER_OF_PEOPLE = 1000;
