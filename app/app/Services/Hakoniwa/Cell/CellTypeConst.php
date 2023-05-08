@@ -25,6 +25,8 @@ use App\Services\Hakoniwa\Cell\Park\MonumentOfPeace;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfWar;
 use App\Services\Hakoniwa\Cell\Park\MonumentOfWinner;
 use App\Services\Hakoniwa\Cell\Park\Park;
+use App\Services\Hakoniwa\Cell\Ship\Battleship;
+use App\Services\Hakoniwa\Cell\Ship\Submarine;
 use App\Services\Hakoniwa\Cell\Ship\TransportShip;
 
 class CellTypeConst
@@ -67,6 +69,8 @@ class CellTypeConst
         Slime::TYPE => Slime::class,
         SlimeLegend::TYPE => SlimeLegend::class,
         TransportShip::TYPE => TransportShip::class,
+        Battleship::TYPE => Battleship::class,
+        Submarine::TYPE => Submarine::class,
     ];
 
     const IS_LAND = 'is_land';

@@ -2,18 +2,7 @@
 
 namespace App\Services\Hakoniwa\Cell\Ship;
 
-use App\Models\Island;
-use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
-use App\Services\Hakoniwa\Cell\Forest;
-use App\Services\Hakoniwa\Cell\MissileBase\IMissileFireable;
-use App\Services\Hakoniwa\Cell\PassTurnResult;
-use App\Services\Hakoniwa\Cell\Sea;
-use App\Services\Hakoniwa\Cell\Shallow;
-use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
 
 class TransportShip extends Ship
 {
@@ -21,7 +10,7 @@ class TransportShip extends Ship
     public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/transport_ship_shallow.png';
     public const TYPE = 'transport_ship';
     public const NAME = '輸送船';
-    const MAINTENANCE_NUMBER_OF_PEOPLE = 1000;
+    public const MAINTENANCE_NUMBER_OF_PEOPLE = 1000;
 
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => false,
@@ -50,7 +39,7 @@ class TransportShip extends Ship
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
-        $arr['data']['maintenanceNumberOfPeople'] = self::MAINTENANCE_NUMBER_OF_PEOPLE;
+        $arr['data']['maintenanceNumberOfPeople'] = $this->maintenanceNumberOfPeople;
         return $arr;
     }
 
@@ -64,7 +53,7 @@ class TransportShip extends Ship
     public function getInfoString(bool $isPrivate = false): string
     {
         return
-            '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
             '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL;
     }
 }

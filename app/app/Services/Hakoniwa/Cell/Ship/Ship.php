@@ -6,8 +6,6 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
-use App\Services\Hakoniwa\Cell\Forest;
-use App\Services\Hakoniwa\Cell\MissileBase\IMissileFireable;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
