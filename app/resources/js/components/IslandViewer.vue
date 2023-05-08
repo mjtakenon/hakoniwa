@@ -36,8 +36,9 @@
 
 <script lang="ts">
 import { Terrain } from "../store/Entity/Terrain";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     components: {},
     data() {
         return {
@@ -104,7 +105,7 @@ export default {
     },
     computed: {},
     props: [],
-};
+});
 </script>
 
 <style lang="postcss" scoped>

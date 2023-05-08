@@ -116,8 +116,9 @@
 
 import {getDefaultPlan, Plan} from "../store/Entity/Plan";
 import SendNotification from "./SendNotification.vue";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     components: {SendNotification},
     data() {
         return {
@@ -257,7 +258,7 @@ export default {
     },
     computed: {},
     props: [],
-};
+});
 </script>
 
 

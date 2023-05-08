@@ -13,10 +13,12 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {defineComponent} from "vue";
+
+export default defineComponent({
     props: ['turn', 'day', 'time']
-}
+});
 </script>
 
 <style lang="scss" scoped>

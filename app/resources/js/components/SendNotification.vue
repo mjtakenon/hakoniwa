@@ -8,7 +8,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
     components: {},
     data() {
         return {
@@ -47,7 +49,7 @@ export default {
         }
     },
     props: [],
-};
+});
 </script>
 
 <style lang="scss" scoped>

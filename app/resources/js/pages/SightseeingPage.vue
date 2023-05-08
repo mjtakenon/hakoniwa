@@ -15,8 +15,9 @@ import StatusTable from "../components/StatusTable.vue";
 import LogViewer from "../components/LogViewer.vue";
 import IslandViewer from "../components/IslandViewer.vue";
 import lodash from "lodash";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     components: {
         IslandViewer,
         StatusTable,
@@ -47,7 +48,7 @@ export default {
         // showHoverWindow() { return true; }
     },
     props: ['hakoniwa', 'island'],
-};
+});
 </script>
 
 <style lang="scss" scoped>

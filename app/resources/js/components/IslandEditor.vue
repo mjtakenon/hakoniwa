@@ -86,8 +86,9 @@
 <script lang="ts">
 import { Terrain } from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     components: {},
     data() {
         return {
@@ -242,7 +243,7 @@ export default {
             },
         },
     props: [],
-};
+});
 </script>
 
 <style lang="postcss" scoped>
