@@ -72,12 +72,14 @@ abstract class Ship extends Cell
         /** @var Cell $cell */
         $cell = $seaCells->random();
 
-        $terrain->setCell($cell->getPoint(), new (CellTypeConst::CELL_TYPE_LIST[$this->getType()])(point: $cell->getPoint(), elevation: $cell->getElevation()));
+        $beforePoint = $this->point;
+        $this->point = $cell->getPoint();
+        $terrain->setCell($this->point, $this);
 
         if ($this->elevation === -1) {
-            $terrain->setCell($this->getPoint(), new Shallow(point: $this->getPoint()));
+            $terrain->setCell($beforePoint, new Shallow(point: $beforePoint));
         } else {
-            $terrain->setCell($this->getPoint(), new Sea(point: $this->getPoint()));
+            $terrain->setCell($beforePoint, new Sea(point: $beforePoint));
         }
 
         return new PassTurnResult($terrain, $status, $logs);
