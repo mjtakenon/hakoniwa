@@ -21,6 +21,7 @@ use App\Services\Hakoniwa\Log\MissileSelfDestructLog;
 use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use function DeepCopy\deep_copy;
 
 class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
@@ -76,7 +77,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
 
                     // 命中
                     $targetCell->setHitPoints($targetCell->getHitPoints() - 1);
-                    $toLogs->add(new MissileHitToMonsterLog($fromIsland, $turn, $targetCell, $this->plan));
+                    $toLogs->add(new MissileHitToMonsterLog($fromIsland, $turn, deep_copy($targetCell), $this->plan));
                     if ($targetCell->getHitPoints() >= 1) {
                         $toTerrain->setCell($targetCell->getPoint(), $targetCell);
                     } else {
@@ -102,5 +103,9 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
         }
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+    }
+
+    private function deep_copy(Monster|Cell $targetCell)
+    {
     }
 }

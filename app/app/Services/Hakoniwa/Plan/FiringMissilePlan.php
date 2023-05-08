@@ -133,7 +133,7 @@ class FiringMissilePlan extends Plan
 
                     // 命中
                     $targetCell->setHitPoints($targetCell->getHitPoints() - 1);
-                    $logs->add(new MissileHitToMonsterLog($island, $turn, $targetCell, $this));
+                    $logs->add(new MissileHitToMonsterLog($island, $turn, deep_copy($targetCell), $this));
                     if ($targetCell->getHitPoints() >= 1) {
                         $terrain->setCell($targetCell->getPoint(), $targetCell);
                     } else {
