@@ -140,28 +140,4 @@ abstract class CombatantShip extends Ship
     {
         return $this->affiliationName;
     }
-
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
-    {
-        $logs = Logs::create();
-
-        $seaCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            /** @var Cell $cell */
-            return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE], true);
-        });
-        /** @var CombatantShip $cell */
-        $cell = $seaCells->random();
-
-        $beforePoint = $this->point;
-        $this->point = $cell->getPoint();
-        $terrain->setCell($this->point, $this);
-
-        if ($this->elevation === -1) {
-            $terrain->setCell($beforePoint, new Shallow(point: $beforePoint));
-        } else {
-            $terrain->setCell($beforePoint, new Sea(point: $beforePoint));
-        }
-
-        return new PassTurnResult($terrain, $status, $logs);
-    }
 }
