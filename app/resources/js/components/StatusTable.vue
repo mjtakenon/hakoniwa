@@ -20,14 +20,16 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import {defineComponent} from "vue";
+
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
     'good': '良好',
     'normal': '通常',
 }
 
-export default {
+export default defineComponent({
     data() {
         return {
             statuses: [
@@ -84,7 +86,7 @@ export default {
             ],
         }
     },
-}
+});
 </script>
 
 <style lang="postcss" scoped>

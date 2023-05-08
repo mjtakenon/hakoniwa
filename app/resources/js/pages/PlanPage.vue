@@ -23,8 +23,9 @@ import IslandEditor from "../components/IslandEditor.vue";
 import PlanController from "../components/PlanController.vue";
 import PlanList from "../components/PlanList.vue";
 import lodash from 'lodash';
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
     components: {
         IslandEditor,
         PlanController,
@@ -61,7 +62,7 @@ export default {
     },
     computed: {},
     props: ['hakoniwa', 'island', 'planCandidate', 'targetIslands'],
-};
+});
 </script>
 
 <style lang="scss" scoped>

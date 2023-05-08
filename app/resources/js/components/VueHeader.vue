@@ -54,7 +54,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
     data() {
         return {
             isOpenHamburgerMenu: false,
@@ -76,7 +78,7 @@ export default {
         'isIslandRegistered',
         'ownedIsland',
     ]
-};
+});
 </script>
 
 <style lang="postcss" scoped>
