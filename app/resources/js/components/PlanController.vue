@@ -13,7 +13,7 @@
             <div class="section-header">開発計画</div>
             <div class="dev-plan">
                 <p class="title-sm-inline">計画番号:</p>
-                <select class="float-right" v-model="$store.state.selectedPlanNumber">
+                <select class="float-right" v-model="store.selectedPlanNumber">
                     <option v-for="num of MAX_PLAN_NUMBER" :value="num" :key="num"> {{ num }}</option>
                 </select>
             </div>
@@ -21,10 +21,10 @@
                 <p class="title-sm-block">開発:</p>
                 <select class="plan-select-develop" v-model="selectedPlan">
                     <option
-                        v-for="plan of $store.state.planCandidate"
+                        v-for="plan of store.planCandidate"
                         :key="plan.key"
                         :value="plan.key"
-                    > {{ plan.name }} {{ plan.priceString }} </option>
+                    > {{ plan.data.name }} {{ plan.data.priceString }} </option>
                     <option
                         value="all_grading"
                     > 全荒地に整地入力 (荒地x5億円) </option>
@@ -41,16 +41,16 @@
                 <div class="plan-select-pos">
                     <span>( </span>
                     <span>
-                        <select v-model="$store.state.selectedPoint.x">
-                            <option v-for="x of $store.state.hakoniwa.height" :key="x" :value="x-1">
+                        <select v-model="store.selectedPoint.x">
+                            <option v-for="x of store.hakoniwa.height" :key="x" :value="x-1">
                                 {{ x - 1 }}
                             </option>
                         </select>
                     </span>
                     <span> , </span>
                     <span>
-                        <select v-model="$store.state.selectedPoint.y">
-                            <option v-for="y of $store.state.hakoniwa.height" :key="y" :value="y-1">
+                        <select v-model="store.selectedPoint.y">
+                            <option v-for="y of store.hakoniwa.height" :key="y" :value="y-1">
                                 {{ y - 1 }}
                             </option>
                         </select>
@@ -60,7 +60,7 @@
             </div>
             <div class="dev-plan">
                 <p class="title-sm-block">数量</p>
-                <select class="float-right" v-model="$store.state.selectedAmount">
+                <select class="float-right" v-model="store.selectedAmount">
                     <option v-for="n of 100" :key="n-1" :value="n-1">
                         {{ n - 1 }}
                     </option>
@@ -69,12 +69,12 @@
             <div class="dev-plan border-t-2 pt-2 border-gray-300">
                 <p class="title-block">目標の島:</p>
                 <div class="plan-target-island">
-                    <select class="target-select" v-model="$store.state.selectedTargetIsland">
-                        <option v-for="targetIsland of $store.state.targetIslands" :key="targetIsland.id" :value="targetIsland.id">
+                    <select class="target-select" v-model="store.selectedTargetIsland">
+                        <option v-for="targetIsland of store.targetIslands" :key="targetIsland.id" :value="targetIsland.id">
                             {{ targetIsland.name }} 島
                         </option>
                     </select>
-                    <a class="button-white target-open" :href="'/islands/' + $store.state.selectedTargetIsland" target="_blank"> 開く </a>
+                    <a class="button-white target-open" :href="'/islands/' + store.selectedTargetIsland" target="_blank"> 開く </a>
                 </div>
             </div>
         </div>
@@ -85,21 +85,21 @@
                 <p class="title-sm-block">コマンド移動</p>
                 <div class="move-command">
                     <button class="button-white move-command-button mr-2" @click="onClickMoveUp"
-                            :disabled="this.$store.state.selectedPlanNumber <= 1">▲
+                            :disabled="store.selectedPlanNumber <= 1">▲
                     </button>
                     <button class="button-white move-command-button" @click="onClickMoveDown"
-                            :disabled="this.$store.state.selectedPlanNumber >= MAX_PLAN_NUMBER">▼
+                            :disabled="store.selectedPlanNumber >= MAX_PLAN_NUMBER">▼
                     </button>
                 </div>
             </div>
             <div class="send-plan">
                 <button
                     class="send-plan-button"
-                    :class="{'button-disabled': this.$store.state.isSendingPlan}"
+                    :class="{'button-disabled': store.isSendingPlan}"
                     @click="onClickSendPlan">
-                    <span v-if="!this.$store.state.isSendingPlan">計画送信</span>
+                    <span v-if="!store.isSendingPlan">計画送信</span>
                     <div
-                        v-if="this.$store.state.isSendingPlan"
+                        v-if="store.isSendingPlan"
                         class="button-circle"
                     >
                         <div class="button-circle-spin"></div>
@@ -114,9 +114,10 @@
 
 <script lang="ts">
 
-import {getDefaultPlan, Plan} from "../store/Entity/Plan";
+import {Plan} from "../store/Entity/Plan";
 import SendNotification from "./SendNotification.vue";
 import {defineComponent} from "vue";
+import {useMainStore} from "../store/MainStore";
 
 export default defineComponent({
     components: {SendNotification},
@@ -126,69 +127,80 @@ export default defineComponent({
             selectedPlan: 'grading',
         }
     },
+    setup() {
+        const store = useMainStore()
+        return {store}
+    },
     methods: {
         getSelectedPlan(): Plan {
-            return {
-                key: this.selectedPlan,
-                data: {
-                    name: this.$store.state.planCandidate[this.selectedPlan].name,
-                    point: {
-                        x: this.$store.state.selectedPoint.x,
-                        y: this.$store.state.selectedPoint.y,
-                    },
-                    amount: this.$store.state.selectedAmount,
-                    usePoint: this.$store.state.planCandidate[this.selectedPlan].usePoint,
-                    useAmount: this.$store.state.planCandidate[this.selectedPlan].useAmount,
-                    useTargetIsland: this.$store.state.planCandidate[this.selectedPlan].useTargetIsland,
-                    targetIsland: this.$store.state.selectedTargetIsland,
-                    isFiring: this.$store.state.planCandidate[this.selectedPlan].isFiring,
-                    priceString: this.$store.state.planCandidate[this.selectedPlan].priceString,
-                    amountString: this.$store.state.planCandidate[this.selectedPlan].amountString,
-                    defaultAmountString: this.$store.state.planCandidate[this.selectedPlan].defaultAmountString,
+            // TODO: IslandEditorと共通化できる
+            const result = this.store.planCandidate.find(c => c.key === this.selectedPlan);
+            if (result === undefined) return null;
+            else {
+                const p = result.data;
+                return {
+                    key: this.selectedPlan,
+                    data: {
+                        name: p.name,
+                        point: {
+                            x: this.store.selectedPoint.x,
+                            y: this.store.selectedPoint.y
+                        },
+                        amount: this.store.selectedAmount,
+                        usePoint: p.usePoint,
+                        useAmount: p.useAmount,
+                        useTargetIsland: p.useTargetIsland,
+                        targetIsland: this.store.selectedTargetIsland,
+                        isFiring: p.isFiring,
+                        priceString: p.priceString,
+                        amountString: p.amountString,
+                        defaultAmountString: p.defaultAmountString
+                    }
                 }
-            };
+
+            }
         },
         getCustomPlan(key: string, point: Point): Plan {
             return {
                 key: key,
                 data: {
-                    name: this.$store.state.planCandidate[key].name,
+                    name: this.store.planCandidate[key].data.name,
                     point: {
                         x: point.x,
                         y: point.y,
                     },
-                    amount: this.$store.state.selectedAmount,
-                    usePoint: this.$store.state.planCandidate[key].usePoint,
-                    useAmount: this.$store.state.planCandidate[key].useAmount,
-                    useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
-                    targetIsland: this.$store.state.selectedTargetIsland,
-                    isFiring: this.$store.state.planCandidate[key].isFiring,
-                    priceString: this.$store.state.planCandidate[key].priceString,
-                    amountString: this.$store.state.planCandidate[key].amountString,
-                    defaultAmountString: this.$store.state.planCandidate[key].defaultAmountString,
+                    amount: this.store.selectedAmount,
+                    usePoint: this.store.planCandidate[key].data.usePoint,
+                    useAmount: this.store.planCandidate[key].data.useAmount,
+                    useTargetIsland: this.store.planCandidate[key].data.useTargetIsland,
+                    targetIsland: this.store.selectedTargetIsland,
+                    isFiring: this.store.planCandidate[key].data.isFiring,
+                    priceString: this.store.planCandidate[key].data.priceString,
+                    amountString: this.store.planCandidate[key].data.amountString,
+                    defaultAmountString: this.store.planCandidate[key].data.defaultAmountString,
                 }
             };
         },
         insertPlanAutomatically(source: string, target: string) {
-            for (let terrain of this.$store.state.terrains) {
+            for (let terrain of this.store.terrains) {
                 if (terrain.type === source) {
                     let plan = this.getCustomPlan(target, terrain.data.point)
 
-                    this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 0, plan);
-                    this.$store.state.plans.pop();
-                    if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                        this.$store.state.selectedPlanNumber++;
+                    this.store.plans.splice(this.store.selectedPlanNumber-1, 0, plan);
+                    this.store.plans.pop();
+                    if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                        this.store.selectedPlanNumber++;
                     }
                 }
             }
         },
         overwritePlanAutomatically(source: string, target: string) {
-            for (let terrain of this.$store.state.terrains) {
+            for (let terrain of this.store.terrains) {
                 if (terrain.type === source) {
-                    this.$store.state.plans[this.$store.state.selectedPlanNumber-1] = this.getCustomPlan(target, terrain.data.point);
+                    this.store.plans[this.store.selectedPlanNumber-1] = this.getCustomPlan(target, terrain.data.point);
 
-                    if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                        this.$store.state.selectedPlanNumber++;
+                    if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                        this.store.selectedPlanNumber++;
                     }
                 }
             }
@@ -205,10 +217,10 @@ export default defineComponent({
                 return;
             }
 
-            this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 0, this.getSelectedPlan());
-            this.$store.state.plans.pop();
-            if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                this.$store.state.selectedPlanNumber++;
+            this.store.plans.splice(this.store.selectedPlanNumber-1, 0, this.getSelectedPlan());
+            this.store.plans.pop();
+            if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.store.selectedPlanNumber++;
             }
         },
         onClickOverwrite() {
@@ -223,38 +235,36 @@ export default defineComponent({
                 return;
             }
 
-            this.$store.state.plans[this.$store.state.selectedPlanNumber-1] = this.getSelectedPlan();
+            this.store.plans[this.store.selectedPlanNumber-1] = this.getSelectedPlan();
 
-            if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                this.$store.state.selectedPlanNumber++;
+            if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.store.selectedPlanNumber++;
             }
         },
         onClickDelete() {
-            this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 1);
-            this.$store.state.plans.push(getDefaultPlan());
+            this.store.plans.splice(this.store.selectedPlanNumber-1, 1);
+            this.store.plans.push(this.store.getDefaultPlan);
         },
         onClickMoveUp() {
-            if (this.$store.state.selectedPlanNumber <= 1) {
+            if (this.store.selectedPlanNumber <= 1) {
                 return
             }
-            [this.$store.state.plans[this.$store.state.selectedPlanNumber-2], this.$store.state.plans[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plans[this.$store.state.selectedPlanNumber-1], this.$store.state.plans[this.$store.state.selectedPlanNumber-2]];
-            this.$store.state.selectedPlanNumber--;
+            [this.store.plans[this.store.selectedPlanNumber-2], this.store.plans[this.store.selectedPlanNumber-1]] = [this.store.plans[this.store.selectedPlanNumber-1], this.store.plans[this.store.selectedPlanNumber-2]];
+            this.store.selectedPlanNumber--;
         },
         onClickMoveDown() {
-            if (this.$store.state.selectedPlanNumber >= 30) {
+            if (this.store.selectedPlanNumber >= 30) {
                 return
             }
-            [this.$store.state.plans[this.$store.state.selectedPlanNumber], this.$store.state.plans[this.$store.state.selectedPlanNumber-1]] = [this.$store.state.plans[this.$store.state.selectedPlanNumber-1], this.$store.state.plans[this.$store.state.selectedPlanNumber]];
-            if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                this.$store.state.selectedPlanNumber++;
+            [this.store.plans[this.store.selectedPlanNumber], this.store.plans[this.store.selectedPlanNumber-1]] = [this.store.plans[this.store.selectedPlanNumber-1], this.store.plans[this.store.selectedPlanNumber]];
+            if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.store.selectedPlanNumber++;
             }
         },
         onClickSendPlan() {
-            this.$store.state.isSendingPlan = true
-            this.$store.dispatch('putPlan')
+            this.store.isSendingPlan = true;
+            this.store.putPlan()
         }
-    },
-    mounted() {
     },
     computed: {},
     props: [],

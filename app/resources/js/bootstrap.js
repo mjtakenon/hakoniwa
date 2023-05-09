@@ -19,7 +19,6 @@ import PlanPage from "./pages/PlanPage.vue";
 import VueHeader from "./components/VueHeader.vue";
 import TurnViewer from "./components/TurnViewer.vue";
 import RankingViewer from "./components/RankingViewer.vue";
-import { store, key } from "./store/store";
 
 const app = createApp({
     components:{
@@ -30,8 +29,6 @@ const app = createApp({
         RankingViewer,
     }
 });
-
-app.use(store, key)
 
 const pinia = createPinia();
 app.use(pinia);

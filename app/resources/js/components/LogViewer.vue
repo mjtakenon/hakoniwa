@@ -1,9 +1,9 @@
 <template>
     <div id="logs">
         <div class="subtitle">
-            {{ $store.state.island.name }}島の近況
+            {{ store.island.name }}島の近況
         </div>
-        <div class="w-full" v-for="log of $store.state.logs" :key="log.id">
+        <div class="w-full" v-for="(log, index) of store.logs" :key="'log-' + index">
             <span v-for="context of JSON.parse(log.log)" :key="context.text">
                 <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">
                     {{ context.text }}
@@ -17,9 +17,13 @@
 </template>
 <script lang="ts">
 import {defineComponent} from "vue";
+import {useMainStore} from "../store/MainStore";
 
 export default defineComponent({
-    props: [],
+    setup() {
+        const store = useMainStore();
+        return { store };
+    }
 });
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div id="sightseeing-page" class="wrapper">
-        <div class="title mt-2">{{ $store.state.island.name }}島へようこそ！</div>
+        <div class="title mt-2">{{ store.island.name }}島へようこそ！</div>
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <hr/>
@@ -14,8 +14,13 @@
 import StatusTable from "../components/StatusTable.vue";
 import LogViewer from "../components/LogViewer.vue";
 import IslandViewer from "../components/IslandViewer.vue";
-import lodash from "lodash";
-import {defineComponent} from "vue";
+import {defineComponent, PropType} from "vue";
+import {useMainStore} from "../store/MainStore";
+import {Hakoniwa} from "../store/Entity/Hakoniwa";
+import {Status} from "../store/Entity/Status";
+import {Terrain} from "../store/Entity/Terrain";
+import {Plan} from "../store/Entity/Plan";
+import {Log} from "../store/Entity/Log";
 
 export default defineComponent({
     components: {
@@ -34,20 +39,40 @@ export default defineComponent({
             hoverWindowLeft: 0,
         }
     },
-    setup() {
+    setup(props) {
+        const store = useMainStore();
+        store.$patch({
+            hakoniwa: props.hakoniwa,
+            island: props.island,
+            status: props.island.status,
+            terrains: props.island.terrains,
+            logs: props.island.logs
+        })
+        return { store }
     },
     methods: {},
-    beforeMount() {
-        this.$store.state.hakoniwa = this.hakoniwa
-        this.$store.state.island = this.island
-        this.$store.state.status = this.island.status
-        this.$store.state.terrains = this.island.terrains
-        this.$store.state.logs = this.island.logs
-    },
     computed: {
         // showHoverWindow() { return true; }
     },
-    props: ['hakoniwa', 'island'],
+    props: {
+        hakoniwa: {
+            required: true,
+            type: Object as PropType<Hakoniwa>
+        },
+        // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/store/Entity/Islandの中身と異なっている　共通化できないか？
+        island: {
+            required: true,
+            type: Object as PropType<{
+                id: number,
+                name: string,
+                owner_name: string,
+                status: Status,
+                terrains: Array<Terrain>,
+                plans: Array<Plan>,
+                logs: Array<Log>
+            }>
+        },
+    },
 });
 </script>
 

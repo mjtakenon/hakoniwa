@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-show="$store.state.showNotification" :class="notificationClass">
+        <div v-show="store.showNotification" :class="notificationClass">
 <!--            <button class="delete" @click="onClickNotificationClose()"></button>-->
             {{ notificationMessage }}
         </div>
@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
+import {useMainStore} from "../store/MainStore";
 
 export default defineComponent({
     components: {},
@@ -18,10 +19,12 @@ export default defineComponent({
         }
     },
     setup() {
+        const store = useMainStore();
+        return { store };
     },
     methods: {
         onClickNotificationClose() {
-            this.$store.state.showNotification = false;
+            this.store.showNotification = false;
         },
     },
     mounted() {
@@ -29,7 +32,7 @@ export default defineComponent({
     },
     computed: {
         notificationMessage() {
-            const status = this.$store.state.planSendingResult
+            const status = this.store.planSendingResult
             if (status === this.STATUS_PAGE_EXPIRED) return 'セッションの有効期限が切れているため、ページを再読み込みしてください。解決しない場合は、管理者にご連絡ください。(status: ' + status + ')';
 
             if (status >= 200 && status < 300) {
@@ -43,7 +46,7 @@ export default defineComponent({
         notificationClass() {
             return [
                 // 'notification',
-                this.$store.state.planSendingResult >= 200 && this.$store.state.planSendingResult < 300 ?
+                this.store.planSendingResult >= 200 && this.store.planSendingResult < 300 ?
                 'has-text-success' : 'has-text-danger'
             ];
         }
