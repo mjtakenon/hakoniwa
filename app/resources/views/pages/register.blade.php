@@ -8,13 +8,12 @@
             <div class="field">
                 <label class="label">島にどんな名前をつけますか?（最大32文字）</label>
                 <div class="control">
-                    <input id="island-name-input" class="input" type="text" name="island_name" placeholder="島名を入力してください" maxlength="32" minlength="1" required pattern=".*\S+.*">
-                    <span class="icon">
-                        🏝
-                    </span>
-                    <span class="icon">
-                        島
-                    </span>
+                    <div class="icons">
+                        <span>🏝</span>
+                        <span>島</span>
+                    </div>
+                    <input id="island-name-input" class="input-with-icon" type="text" name="island_name" placeholder="島名を入力してください" maxlength="32" minlength="1" required pattern=".*\S+.*">
+
                 </div>
 {{--                <p class="help is-success">この島名は利用可能です！</p>--}}
                 {{--                <p class="help is-success">名前は後から変更可能です</p>--}}
@@ -30,7 +29,9 @@
 
             <div class="field">
                 <div class="control">
-                    <input id="submit-button" class="button-primary mx-auto" type="submit" value="島を探しに行く"/>
+                    <div class="w-full text-center">
+                        <input id="submit-button" class="button-primary" type="submit" value="島を探しに行く"/>
+                    </div>
                 </div>
             </div>
         </form>
