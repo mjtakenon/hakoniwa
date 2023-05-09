@@ -187,11 +187,15 @@ export default defineComponent({
             }
         },
         insertPlanAutomatically(source: string, target: string) {
+            // targetのコマンドが操作できない場合はreturn
+            if(!this.store.planCandidate.find(p => p.key === target)) {
+                return;
+            }
             for (let terrain of this.store.terrains) {
                 if (terrain.type === source) {
                     let plan = this.getCustomPlan(target, terrain.data.point)
 
-                    this.store.plans.splice(this.store.selectedPlanNumber-1, 0, plan);
+                    this.store.plans.splice(this.store.selectedPlanNumber - 1, 0, plan);
                     this.store.plans.pop();
                     if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                         this.store.selectedPlanNumber++;
@@ -201,14 +205,15 @@ export default defineComponent({
         },
         overwritePlanAutomatically(source: string, target: string) {
             // targetのコマンドが操作できない場合はreturn
-            if(this.store.planCandidate.find(p => p.key === target)) {
-                for (let terrain of this.store.terrains) {
-                    if (terrain.type === source) {
-                        this.store.plans[this.store.selectedPlanNumber-1] = this.getCustomPlan(target, terrain.data.point);
+            if(!this.store.planCandidate.find(p => p.key === target)) {
+                return;
+            }
+            for (let terrain of this.store.terrains) {
+                if (terrain.type === source) {
+                    this.store.plans[this.store.selectedPlanNumber-1] = this.getCustomPlan(target, terrain.data.point);
 
-                        if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                            this.store.selectedPlanNumber++;
-                        }
+                    if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                        this.store.selectedPlanNumber++;
                     }
                 }
             }
