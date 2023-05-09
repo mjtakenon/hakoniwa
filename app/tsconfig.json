@@ -6,7 +6,6 @@
 
         "strict": true,
         "noImplicitAny": false,
-        "noImplicitThis": false,
         "strictNullChecks": false,
 
         "noUnusedLocals": false,
