@@ -26,12 +26,15 @@
                         :value="plan.key"
                     > {{ plan.data.name }} {{ plan.data.priceString }} </option>
                     <option
+                        v-if="store.planCandidate.find(p => p.key === 'grading')"
                         value="all_grading"
                     > 全荒地に整地入力 (荒地x5億円) </option>
                     <option
+                        v-if="store.planCandidate.find(p => p.key === 'ground_leveling')"
                         value="all_ground_leveling"
                     > 全荒地に高速整地入力 (荒地x100億円) </option>
                     <option
+                        v-if="store.planCandidate.find(p => p.key === 'excavation')"
                         value="all_excavation"
                     > 全浅瀬に掘削入力 (浅瀬x200億円) </option>
                 </select>
@@ -118,6 +121,7 @@ import {Plan} from "../store/Entity/Plan";
 import SendNotification from "./SendNotification.vue";
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
+import {Point} from "../store/Entity/Point";
 
 export default defineComponent({
     components: {SendNotification},
@@ -161,32 +165,40 @@ export default defineComponent({
             }
         },
         getCustomPlan(key: string, point: Point): Plan {
-            return {
-                key: key,
-                data: {
-                    name: this.store.planCandidate[key].data.name,
-                    point: {
-                        x: point.x,
-                        y: point.y,
-                    },
-                    amount: this.store.selectedAmount,
-                    usePoint: this.store.planCandidate[key].data.usePoint,
-                    useAmount: this.store.planCandidate[key].data.useAmount,
-                    useTargetIsland: this.store.planCandidate[key].data.useTargetIsland,
-                    targetIsland: this.store.selectedTargetIsland,
-                    isFiring: this.store.planCandidate[key].data.isFiring,
-                    priceString: this.store.planCandidate[key].data.priceString,
-                    amountString: this.store.planCandidate[key].data.amountString,
-                    defaultAmountString: this.store.planCandidate[key].data.defaultAmountString,
-                }
-            };
+            const result = this.store.planCandidate.find(c => c.key === key);
+            if (result === undefined) return null;
+            else {
+                return {
+                    key: key,
+                    data: {
+                        name: result.data.name,
+                        point: {
+                            x: point.x,
+                            y: point.y,
+                        },
+                        amount: this.store.selectedAmount,
+                        usePoint: result.data.usePoint,
+                        useAmount: result.data.useAmount,
+                        useTargetIsland: result.data.useTargetIsland,
+                        targetIsland: this.store.selectedTargetIsland,
+                        isFiring: result.data.isFiring,
+                        priceString: result.data.priceString,
+                        amountString: result.data.amountString,
+                        defaultAmountString: result.data.defaultAmountString,
+                    }
+                };
+            }
         },
         insertPlanAutomatically(source: string, target: string) {
+            // targetのコマンドが操作できない場合はreturn
+            if(!this.store.planCandidate.find(p => p.key === target)) {
+                return;
+            }
             for (let terrain of this.store.terrains) {
                 if (terrain.type === source) {
                     let plan = this.getCustomPlan(target, terrain.data.point)
 
-                    this.store.plans.splice(this.store.selectedPlanNumber-1, 0, plan);
+                    this.store.plans.splice(this.store.selectedPlanNumber - 1, 0, plan);
                     this.store.plans.pop();
                     if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
                         this.store.selectedPlanNumber++;
@@ -195,6 +207,10 @@ export default defineComponent({
             }
         },
         overwritePlanAutomatically(source: string, target: string) {
+            // targetのコマンドが操作できない場合はreturn
+            if(!this.store.planCandidate.find(p => p.key === target)) {
+                return;
+            }
             for (let terrain of this.store.terrains) {
                 if (terrain.type === source) {
                     this.store.plans[this.store.selectedPlanNumber-1] = this.getCustomPlan(target, terrain.data.point);
