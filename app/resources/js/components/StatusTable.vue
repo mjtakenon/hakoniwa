@@ -22,70 +22,76 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-
-const ISLAND_ENVIRONMENT = {
-    'best': '最高',
-    'good': '良好',
-    'normal': '通常',
-}
+import {useMainStore} from "../store/MainStore";
 
 export default defineComponent({
     data() {
         return {
-            statuses: [
-                {
-                    title: "発展ポイント",
-                    num: this.$store.state.status.development_points,
-                    unit: "pts"
-                },
-                {
-                    title: "人口",
-                    num: this.$store.state.status.population,
-                    unit: "人"
-                },
-                {
-                    title: "資金",
-                    num: this.$store.state.status.funds,
-                    unit: "億円"
-                },
-                {
-                    title: "食料",
-                    num: this.$store.state.status.foods,
-                    unit: "㌧"
-                },
-                {
-                    title: "資源",
-                    num: this.$store.state.status.resources,
-                    unit: "㌧"
-                },
-                {
-                    title: "環境",
-                    num: ISLAND_ENVIRONMENT[this.$store.state.status.environment],
-                    unit: ""
-                },
-                {
-                    title: "面積",
-                    num: this.$store.state.status.area,
-                    unit: "万坪"
-                },
-                {
-                    title: "農業",
-                    num: this.$store.state.status.foods_production_number_of_people,
-                    unit: "人規模"
-                },
-                {
-                    title: "工業",
-                    num: this.$store.state.status.funds_production_number_of_people,
-                    unit: "人規模"
-                },
-                {
-                    title: "資源生産",
-                    num: this.$store.state.status.resources_production_number_of_people,
-                    unit: "人規模"
-                },
-            ],
+            statuses: [] as {
+                title: string,
+                num: number | string,
+                unit: string
+            }[],
         }
     },
+    setup() {
+        const store = useMainStore();
+        return { store };
+    },
+    mounted() {
+        this.statuses = [
+            {
+                title: "発展ポイント",
+                num: this.store.status.development_points,
+                unit: "pts"
+            },
+            {
+                title: "人口",
+                num: this.store.status.population,
+                unit: "人"
+            },
+            {
+                title: "資金",
+                num: this.store.status.funds,
+                unit: "億円"
+            },
+            {
+                title: "食料",
+                num: this.store.status.foods,
+                unit: "㌧"
+            },
+            {
+                title: "資源",
+                num: this.store.status.resources,
+                unit: "㌧"
+            },
+            {
+                title: "環境",
+                num: this.store.getEnvironmentString,
+                unit: ""
+            },
+            {
+                title: "面積",
+                num: this.store.status.area,
+                unit: "万坪"
+            },
+            {
+                title: "農業",
+                num: this.store.status.foods_production_number_of_people,
+                unit: "人規模"
+            },
+            {
+                title: "工業",
+                num: this.store.status.funds_production_number_of_people,
+                unit: "人規模"
+            },
+            {
+                title: "資源生産",
+                num: this.store.status.resources_production_number_of_people,
+                unit: "人規模"
+            },
+        ]
+    }
 });
 </script>
 

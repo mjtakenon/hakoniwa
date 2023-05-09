@@ -2,13 +2,13 @@
     <div id="island">
         <div
             class="row"
-            v-for="y of $store.state.hakoniwa.height"
+            v-for="y of store.hakoniwa.height"
             :key="y"
         >
             <div class="right-padding" :class="{'opacity-80': this.showPlanWindow}" v-if="y%2 === 1">
                 <span class="right-padding-text">{{ y-1 }}</span>
             </div>
-            <div class="cell" v-for="x of $store.state.hakoniwa.width" :key="x">
+            <div class="cell" v-for="x of store.hakoniwa.width" :key="x">
                 <img
                     @mouseover="onMouseOverCell(x-1, y-1, $event)"
                     @mouseleave="onMouseLeaveCell()"
@@ -35,18 +35,18 @@
                     {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
                 </div>
             </div>
-                    <template v-for="(plan, index) of $store.state.plans">
+                    <template v-for="(plan, index) of store.plans">
                         <div class="hover-window-plan" v-if="
                             plan.data.usePoint &&
                             plan.data.point.x === hoverCellPoint.x &&
                             plan.data.point.y === hoverCellPoint.y &&
-                            (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === $store.state.island.id)
+                            (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === store.island.id)
                         ">
                             <span>[{{ index + 1 }}] </span>
                             <span>{{ plan.data.name }}</span>
                             <span v-if="plan.data.useAmount">
                                 <span v-if="plan.data.amount === 0"> {{ plan.data.defaultAmountString }}</span>
-                                <span v-else> {{ plan.data.amountString.replace(':amount:', plan.data.amount) }} </span>
+                                <span v-else> {{ plan.data.amountString.replace(':amount:', plan.data.amount.toString()) }} </span>
                             </span>
                         </div>
                     </template>
@@ -59,9 +59,9 @@
         >
             <div class="plan-window-header">
                 <div class="grow px-3">
-                    <span class="mr-2">({{$store.state.selectedPoint.x}},{{$store.state.selectedPoint.y}})</span>
+                    <span class="mr-2">({{store.selectedPoint.x}},{{store.selectedPoint.y}})</span>
                     <span class="text-xs">計画番号: </span>
-                    <span class="mr-1">{{$store.state.selectedPlanNumber}}</span>
+                    <span class="mr-1">{{store.selectedPlanNumber}}</span>
                 </div>
 
                 <button
@@ -70,13 +70,13 @@
                 >×</button>
             </div>
             <div
-                v-for="plan of Object.values(this.$store.state.planCandidate).filter((i) => {return i.usePoint})"
+                v-for="plan of this.store.planCandidate.filter(p => p.data.usePoint)"
                 :key="plan.key"
                 class="plan-window-select"
             >
                 <div @click="onClickPlan(plan.key)">
-                    <a class="action-name">{{ plan.name }}</a>
-                    <span class="action-price">{{ plan.priceString }}</span>
+                    <a class="action-name">{{ plan.data.name }}</a>
+                    <span class="action-price">{{ plan.data.priceString }}</span>
                 </div>
             </div>
         </div>
@@ -87,9 +87,9 @@
 import { Terrain } from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
 import {defineComponent} from "vue";
+import {useMainStore} from "../store/MainStore";
 
 export default defineComponent({
-    components: {},
     data() {
         return {
             MAX_PLAN_NUMBER: 30,
@@ -108,6 +108,8 @@ export default defineComponent({
         }
     },
     setup() {
+        const store = useMainStore();
+        return { store };
     },
     mounted() {
         window.addEventListener("resize", this.onWindowSizeChanged);
@@ -117,7 +119,7 @@ export default defineComponent({
     },
     methods: {
         getIslandTerrain(x, y): Terrain {
-            return this.$store.state.terrains.filter(function(item, idx){
+            return this.store.terrains.filter(function(item, idx){
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
         },
@@ -149,14 +151,14 @@ export default defineComponent({
         },
         onClickCell(x, y, event: MouseEvent) {
             if (this.showPlanWindow &&
-                this.$store.state.selectedPoint.x === x &&
-                this.$store.state.selectedPoint.y === y
+                this.store.selectedPoint.x === x &&
+                this.store.selectedPoint.y === y
             ) {
                 this.showPlanWindow = false;
                 return;
             }
-            this.$store.state.selectedPoint.x = x;
-            this.$store.state.selectedPoint.y = y;
+            this.store.selectedPoint.x = x;
+            this.store.selectedPoint.y = y;
             this.showPlanWindow = true;
 
             if(this.isMobile) {
@@ -181,33 +183,38 @@ export default defineComponent({
             }
         },
         onClickPlan(key) {
-            this.$store.state.plans.splice(this.$store.state.selectedPlanNumber-1, 0, this.getSelectedPlan(key));
-            this.$store.state.plans.pop();
-            if (this.$store.state.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                this.$store.state.selectedPlanNumber++;
+            this.store.plans.splice(this.store.selectedPlanNumber-1, 0, this.getSelectedPlan(key));
+            this.store.plans.pop();
+            if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
+                this.store.selectedPlanNumber++;
             }
             this.showPlanWindow = false;
         },
         getSelectedPlan(key): Plan {
-            return {
-                key: key,
-                data: {
-                    name: this.$store.state.planCandidate[key].name,
-                    point: {
-                        x: this.$store.state.selectedPoint.x,
-                        y: this.$store.state.selectedPoint.y,
-                    },
-                    amount: this.$store.state.selectedAmount,
-                    usePoint: this.$store.state.planCandidate[key].usePoint,
-                    useAmount: this.$store.state.planCandidate[key].useAmount,
-                    useTargetIsland: this.$store.state.planCandidate[key].useTargetIsland,
-                    targetIsland: this.$store.state.selectedTargetIsland,
-                    isFiring: this.$store.state.planCandidate[key].isFiring,
-                    priceString: this.$store.state.planCandidate[key].priceString,
-                    amountString: this.$store.state.planCandidate[key].amountString,
-                    defaultAmountString: this.$store.state.planCandidate[key].defaultAmountString,
+            const result = this.store.planCandidate.find(c => c.key === key);
+            if (result === undefined) return null;
+            else {
+                const p = result.data;
+                return {
+                    key: key,
+                    data: {
+                        name: p.name,
+                        point: {
+                            x: this.store.selectedPoint.x,
+                            y: this.store.selectedPoint.y
+                        },
+                        amount: this.store.selectedAmount,
+                        usePoint: p.usePoint,
+                        useAmount: p.useAmount,
+                        useTargetIsland: p.useTargetIsland,
+                        targetIsland: this.store.selectedTargetIsland,
+                        isFiring: p.isFiring,
+                        priceString: p.priceString,
+                        amountString: p.amountString,
+                        defaultAmountString: p.defaultAmountString
+                    }
                 }
-            };
+            }
         },
         onClickClosePlan() {
             this.showPlanWindow = false;
@@ -217,7 +224,6 @@ export default defineComponent({
             if(this.screenWidth != newScreenWidth) {
                 this.screenWidth = newScreenWidth;
                 this.showHoverWindow = false;
-                console.log("windowSizeChanged");
                 this.showPlanWindow = false;
                 this.isMobile = (document.documentElement.clientWidth < 1024);
             }
@@ -226,16 +232,16 @@ export default defineComponent({
         computed: {
             isSelectedCell() {
                 return (x, y) => {
-                    if (this.$store.state.selectedPoint === null) {
+                    if (this.store.selectedPoint === null) {
                         return false;
                     }
-                    return x === this.$store.state.selectedPoint.x && y === this.$store.state.selectedPoint.y
+                    return x === this.store.selectedPoint.x && y === this.store.selectedPoint.y
                 }
             },
             isReferencedCell() {
                 return (x, y) => {
-                    let referencedPlan = this.$store.state.plans[this.$store.state.selectedPlanNumber-1]
-                    if (!referencedPlan.usePoint) {
+                    let referencedPlan = this.store.plans[this.store.selectedPlanNumber-1]
+                    if (!referencedPlan.data.usePoint) {
                         return false;
                     }
                     return x === referencedPlan.data.point.x && y === referencedPlan.data.point.y && referencedPlan.data.usePoint

@@ -63,30 +63,24 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, PropType} from "vue";
 
 export default defineComponent({
     data() {
         return {
-            observer : IntersectionObserver,
+            observer: null as IntersectionObserver,
             isAppeared: false // スクリーン上に出てきたかどうか
         }
     },
     mounted() {
         const target = document.querySelector("#ranking-" + this.island.id);
 
-        const options = {
-            root: null,
-            rootMargin: "0px",
-            threshold: 1
-        }
-
         this.observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) this.onAppeared();
             })
         });
-        this.observer.observe(target, options);
+        this.observer.observe(target);
     },
 
     methods: {
@@ -95,7 +89,31 @@ export default defineComponent({
             this.observer.disconnect();
         }
     },
-    props: ['index', 'island']
+    props: {
+        index: {
+            required: true,
+            type: Number
+        },
+        // TODO: ランキングのIslandデータ型は個別で定義しておいた方がよい？
+        island: {
+            required: true,
+            type: Object as PropType<{
+                id: number,
+                name: string,
+                owner_name: string,
+                development_points: number,
+                funds: number,
+                foods: number,
+                resources: number,
+                population: number,
+                funds_production_number_of_people: number,
+                foods_production_number_of_people: number,
+                resources_production_number_of_people: number,
+                environment: string,
+                area: number
+            }>
+        },
+    }
 });
 </script>
 

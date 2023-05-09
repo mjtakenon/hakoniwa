@@ -1,6 +1,6 @@
 <template>
     <div id="plan-page">
-        <div class="title mt-2">{{ $store.state.island.name }}島開発計画</div>
+        <div class="title mt-2">{{ store.island.name }}島開発計画</div>
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <hr/>
@@ -23,7 +23,15 @@ import IslandEditor from "../components/IslandEditor.vue";
 import PlanController from "../components/PlanController.vue";
 import PlanList from "../components/PlanList.vue";
 import lodash from 'lodash';
-import {defineComponent} from "vue";
+import {defineComponent, PropType} from "vue";
+import {useMainStore} from "../store/MainStore";
+
+import {Hakoniwa} from "../store/Entity/Hakoniwa";
+import {Island} from "../store/Entity/Island";
+import {Status} from "../store/Entity/Status";
+import {Terrain} from "../store/Entity/Terrain";
+import {Plan} from "../store/Entity/Plan";
+import {Log} from "../store/Entity/Log";
 
 export default defineComponent({
     components: {
@@ -44,24 +52,59 @@ export default defineComponent({
             hoverWindowLeft: 0,
         }
     },
-    setup() {
+    setup(props) {
+        // props.planCandidateの分解・Plan[]に再構築
+        const candidates: Plan[] = []
+        for (const [key, value] of Object.entries(props.planCandidate)) {
+            candidates.push({
+                key: key,
+                data: value
+            })
+        }
+
+        // Pinia
+        const store = useMainStore();
+        store.$patch({
+            hakoniwa: props.hakoniwa,
+            island: props.island,
+            status: props.island.status,
+            terrains: props.island.terrains,
+            logs: props.island.logs,
+            plans: lodash.cloneDeep(props.island.plans),
+            sentPlans: lodash.cloneDeep(props.island.plans),
+            planCandidate: candidates,
+            targetIslands: props.targetIslands,
+            selectedTargetIsland: props.island.id
+        });
+        return {store}
     },
-    methods: {
+    props: {
+        hakoniwa: {
+            required: true,
+            type: Object as PropType<Hakoniwa>
+        },
+        // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/store/Entity/Islandの中身と異なっている　共通化できないか？
+        island: {
+            required: true,
+            type: Object as PropType<{
+                id: number,
+                name: string,
+                owner_name: string,
+                status: Status,
+                terrains: Array<Terrain>,
+                plans: Array<Plan>,
+                logs: Array<Log>
+            }>
+        },
+        planCandidate: {
+            required: true,
+            type: Object as PropType<{[K in string]: Plan["data"]}>
+        },
+        targetIslands: {
+            required: true,
+            type: Array as PropType<Island[]>
+        }
     },
-    beforeMount() {
-        this.$store.state.hakoniwa = this.hakoniwa
-        this.$store.state.island = this.island
-        this.$store.state.status = this.island.status
-        this.$store.state.terrains = this.island.terrains
-        this.$store.state.logs = this.island.logs
-        this.$store.state.plans = lodash.cloneDeep(this.island.plans)
-        this.$store.state.sentPlans = lodash.cloneDeep(this.island.plans)
-        this.$store.state.planCandidate = this.planCandidate
-        this.$store.state.targetIslands = this.targetIslands
-        this.$store.state.selectedTargetIsland = this.$store.state.island.id
-    },
-    computed: {},
-    props: ['hakoniwa', 'island', 'planCandidate', 'targetIslands'],
 });
 </script>
 

@@ -2,13 +2,13 @@
     <div id="island">
         <div
             class="row"
-            v-for="y of $store.state.hakoniwa.height"
+            v-for="y of store.hakoniwa.height"
             :key="y"
         >
             <div class="right-padding" v-if="y%2 === 1">
                 <span class="right-padding-text">{{ y-1 }}</span>
             </div>
-            <div class="cell" v-for="x of $store.state.hakoniwa.width" :key="x">
+            <div class="cell" v-for="x of store.hakoniwa.width" :key="x">
                 <img
                     @mouseover="onMouseOverCell(x-1, y-1, $event)"
                     @mouseleave="onMouseLeaveCell"
@@ -36,10 +36,10 @@
 
 <script lang="ts">
 import { Terrain } from "../store/Entity/Terrain";
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
+import { useMainStore } from "../store/MainStore";
 
 export default defineComponent({
-    components: {},
     data() {
         return {
             showHoverWindow: false,
@@ -54,6 +54,8 @@ export default defineComponent({
         }
     },
     setup() {
+        const store = useMainStore();
+        return { store };
     },
     mounted() {
         window.addEventListener("resize", this.onWindowSizeChanged);
@@ -63,7 +65,7 @@ export default defineComponent({
     },
     methods: {
         getIslandTerrain(x, y): Terrain {
-            return this.$store.state.terrains.filter(function(item, idx){
+            return this.store.terrains.filter(function(item, idx){
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
         },
@@ -94,8 +96,8 @@ export default defineComponent({
             this.showHoverWindow = false;
         },
         onMouseClick(x, y) {
-            this.$store.state.selectedPoint.x = x;
-            this.$store.state.selectedPoint.y = y;
+            this.store.selectedPoint.x = x;
+            this.store.selectedPoint.y = y;
         },
         onWindowSizeChanged() {
             this.showHoverWindow = false;
