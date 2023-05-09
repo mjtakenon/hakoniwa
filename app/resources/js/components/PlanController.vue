@@ -26,12 +26,15 @@
                         :value="plan.key"
                     > {{ plan.data.name }} {{ plan.data.priceString }} </option>
                     <option
+                        v-if="store.planCandidate.find(p => p.key === 'grading')"
                         value="all_grading"
                     > 全荒地に整地入力 (荒地x5億円) </option>
                     <option
+                        v-if="store.planCandidate.find(p => p.key === 'ground_leveling')"
                         value="all_ground_leveling"
                     > 全荒地に高速整地入力 (荒地x100億円) </option>
                     <option
+                        v-if="store.planCandidate.find(p => p.key === 'excavation')"
                         value="all_excavation"
                     > 全浅瀬に掘削入力 (浅瀬x200億円) </option>
                 </select>
