@@ -43,7 +43,7 @@ class AttackLog implements ILog
             $this->defenciveShip->getAffiliationId() >= 1 ? ['text' => $this->defenciveShip->getAffiliationName() . '島所属', 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ] : ['text' => ''],
             ['text' => $this->defenciveShip->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ],
             ['text' => 'を攻撃!'],
-            ['text' => '(破損率: ' . $this->defenciveShip->getDamage() . '%→' . $this->defenciveShip->getDamage() + $this->damage . '%)', 'style' => StyleConst::BOLD ],
+            ['text' => '(破損率: ' . $this->defenciveShip->getDamage() - $this->damage . '%→' . $this->defenciveShip->getDamage() . '%)', 'style' => StyleConst::BOLD ],
         ]);
     }
 

@@ -58,15 +58,15 @@ class Pirate extends CombatantShip
     {
         $logs = Logs::create();
 
-        $combatantShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
+        $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
             return in_array($cell::TYPE, [Battleship::TYPE, Submarine::TYPE], true);
         });
 
-        if ($combatantShips->count() >= 1) {
+        if ($enemyShips->count() >= 1) {
             // 艦船がいる場合、攻撃する
-            /** @var CombatantShip $combatantShip */
-            $combatantShip = $combatantShips->random();
-            $moveTargetCells = $terrain->getAroundCells($combatantShip->getPoint())->filter(function ($cell) {
+            /** @var CombatantShip $enemyShip */
+            $enemyShip = $enemyShips->random();
+            $moveTargetCells = $terrain->getAroundCells($enemyShip->getPoint())->filter(function ($cell) {
                 return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE], true);
             });
 
@@ -76,31 +76,32 @@ class Pirate extends CombatantShip
                 $terrain = $this->move($terrain, $this, $moveTargetCells->random());
             }
 
-            $attackDamage = $this->getOffensiveDamage($combatantShip);
-            $combatantShip->setDamage($combatantShip->getDamage() + $attackDamage);
+            $attackDamage = $this->getOffensiveDamage($enemyShip);
+            $enemyShip->setDamage($enemyShip->getDamage() + $attackDamage);
 
-            if ($combatantShip->damage >= 100) {
-                $logs->add(new AttackAndDefeatLog($island, $turn, deep_copy($this), deep_copy($combatantShip), $attackDamage));
-                if ($combatantShip->getElevation() === -1) {
-                    $terrain->setCell($combatantShip->getPoint(), new Shallow(point: $combatantShip->getPoint()));
+            if ($enemyShip->damage >= 100) {
+                $attackDamage -= $enemyShip->damage - 100;
+                $enemyShip->damage = 100;
+                $logs->add(new AttackAndDefeatLog($island, $turn, deep_copy($this), deep_copy($enemyShip), $attackDamage));
+                if ($enemyShip->getElevation() === -1) {
+                    $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
                 } else {
-                    $terrain->setCell($combatantShip->getPoint(), new Sea(point: $combatantShip->getPoint()));
+                    $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));
                 }
             } else {
-                $logs->add(new AttackLog($island, $turn, deep_copy($this), deep_copy($combatantShip), $attackDamage));
-                $terrain->setCell($combatantShip->getPoint(), $combatantShip);
+                $logs->add(new AttackLog($island, $turn, deep_copy($this), deep_copy($enemyShip), $attackDamage));
+                $terrain->setCell($enemyShip->getPoint(), $enemyShip);
             }
         } else {
             // 海岸沿いの建造物を破壊
             $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-                return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI];
+                return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI] || $cell::ATTRIBUTE[CellTypeConst::IS_SHIP];
             });
-
             $seaCells = new Collection();
 
             /** @var Cell $candidate */
             foreach ($candidates as $candidate) {
-                $seaCells->merge($terrain->getAroundCells($candidate->getPoint())->filter(function ($cell) {
+                $seaCells = $seaCells->merge($terrain->getAroundCells($candidate->getPoint())->filter(function ($cell) {
                     return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE], true);
                 }));
             }
@@ -124,6 +125,6 @@ class Pirate extends CombatantShip
             $terrain->setCell($destroyTarget->getPoint(), new Wasteland(point: $destroyTarget->getPoint()));
         }
 
-        return parent::passTurn($island, $terrain, $status, $turn);
+        return new PassTurnResult($terrain, $status, $logs);
     }
 }
