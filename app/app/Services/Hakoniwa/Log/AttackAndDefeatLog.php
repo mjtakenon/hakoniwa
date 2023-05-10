@@ -44,7 +44,6 @@ class AttackAndDefeatLog implements ILog
             ['text' => $this->defenciveShip->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ],
             ['text' => 'を攻撃!'],
             ['text' => '(破損率: ' . $this->defenciveShip->getDamage() - $this->damage . '%→' . $this->defenciveShip->getDamage() . '%)', 'style' => StyleConst::BOLD ],
-            ['text' => 'し、'],
             ['text' => '撃沈', 'style' => StyleConst::BOLD ],
             ['text' => 'しました。'],
         ]);
