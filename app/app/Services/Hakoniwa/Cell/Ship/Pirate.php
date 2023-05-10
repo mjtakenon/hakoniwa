@@ -9,8 +9,10 @@ use App\Services\Hakoniwa\Cell\CellTypeConst;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\AttackAndDefeatLog;
 use App\Services\Hakoniwa\Log\AttackLog;
+use App\Services\Hakoniwa\Log\DestructionByShipLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -30,6 +32,8 @@ class Pirate extends CombatantShip
     protected string $seaImagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
+    protected int $offensivePower = 20;
+    protected int $defencePower = 10;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
@@ -67,11 +71,9 @@ class Pirate extends CombatantShip
             });
 
             // 艦船の隣に移動できるセルがあった場合、移動する
-            // なかった場合は、移動せず攻撃もしない
+            // なかった場合は、移動せず攻撃する
             if ($moveTargetCells->count() >= 1) {
-                /** @var Cell $moveTargetCell */
-                $moveTargetCell = $moveTargetCells->random();
-                $this->point = $moveTargetCell->getPoint();
+                $terrain = $this->move($terrain, $this, $moveTargetCells->random());
             }
 
             $attackDamage = $this->getOffensiveDamage($combatantShip);
@@ -89,24 +91,37 @@ class Pirate extends CombatantShip
                 $terrain->setCell($combatantShip->getPoint(), $combatantShip);
             }
         } else {
-            // 海岸沿いの建造物を壊す
-
+            // 海岸沿いの建造物を破壊
             $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
                 return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI];
             });
 
-            $aroundCells = new Collection();
+            $seaCells = new Collection();
 
-            /** @var Cell $cell */
-            foreach ($candidates as $cell) {
-                $aroundCells->push($terrain->getAroundCells($cell->getPoint(), 1, true));
+            /** @var Cell $candidate */
+            foreach ($candidates as $candidate) {
+                $seaCells->merge($terrain->getAroundCells($candidate->getPoint())->filter(function ($cell) {
+                    return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE], true);
+                }));
             }
 
-            if ($aroundCells->count() <= 0) {
+            if ($seaCells->count() <= 0) {
                 return parent::passTurn($island, $terrain, $status, $turn);
             }
 
+            // 攻撃対象の隣へ移動
+            /** @var Cell $seaCell */
+            $seaCell = $seaCells->random();
+            $terrain = $this->move($terrain, $this, $seaCell);
 
+            // 攻撃
+            $destroyTargetCells = $terrain->getAroundCells($seaCell->getPoint())->filter(function ($cell) {
+                return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI];
+            });
+            /** @var Cell $destroyTarget */
+            $destroyTarget = $destroyTargetCells->random();
+            $logs->add(new DestructionByShipLog($island, $turn, deep_copy($destroyTarget), deep_copy($this)));
+            $terrain->setCell($destroyTarget->getPoint(), new Wasteland(point: $destroyTarget->getPoint()));
         }
 
         return parent::passTurn($island, $terrain, $status, $turn);

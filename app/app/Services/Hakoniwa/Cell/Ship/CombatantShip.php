@@ -17,7 +17,6 @@ abstract class CombatantShip extends Ship
 {
     public const DEFAULT_EXPERIENCE = 0;
     public const DEFAULT_DAMAGE = 0;
-//    public const AFFILIATION_MONSTER = -2;
 
     protected int $experience = self::DEFAULT_EXPERIENCE;
     protected int $damage = self::DEFAULT_DAMAGE;
@@ -68,7 +67,7 @@ abstract class CombatantShip extends Ship
 
     protected function getOffensiveDamage(CombatantShip $target): int
     {
-        return $this->getOffensivePower()/2 - $target->getDefencePower()/4;
+        return $this->getOffensivePower()/2 - $target->getDefencePower()/4 + random_int(0, 5);
     }
 
     /**
@@ -118,7 +117,7 @@ abstract class CombatantShip extends Ship
      */
     public function getOffensivePower(): int
     {
-        return $this->offensivePower;
+        return $this->offensivePower + 0.1 * $this->getLevel();
     }
 
     /**
@@ -126,7 +125,7 @@ abstract class CombatantShip extends Ship
      */
     public function getDefencePower(): int
     {
-        return $this->defencePower;
+        return $this->defencePower + 0.1 * $this->getLevel();
     }
 
     /**
