@@ -13,6 +13,7 @@ use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\AttackAndDefeatLog;
 use App\Services\Hakoniwa\Log\AttackLog;
 use App\Services\Hakoniwa\Log\DestructionByShipLog;
+use App\Services\Hakoniwa\Log\DisappearPirateLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -34,16 +35,22 @@ class Pirate extends CombatantShip
     protected string $name = self::NAME;
     protected int $offensivePower = 20;
     protected int $defencePower = 10;
+    protected int $elapsedTurn = 0;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['elapsed_turn'] = $this->elapsedTurn;
         return $arr;
     }
 
     public function __construct(...$data)
     {
         parent::__construct(...$data);
+
+        if (array_key_exists('elapsed_turn', $data)) {
+            $this->elapsedTurn = $data['elapsed_turn'];
+        }
     }
 
     public function getInfoString(bool $isPrivate = false): string
@@ -57,6 +64,18 @@ class Pirate extends CombatantShip
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $logs = Logs::create();
+
+        if ($this->elapsedTurn >= 5) {
+            $logs->add(new DisappearPirateLog($island, $turn, deep_copy($this)));
+            if ($this->elevation === -1) {
+                $terrain->setCell($this->getPoint(), new Shallow(point: $this->getPoint()));
+            } else {
+                $terrain->setCell($this->getPoint(), new Sea(point: $this->getPoint()));
+            }
+            return new PassTurnResult($terrain, $status, $logs);
+        }
+
+        $this->elapsedTurn += 1;
 
         $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
             return in_array($cell::TYPE, [Battleship::TYPE, Submarine::TYPE], true);
@@ -115,14 +134,17 @@ class Pirate extends CombatantShip
             $seaCell = $seaCells->random();
             $terrain = $this->move($terrain, $this, $seaCell);
 
-            // 攻撃
+            // 攻撃対象のセルを取得し、攻撃
             $destroyTargetCells = $terrain->getAroundCells($seaCell->getPoint())->filter(function ($cell) {
                 return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI];
             });
-            /** @var Cell $destroyTarget */
-            $destroyTarget = $destroyTargetCells->random();
-            $logs->add(new DestructionByShipLog($island, $turn, deep_copy($destroyTarget), deep_copy($this)));
-            $terrain->setCell($destroyTarget->getPoint(), new Wasteland(point: $destroyTarget->getPoint()));
+
+            if ($destroyTargetCells->count() >= 1) {
+                /** @var Cell $destroyTarget */
+                $destroyTarget = $destroyTargetCells->random();
+                $logs->add(new DestructionByShipLog($island, $turn, deep_copy($destroyTarget), deep_copy($this)));
+                $terrain->setCell($destroyTarget->getPoint(), new Wasteland(point: $destroyTarget->getPoint()));
+            }
         }
 
         return new PassTurnResult($terrain, $status, $logs);
