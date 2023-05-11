@@ -8,6 +8,7 @@
             :island="@js($island)"
             :plan-candidate="@js($executablePlans)"
             :target-islands="@js($targetIslands)"
+            :turn="@js($turn)"
         ></plan-page>
     </div>
 @endsection

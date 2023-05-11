@@ -32,6 +32,7 @@ import {Status} from "../store/Entity/Status";
 import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
 import {Log} from "../store/Entity/Log";
+import {Turn} from "../store/Entity/Turn";
 
 export default defineComponent({
     components: {
@@ -62,6 +63,12 @@ export default defineComponent({
             })
         }
 
+        // turn.next_turnのDateオブジェクト変換
+        const turn: Turn = {
+            turn: props.turn.turn,
+            next_time: new Date(props.turn.next_time)
+        }
+
         // Pinia
         const store = useMainStore();
         store.$patch({
@@ -74,7 +81,8 @@ export default defineComponent({
             sentPlans: lodash.cloneDeep(props.island.plans),
             planCandidate: candidates,
             targetIslands: props.targetIslands,
-            selectedTargetIsland: props.island.id
+            selectedTargetIsland: props.island.id,
+            turn: turn
         });
         return {store}
     },
@@ -103,6 +111,13 @@ export default defineComponent({
         targetIslands: {
             required: true,
             type: Array as PropType<Island[]>
+        },
+        turn: {
+            required: true,
+            type: Object as PropType<{
+                turn: number,
+                next_time: string
+            }>
         }
     },
 });

@@ -25,6 +25,8 @@
             </div>
             <div class="left-padding" :class="{'opacity-80': this.showPlanWindow}" v-if="y%2 === 0"></div>
         </div>
+        <countdown-widget></countdown-widget>
+
         <div v-show="showHoverWindow" class="hover-window" :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
             <div class="hover-window-header">
                 <img
@@ -35,22 +37,21 @@
                     {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
                 </div>
             </div>
-                    <template v-for="(plan, index) of store.plans">
-                        <div class="hover-window-plan" v-if="
-                            plan.data.usePoint &&
-                            plan.data.point.x === hoverCellPoint.x &&
-                            plan.data.point.y === hoverCellPoint.y &&
-                            (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === store.island.id)
-                        ">
-                            <span>[{{ index + 1 }}] </span>
-                            <span>{{ plan.data.name }}</span>
-                            <span v-if="plan.data.useAmount">
-                                <span v-if="plan.data.amount === 0"> {{ plan.data.defaultAmountString }}</span>
-                                <span v-else> {{ plan.data.amountString.replace(':amount:', plan.data.amount.toString()) }} </span>
-                            </span>
-                        </div>
-                    </template>
-
+            <template v-for="(plan, index) of store.plans">
+                <div class="hover-window-plan" v-if="
+                    plan.data.usePoint &&
+                    plan.data.point.x === hoverCellPoint.x &&
+                    plan.data.point.y === hoverCellPoint.y &&
+                    (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === store.island.id)
+                ">
+                    <span>[{{ index + 1 }}] </span>
+                    <span>{{ plan.data.name }}</span>
+                    <span v-if="plan.data.useAmount">
+                        <span v-if="plan.data.amount === 0"> {{ plan.data.defaultAmountString }}</span>
+                        <span v-else> {{ plan.data.amountString.replace(':amount:', plan.data.amount.toString()) }} </span>
+                    </span>
+                </div>
+            </template>
         </div>
         <div v-show="showPlanWindow" class="plan-window"
              :style="[
@@ -84,12 +85,16 @@
 </template>
 
 <script lang="ts">
-import { Terrain } from "../store/Entity/Terrain";
+import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
+import CountdownWidget from "./CountdownWidget.vue";
 
 export default defineComponent({
+    components: {
+        CountdownWidget
+    },
     data() {
         return {
             MAX_PLAN_NUMBER: 30,
@@ -119,7 +124,7 @@ export default defineComponent({
     },
     methods: {
         getIslandTerrain(x, y): Terrain {
-            return this.store.terrains.filter(function(item, idx){
+            return this.store.terrains.filter(function (item, idx) {
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
         },
@@ -221,13 +226,13 @@ export default defineComponent({
         },
         onWindowSizeChanged() {
             const newScreenWidth = document.documentElement.clientWidth;
-            if(this.screenWidth != newScreenWidth) {
+            if (this.screenWidth != newScreenWidth) {
                 this.screenWidth = newScreenWidth;
                 this.showHoverWindow = false;
                 this.showPlanWindow = false;
                 this.isMobile = (document.documentElement.clientWidth < 1024);
             }
-        }
+        },
     },
         computed: {
             isSelectedCell() {
@@ -256,7 +261,7 @@ export default defineComponent({
 
 #island {
     margin: 0 auto;
-    @apply w-full md:min-w-[496px] max-w-[496px] mb-4;
+    @apply w-full md:min-w-[496px] max-w-[496px];
 
     .row {
         @apply m-0 -mt-[0.1px] p-0 bg-black;

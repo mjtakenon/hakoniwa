@@ -76,7 +76,11 @@ class PlansController extends Controller
                     'name' => $targetIsland->name,
                     'owner_name' => $targetIsland->owner_name,
                 ];
-            })
+            }),
+            'turn' => [
+                'turn' => $turn->turn,
+                'next_time' => $turn->next_turn_scheduled_at->format('Y-m-d H:i:s')
+            ]
         ]);
     }
 
