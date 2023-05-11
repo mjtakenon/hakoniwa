@@ -8,8 +8,8 @@
             class="countdown-box rounded-bl-xl md:rounded-b-xl"
             :class="{'countdown-box-updated': !this.isTimeRemaining}"
         >
-            <span class="countdown-label mr-1">次の更新まで</span>
             <template v-if="isTimeRemaining">
+                <span class="countdown-label mr-1">次の更新まで</span>
                 <template v-if="remainTimes.hour > 0">
                     <span class="text-sm">{{ remainTimes.hour }}</span>
                     <span class="countdown-unit">時間</span>
