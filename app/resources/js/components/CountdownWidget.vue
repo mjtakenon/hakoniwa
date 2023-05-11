@@ -45,7 +45,7 @@ export default defineComponent({
                 sec: 0
             },
             isTimeRemaining: true,
-            secInterval: null,
+            secInterval: 0,
         }
     },
     setup() {
