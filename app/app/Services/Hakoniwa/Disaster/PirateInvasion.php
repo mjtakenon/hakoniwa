@@ -21,7 +21,7 @@ use Illuminate\Support\Collection;
 
 class PirateInvasion implements IDisaster
 {
-    private const OCCUR_PROBABILITY = 0.01;
+    private const OCCUR_PROBABILITY = 0.99;
 
     private static function getInitialExperience(int $population): int
     {
@@ -49,23 +49,14 @@ class PirateInvasion implements IDisaster
         $maxPiratesCount = min($seaCells->count(), $maxPiratesCount);
 
         /** @var Cell|Collection $pirateSpawnCells */
-        $pirateSpawnCells = $seaCells->random($maxPiratesCount);
-        if ($maxPiratesCount === 1) {
-            $terrain->setCell($pirateSpawnCells->getPoint(), new Pirate(
-                point: $pirateSpawnCells->getPoint(),
-                elevation: $pirateSpawnCells->getElevation(),
+        $pirateSpawnCells = $seaCells->random(1);
+        foreach($pirateSpawnCells as $pirateSpawnCell) {
+            $terrain->setCell($pirateSpawnCell->getPoint(), new Pirate(
+                point: $pirateSpawnCell->getPoint(),
+                elevation: $pirateSpawnCell->getElevation(),
                 experience: random_int(0, self::getInitialExperience($status->getPopulation())),
                 affiliation_id: Pirate::AFFILIATION_PIRATE,
             ));
-        } else {
-            foreach($pirateSpawnCells as $pirateSpawnCell) {
-                $terrain->setCell($pirateSpawnCell->getPoint(), new Pirate(
-                    point: $pirateSpawnCell->getPoint(),
-                    elevation: $pirateSpawnCell->getElevation(),
-                    experience: random_int(0, self::getInitialExperience($status->getPopulation())),
-                    affiliation_id: Pirate::AFFILIATION_PIRATE,
-                ));
-            }
         }
 
         /** @var Cell $cell */
