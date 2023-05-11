@@ -259,7 +259,7 @@ export default defineComponent({
     @apply w-full md:min-w-[496px] max-w-[496px] mb-4;
 
     .row {
-        @apply m-0 p-0 bg-black;
+        @apply m-0 -mt-[0.1px] p-0 bg-black;
         display: grid;
 
         .cell {
