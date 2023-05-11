@@ -49,7 +49,7 @@ class PirateInvasion implements IDisaster
         $maxPiratesCount = min($seaCells->count(), $maxPiratesCount);
 
         /** @var Cell|Collection $pirateSpawnCells */
-        $pirateSpawnCells = $seaCells->random(1);
+        $pirateSpawnCells = $seaCells->random($maxPiratesCount);
         foreach($pirateSpawnCells as $pirateSpawnCell) {
             $terrain->setCell($pirateSpawnCell->getPoint(), new Pirate(
                 point: $pirateSpawnCell->getPoint(),
