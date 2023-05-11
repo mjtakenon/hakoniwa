@@ -5,8 +5,14 @@ namespace App\Services\Hakoniwa\Cell\Ship;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
+use App\Services\Hakoniwa\Cell\Sea;
+use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Log\AttackAndDefeatLog;
+use App\Services\Hakoniwa\Log\AttackLog;
+use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use function DeepCopy\deep_copy;
 
 class Battleship extends CombatantShip
 {
@@ -23,6 +29,8 @@ class Battleship extends CombatantShip
     protected string $seaImagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
+    protected int $offensivePower = 20;
+    protected int $defencePower = 10;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
@@ -49,7 +57,57 @@ class Battleship extends CombatantShip
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
-        // TODO: 海賊がいる場合の処理を追加
-        return parent::passTurn($island, $terrain, $status, $turn);
+        $logs = Logs::create();
+
+        $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
+            // TODO: 海賊以外が追加されたら増やす
+            return in_array($cell::TYPE, [Pirate::TYPE], true);
+        });
+
+        if ($enemyShips->count() <= 0) {
+            // ダメージを受けていて、戦闘していない場合は回復する
+            if ($this->damage > 0) {
+                // TODO: 回復量は変数に切り出す
+                $this->damage -= 10;
+                $this->damage = max($this->damage, 0);
+            }
+            return parent::passTurn($island, $terrain, $status, $turn);
+        }
+
+        // 艦船がいる場合、攻撃する
+        /** @var CombatantShip $enemyShip */
+        $enemyShip = $enemyShips->random();
+        $moveTargetCells = $terrain->getAroundCells($enemyShip->getPoint())->filter(function ($cell) {
+            return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE], true);
+        });
+
+        // 艦船の隣に移動できるセルがあった場合、移動する
+        // なかった場合は、移動せず攻撃する
+        if ($moveTargetCells->count() >= 1) {
+            $terrain = $this->move($terrain, $this, $moveTargetCells->random());
+        }
+
+        $attackDamage = $this->getOffensiveDamage($enemyShip);
+        $enemyShip->setDamage($enemyShip->getDamage() + $attackDamage);
+
+        if ($enemyShip->damage >= 100) {
+            $attackDamage -= ($enemyShip->damage - 100);
+            $enemyShip->damage = 100;
+
+            $logs->add(new AttackAndDefeatLog($island, $turn, deep_copy($this), deep_copy($enemyShip), $attackDamage));
+            if ($enemyShip->getElevation() === -1) {
+                $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
+            } else {
+                $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));
+            }
+
+            // TODO: 得られる経験値は変数に切り出す
+            $this->experience += $enemyShip->getLevel() * 5;
+        } else {
+            $logs->add(new AttackLog($island, $turn, deep_copy($this), deep_copy($enemyShip), $attackDamage));
+            $terrain->setCell($enemyShip->getPoint(), $enemyShip);
+        }
+
+        return new PassTurnResult($terrain, $status, $logs);
     }
 }

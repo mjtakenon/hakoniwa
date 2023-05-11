@@ -15,5 +15,6 @@ class DisasterConst
         Riot::class,
         LandSubsidence::class,
         AppearanceMonster::class,
+        PirateInvasion::class,
     ];
 }

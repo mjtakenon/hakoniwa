@@ -17,6 +17,8 @@ class Submarine extends Battleship
     protected string $seaImagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
+    protected int $offensivePower = 40;
+    protected int $defencePower = 20;
 
     public function __construct(...$data)
     {

@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use function DeepCopy\deep_copy;
 
 abstract class Ship extends Cell
 {
@@ -61,6 +62,23 @@ abstract class Ship extends Cell
         return $this->elevation === -1 ? $this->shallowImagePath : $this->seaImagePath;
     }
 
+    protected function move(Terrain $terrain, Cell $beforeCell, Cell $afterCell): Terrain
+    {
+        /** @var Ship $beforeCellCopy */
+        $beforeCellCopy = deep_copy($beforeCell);
+        $beforeCell->point = $afterCell->getPoint();
+        $beforeCell->elevation = $afterCell->getElevation();
+        $terrain->setCell($beforeCell->point, $beforeCell);
+
+        if ($beforeCellCopy->getElevation() === -1) {
+            $terrain->setCell($beforeCellCopy->getPoint(), new Shallow(point: $beforeCellCopy->getPoint()));
+        } else {
+            $terrain->setCell($beforeCellCopy->getPoint(), new Sea(point: $beforeCellCopy->getPoint()));
+        }
+
+        return $terrain;
+    }
+
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
     {
         $logs = Logs::create();
@@ -69,18 +87,13 @@ abstract class Ship extends Cell
             /** @var Cell $cell */
             return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE], true);
         });
-        /** @var Cell $cell */
-        $cell = $seaCells->random();
 
-        $beforePoint = $this->point;
-        $this->point = $cell->getPoint();
-        $terrain->setCell($this->point, $this);
-
-        if ($this->elevation === -1) {
-            $terrain->setCell($beforePoint, new Shallow(point: $beforePoint));
-        } else {
-            $terrain->setCell($beforePoint, new Sea(point: $beforePoint));
+        if ($seaCells->count() <= 0) {
+            return new PassTurnResult($terrain, $status, $logs);
         }
+
+        /** @var Cell $cell */
+        $terrain = $this->move($terrain, $this, $seaCells->random());
 
         return new PassTurnResult($terrain, $status, $logs);
     }
