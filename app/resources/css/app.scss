@@ -85,19 +85,28 @@
         @apply mb-5 px-3 py-10 bg-success text-white rounded-md;
     }
 
-    .label {
-        @apply md:text-lg block mb-4 pb-2 border-b border-success;
-    }
+    .field {
+        @apply w-full;
 
-    .control {
-        @apply flex items-center mb-10;
-
-        .input {
-            @apply grow p-2 rounded-md border border-gray-400 mr-3 drop-shadow-md;
+        .label {
+            @apply md:text-lg block mb-4 pb-2 border-b border-success;
         }
 
-        .icon {
-            @apply text-lg;
+        .control {
+            @apply relative w-full items-center mb-10;
+
+            .icons {
+                @apply absolute flex items-center px-3 justify-between w-full h-full text-lg z-10 pointer-events-none;
+            }
+
+            .input, .input-with-icon {
+                @apply w-full px-3 py-2 rounded-md border border-gray-400 drop-shadow-md;
+                @apply focus:outline-2 focus:outline-success;
+            }
+
+            .input-with-icon {
+                @apply px-10;
+            }
         }
     }
 }
