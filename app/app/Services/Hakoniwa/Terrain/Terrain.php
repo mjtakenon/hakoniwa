@@ -184,12 +184,12 @@ class Terrain implements JsonEncodable
         return array_sum($resourcesProductionNumberOfPeople);
     }
 
-    public function aggregateMaintenanceNumberOfPeople(): int
+    public function aggregateMaintenanceNumberOfPeople(Island $island): int
     {
         $maintenanceNumberOfPeople = [];
         /** @var Cell $cell */
         foreach ($this->terrain->flatten(1) as $cell) {
-            $maintenanceNumberOfPeople[] = $cell->getMaintenanceNumberOfPeople();
+            $maintenanceNumberOfPeople[] = $cell->getMaintenanceNumberOfPeople($island);
         }
         return array_sum($maintenanceNumberOfPeople);
     }
@@ -230,7 +230,7 @@ class Terrain implements JsonEncodable
         return $area;
     }
 
-    public function passTurn(Island $island, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -245,7 +245,7 @@ class Terrain implements JsonEncodable
                 continue;
             }
 
-            $passTurnResult = $cell->passTurn($island, $this, $status, $turn);
+            $passTurnResult = $cell->passTurn($island, $this, $status, $turn, $foreignIslandOccurEvents);
 
             $this->terrain = $passTurnResult->getTerrain()->getTerrain();
             $status = $passTurnResult->getStatus();

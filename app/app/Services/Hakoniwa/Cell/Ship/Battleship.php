@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Log\AttackLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
 class Battleship extends CombatantShip
@@ -31,11 +32,13 @@ class Battleship extends CombatantShip
     protected string $name = self::NAME;
     protected int $offensivePower = 20;
     protected int $defencePower = 10;
+    protected int $elapsedTurn = 0;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
         $arr['data']['maintenanceNumberOfPeople'] = $this->maintenanceNumberOfPeople;
+        $arr['data']['elapsed_turn'] = $this->elapsedTurn;
         return $arr;
     }
 
@@ -43,6 +46,10 @@ class Battleship extends CombatantShip
     {
         parent::__construct(...$data);
         $this->maintenanceNumberOfPeople = self::MAINTENANCE_NUMBER_OF_PEOPLE;
+
+        if (array_key_exists('elapsed_turn', $data)) {
+            $this->elapsedTurn = $data['elapsed_turn'];
+        }
     }
 
     public function getInfoString(bool $isPrivate = false): string
@@ -55,8 +62,18 @@ class Battleship extends CombatantShip
             ($this->damage > 0 ? PHP_EOL . '破損率 ' . $this->damage . '%' : '');
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function getMaintenanceNumberOfPeople(Island $island): int
     {
+        if ($island->id === $this->getAffiliationId()) {
+            return parent::getMaintenanceNumberOfPeople($island);
+        } else {
+            return 0;
+        }
+    }
+
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    {
+        // TODO: 他の島のもので規定ターンを過ぎていたら返す
         $logs = Logs::create();
 
         $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
@@ -71,7 +88,7 @@ class Battleship extends CombatantShip
                 $this->damage -= 10;
                 $this->damage = max($this->damage, 0);
             }
-            return parent::passTurn($island, $terrain, $status, $turn);
+            return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
         }
 
         // 艦船がいる場合、攻撃する

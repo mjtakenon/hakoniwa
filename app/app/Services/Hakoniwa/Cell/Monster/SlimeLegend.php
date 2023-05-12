@@ -70,7 +70,7 @@ class SlimeLegend extends Monster
         return 0.02;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         if ($this->remainMoveTimes <= 0) {
             return new PassTurnResult($terrain, $status, Logs::create());

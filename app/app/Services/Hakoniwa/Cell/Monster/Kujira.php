@@ -78,14 +78,14 @@ class Kujira extends Monster
         return self::DEFAULT_MOVE_TIMES;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         if (($turn->turn + 1) % 3 === 0) {
             $this->isMetalized = true;
             return new PassTurnResult($terrain, $status, Logs::create());
         } else {
             $this->isMetalized = false;
-            return parent::passTurn($island, $terrain, $status, $turn);
+            return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
         }
     }
 }

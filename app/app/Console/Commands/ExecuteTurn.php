@@ -10,7 +10,7 @@ use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\AbandonmentLog;
-use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
+use App\Services\Hakoniwa\Log\AbortNotFoundIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
@@ -75,6 +75,7 @@ class ExecuteTurn extends Command
                 $prevStatusList = new Collection();
                 $logsList = new Collection();
                 $foreignIslandTargetedPlans = new Collection();
+                $foreignIslandOccurEvents = new Collection();
 
                 /** @var Island $island */
                 foreach ($islands as $island) {
@@ -89,7 +90,6 @@ class ExecuteTurn extends Command
                     $logsList->put($island->id, Logs::create());
                 }
 
-                // 怪獣移動とミサイル支援の順番が混ざっているので分けて処理する
                 foreach ($islands as $island) {
                     /** @var Plans $plans */
                     $plans = $planList->get($island->id);
@@ -101,7 +101,7 @@ class ExecuteTurn extends Command
                     $logs = $logsList->get($island->id);
 
                     // 生産・消費処理
-                    $status->executeTurn($terrain);
+                    $status->executeTurn($terrain, $island);
 
                     // コマンド実行
                     $executePlanResult = $plans->execute($island, $terrain, $status, $turn, $foreignIslandTargetedPlans);
@@ -136,7 +136,7 @@ class ExecuteTurn extends Command
                     $toLogs = $logsList->get($plan->getToIsland());
 
                     if (is_null($toIsland)) {
-                        $fromLogs->add(new AbortInvalidIslandLog($island, $turn, $plan->getPlan()));
+                        $fromLogs->add(new AbortNotFoundIslandLog($island, $turn, $plan->getPlan()));
                         $logsList->put($plan->getFromIsland(), $fromLogs);
                         continue;
                     }
@@ -154,16 +154,12 @@ class ExecuteTurn extends Command
                     $logsList->put($plan->getToIsland(), $toLogs);
                 }
 
-                // 怪獣移動とミサイル支援の順番が混ざっているので分けて処理する
+                // 災害判定、各セルターン処理
                 foreach ($islands as $island) {
-                    /** @var Plans $plans */
-                    $plans = $planList->get($island->id);
                     /** @var Terrain $terrain */
                     $terrain = $terrainList->get($island->id);
                     /** @var Status $status */
                     $status = $statusList->get($island->id);
-                    /** @var Status $prevStatus */
-                    $prevStatus = $prevStatusList->get($island->id);
                     /** @var Logs $logs */
                     $logs = $logsList->get($island->id);
 
@@ -174,7 +170,7 @@ class ExecuteTurn extends Command
 
                     // セル処理
                     // FIXME: 本来災害はセル処理の後だが、隕石→湖判定の順番を考慮し逆にしている
-                    $passTurnResult = $terrain->passTurn($island, $status, $turn);
+                    $passTurnResult = $terrain->passTurn($island, $status, $turn, $foreignIslandOccurEvents);
                     $status = $passTurnResult->getStatus();
                     $logs->merge($passTurnResult->getLogs());
 
@@ -191,6 +187,63 @@ class ExecuteTurn extends Command
                         $logs = Logs::create();
                         $logs->add(new AbandonmentLog($island, $turn));
                     }
+
+                    $terrainList->put($island->id, $terrain);
+                    $statusList->put($island->id, $status);
+                    $logsList->put($island->id, $logs);
+                }
+
+                // セル処理によって発生した計画の実行
+                /** @var TargetedToForeignIslandPlan $plan */
+                foreach ($foreignIslandOccurEvents as $plan) {
+                    /** @var Island $toIsland */
+                    $toIsland = $islands->find($plan->getToIsland());
+                    /** @var Island $fromIsland */
+                    $fromIsland = $islands->find($plan->getFromIsland());
+                    /** @var Terrain $fromTerrain */
+                    $fromTerrain = $terrainList->get($plan->getFromIsland());
+                    /** @var Terrain $toTerrain */
+                    $toTerrain = $terrainList->get($plan->getToIsland());
+                    /** @var Status $fromStatus */
+                    $fromStatus = $statusList->get($plan->getFromIsland());
+                    /** @var Status $toStatus */
+                    $toStatus = $statusList->get($plan->getToIsland());
+                    /** @var Logs $fromLogs */
+                    $fromLogs = $logsList->get($plan->getFromIsland());
+                    /** @var Logs $toLogs */
+                    $toLogs = $logsList->get($plan->getToIsland());
+
+                    if (is_null($toIsland)) {
+                        $fromLogs->add(new AbortNotFoundIslandLog($island, $turn, $plan->getPlan()));
+                        $logsList->put($plan->getFromIsland(), $fromLogs);
+                        continue;
+                    }
+
+                    $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
+
+                    $fromLogs->merge($executePlanResult->getFromLogs());
+                    $toLogs->merge($executePlanResult->getToLogs());
+
+                    $terrainList->put($plan->getFromIsland(), $executePlanResult->getFromTerrain());
+                    $terrainList->put($plan->getToIsland(), $executePlanResult->getToTerrain());
+                    $statusList->put($plan->getFromIsland(), $executePlanResult->getFromStatus());
+                    $statusList->put($plan->getToIsland(), $executePlanResult->getToStatus());
+                    $logsList->put($plan->getFromIsland(), $fromLogs);
+                    $logsList->put($plan->getToIsland(), $toLogs);
+                }
+
+                // 集計、保存
+                foreach ($islands as $island) {
+                    /** @var Plans $plans */
+                    $plans = $planList->get($island->id);
+                    /** @var Terrain $terrain */
+                    $terrain = $terrainList->get($island->id);
+                    /** @var Status $status */
+                    $status = $statusList->get($island->id);
+                    /** @var Status $prevStatus */
+                    $prevStatus = $prevStatusList->get($island->id);
+                    /** @var Logs $logs */
+                    $logs = $logsList->get($island->id);
 
                     // 集計ログ
                     $logs->add(new SummaryLog($status, $prevStatus, $turn));

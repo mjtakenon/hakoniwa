@@ -111,7 +111,7 @@ abstract class HasPopulation extends Cell
         return $maxPopulation;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         if ($status->getFoods() > 0) {
             // 通常時

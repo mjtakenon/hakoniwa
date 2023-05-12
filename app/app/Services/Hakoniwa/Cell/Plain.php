@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Rand;
+use Illuminate\Support\Collection;
 
 class Plain extends Cell
 {
@@ -50,7 +51,7 @@ class Plain extends Cell
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $immigrableCells = $cells->filter(function ($cell) {

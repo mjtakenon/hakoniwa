@@ -9,12 +9,13 @@ use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Ship\TransportShip;
 use App\Services\Hakoniwa\Log\AbortLackOfResourcesLog;
-use App\Services\Hakoniwa\Log\AbortNoTransportShipLog;
+use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\AbortTargetSelfIslandLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Plan\ForeignIsland\ResourcesTransportToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
@@ -55,7 +56,7 @@ class ResourcesTransportationPlan extends Plan
         }
 
         if ($transportShips->isEmpty()) {
-            $logs->add(new AbortNoTransportShipLog($island, $turn, $this));
+            $logs->add(new AbortNoShipLog($island, $turn, $this, new TransportShip(point: new Point(0,0))));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }

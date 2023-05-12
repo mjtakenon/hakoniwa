@@ -8,6 +8,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
+use Illuminate\Support\Collection;
 
 abstract class Cell
 {
@@ -87,10 +88,19 @@ abstract class Cell
         return $this->imagePath;
     }
 
+    public function setElevation(int $elevation): void
+    {
+        $this->elevation = $elevation;
+    }
 
     public function getElevation(): int
     {
         return $this->elevation;
+    }
+
+    public function setPoint(Point $point): void
+    {
+        $this->point = $point;
     }
 
     public function getPoint(): Point
@@ -128,7 +138,7 @@ abstract class Cell
         return $this->woods;
     }
 
-    public function getMaintenanceNumberOfPeople(): int
+    public function getMaintenanceNumberOfPeople(Island $island): int
     {
         return $this->maintenanceNumberOfPeople;
     }
@@ -144,7 +154,7 @@ abstract class Cell
         return new (CellTypeConst::getClassByType($type))(...get_object_vars($data));
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         return new PassTurnResult($terrain, $status, Logs::create());
     }
