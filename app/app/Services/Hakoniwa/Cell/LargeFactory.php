@@ -7,6 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 class LargeFactory extends Cell
 {
@@ -64,7 +65,7 @@ class LargeFactory extends Cell
             $this->fundsProductionNumberOfPeople . '人規模';
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $seasideCells = $cells->reject(function ($cell) {

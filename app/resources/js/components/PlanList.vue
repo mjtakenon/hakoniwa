@@ -29,6 +29,10 @@
                     </span>
                     <span v-if="plan.data.usePoint">
                         地点 ({{ plan.data.point.x }},{{ plan.data.point.y }})
+                    </span>
+                    <span v-if="plan.data.usePoint || (plan.data.useTargetIsland &&
+                        plan.data.targetIsland !== null &&
+                         store.targetIslands.filter((i) => { return i.id === plan.data.targetIsland}).length >= 1)">
                         <span v-if="plan.data.useTargetIsland">へ</span>
                         <span v-else>に</span>
                     </span>

@@ -24,6 +24,8 @@ abstract class CombatantShip extends Ship
     protected string $affiliationName = '';
     protected int $offensivePower;
     protected int $defencePower;
+    protected ?int $returnTurn = null;
+    public const DEFAULT_HEAL_PER_TURN = 10;
 
     private const EXPERIENCE_TABLE = [
         100 => 6,
@@ -41,6 +43,7 @@ abstract class CombatantShip extends Ship
         $arr['data']['damage'] = $this->damage;
         $arr['data']['affiliation_id'] = $this->affiliationId;
         $arr['data']['affiliation_name'] = $this->affiliationName;
+        $arr['data']['return_turn'] = $this->returnTurn;
         return $arr;
     }
 
@@ -62,6 +65,10 @@ abstract class CombatantShip extends Ship
 
         if (array_key_exists('affiliation_name', $data)) {
             $this->affiliationName = $data['affiliation_name'];
+        }
+
+        if (array_key_exists('return_turn', $data)) {
+            $this->returnTurn = $data['return_turn'];
         }
     }
 
@@ -142,5 +149,21 @@ abstract class CombatantShip extends Ship
     public function getAffiliationName(): string
     {
         return $this->affiliationName;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getReturnTurn(): ?int
+    {
+        return $this->returnTurn;
+    }
+
+    /**
+     * @param int|null $returnTurn
+     */
+    public function setReturnTurn(?int $returnTurn): void
+    {
+        $this->returnTurn = $returnTurn;
     }
 }

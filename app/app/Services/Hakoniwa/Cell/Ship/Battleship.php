@@ -10,8 +10,10 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Log\AttackAndDefeatLog;
 use App\Services\Hakoniwa\Log\AttackLog;
 use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ReturnShipToAffiliationIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
 class Battleship extends CombatantShip
@@ -55,7 +57,16 @@ class Battleship extends CombatantShip
             ($this->damage > 0 ? PHP_EOL . '破損率 ' . $this->damage . '%' : '');
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function getMaintenanceNumberOfPeople(Island $island): int
+    {
+        if ($island->id === $this->getAffiliationId()) {
+            return parent::getMaintenanceNumberOfPeople($island);
+        } else {
+            return 0;
+        }
+    }
+
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -67,11 +78,16 @@ class Battleship extends CombatantShip
         if ($enemyShips->count() <= 0) {
             // ダメージを受けていて、戦闘していない場合は回復する
             if ($this->damage > 0) {
-                // TODO: 回復量は変数に切り出す
-                $this->damage -= 10;
+                $this->damage -= self::DEFAULT_HEAL_PER_TURN;
                 $this->damage = max($this->damage, 0);
             }
-            return parent::passTurn($island, $terrain, $status, $turn);
+
+            // 他の島のもので規定ターンを過ぎていたら返す
+            if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
+                $foreignIslandOccurEvents->add(new ReturnShipToAffiliationIslandPlan($island->id, $this->getAffiliationId(), $this));
+                return new PassTurnResult($terrain, $status, $logs);
+            }
+            return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
         }
 
         // 艦船がいる場合、攻撃する

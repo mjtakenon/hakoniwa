@@ -7,7 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class AbortNoTransportShipLog implements ILog
+class AbortNotFoundIslandLog implements ILog
 {
     private Island $island;
     private Turn $turn;
@@ -32,9 +32,9 @@ class AbortNoTransportShipLog implements ILog
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],
-            ['text' => 'は、利用可能な'],
-            ['text' => '輸送船', 'style' => StyleConst::BOLD ],
-            ['text' => 'が不足していたため' ],
+            ['text' => 'は、'],
+            ['text' => '対象の島が存在しなかった', 'style' => StyleConst::BOLD ],
+            ['text' => 'ため', ],
             ['text' => '中止', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
             ['text' => 'されました。'],
         ]);

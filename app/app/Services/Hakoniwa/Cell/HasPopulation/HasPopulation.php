@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 abstract class HasPopulation extends Cell
 {
@@ -111,7 +112,7 @@ abstract class HasPopulation extends Cell
         return $maxPopulation;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         if ($status->getFoods() > 0) {
             // 通常時

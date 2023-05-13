@@ -55,7 +55,7 @@ class GhostInora extends Monster
         return self::DEFAULT_MOVE_TIMES;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         if ($this->remainMoveTimes <= 0) {
             return new PassTurnResult($terrain, $status, Logs::create());
@@ -92,7 +92,7 @@ class GhostInora extends Monster
         $logs->add(new DestructionByMonsterLog($island, $turn, $moveTarget, $this));
         $monster->point = $moveTarget->point;
         // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
-        $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn);
+        $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
 
         $terrain = $passTurnResult->getTerrain();
         $status = $passTurnResult->getStatus();

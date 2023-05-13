@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
 abstract class Ship extends Cell
@@ -79,7 +80,7 @@ abstract class Ship extends Cell
         return $terrain;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         $logs = Logs::create();
 

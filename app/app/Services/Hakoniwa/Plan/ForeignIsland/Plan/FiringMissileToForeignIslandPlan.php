@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Hakoniwa\Plan\ForeignIsland;
+namespace App\Services\Hakoniwa\Plan\ForeignIsland\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;

@@ -15,7 +15,11 @@ class CallbackController extends Controller
             return redirect(route('home'));
         }
 
-        $googleUser = \Socialite::driver('google')->user();//->stateless()
+        try {
+            $googleUser = \Socialite::driver('google')->user();
+        } catch (\Laravel\Socialite\Two\InvalidStateException $e) {
+            return redirect(route('home'));
+        }
         $userAuth = UserAuthentication::where('identifier', $googleUser->id)->where('provider', UserAuthentication::PROVIDER_GOOGLE)->first();
 
         if (!is_null($userAuth)) {
