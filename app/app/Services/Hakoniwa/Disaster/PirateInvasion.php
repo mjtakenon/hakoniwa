@@ -21,7 +21,7 @@ use Illuminate\Support\Collection;
 
 class PirateInvasion implements IDisaster
 {
-    private const OCCUR_PROBABILITY = 0.9;
+    private const OCCUR_PROBABILITY = 0.01;
 
     private static function getInitialExperience(int $population): int
     {
