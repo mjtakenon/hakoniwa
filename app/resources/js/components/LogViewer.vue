@@ -33,7 +33,7 @@ export default defineComponent({
     @apply text-left w-full mt-10 mb-10 bg-gray-100 pb-4 md:rounded-2xl drop-shadow-md overflow-hidden;
 
     .subtitle {
-        @apply mt-0 py-3 px-3 align-middle border-b border-b-gray-300 mb-3 w-full bg-success-dark text-white;
+        @apply mt-0 py-3 px-3 border-b border-b-gray-300 mb-3 w-full bg-success-dark text-white;
     }
 
     .log-texts {
