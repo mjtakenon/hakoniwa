@@ -76,6 +76,22 @@
 
 #index {
     @apply mx-auto max-w-[1000px] px-3;
+
+    #logs {
+        @apply text-left w-full mt-10 mb-10 bg-gray-100 pb-4 rounded-2xl drop-shadow-md overflow-hidden;
+
+        .subtitle {
+            @apply mt-0 py-3 px-3 border-b border-b-gray-300 mb-3 w-full bg-success-dark text-white;
+        }
+
+        .log-texts {
+            @apply text-sm md:text-base mx-1 md:mx-5 mb-1 lg:mb-0.5 border-b border-b-gray-300;
+        }
+
+        .log-texts:last-child {
+            @apply border-none;
+        }
+    }
 }
 
 #register {

@@ -39,9 +39,8 @@
                 ></ranking-viewer>
             @endforeach
 
-            <div>
-                <h2 class="subtitle mt-20"> 最近の出来事 </h2>
-                <hr/>
+            <div id="logs">
+                <h2 class="subtitle"> 最近の出来事 </h2>
                 {{--                <div v-for="log of $store.state.logs" :key="log.id">--}}
                 {{--            <span v-for="context of JSON.parse(log.log)" :key="context.text">--}}
                 {{--                <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">--}}
@@ -53,7 +52,7 @@
                 {{--            </span>--}}
                 {{--                </div>--}}
                 @foreach($logs as $log)
-                    <div>
+                    <div class="log-texts">
                         @foreach(json_decode($log->log) as $context)
                             <span>
                             @if(property_exists($context, 'link'))
