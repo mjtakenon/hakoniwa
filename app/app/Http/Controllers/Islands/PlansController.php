@@ -64,6 +64,7 @@ class PlansController extends Controller
                     'resources_production_number_of_people' => $islandStatus->resources_production_number_of_people,
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
+                    'abandoned_turn' => $islandStatus->abandoned_turn,
                 ],
                 'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(true, true),
                 'plans' => Plans::fromJson($islandPlans)->toArray(true),

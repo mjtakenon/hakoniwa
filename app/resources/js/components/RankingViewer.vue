@@ -8,7 +8,8 @@
         <div class="ranking">
             <div class="ranking-index">
                 <div class="ranking-index-num">{{ $props.index }}</div>
-                <div class="ranking-index-name">{{ $props.island.name }}島</div>
+                <div class="ranking-index-name" v-if="$props.island.abandoned_turn >= 1">{{ $props.island.name }}島 ({{ $props.island.abandoned_turn }})</div>
+                <div class="ranking-index-name" v-else>{{ $props.island.name }}島</div>
             </div>
             <div class="ranking-summary">
                 <div class="pl-1 pr-3 md:border-r-2">
@@ -111,6 +112,7 @@ export default defineComponent({
                 resources_production_number_of_people: number,
                 environment: string,
                 area: number
+                abandoned_turn: number
             }>
         },
     }

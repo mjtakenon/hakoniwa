@@ -44,7 +44,8 @@ class IndexController extends Controller
                     'foods_production_number_of_people' => $island->foods_production_number_of_people,
                     'resources_production_number_of_people' => $island->resources_production_number_of_people,
                     'environment' => $island->environment,
-                    'area' => $island->area
+                    'area' => $island->area,
+                    'abandoned_turn' => $island->abandoned_turn,
                 ];
             }),
             'turn' => $turn,
