@@ -6,7 +6,7 @@ class Volcano extends Cell
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano.png';
     public const TYPE = 'volcano';
-    public const NAME = '活火山';
+    public const NAME = '火山';
     const ATTRIBUTE = [
         CellTypeConst::IS_LAND => true,
         CellTypeConst::IS_MONSTER => false,

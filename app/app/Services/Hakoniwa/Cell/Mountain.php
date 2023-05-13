@@ -50,7 +50,7 @@ class Mountain extends Cell
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
-        // 活火山が存在していない場合、確率で活火山になる
+        // 火山が存在していない場合、確率で火山になる
         if (self::ACTIVATE_PROBABILITY <= Rand::mt_rand_float()) {
             return new PassTurnResult($terrain, $status, Logs::create());
         }

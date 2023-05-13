@@ -35,7 +35,7 @@ class VolcanicEruption implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
-        // 既存の活火山と鉱山は休火山になる
+        // 既存の火山と鉱山は休火山になる
         $mountains = $terrain->find([Volcano::TYPE, Mine::TYPE]);
         /** @var Cell $mountain */
         foreach ($mountains as $mountain) {
