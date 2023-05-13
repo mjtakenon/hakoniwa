@@ -243,6 +243,8 @@ class ExecuteTurn extends Command
                     /** @var Logs $logs */
                     $logs = $logsList->get($island->id);
 
+                    $status->truncateOverflows();
+
                     // 集計ログ
                     $logs->add(new SummaryLog($status, $prevStatus, $turn));
 

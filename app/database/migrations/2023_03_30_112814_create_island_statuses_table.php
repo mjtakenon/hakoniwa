@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('turn_id');
             $table->unsignedBigInteger('island_id')->index();
-            $table->integer('development_points')->index();
+            $table->bigInteger('development_points')->index();
             $table->integer('population');
             $table->integer('funds');
             $table->integer('foods');
