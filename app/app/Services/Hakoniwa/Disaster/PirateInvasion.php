@@ -21,7 +21,7 @@ use Illuminate\Support\Collection;
 
 class PirateInvasion implements IDisaster
 {
-    private const OCCUR_PROBABILITY = 0.01;
+    private const OCCUR_PROBABILITY = 0.9;
 
     private static function getInitialExperience(int $population): int
     {
@@ -56,6 +56,7 @@ class PirateInvasion implements IDisaster
                 elevation: $pirateSpawnCell->getElevation(),
                 experience: random_int(0, self::getInitialExperience($status->getPopulation())),
                 affiliation_id: Pirate::AFFILIATION_PIRATE,
+                return_turn: $turn->turn + Pirate::DEFAULT_RETURN_TURN,
             ));
         }
 

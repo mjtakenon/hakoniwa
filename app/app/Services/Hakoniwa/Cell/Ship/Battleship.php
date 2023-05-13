@@ -33,13 +33,11 @@ class Battleship extends CombatantShip
     protected string $name = self::NAME;
     protected int $offensivePower = 20;
     protected int $defencePower = 10;
-    protected int $elapsedTurn = 0;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
         $arr['data']['maintenanceNumberOfPeople'] = $this->maintenanceNumberOfPeople;
-        $arr['data']['elapsed_turn'] = $this->elapsedTurn;
         return $arr;
     }
 
@@ -47,10 +45,6 @@ class Battleship extends CombatantShip
     {
         parent::__construct(...$data);
         $this->maintenanceNumberOfPeople = self::MAINTENANCE_NUMBER_OF_PEOPLE;
-
-        if (array_key_exists('elapsed_turn', $data)) {
-            $this->elapsedTurn = $data['elapsed_turn'];
-        }
     }
 
     public function getInfoString(bool $isPrivate = false): string
@@ -76,12 +70,6 @@ class Battleship extends CombatantShip
     {
         $logs = Logs::create();
 
-        // 他の島のもので規定ターンを過ぎていたら返す
-        if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
-            $foreignIslandOccurEvents->add(new ReturnShipToAffiliationIslandPlan($island->id, $this->getAffiliationId(), $this));
-            return new PassTurnResult($terrain, $status, $logs);
-        }
-
         $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
             // TODO: 海賊以外が追加されたら増やす
             return in_array($cell::TYPE, [Pirate::TYPE], true);
@@ -92,6 +80,12 @@ class Battleship extends CombatantShip
             if ($this->damage > 0) {
                 $this->damage -= self::DEFAULT_HEAL_PER_TURN;
                 $this->damage = max($this->damage, 0);
+            }
+
+            // 他の島のもので規定ターンを過ぎていたら返す
+            if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
+                $foreignIslandOccurEvents->add(new ReturnShipToAffiliationIslandPlan($island->id, $this->getAffiliationId(), $this));
+                return new PassTurnResult($terrain, $status, $logs);
             }
             return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
         }
