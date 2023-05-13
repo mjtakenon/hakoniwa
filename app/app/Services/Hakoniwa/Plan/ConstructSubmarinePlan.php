@@ -26,23 +26,31 @@ class ConstructSubmarinePlan extends Plan
     public const NAME = '潜水艦建造';
     public const PRICE = 2000;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
+    public const AMOUNT_STRING = '(:amount:回実施)';
+    public const DEFAULT_AMOUNT_STRING = '(1回実施)';
     public const USE_POINT = false;
+    public const USE_AMOUNT = true;
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::CONSTRUCT_SUBMARINE_AVAILABLE_POINTS;
 
     protected string $key = self::KEY;
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
     protected bool $usePoint = self::USE_POINT;
+    protected bool $useAmount = self::USE_AMOUNT;
+    protected string $amountString = self::AMOUNT_STRING;
+    protected string $defaultAmountString = self::DEFAULT_AMOUNT_STRING;
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
         if ($status->getFunds() < self::PRICE) {
+            $this->amount = 0;
             $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
+            $this->amount = 0;
             $logs->add(new AbortNoDevelopmentPointsLog($island, $turn, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
@@ -53,9 +61,12 @@ class ConstructSubmarinePlan extends Plan
         });
 
         if ($seaCells->count() <= 0) {
+            $this->amount = 0;
             $logs->add(new AbortInvalidTerrainLog($island, $turn, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
+
+        $this->amount -= 1;
 
         /** @var Cell $cell */
         $cell = $seaCells->random();
