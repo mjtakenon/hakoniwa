@@ -4,16 +4,15 @@ namespace App\Services\Hakoniwa\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Cell\Volcano;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
-use App\Services\Hakoniwa\Util\Point;
 use Illuminate\Support\Collection;
 
 class RemovalFacility extends Plan
@@ -38,7 +37,7 @@ class RemovalFacility extends Plan
         }
 
         if ($cell->getElevation() === 1) {
-            $terrain->setCell($this->point, new Mountain(point: $this->point));
+            $terrain->setCell($this->point, new Volcano(point: $this->point));
         } else if ($cell->getElevation() === 0) {
             $terrain->setCell($this->point, new Plain(point: $this->point));
         } else if ($cell->getElevation() === -1) {

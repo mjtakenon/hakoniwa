@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 
 class Mine extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land15.gif';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano_mine.png';
     public const TYPE = 'mine';
     public const NAME = '採掘場';
     const PRODUCTION_NUMBER_OF_PEOPLE = 50000;

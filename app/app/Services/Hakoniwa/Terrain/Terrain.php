@@ -11,13 +11,13 @@ use App\Services\Hakoniwa\Cell\Forest;
 use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\LargeFactory;
-use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\OutOfRegion;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Cell\Plain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Cell\Volcano;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Disaster\DisasterConst;
 use App\Services\Hakoniwa\Disaster\DisasterResult;
@@ -68,6 +68,7 @@ class Terrain implements JsonEncodable
         }
         return $terrain;
     }
+
     public static function fromJson(string $json): Terrain
     {
         $objects = json_decode($json);
@@ -105,7 +106,7 @@ class Terrain implements JsonEncodable
                 } else if ($n < 18) {
                     $this->terrain[$y][$x] = new Wasteland(point: new Point($x, $y));
                 } else if ($n < 19) {
-                    $this->terrain[$y][$x] = new Mountain(point: new Point($x, $y));
+                    $this->terrain[$y][$x] = new Volcano(point: new Point($x, $y));
                 } else if ($n < 21) {
                     $this->terrain[$y][$x] = new Village(point: new Point($x, $y), population: 1000);
                 } else if ($n < 28) {
@@ -264,54 +265,54 @@ class Terrain implements JsonEncodable
     {
         $cells = new Collection();
 
-        if ($this->inRange($point->y,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x-1,0,\HakoniwaService::getMaxWidth())) {
-            $cells[] = $this->terrain[$point->y][$point->x-1];
+        if ($this->inRange($point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x - 1, 0, \HakoniwaService::getMaxWidth())) {
+            $cells[] = $this->terrain[$point->y][$point->x - 1];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x-1, $point->y));
+            $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y));
         }
 
-        if ($this->inRange($point->y,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x+1,0,\HakoniwaService::getMaxWidth())) {
-            $cells[] = $this->terrain[$point->y][$point->x+1];
+        if ($this->inRange($point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x + 1, 0, \HakoniwaService::getMaxWidth())) {
+            $cells[] = $this->terrain[$point->y][$point->x + 1];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x+1, $point->y));
+            $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y));
         }
 
-        if ($this->inRange($point->y-1,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x,0,\HakoniwaService::getMaxWidth())) {
-            $cells[] = $this->terrain[$point->y-1][$point->x];
+        if ($this->inRange($point->y - 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x, 0, \HakoniwaService::getMaxWidth())) {
+            $cells[] = $this->terrain[$point->y - 1][$point->x];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y-1));
+            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y - 1));
         }
 
-        if ($this->inRange($point->y+1,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x,0,\HakoniwaService::getMaxWidth())) {
-            $cells[] = $this->terrain[$point->y+1][$point->x];
+        if ($this->inRange($point->y + 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x, 0, \HakoniwaService::getMaxWidth())) {
+            $cells[] = $this->terrain[$point->y + 1][$point->x];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y-1));
+            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y - 1));
         }
 
         // yが偶数 => (+1:-1), (+1:+1)
         if ($point->y % 2 === 0) {
             //
-            if ($this->inRange($point->y-1,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x+1,0,\HakoniwaService::getMaxWidth())) {
-                    $cells[] = $this->terrain[$point->y-1][$point->x+1];
+            if ($this->inRange($point->y - 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x + 1, 0, \HakoniwaService::getMaxWidth())) {
+                $cells[] = $this->terrain[$point->y - 1][$point->x + 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x+1,$point->y-1));
+                $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y - 1));
             }
-            if ($this->inRange($point->y+1,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x+1,0,\HakoniwaService::getMaxWidth())) {
-                $cells[] = $this->terrain[$point->y+1][$point->x+1];
+            if ($this->inRange($point->y + 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x + 1, 0, \HakoniwaService::getMaxWidth())) {
+                $cells[] = $this->terrain[$point->y + 1][$point->x + 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x+1,$point->y+1));
+                $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y + 1));
             }
         } else {
             // yが偶数 => (-1:-1), (-1:+1)
-            if ($this->inRange($point->y-1,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x-1,0,\HakoniwaService::getMaxWidth())) {
-                $cells[] = $this->terrain[$point->y-1][$point->x-1];
+            if ($this->inRange($point->y - 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x - 1, 0, \HakoniwaService::getMaxWidth())) {
+                $cells[] = $this->terrain[$point->y - 1][$point->x - 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x-1,$point->y-1));
+                $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y - 1));
             }
-            if ($this->inRange($point->y+1,0,\HakoniwaService::getMaxHeight()) && $this->inRange($point->x-1,0,\HakoniwaService::getMaxWidth())) {
-                $cells[] = $this->terrain[$point->y+1][$point->x-1];
+            if ($this->inRange($point->y + 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x - 1, 0, \HakoniwaService::getMaxWidth())) {
+                $cells[] = $this->terrain[$point->y + 1][$point->x - 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x-1,$point->y+1));
+                $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y + 1));
             }
         }
 
@@ -343,14 +344,13 @@ class Terrain implements JsonEncodable
         foreach ($this->terrain->flatten(1) as $cell) {
             if ($cell::TYPE === Lake::TYPE) {
                 $this->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-            }
-            else if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+            } else if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
                 $isChecked[$cell->getPoint()->toString()] = true;
                 continue;
             }
 
-            if ($cell->getPoint()->x === 0 || $cell->getPoint()->x === \HakoniwaService::getMaxWidth()-1 ||
-                $cell->getPoint()->y === 0 || $cell->getPoint()->y === \HakoniwaService::getMaxHeight()-1) {
+            if ($cell->getPoint()->x === 0 || $cell->getPoint()->x === \HakoniwaService::getMaxWidth() - 1 ||
+                $cell->getPoint()->y === 0 || $cell->getPoint()->y === \HakoniwaService::getMaxHeight() - 1) {
                 $isChecked[$cell->getPoint()->toString()] = true;
                 $lakeCandidate->push($cell->getPoint());
             } else {
@@ -363,7 +363,7 @@ class Terrain implements JsonEncodable
             $point = $lakeCandidate->pop();
             $isChecked[$point->toString()] = true;
             $cells = $this->getAroundCells($point);
-            foreach($cells as $cell) {
+            foreach ($cells as $cell) {
                 // 走査済み
                 if ($isChecked[$cell->getPoint()->toString()]) {
                     continue;
@@ -374,7 +374,7 @@ class Terrain implements JsonEncodable
             }
         }
 
-        $isLake = $isChecked->reject(function($val) {
+        $isLake = $isChecked->reject(function ($val) {
             return $val;
         });
 

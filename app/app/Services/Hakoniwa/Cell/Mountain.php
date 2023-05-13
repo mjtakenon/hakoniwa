@@ -2,6 +2,15 @@
 
 namespace App\Services\Hakoniwa\Cell;
 
+use App\Models\Island;
+use App\Models\Turn;
+use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
+use App\Services\Hakoniwa\Util\Rand;
+use Illuminate\Support\Collection;
+
 class Mountain extends Cell
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land11.gif';
@@ -26,9 +35,28 @@ class Mountain extends Cell
         CellTypeConst::PREVENTING_TSUNAMI => true,
     ];
     public const ELEVATION = 1;
+    private const ACTIVATE_PROBABILITY = 0.3;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;
+
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    {
+        $mountains = $terrain->find([Volcano::TYPE, Mine::TYPE]);
+
+        if ($mountains->count() >= 1) {
+            return new PassTurnResult($terrain, $status, Logs::create());
+        }
+
+        // 活火山が存在していない場合、確率で活火山になる
+        if (self::ACTIVATE_PROBABILITY <= Rand::mt_rand_float()) {
+            return new PassTurnResult($terrain, $status, Logs::create());
+        }
+
+        $terrain->setCell($this->point, new Volcano(point: $this->point));
+
+        return new PassTurnResult($terrain, $status, Logs::create());
+    }
 }

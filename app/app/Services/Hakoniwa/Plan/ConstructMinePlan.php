@@ -5,7 +5,7 @@ namespace App\Services\Hakoniwa\Plan;
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Mine;
-use App\Services\Hakoniwa\Cell\Mountain;
+use App\Services\Hakoniwa\Cell\Volcano;
 use App\Services\Hakoniwa\Log\AbortInvalidCellLog;
 use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
 use App\Services\Hakoniwa\Log\ExecuteCellLog;
@@ -34,7 +34,7 @@ class ConstructMinePlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        if (!in_array($cell::TYPE, [Mountain::TYPE], true)) {
+        if (!in_array($cell::TYPE, [Volcano::TYPE], true)) {
             $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }

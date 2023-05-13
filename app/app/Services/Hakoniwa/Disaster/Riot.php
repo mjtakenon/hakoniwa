@@ -6,9 +6,9 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\CellTypeConst;
-use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
+use App\Services\Hakoniwa\Cell\Volcano;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\DestructionByRiotLog;
 use App\Services\Hakoniwa\Log\Logs;
@@ -41,7 +41,7 @@ class Riot implements IDisaster
             }
 
             if ($cell->getElevation() >= 1) {
-                $terrain->setCell($cell->getPoint(), new Mountain(point: $cell->getPoint()));
+                $terrain->setCell($cell->getPoint(), new Volcano(point: $cell->getPoint()));
             } else if ($cell->getElevation() === 0) {
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             } else if ($cell->getElevation() === -1) {

@@ -40,6 +40,7 @@ class CellTypeConst
         Forest::TYPE => Forest::class,
         Metropolis::TYPE => Metropolis::class,
         Mountain::TYPE => Mountain::class,
+        Volcano::TYPE => Volcano::class,
         Mine::TYPE => Mine::class,
         Oilfield::TYPE => Oilfield::class,
         Plain::TYPE => Plain::class,
