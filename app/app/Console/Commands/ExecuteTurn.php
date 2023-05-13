@@ -12,8 +12,10 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Log\AbandonmentLog;
 use App\Services\Hakoniwa\Log\AbortNotFoundIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
+use App\Services\Hakoniwa\Log\InviteNewImmigrationLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
+use App\Services\Hakoniwa\Log\UnpopulatedIslandLog;
 use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
 use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
 use App\Services\Hakoniwa\Plan\Plans;
@@ -181,12 +183,12 @@ class ExecuteTurn extends Command
                     // 災害と湖判定による影響を考慮した再集計
                     $status->aggregate($terrain);
 
-                    // 人口0による島の放棄
+                    // 人口0の場合、発展ポイントを減らして村を生成
                     if ($status->getPopulation() === 0) {
-                        $island->deleted_at = now();
-                        IslandHistory::createFromIsland($island);
-                        $logs = Logs::create();
-                        $logs->add(new AbandonmentLog($island, $turn));
+                        $terrain->inviteNewImmigration($status);
+                        $logs->add(new InviteNewImmigrationLog($island, $turn));
+                        $logs->add(new UnpopulatedIslandLog($island, $turn));
+                        $status->aggregate($terrain);
                     }
 
                     $terrainList->put($island->id, $terrain);

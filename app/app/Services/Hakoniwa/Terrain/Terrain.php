@@ -400,4 +400,34 @@ class Terrain implements JsonEncodable
 
         return new DisasterResult($this, $status, $logs);
     }
+
+    public function find(array $cellTypes): Collection
+    {
+        return $this->terrain->flatten(1)->filter(function ($cell) use ($cellTypes) {
+            /** @var Cell $cell */
+            return in_array($cell::TYPE, $cellTypes, true);
+        });
+    }
+
+    public function inviteNewImmigration(Status $status): void
+    {
+        $status->setDevelopmentPoints($status->getDevelopmentPoints() / 2);
+        /** @var Cell $targetCell */
+        $plains = $this->find([Plain::TYPE, Wasteland::TYPE]);
+        if (!$plains->isEmpty()) {
+            $targetCell = $plains->random();
+            $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
+            return;
+        }
+
+        $shallows = $this->find([Shallow::TYPE]);
+        if (!$shallows->isEmpty()) {
+            $targetCell = $shallows->random();
+            $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
+            return;
+        }
+
+        $targetCell = $this->terrain->flatten(1)->random();
+        $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
+    }
 }
