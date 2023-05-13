@@ -10,10 +10,12 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Ship\Battleship;
 use App\Services\Hakoniwa\Cell\Ship\CombatantShip;
 use App\Services\Hakoniwa\Log\AbortInvalidTerrainLog;
+use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\ReinforceLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use App\Services\Hakoniwa\Util\Point;
 
 class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
@@ -33,7 +35,7 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
-        $battleShips = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) use ($fromIsland) {
+        $battleships = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) use ($fromIsland) {
             /** @var CombatantShip $cell */
             return $cell::TYPE === Battleship::TYPE && $cell->getAffiliationId() === $fromIsland->id;
         })->sort(function($cell) {
@@ -41,27 +43,31 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
             return $cell->getDamage();
         });
 
-        $amount = min($this->plan->getAmount(), $seaCells->count(), $battleShips->count());
+        $amount = min($this->plan->getAmount(), $seaCells->count(), $battleships->count());
+        if ($amount <= 0) {
+            $fromLogs->add(new AbortNoShipLog($fromIsland, $turn, $this->plan, new Battleship(point: new Point(0,0))));
+            return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+        }
 
         $seaCells = $seaCells->random($amount);
-        $battleShips = $battleShips->take($amount);
+        $battleships = $battleships->take($amount);
 
-        /** @var Battleship $battleShip */
-        foreach ($battleShips as $battleShip) {
+        /** @var Battleship $battleship */
+        foreach ($battleships as $battleship) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            if ($battleShip->getElevation() === -1) {
-                $fromTerrain->setCell($battleShip->getPoint(), new Shallow(point: $battleShip->getPoint()));
+            if ($battleship->getElevation() === -1) {
+                $fromTerrain->setCell($battleship->getPoint(), new Shallow(point: $battleship->getPoint()));
             } else {
-                $fromTerrain->setCell($battleShip->getPoint(), new Sea(point: $battleShip->getPoint()));
+                $fromTerrain->setCell($battleship->getPoint(), new Sea(point: $battleship->getPoint()));
             }
 
-            $battleShip->setPoint($seaCell->getPoint());
-            $battleShip->setElevation($seaCell->getElevation());
+            $battleship->setPoint($seaCell->getPoint());
+            $battleship->setElevation($seaCell->getElevation());
             // 帰還ターンは変数に切り出す
-            $battleShip->setReturnTurn($turn->turn + self::DEFAULT_REINFORCE_TURN);
+            $battleship->setReturnTurn($turn->turn + self::DEFAULT_REINFORCE_TURN);
 
-            $toTerrain->setCell($battleShip->getPoint(), $battleShip);
+            $toTerrain->setCell($battleship->getPoint(), $battleship);
         }
 
         $fromLogs->add(new ReinforceLog($toIsland, $turn, $amount, $this->plan, true));

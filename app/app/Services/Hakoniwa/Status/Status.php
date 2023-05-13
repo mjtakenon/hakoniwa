@@ -16,6 +16,9 @@ class Status
     private const INITIAL_FUNDS = 3000;
     private const INITIAL_FOODS = 100000;
     private const INITIAL_RESOURCES = 50000;
+    private const MAX_FUNDS = 99999;
+    private const MAX_FOODS = 9999999;
+    private const MAX_RESOURCES = 9999999;
 
     public const ENVIRONMENT_NORMAL = 'normal';
     public const ENVIRONMENT_GOOD = 'good';
@@ -47,6 +50,7 @@ class Status
     private int $resourcesProductionNumberOfPeople;
     private string $environment;
     private int $area;
+    private int $abandonedTurn = 0;
 
     private int $producedFoods = 0;
     private int $producedFunds = 0;
@@ -78,6 +82,7 @@ class Status
         $this->resourcesProductionNumberOfPeople = $islandStatus->resources_production_number_of_people;
         $this->environment = $islandStatus->environment;
         $this->area = $islandStatus->area;
+        $this->abandonedTurn = $islandStatus->abandoned_turn;
 
         return $this;
     }
@@ -144,7 +149,7 @@ class Status
         $this->funds = (int)round($this->funds);
         $this->resources = (int)round($this->resources);
 
-        $this->developmentPoints += $this->sumDevelopmentPoints($terrain);
+        $this->developmentPoints += $this->sumDevelopmentPoints();
 
         return $this;
     }
@@ -157,6 +162,21 @@ class Status
         $this->resourcesProductionNumberOfPeople = $terrain->aggregateResourcesProductionNumberOfPeople();
         $this->environment = $terrain->getEnvironment();
         $this->area = $terrain->aggregateArea();
+    }
+
+    public function truncateOverflows(): void
+    {
+        if ($this->foods >= self::MAX_FOODS) {
+            $this->foods = self::MAX_FOODS;
+        }
+
+        if ($this->funds >= self::MAX_FUNDS) {
+            $this->funds = self::MAX_FUNDS;
+        }
+
+        if ($this->resources >= self::MAX_RESOURCES) {
+            $this->resources = self::MAX_RESOURCES;
+        }
     }
 
     /**
@@ -271,6 +291,19 @@ class Status
         return $this->area;
     }
 
+    public function getAbandonedTurn(): int
+    {
+        return $this->abandonedTurn;
+    }
+
+    /**
+     * @param int $abandonedTurn
+     */
+    public function setAbandonedTurn(int $abandonedTurn): void
+    {
+        $this->abandonedTurn = $abandonedTurn;
+    }
+
     public function getProducedFoods(): int
     {
         return $this->producedFoods;
@@ -286,9 +319,8 @@ class Status
         return $this->producedResources;
     }
 
-    private function sumDevelopmentPoints(Terrain $terrain): int
+    private function sumDevelopmentPoints(): int
     {
-        // TODO: 公園
         return (int)round($this->population/200);
     }
 }

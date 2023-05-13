@@ -12,8 +12,10 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Log\AbandonmentLog;
 use App\Services\Hakoniwa\Log\AbortNotFoundIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
+use App\Services\Hakoniwa\Log\InviteNewImmigrationLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
+use App\Services\Hakoniwa\Log\UnpopulatedIslandLog;
 use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
 use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
 use App\Services\Hakoniwa\Plan\Plans;
@@ -181,8 +183,16 @@ class ExecuteTurn extends Command
                     // 災害と湖判定による影響を考慮した再集計
                     $status->aggregate($terrain);
 
-                    // 人口0による島の放棄
+                    // 人口0の場合、発展ポイントを減らして村を生成
                     if ($status->getPopulation() === 0) {
+                        $terrain->inviteNewImmigration($status);
+                        $logs->add(new InviteNewImmigrationLog($island, $turn));
+                        $logs->add(new UnpopulatedIslandLog($island, $turn));
+                        $status->aggregate($terrain);
+                    }
+
+                    // 一定ターン以上資金繰りが続いた場合、放棄する
+                    if (!is_null(config('app.hakoniwa.island_abandon_turn')) && $status->getAbandonedTurn() >= config('app.hakoniwa.island_abandon_turn')) {
                         $island->deleted_at = now();
                         IslandHistory::createFromIsland($island);
                         $logs = Logs::create();
@@ -243,6 +253,8 @@ class ExecuteTurn extends Command
                     /** @var Logs $logs */
                     $logs = $logsList->get($island->id);
 
+                    $status->truncateOverflows();
+
                     // 集計ログ
                     $logs->add(new SummaryLog($status, $prevStatus, $turn));
 
@@ -260,6 +272,7 @@ class ExecuteTurn extends Command
                     $newIslandStatus->resources_production_number_of_people = $status->getResourcesProductionNumberOfPeople();
                     $newIslandStatus->environment = $status->getEnvironment();
                     $newIslandStatus->area = $status->getArea();
+                    $newIslandStatus->abandoned_turn = $status->getAbandonedTurn();
                     $newIslandStatus->save();
 
                     $newIslandPlan = new IslandPlan();

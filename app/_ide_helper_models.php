@@ -159,10 +159,12 @@ namespace App\Models{
  * @property int $resources_production_number_of_people
  * @property string $environment
  * @property int $area
+ * @property int $abandoned_turn
  * @property \Illuminate\Support\Carbon $created_at
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus query()
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereAbandonedTurn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereArea($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereDevelopmentPoints($value)
@@ -227,7 +229,6 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
- * @property string $email
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
@@ -241,7 +242,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)

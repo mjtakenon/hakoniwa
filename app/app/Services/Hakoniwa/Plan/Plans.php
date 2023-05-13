@@ -107,6 +107,12 @@ class Plans implements JsonEncodable
             $status = $executePlanResult->getStatus();
             $logs->merge($executePlanResult->getLogs());
 
+            if ($plan->getKey() === CashFlowPlan::KEY) {
+                $status->setAbandonedTurn($status->getAbandonedTurn() + 1);
+            } else {
+                $status->setAbandonedTurn(0);
+            }
+
             if ($plan->useAmount() && $plan->getAmount() >= 1) {
                 $this->plans->prepend($plan);
                 $this->plans->pop();

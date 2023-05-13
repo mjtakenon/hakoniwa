@@ -73,6 +73,7 @@ class IndexController extends Controller
             $islandStatus->resources_production_number_of_people = $status->getResourcesProductionNumberOfPeople();
             $islandStatus->environment = $status->getEnvironment();
             $islandStatus->area = $status->getArea();
+            $islandStatus->abandoned_turn = $status->getAbandonedTurn();
             $islandStatus->save();
 
             $islandPlan = new IslandPlan();
