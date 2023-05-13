@@ -50,6 +50,7 @@ class Status
     private int $resourcesProductionNumberOfPeople;
     private string $environment;
     private int $area;
+    private int $abandonedTurn = 0;
 
     private int $producedFoods = 0;
     private int $producedFunds = 0;
@@ -81,6 +82,7 @@ class Status
         $this->resourcesProductionNumberOfPeople = $islandStatus->resources_production_number_of_people;
         $this->environment = $islandStatus->environment;
         $this->area = $islandStatus->area;
+        $this->abandonedTurn = $islandStatus->abandoned_turn;
 
         return $this;
     }
@@ -287,6 +289,19 @@ class Status
     public function getArea(): int
     {
         return $this->area;
+    }
+
+    public function getAbandonedTurn(): int
+    {
+        return $this->abandonedTurn;
+    }
+
+    /**
+     * @param int $abandonedTurn
+     */
+    public function setAbandonedTurn(int $abandonedTurn): void
+    {
+        $this->abandonedTurn = $abandonedTurn;
     }
 
     public function getProducedFoods(): int

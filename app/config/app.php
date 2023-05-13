@@ -226,7 +226,8 @@ return [
 
     'hakoniwa' => [
         'turn_update_minutes' => env('TURN_UPDATE_MINUTES'),
-        'monster_action_probably' => env('MONSTER_ACTION_PROBABLY', 1)
+        'monster_action_probably' => env('MONSTER_ACTION_PROBABLY', 1),
+        'island_abandon_turn' => env('ISLAND_ABANDONED_TURN')
     ],
 
     'notification_webhook_url' => env('NOTIFICATION_WEBHOOK_URL')

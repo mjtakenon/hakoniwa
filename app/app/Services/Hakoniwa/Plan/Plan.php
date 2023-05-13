@@ -2,6 +2,8 @@
 
 namespace App\Services\Hakoniwa\Plan;
 
+use App\Models\Island;
+use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Factory;
 use App\Services\Hakoniwa\Cell\Farm;
 use App\Services\Hakoniwa\Cell\FarmDome;
@@ -27,7 +29,10 @@ use App\Services\Hakoniwa\Cell\Ship\Battleship;
 use App\Services\Hakoniwa\Cell\Ship\Submarine;
 use App\Services\Hakoniwa\Cell\Ship\TransportShip;
 use App\Services\Hakoniwa\Cell\Wasteland;
+use App\Services\Hakoniwa\Status\Status;
+use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
+use Illuminate\Support\Collection;
 
 abstract class Plan
 {
@@ -233,4 +238,6 @@ abstract class Plan
     {
         return new static($point, $amount, $targetIsland);
     }
+
+    abstract public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult;
 }

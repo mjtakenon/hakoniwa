@@ -191,6 +191,14 @@ class ExecuteTurn extends Command
                         $status->aggregate($terrain);
                     }
 
+                    // 一定ターン以上資金繰りが続いた場合、放棄する
+                    if (!is_null(config('app.hakoniwa.island_abandon_turn')) && $status->getAbandonedTurn() >= config('app.hakoniwa.island_abandon_turn')) {
+                        $island->deleted_at = now();
+                        IslandHistory::createFromIsland($island);
+                        $logs = Logs::create();
+                        $logs->add(new AbandonmentLog($island, $turn));
+                    }
+
                     $terrainList->put($island->id, $terrain);
                     $statusList->put($island->id, $status);
                     $logsList->put($island->id, $logs);
@@ -264,6 +272,7 @@ class ExecuteTurn extends Command
                     $newIslandStatus->resources_production_number_of_people = $status->getResourcesProductionNumberOfPeople();
                     $newIslandStatus->environment = $status->getEnvironment();
                     $newIslandStatus->area = $status->getArea();
+                    $newIslandStatus->abandoned_turn = $status->getAbandonedTurn();
                     $newIslandStatus->save();
 
                     $newIslandPlan = new IslandPlan();

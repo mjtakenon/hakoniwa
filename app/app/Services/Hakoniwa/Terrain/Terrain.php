@@ -386,7 +386,7 @@ class Terrain implements JsonEncodable
         return $this;
     }
 
-    public function occurDisaster(Island $island, Status $status, Turn $turn)
+    public function occurDisaster(Island $island, Status $status, Turn $turn): DisasterResult
     {
         $logs = Logs::create();
 
