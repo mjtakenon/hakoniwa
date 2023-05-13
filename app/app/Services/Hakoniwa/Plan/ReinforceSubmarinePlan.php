@@ -27,6 +27,7 @@ class ReinforceSubmarinePlan extends Plan
     public const DEFAULT_AMOUNT_STRING = '(無制限)';
     public const AMOUNT_STRING = '(:amount:隻)';
     public const USE_AMOUNT = true;
+    public const USE_POINT = false;
     public const USE_TARGET_ISLAND = true;
     public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::REINFORCE_SUBMARINE_AVAILABLE_POINTS;
 
@@ -36,6 +37,7 @@ class ReinforceSubmarinePlan extends Plan
     protected string $defaultAmountString = self::DEFAULT_AMOUNT_STRING;
     protected string $amountString = self::AMOUNT_STRING;
     protected bool $useAmount = self::USE_AMOUNT;
+    protected bool $usePoint = self::USE_POINT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
     protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
@@ -64,7 +66,7 @@ class ReinforceSubmarinePlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        $this->amount = min($submarines, $this->amount);
+        $this->amount = min($submarines->count(), $this->amount);
 
         $foreignIslandTargetedPlans->add(new ReinforceSubmarineToForeignIslandPlan(
             $island->id,

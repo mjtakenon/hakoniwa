@@ -8,6 +8,7 @@ use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 class MonumentOfAgriculture extends Park
 {

@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 abstract class HasPopulation extends Cell
 {

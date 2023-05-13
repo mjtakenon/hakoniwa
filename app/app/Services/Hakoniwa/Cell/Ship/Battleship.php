@@ -10,6 +10,7 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Log\AttackAndDefeatLog;
 use App\Services\Hakoniwa\Log\AttackLog;
 use App\Services\Hakoniwa\Log\Logs;
+use App\Services\Hakoniwa\Plan\ForeignIsland\ReturnShipToAffiliationIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Support\Collection;
@@ -73,8 +74,13 @@ class Battleship extends CombatantShip
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
-        // TODO: 他の島のもので規定ターンを過ぎていたら返す
         $logs = Logs::create();
+
+        // 他の島のもので規定ターンを過ぎていたら返す
+        if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
+            $foreignIslandOccurEvents->add(new ReturnShipToAffiliationIslandPlan($island->id, $this->getAffiliationId(), $this));
+            return new PassTurnResult($terrain, $status, $logs);
+        }
 
         $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
             // TODO: 海賊以外が追加されたら増やす
@@ -85,7 +91,7 @@ class Battleship extends CombatantShip
             // ダメージを受けていて、戦闘していない場合は回復する
             if ($this->damage > 0) {
                 // TODO: 回復量は変数に切り出す
-                $this->damage -= 10;
+                $this->damage -= self::DEFAULT_HEAL_PER_TURN;
                 $this->damage = max($this->damage, 0);
             }
             return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);

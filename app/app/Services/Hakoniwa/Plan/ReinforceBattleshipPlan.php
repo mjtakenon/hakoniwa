@@ -26,6 +26,7 @@ class ReinforceBattleshipPlan extends Plan
     public const DEFAULT_AMOUNT_STRING = '(無制限)';
     public const AMOUNT_STRING = '(:amount:隻)';
     public const USE_AMOUNT = true;
+    public const USE_POINT = false;
     public const USE_TARGET_ISLAND = true;
 
     protected string $key = self::KEY;
@@ -33,6 +34,7 @@ class ReinforceBattleshipPlan extends Plan
     protected int $price = self::PRICE;
     protected string $defaultAmountString = self::DEFAULT_AMOUNT_STRING;
     protected string $amountString = self::AMOUNT_STRING;
+    protected bool $usePoint = self::USE_POINT;
     protected bool $useAmount = self::USE_AMOUNT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
 
@@ -55,7 +57,7 @@ class ReinforceBattleshipPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        $this->amount = min($battleShips, $this->amount);
+        $this->amount = min($battleShips->count(), $this->amount);
 
         // 対象が自島の場合は中止とする
         if ($this->getTargetIsland() === $island->id) {

@@ -20,12 +20,13 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 
 class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
+    const DEFAULT_REINFORCE_TURN = 5;
     public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
     {
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
 
-        $seaCells = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) {
+        $seaCells = $toTerrain->getTerrain()->flatten(1)->filter(function ($cell) {
             /** @var Cell $cell */
             return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE]);
         });
@@ -35,17 +36,18 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
-        $amount = min($this->plan->getAmount(), $seaCells->count());
-
-        $seaCells = $seaCells->random($amount);
-
-        $battleShips = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) {
+        $battleShips = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) use ($fromIsland) {
             /** @var CombatantShip $cell */
-            return $cell::TYPE === Battleship::TYPE;
+            return $cell::TYPE === Battleship::TYPE && $cell->getAffiliationId() === $fromIsland->id;
         })->sort(function($cell) {
             /** @var CombatantShip $cell */
             return $cell->getDamage();
-        })->take($amount);
+        });
+
+        $amount = min($this->plan->getAmount(), $seaCells->count(), $battleShips->count());
+
+        $seaCells = $seaCells->random($amount);
+        $battleShips = $battleShips->take($amount);
 
         /** @var Battleship $battleShip */
         foreach ($battleShips as $battleShip) {
@@ -60,7 +62,7 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
             $battleShip->setPoint($seaCell->getPoint());
             $battleShip->setElevation($seaCell->getElevation());
             // 帰還ターンは変数に切り出す
-            $battleShip->setReturnTurn($turn->turn + 5);
+            $battleShip->setReturnTurn($turn->turn + self::DEFAULT_REINFORCE_TURN);
 
             $toTerrain->setCell($battleShip->getPoint(), $battleShip);
         }

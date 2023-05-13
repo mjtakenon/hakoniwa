@@ -14,6 +14,7 @@ use App\Services\Hakoniwa\Log\AbortNotFoundIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
+use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandOccurEvent;
 use App\Services\Hakoniwa\Plan\ForeignIsland\TargetedToForeignIslandPlan;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Status\Status;
@@ -194,7 +195,7 @@ class ExecuteTurn extends Command
                 }
 
                 // セル処理によって発生した計画の実行
-                /** @var TargetedToForeignIslandPlan $plan */
+                /** @var ForeignIslandOccurEvent $plan */
                 foreach ($foreignIslandOccurEvents as $plan) {
                     /** @var Island $toIsland */
                     $toIsland = $islands->find($plan->getToIsland());
@@ -212,12 +213,6 @@ class ExecuteTurn extends Command
                     $fromLogs = $logsList->get($plan->getFromIsland());
                     /** @var Logs $toLogs */
                     $toLogs = $logsList->get($plan->getToIsland());
-
-                    if (is_null($toIsland)) {
-                        $fromLogs->add(new AbortNotFoundIslandLog($island, $turn, $plan->getPlan()));
-                        $logsList->put($plan->getFromIsland(), $fromLogs);
-                        continue;
-                    }
 
                     $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
 
