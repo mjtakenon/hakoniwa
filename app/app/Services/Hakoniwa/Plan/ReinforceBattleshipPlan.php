@@ -42,7 +42,7 @@ class ReinforceBattleshipPlan extends Plan
     {
         $logs = Logs::create();
 
-        $battleShips = $terrain->getTerrain()->flatten(1)->filter(function ($cell) use ($island) {
+        $battleships = $terrain->getTerrain()->flatten(1)->filter(function ($cell) use ($island) {
             /** @var Cell $cell */
             return $cell::TYPE === Battleship::TYPE && $cell->getAffiliationId() === $island->id;
         });
@@ -51,13 +51,13 @@ class ReinforceBattleshipPlan extends Plan
             $this->amount = PHP_INT_MAX;
         }
 
-        if ($battleShips->isEmpty()) {
+        if ($battleships->isEmpty()) {
             $logs->add(new AbortNoShipLog($island, $turn, $this, new Battleship(point: new Point(0,0))));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        $this->amount = min($battleShips->count(), $this->amount);
+        $this->amount = min($battleships->count(), $this->amount);
 
         // 対象が自島の場合は中止とする
         if ($this->getTargetIsland() === $island->id) {

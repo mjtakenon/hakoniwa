@@ -10,13 +10,17 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Ship\CombatantShip;
 use App\Services\Hakoniwa\Cell\Ship\Submarine;
 use App\Services\Hakoniwa\Log\AbortInvalidTerrainLog;
+use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\ReinforceLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use App\Services\Hakoniwa\Util\Point;
 
 class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
+    const DEFAULT_REINFORCE_TURN = 5;
+
     public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
     {
         $fromLogs = Logs::create();
@@ -32,17 +36,22 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
-        $amount = min($this->plan->getAmount(), $seaCells->count());
-
-        $seaCells = $seaCells->random($amount);
-
         $submarines = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) use ($fromIsland) {
             /** @var CombatantShip $cell */
             return $cell::TYPE === Submarine::TYPE && $cell->getAffiliationId() === $fromIsland->id;
         })->sort(function ($cell) {
             /** @var CombatantShip $cell */
             return $cell->getDamage();
-        })->take($amount);
+        });
+
+        $amount = min($this->plan->getAmount(), $seaCells->count(), $submarines->count());
+        if ($amount <= 0) {
+            $fromLogs->add(new AbortNoShipLog($fromIsland, $turn, $this->plan, new Submarine(point: new Point(0, 0))));
+            return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+        }
+
+        $seaCells = $seaCells->random($amount);
+        $submarines = $submarines->take($amount);
 
         /** @var Submarine $submarine */
         foreach ($submarines as $submarine) {
@@ -57,7 +66,7 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
             $submarine->setPoint($seaCell->getPoint());
             $submarine->setElevation($seaCell->getElevation());
             // 帰還ターンは変数に切り出す
-            $submarine->setReturnTurn($turn->turn + 5);
+            $submarine->setReturnTurn($turn->turn + self::DEFAULT_REINFORCE_TURN);
 
             $toTerrain->setCell($submarine->getPoint(), $submarine);
         }
