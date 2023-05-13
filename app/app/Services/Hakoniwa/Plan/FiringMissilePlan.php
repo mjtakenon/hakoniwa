@@ -20,7 +20,7 @@ use App\Services\Hakoniwa\Log\MissileHitToMonsterLog;
 use App\Services\Hakoniwa\Log\MissileOutOfRegionLog;
 use App\Services\Hakoniwa\Log\MissileSelfDestructLog;
 use App\Services\Hakoniwa\Log\SoldMonsterCorpseLog;
-use App\Services\Hakoniwa\Plan\ForeignIsland\FiringMissileToForeignIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\FiringMissileToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Support\Collection;

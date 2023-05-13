@@ -11,6 +11,7 @@ use App\Services\Hakoniwa\Cell\PassTurnResult;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 class MissileBase extends Cell implements IMissileFireable
 {
@@ -93,7 +94,7 @@ class MissileBase extends Cell implements IMissileFireable
         return '('. $this->point->x . ',' . $this->point->y .') ' . Forest::NAME;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $seasideCells = $cells->reject(function ($cell) { return $cell::ATTRIBUTE[CellTypeConst::IS_LAND]; });

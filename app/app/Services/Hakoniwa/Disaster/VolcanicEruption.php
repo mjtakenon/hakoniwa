@@ -10,6 +10,7 @@ use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Wasteland;
 use App\Services\Hakoniwa\Log\DestructionByVolcanicEruptionLog;
+use App\Services\Hakoniwa\Log\DestructionShipLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\OccurVolcanicEruptionLog;
 use App\Services\Hakoniwa\Log\ScatterAwayByVolcanicEruptionLog;
@@ -17,6 +18,7 @@ use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
 use App\Services\Hakoniwa\Util\Rand;
+use function Sodium\add;
 
 class VolcanicEruption implements IDisaster
 {
@@ -38,18 +40,21 @@ class VolcanicEruption implements IDisaster
         /** @var Cell $cell */
         foreach ($aroundCells as $cell) {
             if ($cell::ELEVATION === -2) {
-                $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));
+                if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+                    $logs->add(new DestructionShipLog($island, $turn, $cell));
+                } else {
+                    $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));
+                }
                 $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-                continue;
-            }
-            if ($cell::ELEVATION === -1 || $cell::ELEVATION === 0) {
+            } else {
                 if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     $logs->add(new ScatterAwayByVolcanicEruptionLog($island, $turn, $cell));
+                } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+                    $logs->add(new DestructionShipLog($island, $turn, $cell));
                 } else {
                     $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));
                 }
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
-                continue;
             }
         }
 

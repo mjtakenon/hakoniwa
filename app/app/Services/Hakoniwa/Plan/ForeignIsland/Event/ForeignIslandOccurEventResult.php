@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Services\Hakoniwa\Plan\ForeignIsland;
+namespace App\Services\Hakoniwa\Plan\ForeignIsland\Event;
 
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-class ExecutePlanToForeignIslandResult
+class ForeignIslandOccurEventResult
 {
     private Terrain $fromTerrain;
-    private Terrain $toTerrain;
+    private ?Terrain $toTerrain;
     private Status $fromStatus;
-    private Status $toStatus;
+    private ?Status $toStatus;
     private Logs $fromLogs;
     private Logs $toLogs;
 
-    public function __construct(Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Logs $fromLogs, Logs $toLogs)
+    public function __construct(Terrain $fromTerrain, ?Terrain $toTerrain, Status $fromStatus, ?Status $toStatus, Logs $fromLogs, ?Logs $toLogs)
     {
         $this->fromTerrain = $fromTerrain;
         $this->toTerrain = $toTerrain;
@@ -34,9 +34,9 @@ class ExecutePlanToForeignIslandResult
     }
 
     /**
-     * @return Status
+     * @return Status|null
      */
-    public function getToStatus(): Status
+    public function getToStatus(): ?Status
     {
         return $this->toStatus;
     }
@@ -50,9 +50,9 @@ class ExecutePlanToForeignIslandResult
     }
 
     /**
-     * @return Terrain
+     * @return Terrain|null
      */
-    public function getToTerrain(): Terrain
+    public function getToTerrain(): ?Terrain
     {
         return $this->toTerrain;
     }
@@ -66,9 +66,9 @@ class ExecutePlanToForeignIslandResult
     }
 
     /**
-     * @return Logs
+     * @return Logs|null
      */
-    public function getToLogs(): Logs
+    public function getToLogs(): ?Logs
     {
         return $this->toLogs;
     }

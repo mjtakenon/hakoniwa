@@ -29,6 +29,8 @@ class PlanConst
         FoodsTransportationPlan::KEY => FoodsTransportationPlan::class,
         FundsTransportationPlan::KEY => FundsTransportationPlan::class,
         ResourcesTransportationPlan::KEY => ResourcesTransportationPlan::class,
+        ReinforceBattleshipPlan::KEY => ReinforceBattleshipPlan::class,
+        ReinforceSubmarinePlan::KEY => ReinforceSubmarinePlan::class,
         CashFlowPlan::KEY => CashFlowPlan::class,
         AttractActivitiesPlan::KEY => AttractActivitiesPlan::class,
         AbandonmentPlan::KEY => AbandonmentPlan::class,

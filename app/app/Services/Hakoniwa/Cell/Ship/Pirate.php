@@ -27,6 +27,7 @@ class Pirate extends CombatantShip
     public const TYPE = 'pirate';
     public const NAME = '海賊';
     public const AFFILIATION_PIRATE = -1;
+    public const DEFAULT_RETURN_TURN = 5;
     protected ?int $affiliationId = self::AFFILIATION_PIRATE;
 
     protected string $shallowImagePath = self::SHALLOW_IMAGE_PATH;
@@ -35,23 +36,6 @@ class Pirate extends CombatantShip
     protected string $name = self::NAME;
     protected int $offensivePower = 20;
     protected int $defencePower = 10;
-    protected int $elapsedTurn = 0;
-
-    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
-    {
-        $arr = parent::toArray($isPrivate, $withStatic);
-        $arr['data']['elapsed_turn'] = $this->elapsedTurn;
-        return $arr;
-    }
-
-    public function __construct(...$data)
-    {
-        parent::__construct(...$data);
-
-        if (array_key_exists('elapsed_turn', $data)) {
-            $this->elapsedTurn = $data['elapsed_turn'];
-        }
-    }
 
     public function getInfoString(bool $isPrivate = false): string
     {
@@ -61,11 +45,12 @@ class Pirate extends CombatantShip
             ($this->damage > 0 ? PHP_EOL . '破損率 ' . $this->damage . '%' : '');
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         $logs = Logs::create();
 
-        if ($this->elapsedTurn >= 5) {
+        // 他の島のもので規定ターンを過ぎていたら返す
+        if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
             $logs->add(new DisappearPirateLog($island, $turn, deep_copy($this)));
             if ($this->elevation === -1) {
                 $terrain->setCell($this->getPoint(), new Shallow(point: $this->getPoint()));
@@ -74,8 +59,6 @@ class Pirate extends CombatantShip
             }
             return new PassTurnResult($terrain, $status, $logs);
         }
-
-        $this->elapsedTurn += 1;
 
         $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
             return in_array($cell::TYPE, [Battleship::TYPE, Submarine::TYPE], true);
@@ -126,7 +109,7 @@ class Pirate extends CombatantShip
             }
 
             if ($seaCells->count() <= 0) {
-                return parent::passTurn($island, $terrain, $status, $turn);
+                return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
             }
 
             // 攻撃対象の隣へ移動

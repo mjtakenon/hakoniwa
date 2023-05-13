@@ -7,6 +7,7 @@ use App\Models\Turn;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 class Forest extends Cell
 {
@@ -69,7 +70,7 @@ class Forest extends Cell
         return '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName();
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
         if ($this->woods >= self::MAX_WOODS) {
             return new PassTurnResult($terrain, $status, Logs::create());

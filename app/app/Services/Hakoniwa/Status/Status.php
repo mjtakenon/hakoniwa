@@ -2,6 +2,7 @@
 
 namespace App\Services\Hakoniwa\Status;
 
+use App\Models\Island;
 use App\Models\IslandStatus;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Farm;
@@ -81,7 +82,7 @@ class Status
         return $this;
     }
 
-    public function executeTurn(Terrain $terrain): static
+    public function executeTurn(Terrain $terrain, Island $island): static
     {
         $this->aggregate($terrain);
 
@@ -90,7 +91,7 @@ class Status
         $realFoodsProductionNumberOfPeople = 0;
         $realResourcesProductionNumberOfPeople = 0;
 
-        $workablePeople = $this->population - $terrain->aggregateMaintenanceNumberOfPeople();
+        $workablePeople = $this->population - $terrain->aggregateMaintenanceNumberOfPeople($island);
         $sumProductionNumberOfPeople = $this->foodsProductionNumberOfPeople + $this->fundsProductionNumberOfPeople + $this->resourcesProductionNumberOfPeople;
 
         if ($sumProductionNumberOfPeople > 0) {
