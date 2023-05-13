@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Hakoniwa\Plan\ForeignIsland;
+namespace App\Services\Hakoniwa\Plan\ForeignIsland\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
@@ -8,13 +8,13 @@ use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Cell\Ship\TransportShip;
-use App\Services\Hakoniwa\Log\FundsTransportationLog;
+use App\Services\Hakoniwa\Log\FoodsTransportationLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\FundsTransportationPlan;
+use App\Services\Hakoniwa\Plan\FoodsTransportationPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-class FundsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
+class FoodsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
     public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
     {
@@ -26,9 +26,9 @@ class FundsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
             return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE]);
         });
 
-        $amount = $this->plan->getAmount() * FundsTransportationPlan::UNIT;
+        $amount = $this->plan->getAmount() * FoodsTransportationPlan::UNIT;
 
-        $toStatus->setFunds($toStatus->getFunds() + $amount);
+        $toStatus->setFoods($toStatus->getFoods() + $amount);
 
         if ($seaCells->count() >= 1) {
             /** @var Cell $seaCell */
@@ -36,8 +36,8 @@ class FundsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
             $toTerrain->setCell($seaCell->getPoint(), new TransportShip(point: $seaCell->getPoint(), elevation: $seaCell->getElevation()));
         }
 
-        $fromLogs->add(new FundsTransportationLog($toIsland, $turn, $amount, true));
-        $toLogs->add(new FundsTransportationLog($fromIsland, $turn, $amount, false));
+        $fromLogs->add(new FoodsTransportationLog($toIsland, $turn, $amount, true));
+        $toLogs->add(new FoodsTransportationLog($fromIsland, $turn, $amount, false));
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }

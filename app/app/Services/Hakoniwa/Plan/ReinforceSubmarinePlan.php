@@ -9,7 +9,7 @@ use App\Services\Hakoniwa\Cell\Ship\Submarine;
 use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
 use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ForeignIsland\ReinforceSubmarineToForeignIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\ReinforceSubmarineToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\DevelopmentPointsConst;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -23,7 +23,7 @@ class ReinforceSubmarinePlan extends Plan
 
     public const NAME = '潜水艦派遣';
     public const PRICE = 0;
-    public const PRICE_STRING = '';
+    public const PRICE_STRING = '(数量x1隻)';
     public const DEFAULT_AMOUNT_STRING = '(無制限)';
     public const AMOUNT_STRING = '(:amount:隻)';
     public const USE_AMOUNT = true;
@@ -44,9 +44,9 @@ class ReinforceSubmarinePlan extends Plan
     {
         $logs = Logs::create();
 
-        $submarines = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+        $submarines = $terrain->getTerrain()->flatten(1)->filter(function ($cell) use ($island) {
             /** @var Cell $cell */
-            return $cell::TYPE === Submarine::TYPE;
+            return $cell::TYPE === Submarine::TYPE && $cell->getAffiliationId() === $island->id;
         });
 
         if ($this->amount === 0) {

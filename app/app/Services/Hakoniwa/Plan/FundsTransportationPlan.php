@@ -12,7 +12,7 @@ use App\Services\Hakoniwa\Log\AbortLackOfFundsLog;
 use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\AbortTargetSelfIslandLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ForeignIsland\FundsTransportToForeignIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\FundsTransportToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;

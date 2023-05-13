@@ -10,7 +10,7 @@ use App\Services\Hakoniwa\Cell\Shallow;
 use App\Services\Hakoniwa\Log\AttackAndDefeatLog;
 use App\Services\Hakoniwa\Log\AttackLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ForeignIsland\ReturnShipToAffiliationIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ReturnShipToAffiliationIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Support\Collection;
@@ -90,7 +90,6 @@ class Battleship extends CombatantShip
         if ($enemyShips->count() <= 0) {
             // ダメージを受けていて、戦闘していない場合は回復する
             if ($this->damage > 0) {
-                // TODO: 回復量は変数に切り出す
                 $this->damage -= self::DEFAULT_HEAL_PER_TURN;
                 $this->damage = max($this->damage, 0);
             }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Hakoniwa\Plan\ForeignIsland;
+namespace App\Services\Hakoniwa\Plan\ForeignIsland\Event;
 
 use App\Models\Island;
 use App\Models\Turn;
@@ -17,7 +17,7 @@ use App\Services\Hakoniwa\Terrain\Terrain;
 
 class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
 {
-    public function execute(Island $fromIsland, ?Island $toIsland, Terrain $fromTerrain, ?Terrain $toTerrain, Status $fromStatus, ?Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
+    public function execute(Island $fromIsland, ?Island $toIsland, Terrain $fromTerrain, ?Terrain $toTerrain, Status $fromStatus, ?Status $toStatus, Turn $turn): ForeignIslandOccurEventResult
     {
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
@@ -31,9 +31,9 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
             }
             /** @var CombatantShip $combatantShip */
             $combatantShip = $this->cell;
-            $fromLogs->add(new AbortReturnNotFoundLog($turn, $combatantShip, true));
+            $fromLogs->add(new AbortReturnNotFoundLog($turn, $combatantShip));
 
-            return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+            return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
         $seaCells = $toTerrain->getTerrain()->flatten(1)->filter(function ($cell) {
@@ -44,7 +44,7 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
         // 元の島に空いているセルがなければログだけ出してスキップする
         if ($seaCells->isEmpty()) {
             $fromLogs->add(new AbortReturnLog($fromIsland, $turn, $this->cell));
-            return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+            return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
         if ($this->cell->getElevation() === -1) {
@@ -66,6 +66,6 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
         $fromLogs->add(new ReturnLog($toIsland, $turn, $this->cell, true));
         $toLogs->add(new ReturnLog($fromIsland, $turn, $this->cell, false));
 
-        return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+        return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }
 }

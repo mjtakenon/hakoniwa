@@ -1,26 +1,22 @@
 <?php
 
-namespace App\Services\Hakoniwa\Plan\ForeignIsland;
+namespace App\Services\Hakoniwa\Plan\ForeignIsland\Plan;
 
 use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Sea;
 use App\Services\Hakoniwa\Cell\Shallow;
-use App\Services\Hakoniwa\Cell\Ship\Battleship;
 use App\Services\Hakoniwa\Cell\Ship\CombatantShip;
-use App\Services\Hakoniwa\Cell\Ship\TransportShip;
+use App\Services\Hakoniwa\Cell\Ship\Submarine;
 use App\Services\Hakoniwa\Log\AbortInvalidTerrainLog;
-use App\Services\Hakoniwa\Log\ReinforceLog;
-use App\Services\Hakoniwa\Log\ResourcesTransportationLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ResourcesTransportationPlan;
+use App\Services\Hakoniwa\Log\ReinforceLog;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 
-class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
+class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
-    const DEFAULT_REINFORCE_TURN = 5;
     public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
     {
         $fromLogs = Logs::create();
@@ -36,35 +32,34 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
-        $battleShips = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) use ($fromIsland) {
-            /** @var CombatantShip $cell */
-            return $cell::TYPE === Battleship::TYPE && $cell->getAffiliationId() === $fromIsland->id;
-        })->sort(function($cell) {
-            /** @var CombatantShip $cell */
-            return $cell->getDamage();
-        });
-
-        $amount = min($this->plan->getAmount(), $seaCells->count(), $battleShips->count());
+        $amount = min($this->plan->getAmount(), $seaCells->count());
 
         $seaCells = $seaCells->random($amount);
-        $battleShips = $battleShips->take($amount);
 
-        /** @var Battleship $battleShip */
-        foreach ($battleShips as $battleShip) {
+        $submarines = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) use ($fromIsland) {
+            /** @var CombatantShip $cell */
+            return $cell::TYPE === Submarine::TYPE && $cell->getAffiliationId() === $fromIsland->id;
+        })->sort(function ($cell) {
+            /** @var CombatantShip $cell */
+            return $cell->getDamage();
+        })->take($amount);
+
+        /** @var Submarine $submarine */
+        foreach ($submarines as $submarine) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            if ($battleShip->getElevation() === -1) {
-                $fromTerrain->setCell($battleShip->getPoint(), new Shallow(point: $battleShip->getPoint()));
+            if ($submarine->getElevation() === -1) {
+                $fromTerrain->setCell($submarine->getPoint(), new Shallow(point: $submarine->getPoint()));
             } else {
-                $fromTerrain->setCell($battleShip->getPoint(), new Sea(point: $battleShip->getPoint()));
+                $fromTerrain->setCell($submarine->getPoint(), new Sea(point: $submarine->getPoint()));
             }
 
-            $battleShip->setPoint($seaCell->getPoint());
-            $battleShip->setElevation($seaCell->getElevation());
+            $submarine->setPoint($seaCell->getPoint());
+            $submarine->setElevation($seaCell->getElevation());
             // 帰還ターンは変数に切り出す
-            $battleShip->setReturnTurn($turn->turn + self::DEFAULT_REINFORCE_TURN);
+            $submarine->setReturnTurn($turn->turn + 5);
 
-            $toTerrain->setCell($battleShip->getPoint(), $battleShip);
+            $toTerrain->setCell($submarine->getPoint(), $submarine);
         }
 
         $fromLogs->add(new ReinforceLog($toIsland, $turn, $amount, $this->plan, true));

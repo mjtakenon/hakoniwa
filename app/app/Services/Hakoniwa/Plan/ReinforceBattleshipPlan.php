@@ -9,7 +9,7 @@ use App\Services\Hakoniwa\Cell\Ship\Battleship;
 use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
 use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ForeignIsland\ReinforceBattleshipToForeignIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\ReinforceBattleshipToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
@@ -22,7 +22,7 @@ class ReinforceBattleshipPlan extends Plan
 
     public const NAME = '戦艦派遣';
     public const PRICE = 0;
-    public const PRICE_STRING = '';
+    public const PRICE_STRING = '(数量x1隻)';
     public const DEFAULT_AMOUNT_STRING = '(無制限)';
     public const AMOUNT_STRING = '(:amount:隻)';
     public const USE_AMOUNT = true;
@@ -42,9 +42,9 @@ class ReinforceBattleshipPlan extends Plan
     {
         $logs = Logs::create();
 
-        $battleShips = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+        $battleShips = $terrain->getTerrain()->flatten(1)->filter(function ($cell) use ($island) {
             /** @var Cell $cell */
-            return $cell::TYPE === Battleship::TYPE;
+            return $cell::TYPE === Battleship::TYPE && $cell->getAffiliationId() === $island->id;
         });
 
         if ($this->amount === 0) {

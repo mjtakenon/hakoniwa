@@ -14,8 +14,8 @@ use App\Services\Hakoniwa\Log\AbortNotFoundIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\SummaryLog;
-use App\Services\Hakoniwa\Plan\ForeignIsland\ForeignIslandOccurEvent;
-use App\Services\Hakoniwa\Plan\ForeignIsland\TargetedToForeignIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -217,13 +217,16 @@ class ExecuteTurn extends Command
                     $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
 
                     $fromLogs->merge($executePlanResult->getFromLogs());
-                    $toLogs->merge($executePlanResult->getToLogs());
-
                     $terrainList->put($plan->getFromIsland(), $executePlanResult->getFromTerrain());
-                    $terrainList->put($plan->getToIsland(), $executePlanResult->getToTerrain());
                     $statusList->put($plan->getFromIsland(), $executePlanResult->getFromStatus());
-                    $statusList->put($plan->getToIsland(), $executePlanResult->getToStatus());
                     $logsList->put($plan->getFromIsland(), $fromLogs);
+
+                    if (!is_null($toLogs)) {
+                        $toLogs->merge($executePlanResult->getToLogs());
+                    }
+
+                    $terrainList->put($plan->getToIsland(), $executePlanResult->getToTerrain());
+                    $statusList->put($plan->getToIsland(), $executePlanResult->getToStatus());
                     $logsList->put($plan->getToIsland(), $toLogs);
                 }
 

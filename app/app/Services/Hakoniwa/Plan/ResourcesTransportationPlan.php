@@ -12,7 +12,7 @@ use App\Services\Hakoniwa\Log\AbortLackOfResourcesLog;
 use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\AbortTargetSelfIslandLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Plan\ForeignIsland\ResourcesTransportToForeignIslandPlan;
+use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\ResourcesTransportToForeignIslandPlan;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
 use App\Services\Hakoniwa\Util\Point;
