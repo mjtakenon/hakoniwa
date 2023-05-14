@@ -33,7 +33,6 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
-import {$ref} from "vue/macros";
 
 export default defineComponent({
     data() {
