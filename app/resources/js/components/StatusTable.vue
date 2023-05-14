@@ -1,18 +1,28 @@
 <template>
-    <div class="stats">
+    <div class="stats" :ref="'aiueo'">
         <div
             v-for="(status, index) in statuses"
             class="stats-box"
             :class="{'max-md:col-span-3': (index === 0)}"
+            :key="status.title"
         >
             <div class="stats-box-title">
                 {{ status.title }}
             </div>
             <div class="stats-box-data">
-                <div class="stats-box-data-num">
-                    {{ status.num }}
+                <div
+                    class="stats-box-num-wrapper"
+                    :style="{maxWidth: status.maxWidth + 'px'}"
+                    ref="dataNumRef"
+                >
+                    <div
+                        class="stats-box-data-num"
+                        :style="{fontSize: status.fontSize + 'px'}"
+                    >
+                        {{ status.numText }}
+                    </div>
                 </div>
-                <div class="stat-box-data-unit">
+                <div class="stat-box-data-unit" ref="dataUnitRef">
                     {{ status.unit }}
                 </div>
             </div>
@@ -23,74 +33,132 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
+import {$ref} from "vue/macros";
 
 export default defineComponent({
     data() {
         return {
             statuses: [] as {
                 title: string,
-                num: number | string,
-                unit: string
+                numText: string,
+                unit: string,
+                fontSize?: number
+                maxWidth?: number
             }[],
+            numMaxFontsize: 18, // px = 1.125rem = text-lg
+            isMobile: (document.documentElement.clientWidth < 1024),
+            screenWidth: document.documentElement.clientWidth
         }
     },
     setup() {
         const store = useMainStore();
-        return { store };
+        return {store};
     },
     mounted() {
+        window.addEventListener("resize", this.onWindowSizeChanged);
         this.statuses = [
             {
                 title: "発展ポイント",
-                num: this.store.status.development_points,
-                unit: "pts"
+                numText: this.store.status.development_points.toLocaleString(),
+                unit: "pts",
             },
             {
                 title: "人口",
-                num: this.store.status.population,
+                numText: this.store.status.population.toLocaleString(),
                 unit: "人"
             },
             {
                 title: "資金",
-                num: this.store.status.funds,
+                numText: this.store.status.funds.toLocaleString(),
                 unit: "億円"
             },
             {
                 title: "食料",
-                num: this.store.status.foods,
+                numText: this.store.status.foods.toLocaleString(),
                 unit: "㌧"
             },
             {
                 title: "資源",
-                num: this.store.status.resources,
+                numText: this.store.status.resources.toLocaleString(),
                 unit: "㌧"
             },
             {
                 title: "環境",
-                num: this.store.getEnvironmentString,
+                numText: this.store.getEnvironmentString,
                 unit: ""
             },
             {
                 title: "面積",
-                num: this.store.status.area,
+                numText: this.store.status.area.toLocaleString(),
                 unit: "万坪"
             },
             {
                 title: "農業",
-                num: this.store.status.foods_production_number_of_people,
+                numText: this.store.status.foods_production_number_of_people.toLocaleString(),
                 unit: "人規模"
             },
             {
                 title: "工業",
-                num: this.store.status.funds_production_number_of_people,
+                numText: this.store.status.funds_production_number_of_people.toLocaleString(),
                 unit: "人規模"
             },
             {
                 title: "資源生産",
-                num: this.store.status.resources_production_number_of_people,
+                numText: this.store.status.resources_production_number_of_people.toLocaleString(),
                 unit: "人規模"
             },
         ]
+        // フォントサイズのデフォルト値設定
+        this.statuses.forEach(status => {
+            status.fontSize = 1;
+            status.maxWidth = 0;
+        });
+
+        this.$nextTick(() => {
+            this.updateFontSize();
+        });
+    },
+    unmounted() {
+        window.removeEventListener("resize", this.onWindowSizeChanged);
+    },
+    methods: {
+        updateFontSize() {
+            this.statuses.forEach((status, index) => {
+                const parentWidth = this.$refs.dataNumRef[index].parentNode.clientWidth;
+                const unitWidth = this.$refs.dataUnitRef[index].offsetWidth;
+                const maxWidth = Math.floor(this.isMobile ? parentWidth : parentWidth - unitWidth);
+                status.maxWidth = maxWidth;
+                status.fontSize = this.calcFontSize(status.numText, maxWidth);
+            })
+        },
+        calcFontSize(text: string, maxWidth: number) {
+            const span = document.createElement("span");
+            span.style.width = "0px";
+            span.style.maxWidth = maxWidth + "px";
+            span.style.fontSize = "10px";
+            span.textContent = text;
+            document.body.appendChild(span);
+
+            let size = 1;
+            span.style.fontSize = size + "px";
+
+            while (span.offsetWidth <= maxWidth && size < maxWidth && size <= this.numMaxFontsize) {
+                size++;
+                span.style.fontSize = size + "px";
+            }
+            size--;
+
+            if (size < 1) size = 1;
+            span.parentNode.removeChild(span);
+            return size;
+        },
+        onWindowSizeChanged() {
+            const newScreenWidth = document.documentElement.clientWidth;
+            if (this.screenWidth != newScreenWidth) {
+                this.isMobile = (document.documentElement.clientWidth < 1024);
+                this.updateFontSize();
+            }
+        },
     }
 });
 </script>
@@ -103,18 +171,22 @@ export default defineComponent({
         @apply bg-gray-200 rounded-xl p-2 drop-shadow-md;
 
         .stats-box-title {
-            @apply font-bold text-left text-gray-600 text-xs md:text-sm;
+            @apply font-bold text-left text-gray-600 text-xs lg:text-sm;
         }
 
         .stats-box-data {
-            @apply flex items-end;
+            @apply flex items-end flex-wrap h-8;
+
+            .stats-box-num-wrapper {
+                @apply grow h-[27px] text-right;
+            }
 
             .stats-box-data-num {
-                @apply grow text-lg text-right font-bold mr-2;
+                @apply font-bold w-full inline ;
             }
 
             .stat-box-data-unit {
-                @apply text-xs md:text-sm text-right;
+                @apply max-lg:w-full max-lg:-mt-1.5 text-[4px] lg:text-sm text-right lg:pl-2;
             }
         }
     }
