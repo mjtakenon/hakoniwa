@@ -32,6 +32,8 @@ class LandSubsidence implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
+        $logs->add(new OccurLandSubsidenceLog($island, $turn));
+
         $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
             return $cell::ELEVATION === -1 || $cell::ELEVATION === 0;
         });
@@ -52,8 +54,6 @@ class LandSubsidence implements IDisaster
             $logs->add(new DestructionByLandSubsidenceLog($island, $turn, $cell));
             $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
         }
-
-        $logs->add(new OccurLandSubsidenceLog($island, $turn));
 
         return new DisasterResult($terrain, $status, $logs);
     }

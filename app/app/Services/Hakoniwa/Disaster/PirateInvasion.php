@@ -46,6 +46,9 @@ class PirateInvasion implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
+        /** @var Cell $cell */
+        $logs->add(new PirateInvasionLog($island, $turn));
+
         $maxPiratesCount = min($seaCells->count(), $maxPiratesCount);
 
         /** @var Cell|Collection $pirateSpawnCells */
@@ -59,9 +62,6 @@ class PirateInvasion implements IDisaster
                 return_turn: $turn->turn + Pirate::DEFAULT_RETURN_TURN,
             ));
         }
-
-        /** @var Cell $cell */
-        $logs->add(new PirateInvasionLog($island, $turn));
 
         return new DisasterResult($terrain, $status, $logs);
     }
