@@ -14,7 +14,6 @@ use App\Services\Hakoniwa\Log\AbortNotFoundIslandLog;
 use App\Services\Hakoniwa\Log\ILog;
 use App\Services\Hakoniwa\Log\InviteNewImmigrationLog;
 use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Log\SummaryLog;
 use App\Services\Hakoniwa\Log\UnpopulatedIslandLog;
 use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
 use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
@@ -254,9 +253,6 @@ class ExecuteTurn extends Command
                     $logs = $logsList->get($island->id);
 
                     $status->truncateOverflows();
-
-                    // 集計ログ
-                    $logs->add(new SummaryLog($status, $prevStatus, $turn));
 
                     // 結果保存
                     $newIslandStatus = new IslandStatus();
