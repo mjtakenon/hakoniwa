@@ -155,7 +155,7 @@ class FiringMissilePlan extends Plan
         }
 
         if ($firingCount >= 1) {
-            $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
+            $logs->unshift(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
         }
         $this->amount = 0;
         return new ExecutePlanResult($terrain, $status, $logs, true);
