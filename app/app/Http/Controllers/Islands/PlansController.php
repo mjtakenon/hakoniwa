@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Trait\WebApi;
 use App\Models\Island;
 use App\Models\IslandLog;
-use App\Models\IslandPlan;
-use App\Models\IslandStatus;
-use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
+use Illuminate\Support\Collection;
 
 class PlansController extends Controller
 {
@@ -38,10 +36,24 @@ class PlansController extends Controller
         $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail()->plan;
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
-        $islandLogs = $island->islandLogs()->whereIn('turn_id',
-            Turn::where('turn', '>=', $turn->turn-$getLogRecentTurns)->get('id')
-        )->orderByDesc('id')
-        ->get('log');
+        $islandLogs = $island->islandLogs()->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - $getLogRecentTurns)->get('id'))
+            ->with(['turn'])
+            ->orderBy('id')
+            ->get()
+            ->groupBy('turn.turn')
+            ->map(function ($groupedLog, $turn) use ($island) {
+                /** @var Collection $groupedLog */
+                return [
+                    'data' => $groupedLog->map(function ($log) {
+                        /** @var IslandLog $log */
+                        return $log->log;
+                    }),
+                    'turn' => $turn,
+                    'island_id' => $groupedLog->first()->island_id,
+                ];
+            });
+
+        // TODO: 島の数が多くなってくるとマズいのでいずれ考える
         $targetIslands = Island::get();
 
         return view('pages.islands.plans', [
@@ -68,7 +80,7 @@ class PlansController extends Controller
                 ],
                 'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(true, true),
                 'plans' => Plans::fromJson($islandPlans)->toArray(true),
-                'logs' => $islandLogs
+                'logs' => array_values($islandLogs->toArray()),
             ],
             'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),
             'targetIslands' => $targetIslands->map(function ($targetIsland) {

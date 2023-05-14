@@ -11,8 +11,17 @@ class IslandLog extends Model
 
     const UPDATED_AT = null;
 
-    protected $visible = [
-        'log',
-        'visibility',
-    ];
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function turn() {
+        return $this->belongsTo(Turn::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function island() {
+        return $this->belongsTo(Island::class);
+    }
 }
