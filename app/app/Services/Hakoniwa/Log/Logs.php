@@ -17,6 +17,12 @@ class Logs
         return $this;
     }
 
+    public function unshift(ILog $log): static
+    {
+        array_unshift($this->logs, $log);
+        return $this;
+    }
+
     public function merge(Logs $logs): static
     {
         $this->logs = array_merge($this->logs, $logs->getLogs());

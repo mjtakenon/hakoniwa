@@ -15,6 +15,7 @@ class IslandHistory extends Model
     {
         $islandHistory = new IslandHistory();
         $islandHistory->island_id = $island->id;
+        $islandHistory->user_id = $island->user_id;
         $islandHistory->name = $island->name;
         $islandHistory->owner_name = $island->owner_name;
         $islandHistory->deleted_at = $island->deleted_at;
