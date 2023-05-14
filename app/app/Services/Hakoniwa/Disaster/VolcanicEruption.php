@@ -47,6 +47,8 @@ class VolcanicEruption implements IDisaster
 
         $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth() - 1), mt_rand(0, \HakoniwaService::getMaxHeight() - 1));
 
+        $logs->add(new OccurVolcanicEruptionLog($island, $turn, $point));
+
         $terrain->setCell($point, new Volcano(point: $point));
 
         $aroundCells = $terrain->getAroundCells($point);
@@ -70,8 +72,6 @@ class VolcanicEruption implements IDisaster
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             }
         }
-
-        $logs->add(new OccurVolcanicEruptionLog($island, $turn, $point));
 
         return new DisasterResult($terrain, $status, $logs);
     }

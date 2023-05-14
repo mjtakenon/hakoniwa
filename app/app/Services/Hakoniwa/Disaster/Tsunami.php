@@ -35,6 +35,8 @@ class Tsunami implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
+        $logs->add(new OccurTsunamiLog($island, $turn));
+
         $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
             return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI];
         });
@@ -53,8 +55,6 @@ class Tsunami implements IDisaster
             $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             $logs->add(new DestructionByTsunamiLog($island, $turn, $cell));
         }
-
-        $logs->add(new OccurTsunamiLog($island, $turn));
 
         return new DisasterResult($terrain, $status, $logs);
     }

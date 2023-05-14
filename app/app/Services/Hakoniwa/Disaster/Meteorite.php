@@ -32,6 +32,8 @@ class Meteorite implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
+        $logs->add(new OccurMeteoriteLog($island, $turn));
+
         do {
             $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth()-1),mt_rand(0, \HakoniwaService::getMaxHeight()-1));
             $cell = $terrain->getCell($point);
@@ -56,8 +58,6 @@ class Meteorite implements IDisaster
             }
 
         } while (self::OCCUR_CONTINUOUSLY_PROBABILITY >= Rand::mt_rand_float());
-
-        $logs->add(new OccurMeteoriteLog($island, $turn));
 
         return new DisasterResult($terrain, $status, $logs);
     }
