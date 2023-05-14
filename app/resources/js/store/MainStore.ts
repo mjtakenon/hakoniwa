@@ -53,7 +53,8 @@ export const useMainStore = defineStore('main', {
                 funds_production_number_of_people: 0,
                 population: 0,
                 resources: 0,
-                resources_production_number_of_people: 0
+                resources_production_number_of_people: 0,
+                abandonment_turn: 0,
             },
             logs: [],
             plans: [],
