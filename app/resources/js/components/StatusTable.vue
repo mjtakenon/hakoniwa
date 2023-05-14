@@ -1,5 +1,5 @@
 <template>
-    <div class="stats" :ref="'aiueo'">
+    <div class="stats">
         <div
             v-for="(status, index) in statuses"
             class="stats-box"
