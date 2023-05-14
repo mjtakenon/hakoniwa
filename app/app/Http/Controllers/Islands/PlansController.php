@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Trait\WebApi;
 use App\Models\Island;
 use App\Models\IslandLog;
+use App\Models\IslandStatus;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plans;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -36,9 +37,10 @@ class PlansController extends Controller
         $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail()->plan;
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
-        $islandLogs = $island->islandLogs()->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - $getLogRecentTurns)->get('id'))
+        $islandLogs = $island->islandLogs()
+            ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - $getLogRecentTurns)->get('id'))
             ->with(['turn'])
-            ->orderBy('id')
+            ->orderByDesc('id')
             ->get()
             ->groupBy('turn.turn')
             ->map(function ($groupedLog, $turn) use ($island) {
@@ -49,9 +51,14 @@ class PlansController extends Controller
                         return $log->log;
                     }),
                     'turn' => $turn,
-                    'island_id' => $groupedLog->first()->island_id,
                 ];
             });
+
+        $summary = $island->islandStatuses()
+            ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - ($getLogRecentTurns + 1))->get('id'))
+            ->with(['turn'])
+            ->orderByDesc('id')
+            ->get();
 
         // TODO: 島の数が多くなってくるとマズいのでいずれ考える
         $targetIslands = Island::get();
@@ -81,6 +88,24 @@ class PlansController extends Controller
                 'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(true, true),
                 'plans' => Plans::fromJson($islandPlans)->toArray(true),
                 'logs' => array_values($islandLogs->toArray()),
+                'summary' => $summary->map(function ($status, $index) use ($summary) {
+                    if ($summary->count() - 1 > $index) {
+                        /** @var IslandStatus | Turn $prevStatus */
+                        $prevStatus = $summary->get($index+1);
+                        /** @var IslandStatus | Turn $status */
+                        $status = $summary->get($index);
+                        return [
+                            'development_points' => $status->development_points - $prevStatus->development_points,
+                            'funds' => $status->funds - $prevStatus->funds,
+                            'foods' => $status->foods - $prevStatus->foods,
+                            'resources' => $status->resources - $prevStatus->resources,
+                            'population' => $status->population - $prevStatus->population,
+                            'turn' => $status->turn->turn,
+                        ];
+                    } else {
+                        return null;
+                    }
+                })->filter(function ($status) { return !is_null($status); }),
             ],
             'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),
             'targetIslands' => $targetIslands->map(function ($targetIsland) {

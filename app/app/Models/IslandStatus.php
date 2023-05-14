@@ -25,6 +25,7 @@ class IslandStatus extends Model
     ];
 
     protected $visible = [
+        'island_id',
         'development_points',
         'population',
         'funds',
@@ -40,5 +41,19 @@ class IslandStatus extends Model
     public function toStatus(): Status
     {
         return Status::create()->fromModel($this);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function turn() {
+        return $this->belongsTo(Turn::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function island() {
+        return $this->belongsTo(Island::class);
     }
 }
