@@ -3,29 +3,21 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 
-class ReturnLog implements ILog
+class ReturnLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private string $visibility;
     private Cell $cell;
     private bool $isFrom;
 
-    public function __construct(Island $island, Turn $turn, Cell $cell, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(Island $island, Cell $cell, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->visibility = $visibility;
         $this->cell = $cell;
         $this->isFrom = $isFrom;
-    }
-
-    public static function create(Island $island, Turn $turn, Cell $cell, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
-    {
-        return new static($island, $turn, $cell, $isFrom, $visibility);
     }
 
     public function generate(): string

@@ -31,7 +31,7 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
         });
 
         if ($seaCells->isEmpty()) {
-            $fromLogs->add(new AbortInvalidTerrainLog($fromIsland, $turn, $this->plan));
+            $fromLogs->add(new AbortInvalidTerrainLog($fromIsland, $this->plan));
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
@@ -45,7 +45,7 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
 
         $amount = min($this->plan->getAmount(), $seaCells->count(), $battleships->count());
         if ($amount <= 0) {
-            $fromLogs->add(new AbortNoShipLog($fromIsland, $turn, $this->plan, new Battleship(point: new Point(0,0))));
+            $fromLogs->add(new AbortNoShipLog($fromIsland, $this->plan, new Battleship(point: new Point(0,0))));
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
@@ -70,8 +70,8 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
             $toTerrain->setCell($battleship->getPoint(), $battleship);
         }
 
-        $fromLogs->add(new ReinforceLog($toIsland, $turn, $amount, $this->plan, true));
-        $toLogs->add(new ReinforceLog($fromIsland, $turn, $amount, $this->plan, false));
+        $fromLogs->add(new ReinforceLog($toIsland, $amount, $this->plan, true));
+        $toLogs->add(new ReinforceLog($fromIsland, $amount, $this->plan, false));
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }

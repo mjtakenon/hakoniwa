@@ -31,7 +31,7 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
             }
             /** @var CombatantShip $combatantShip */
             $combatantShip = $this->cell;
-            $fromLogs->add(new AbortReturnNotFoundLog($turn, $combatantShip));
+            $fromLogs->add(new AbortReturnNotFoundLog($combatantShip));
 
             return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
@@ -43,7 +43,7 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
 
         // 元の島に空いているセルがなければログだけ出してスキップする
         if ($seaCells->isEmpty()) {
-            $fromLogs->add(new AbortReturnLog($fromIsland, $turn, $this->cell));
+            $fromLogs->add(new AbortReturnLog($fromIsland, $this->cell));
             return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
@@ -63,8 +63,8 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
 
         $toTerrain->setCell($this->cell->getPoint(), $this->cell);
 
-        $fromLogs->add(new ReturnLog($toIsland, $turn, $this->cell, true));
-        $toLogs->add(new ReturnLog($fromIsland, $turn, $this->cell, false));
+        $fromLogs->add(new ReturnLog($toIsland, $this->cell, true));
+        $toLogs->add(new ReturnLog($fromIsland, $this->cell, false));
 
         return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }

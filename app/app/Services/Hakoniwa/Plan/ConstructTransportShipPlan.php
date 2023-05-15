@@ -40,7 +40,7 @@ class ConstructTransportShipPlan extends Plan
     {
         if ($status->getFunds() < self::PRICE) {
             $this->amount = 0;
-            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -51,7 +51,7 @@ class ConstructTransportShipPlan extends Plan
 
         if ($seaCells->count() <= 0) {
             $this->amount = 0;
-            $logs = Logs::create()->add(new AbortInvalidTerrainLog($island, $turn, $this));
+            $logs = Logs::create()->add(new AbortInvalidTerrainLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -62,7 +62,7 @@ class ConstructTransportShipPlan extends Plan
 
         $terrain->setCell($cell->getPoint(), new TransportShip(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteLog($island, $turn, $this));
+        $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

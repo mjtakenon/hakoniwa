@@ -32,7 +32,7 @@ class RemovalFacility extends Plan
         $cell = $terrain->getCell($this->point);
 
         if (!in_array($cell::TYPE, self::REMOVABLE_CELLS, true)) {
-            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -46,7 +46,7 @@ class RemovalFacility extends Plan
             $terrain->setCell($this->point, new Sea(point: $this->point));
         }
 
-        $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $logs = Logs::create()->add(new ExecuteCellLog($island, $this->point, $this));
 
         return new ExecutePlanResult($terrain, $status, $logs, false);
     }

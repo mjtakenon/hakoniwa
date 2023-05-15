@@ -36,23 +36,23 @@ class ConstructLargeFactoryPlan extends Plan
         $logs = Logs::create();
 
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
-            $logs->add(new AbortNoDevelopmentPointsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortNoDevelopmentPointsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($cell::TYPE !== Factory::TYPE) {
-            $logs->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         $terrain->setCell($this->point, new LargeFactory(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $logs->add(new ExecuteCellLog($island, $this->point, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

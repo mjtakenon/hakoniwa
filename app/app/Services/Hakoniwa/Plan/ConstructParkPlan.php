@@ -47,12 +47,12 @@ class ConstructParkPlan extends Plan
         $logs = Logs::create();
 
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, self::CONSTRUCTABLE_CELLS, true)) {
-            $logs->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -65,7 +65,7 @@ class ConstructParkPlan extends Plan
         }
 
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $logs->add(new ExecuteCellLog($island, $this->point, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

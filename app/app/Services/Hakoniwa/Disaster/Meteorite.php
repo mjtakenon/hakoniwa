@@ -32,7 +32,7 @@ class Meteorite implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
-        $logs->add(new OccurMeteoriteLog($island, $turn));
+        $logs->add(new OccurMeteoriteLog($island));
 
         do {
             $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth()-1),mt_rand(0, \HakoniwaService::getMaxHeight()-1));
@@ -42,11 +42,11 @@ class Meteorite implements IDisaster
             }
 
             if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
-                $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $turn, $cell));
+                $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $cell));
             } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
-                $logs->add(new DestructionShipLog($island, $turn, $cell));
+                $logs->add(new DestructionShipLog($island, $cell));
             } else {
-                $logs->add(new DestructionByMeteoriteLog($island, $turn, $cell));
+                $logs->add(new DestructionByMeteoriteLog($island, $cell));
             }
 
             if ($cell::ELEVATION === 1) {

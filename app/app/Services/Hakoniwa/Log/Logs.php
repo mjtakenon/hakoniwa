@@ -11,13 +11,13 @@ class Logs
         return new static;
     }
 
-    public function add(ILog $log): static
+    public function add(LogRow $log): static
     {
         $this->logs[] = $log;
         return $this;
     }
 
-    public function unshift(ILog $log): static
+    public function unshift(LogRow $log): static
     {
         array_unshift($this->logs, $log);
         return $this;

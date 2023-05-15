@@ -3,28 +3,20 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Plan\Plan;
 
-class MissileDisabledToMonsterLog implements ILog
+class MissileDisabledToMonsterLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private Cell $cell;
     private Plan $plan;
 
-    public function __construct(Island $island, Turn $turn, Cell $cell, Plan $plan)
+    public function __construct(Island $island, Cell $cell, Plan $plan)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->cell = $cell;
         $this->plan = $plan;
-    }
-
-    public static function create(Island $island, Turn $turn, Cell $cell, Plan $plan)
-    {
-        return new static($island, $turn, $cell, $plan);
     }
 
     public function generate(): string
@@ -41,10 +33,5 @@ class MissileDisabledToMonsterLog implements ILog
             ['text' => '無効化', 'style' => StyleConst::BOLD],
             ['text' => 'されました。'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

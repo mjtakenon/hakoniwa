@@ -47,7 +47,7 @@ class PirateInvasion implements IDisaster
         }
 
         /** @var Cell $cell */
-        $logs->add(new PirateInvasionLog($island, $turn));
+        $logs->add(new PirateInvasionLog($island));
 
         $maxPiratesCount = min($seaCells->count(), $maxPiratesCount);
 

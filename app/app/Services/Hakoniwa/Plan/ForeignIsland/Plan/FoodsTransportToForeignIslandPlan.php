@@ -36,8 +36,8 @@ class FoodsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
             $toTerrain->setCell($seaCell->getPoint(), new TransportShip(point: $seaCell->getPoint(), elevation: $seaCell->getElevation()));
         }
 
-        $fromLogs->add(new FoodsTransportationLog($toIsland, $turn, $amount, true));
-        $toLogs->add(new FoodsTransportationLog($fromIsland, $turn, $amount, false));
+        $fromLogs->add(new FoodsTransportationLog($toIsland, $amount, true));
+        $toLogs->add(new FoodsTransportationLog($fromIsland, $amount, false));
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }

@@ -38,7 +38,7 @@ class AttractActivitiesPlan extends Plan
 
         if ($status->getFunds() < self::PRICE) {
             $this->amount = 0;
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -55,7 +55,7 @@ class AttractActivitiesPlan extends Plan
         $this->amount -= 1;
 
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteLog($island, $turn, $this));
+        $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

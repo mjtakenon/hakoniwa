@@ -32,7 +32,7 @@ class DeforestationPlan extends Plan
         $logs = Logs::create();
 
         if (!in_array($cell::TYPE, [Forest::TYPE], true)) {
-            $logs->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -40,8 +40,8 @@ class DeforestationPlan extends Plan
         $terrain->setCell($this->point, new Plain(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
         $status->setResources($status->getResources() + ($amount * Forest::WOODS_TO_RESOURCES_COEF));
-        $logs->add(new DeforestationLog($turn,  $amount * Forest::WOODS_TO_RESOURCES_COEF));
-        $logs->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $logs->add(new DeforestationLog($amount * Forest::WOODS_TO_RESOURCES_COEF));
+        $logs->add(new ExecuteCellLog($island, $this->point, $this));
         return new ExecutePlanResult($terrain, $status, $logs, false);
     }
 }

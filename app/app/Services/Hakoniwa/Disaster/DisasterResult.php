@@ -36,7 +36,7 @@ class DisasterResult
     }
 
     /**
-     * @return array
+     * @return Logs
      */
     public function getLogs(): Logs
     {

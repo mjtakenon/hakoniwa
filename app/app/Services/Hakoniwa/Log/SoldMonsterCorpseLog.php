@@ -2,26 +2,15 @@
 
 namespace App\Services\Hakoniwa\Log;
 
-use App\Models\Island;
-use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
-use App\Services\Hakoniwa\Plan\Plan;
 
-class SoldMonsterCorpseLog implements ILog
+class SoldMonsterCorpseLog extends LogRow
 {
-    private Turn $turn;
     private Monster $monster;
 
-    public function __construct(Turn $turn, Monster $monster)
+    public function __construct(Monster $monster)
     {
-        $this->turn = $turn;
         $this->monster = $monster;
-    }
-
-    public static function create(Turn $turn, Monster $monster)
-    {
-        return new static($turn, $monster);
     }
 
     public function generate(): string
@@ -32,10 +21,5 @@ class SoldMonsterCorpseLog implements ILog
             ['text' => $this->monster->getCorpsePrice() . '億円', 'style' => StyleConst::BOLD],
             ['text' => 'で売却されました。'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

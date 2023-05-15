@@ -82,7 +82,7 @@ class IndexController extends Controller
             $islandPlan->plan = Plans::init()->toJson();
             $islandPlan->save();
 
-            $islandFoundLog = IslandFoundLog::create($island, $turn);
+            $islandFoundLog = new IslandFoundLog($island);
 
             $islandLog = new IslandLog();
             $islandLog->turn_id = $turn->id;

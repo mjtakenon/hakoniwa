@@ -41,17 +41,17 @@ class LandfillPlan extends Plan
         $logs = Logs::create();
 
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
-            $logs->add(new AbortNoDevelopmentPointsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortNoDevelopmentPointsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, [Shallow::TYPE, Sea::TYPE, Lake::TYPE], true)) {
-            $logs->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -60,7 +60,7 @@ class LandfillPlan extends Plan
         });
 
         if ($landCells->count() === 0) {
-            $logs->add(new AbortNoLandsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortNoLandsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -88,7 +88,7 @@ class LandfillPlan extends Plan
         }
 
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $logs->add(new ExecuteCellLog($island, $this->point, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

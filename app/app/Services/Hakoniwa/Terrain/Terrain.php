@@ -83,7 +83,6 @@ class Terrain implements JsonEncodable
         }
 
         foreach ($objects as $object) {
-            /** @var Cell $cell */
             $cell = Cell::fromJson($object->type, $object->data);
             $terrain[$cell->getPoint()->y][$cell->getPoint()->x] = $cell;
         }

@@ -29,18 +29,18 @@ class ConstructFactoryPlan extends Plan
     {
         $cell = $terrain->getCell($this->point);
         if ($status->getFunds() < self::PRICE) {
-            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, self::CONSTRUCTABLE_CELLS, true)) {
-            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         $terrain->setCell($this->point, new Factory(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteCellLog($island, $turn, $this->point, $this));
+        $logs = Logs::create()->add(new ExecuteCellLog($island, $this->point, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

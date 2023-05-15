@@ -10,9 +10,9 @@ use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\AbandonmentLog;
-use App\Services\Hakoniwa\Log\AbortNotFoundIslandLog;
-use App\Services\Hakoniwa\Log\ILog;
+use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
 use App\Services\Hakoniwa\Log\InviteNewImmigrationLog;
+use App\Services\Hakoniwa\Log\LogRow;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Log\UnpopulatedIslandLog;
 use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
@@ -138,7 +138,7 @@ class ExecuteTurn extends Command
                     $toLogs = $logsList->get($plan->getToIsland());
 
                     if (is_null($toIsland)) {
-                        $fromLogs->add(new AbortNotFoundIslandLog($island, $turn, $plan->getPlan()));
+                        $fromLogs->add(new AbortInvalidIslandLog($island, $plan->getPlan()));
                         $logsList->put($plan->getFromIsland(), $fromLogs);
                         continue;
                     }
@@ -185,8 +185,8 @@ class ExecuteTurn extends Command
                     // 人口0の場合、発展ポイントを減らして村を生成
                     if ($status->getPopulation() === 0) {
                         $terrain->inviteNewImmigration($status);
-                        $logs->add(new InviteNewImmigrationLog($island, $turn));
-                        $logs->add(new UnpopulatedIslandLog($island, $turn));
+                        $logs->add(new InviteNewImmigrationLog());
+                        $logs->add(new UnpopulatedIslandLog($island));
                         $status->aggregate($terrain);
                     }
 
@@ -195,7 +195,7 @@ class ExecuteTurn extends Command
                         $island->deleted_at = now();
                         IslandHistory::createFromIsland($island);
                         $logs = Logs::create();
-                        $logs->add(new AbandonmentLog($island, $turn));
+                        $logs->add(new AbandonmentLog($island));
                     }
 
                     $terrainList->put($island->id, $terrain);
@@ -283,7 +283,7 @@ class ExecuteTurn extends Command
                     $newIslandTerrain->terrain = $terrain->toJson(true, false);
                     $newIslandTerrain->save();
 
-                    /** @var ILog $log */
+                    /** @var LogRow $log */
                     foreach ($logs->getLogs() as $log) {
                         $newLog = new IslandLog();
                         $newLog->island_id = $island->id;
@@ -305,7 +305,7 @@ class ExecuteTurn extends Command
             if (!is_null(config('app.notification_webhook_url'))) {
                 $response = \Http::post(config('app.notification_webhook_url'), [
                     'content' => json_encode(
-                        'Failed update turn. [message: ' . substr($exception->getMessage(), 0,1000) . ']',
+                        'Failed update turn. [message: ' . substr($exception->getMessage(), 0, 1000) . ']',
                     ),
                 ]);
                 if ($response->status() >= 300) {

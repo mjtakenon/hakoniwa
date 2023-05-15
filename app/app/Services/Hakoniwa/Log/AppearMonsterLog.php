@@ -6,7 +6,7 @@ use App\Models\Island;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
 
-class DestructionByDividedMonsterLog extends LogRow
+class AppearMonsterLog extends LogRow
 {
     private Island $island;
     private Cell $cell;
@@ -23,13 +23,12 @@ class DestructionByDividedMonsterLog extends LogRow
     {
         return json_encode([
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD],
+            ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') に'],
             ['text' => $this->monster::NAME, 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
-            ['text' => 'が分裂し、', 'style' => StyleConst::BOLD],
-            ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') の'],
+            ['text' => '出現！！ '],
             ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD . StyleConst::COLOR_WARNING],
             ['text' => 'が'],
-            ['text' => $this->monster::NAME, 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
-            ['text' => 'に踏み荒らされました。', 'style' => StyleConst::BOLD],
+            ['text' => '踏み荒らされました。', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
         ]);
     }
 }

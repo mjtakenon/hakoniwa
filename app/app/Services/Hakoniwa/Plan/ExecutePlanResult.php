@@ -38,7 +38,7 @@ class ExecutePlanResult
     }
 
     /**
-     * @return array
+     * @return Logs
      */
     public function getLogs(): Logs
     {

@@ -3,25 +3,17 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Ship\Ship;
 
-class DisappearPirateLog implements ILog
+class DisappearPirateLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private Ship $ship;
 
-    public function __construct(Island $island, Turn $turn, Ship $ship)
+    public function __construct(Island $island, Ship $ship)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->ship = $ship;
-    }
-
-    public static function create(Island $island, Turn $turn, Ship $ship)
-    {
-        return new static($island, $turn, $ship);
     }
 
     public function generate(): string
@@ -34,10 +26,5 @@ class DisappearPirateLog implements ILog
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'に興味を失い帰っていきました...'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

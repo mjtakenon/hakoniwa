@@ -36,8 +36,8 @@ class ResourcesTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
             $toTerrain->setCell($seaCell->getPoint(), new TransportShip(point: $seaCell->getPoint(), elevation: $seaCell->getElevation()));
         }
 
-        $fromLogs->add(new ResourcesTransportationLog($toIsland, $turn, $amount, true));
-        $toLogs->add(new ResourcesTransportationLog($fromIsland, $turn, $amount, false));
+        $fromLogs->add(new ResourcesTransportationLog($toIsland, $amount, true));
+        $toLogs->add(new ResourcesTransportationLog($fromIsland, $amount, false));
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }

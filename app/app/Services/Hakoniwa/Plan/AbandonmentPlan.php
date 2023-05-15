@@ -32,8 +32,8 @@ class AbandonmentPlan extends Plan
 
         IslandHistory::createFromIsland($island);
         $logs = Logs::create();
-        $logs->add(new ExecuteLog($island, $turn, $this));
-        $logs->add(new AbandonmentLog($island, $turn));
+        $logs->add(new ExecuteLog($island, $this));
+        $logs->add(new AbandonmentLog($island));
 
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }

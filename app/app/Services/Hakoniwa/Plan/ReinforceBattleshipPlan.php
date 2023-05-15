@@ -52,7 +52,7 @@ class ReinforceBattleshipPlan extends Plan
         }
 
         if ($battleships->isEmpty()) {
-            $logs->add(new AbortNoShipLog($island, $turn, $this, new Battleship(point: new Point(0,0))));
+            $logs->add(new AbortNoShipLog($island, $this, new Battleship(point: new Point(0,0))));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
@@ -61,7 +61,7 @@ class ReinforceBattleshipPlan extends Plan
 
         // 対象が自島の場合は中止とする
         if ($this->getTargetIsland() === $island->id) {
-            $logs->add(new AbortInvalidIslandLog($island, $turn, $this));
+            $logs->add(new AbortInvalidIslandLog($island, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
