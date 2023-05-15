@@ -3,86 +3,85 @@
         <div class="subtitle">
             {{ store.island.name }}島の近況
         </div>
-        <div class="log-texts" v-for="(log, index) of store.logs" :key="'log-' + index">
-            <span v-for="context of JSON.parse(log.log)" :key="context.text">
-                <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">
-                    {{ context.text }}
-                </a>
-                <span v-else :style="context.style">
-                    {{ context.text }}
-                </span>
-            </span>
-        </div>
-
-        <div class="subtitle">
-            {{ store.island.name }}島の近況
-        </div>
-        <div class="log-texts flex items-start" v-for="(log, logIndex) of logs" :key="'log-' + logIndex">
-
-            <div class="my-1 border-r border-gray-300">
-                <div class="w-fit mr-2 text-center">
-                    <span class="block text-gray-500 text-xs">ターン</span>
-                    <span class="block -mt-1 font-bold text-lg">{{log.turn}}</span>
+        <div class="turn-log" v-for="(log, logIndex) of store.logs" :key="'log-' + logIndex">
+            <div class="turn-title">
+                <div class="turn-title-inner">
+                    <span class="turn-title-inner-text">ターン</span>
+                    <span class="turn-title-inner-number">
+                        {{ log.turn }}
+                    </span>
                 </div>
             </div>
-            <div class="grow">
+            <div class="data-box">
                 <div
                     v-for="(line, lineIndex) of log.texts"
                     :key="'line-' + logIndex + '-' + lineIndex"
-                    class="pl-2"
+                    class="log"
                 >
-                    <span>・</span>
-                    <template
-                        v-for="(context, conIndex) of line"
-                        :key="'text-' + logIndex + '-' + lineIndex + '-' + conIndex"
-                    >
-                        <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">
-                            {{context.text}}
-                        </a>
-                        <span v-else :style="context.style">
-                            {{context.text}}
-                        </span>
-                    </template>
+                    <div class="mr-1">・</div>
+                    <div>
+                        <template
+                            v-for="(context, conIndex) of line"
+                            :key="'text-' + logIndex + '-' + lineIndex + '-' + conIndex"
+                        >
+                            <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">
+                                {{ context.text }}
+                            </a>
+                            <span v-else-if="context.text !== ''" :style="context.style">
+                                {{ context.text }}
+                            </span>
+                        </template>
+                    </div>
                 </div>
-                <div class="mt-auto grid grid-cols-5 gap-2 pl-[20vw] text-left">
-                    <div class="w-full flex items-center px-0.5 border-b-2" :class="getBgColor(log.diff.foods)">
-                        <span class="gray-600 text-[6px] mr-1">🍎食料</span>
-                        <span class="text-sm font-bold grow text-right" :class="getTextColor(log.diff.foods)">
-                            {{ log.diff.foods > 0 ? "+" + log.diff.foods : log.diff.foods}}
+                <div class="turn-summaries">
+                    <div class="summary-box" :class="getBgColor(log.summary.foods)">
+                        <span class="summary-box-title">🍎食料</span>
+                        <span class="summary-box-num" :class="getTextColor(log.summary.foods)">
+                            {{
+                                log.summary.foods > 0 ? "+" + log.summary.foods.toLocaleString() : log.summary.foods.toLocaleString()
+                            }}
                         </span>
-                        <span class="gray-600 text-[6px]">㌧</span>
+                        <span class="summary-box-unit">㌧</span>
                     </div>
 
-                    <div class="w-full flex items-center px-0.5 border-b-2" :class="getBgColor(log.diff.funds)">
-                        <span class="gray-600 text-[6px] mr-1">💰資金</span>
-                        <span class="text-sm font-bold grow text-right" :class="getTextColor(log.diff.funds)">
-                            {{ log.diff.funds > 0 ? "+" + log.diff.funds : log.diff.funds}}
+                    <div class="summary-box" :class="getBgColor(log.summary.funds)">
+                        <span class="summary-box-title">💰資金</span>
+                        <span class="summary-box-num" :class="getTextColor(log.summary.funds)">
+                            {{
+                                log.summary.funds > 0 ? "+" + log.summary.funds.toLocaleString() : log.summary.funds.toLocaleString()
+                            }}
                         </span>
-                        <span class="gray-600 text-[6px]">億円</span>
+                        <span class="summary-box-unit">億円</span>
                     </div>
 
-                    <div class="w-full flex items-center px-0.5 border-b-2" :class="getBgColor(log.diff.resources)">
-                        <span class="gray-600 text-[6px] mr-1">🏭資源</span>
-                        <span class="text-sm font-bold grow text-right" :class="getTextColor(log.diff.resources)">
-                            {{ log.diff.resources > 0 ? "+" + log.diff.resources : log.diff.resources}}
+                    <div class="summary-box" :class="getBgColor(log.summary.resources)">
+                        <span class="summary-box-title">🏭資源</span>
+                        <span class="summary-box-num" :class="getTextColor(log.summary.resources)">
+                            {{
+                                log.summary.resources > 0 ? "+" + log.summary.resources.toLocaleString() : log.summary.resources.toLocaleString()
+                            }}
                         </span>
-                        <span class="gray-600 text-[6px]">㌧</span>
+                        <span class="summary-box-unit">㌧</span>
                     </div>
 
-                    <div class="w-full flex items-center px-0.5 border-b-2" :class="getBgColor(log.diff.population)">
-                        <span class="gray-600 text-[6px] mr-1">👤人口</span>
-                        <span class="text-sm font-bold grow text-right" :class="getTextColor(log.diff.population)">
-                            {{ log.diff.population > 0 ? "+" + log.diff.population : log.diff.population}}
+                    <div class="summary-box" :class="getBgColor(log.summary.population)">
+                        <span class="summary-box-title">👤人口</span>
+                        <span class="summary-box-num" :class="getTextColor(log.summary.population)">
+                            {{
+                                log.summary.population > 0 ? "+" + log.summary.population.toLocaleString() : log.summary.population.toLocaleString()
+                            }}
                         </span>
-                        <span class="gray-600 text-[6px]">人</span>
+                        <span class="summary-box-unit">人</span>
                     </div>
 
-                    <div class="w-full flex items-center px-0.5 border-b-2" :class="getBgColor(log.diff.points)">
-                        <span class="gray-600 text-[6px] mr-1">⚡ポイント</span>
-                        <span class="text-sm font-bold grow text-right" :class="getTextColor(log.diff.points)">
-                            {{ log.diff.points > 0 ? "+" + log.diff.points : log.diff.points}}
+                    <div class="summary-box" :class="getBgColor(log.summary.points)">
+                        <span class="summary-box-title">⚡ポイント</span>
+                        <span class="summary-box-num" :class="getTextColor(log.summary.points)">
+                            {{
+                                log.summary.points > 0 ? "+" + log.summary.points.toLocaleString() : log.summary.points.toLocaleString()
+                            }}
                         </span>
-                        <span class="gray-600 text-[6px]">pts</span>
+                        <span class="summary-box-unit">pts</span>
                     </div>
                 </div>
             </div>
@@ -92,22 +91,20 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
-import {LogParser, NewLog} from "../store/Entity/NewLog";
+import {LogParser, Log} from "../store/Entity/Log";
 
 export default defineComponent({
     data() {
         return {
-            logs: [] as NewLog[]
+            logs: [] as Log[]
         }
     },
     setup() {
         const store = useMainStore();
-        return { store };
+        return {store};
     },
     mounted() {
-        const logs = this.store.logs;
-        const parser = new LogParser();
-        this.logs = parser.parse(logs);
+
     },
     methods: {
         getBgColor(num: number): string {
@@ -127,17 +124,93 @@ export default defineComponent({
 <style lang="postcss" scoped>
 
 #logs {
-    @apply text-left w-full mt-10 mb-10 bg-gray-100 pb-4 md:rounded-2xl drop-shadow-md overflow-hidden;
+// general
+    @apply text-left w-full mt-10 mb-10 bg-gray-100 pb-4 drop-shadow-md overflow-hidden;
+// desktop
+    @apply lg:rounded-2xl;
 
     .subtitle {
         @apply mt-0 py-3 px-3 border-b border-b-gray-300 mb-3 w-full bg-success-dark text-white;
     }
 
-    .log-texts {
-        @apply text-sm md:text-base mx-1 md:mx-5 mb-1 lg:mb-0.5 border-b border-b-gray-300;
+    .turn-log {
+    // general
+        @apply border-b border-b-gray-300 flex items-start;
+    // sp
+        @apply text-sm mb-1 max-md:mt-4 max-md:pb-6 max-md:flex-wrap;
+    // desktop
+        @apply md:text-base md:mx-5 lg:mb-0.5;
+
+        .turn-title {
+        // general
+            @apply my-1;
+        // sp
+            @apply max-md:bg-gray-300 max-md:rounded-r-3xl max-md:w-2/5 max-md:px-2 max-md:py-1 max-md:drop-shadow;
+        // desktop
+            @apply md:border-r md:border-gray-300;
+
+            .turn-title-inner {
+            // general
+                @apply text-center;
+            // sp
+                @apply w-full max-md:flex;
+            // desktop
+                @apply md:w-fit md:mr-2;
+
+                .turn-title-inner-text {
+                // general
+                    @apply text-xs text-gray-500;
+                // desktop
+                    @apply md:block;
+                }
+
+                .turn-title-inner-number {
+                // general
+                    @apply mt-auto font-bold text-lg;
+                // sp
+                    @apply max-md:grow max-md:text-center;
+                // desktop
+                    @apply md:block md:-mt-1;
+                }
+            }
+        }
+
+        .data-box {
+            // sp
+            @apply max-md:mt-2 max-md:w-full;
+            // desktop
+            @apply md:grow;
+
+            .log {
+                @apply pl-2 flex;
+            }
+
+            .turn-summaries {
+                // general
+                @apply mt-auto grid gap-2 text-left;
+                // sp
+                @apply grid-cols-2 max-md:mt-3;
+                // desktop
+                @apply md:grid-cols-5 md:pl-[20vw];
+
+                .summary-box {
+                    @apply w-full flex items-center px-0.5 border-b-2;
+
+                    .summary-box-title {
+                        @apply text-gray-600 text-[6px] mr-1;
+                    }
+                    .summary-box-num {
+                        @apply text-sm font-bold grow text-right;
+                    }
+                    .summary-box-unit {
+                        @apply text-gray-600 text-[6px] ml-1 text-right;
+                    }
+                }
+            }
+        }
     }
 
-    .log-texts:last-child {
+    .turn-log:last-child {
         @apply border-none;
     }
 }
