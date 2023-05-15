@@ -39,7 +39,7 @@ class Typhoon implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
-        $logs->add(new OccurTyphoonLog($island, $turn));
+        $logs->add(new OccurTyphoonLog($island));
 
         $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
             return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TYPHOON];
@@ -57,7 +57,7 @@ class Typhoon implements IDisaster
             }
 
             $terrain->setCell($cell->getPoint(), new Plain(point: $cell->getPoint()));
-            $logs->add(new DestructionByTyphoonLog($island, $turn, $cell));
+            $logs->add(new DestructionByTyphoonLog($island, $cell));
         }
 
         return new DisasterResult($terrain, $status, $logs);

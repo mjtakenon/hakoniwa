@@ -3,25 +3,17 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 
-class DestructionByTyphoonLog implements ILog
+class DestructionByTyphoonLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private Cell $cell;
 
-    public function __construct(Island $island, Turn $turn, Cell $cell)
+    public function __construct(Island $island, Cell $cell)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->cell = $cell;
-    }
-
-    public static function create(Island $island, Turn $turn, Cell $cell)
-    {
-        return new static($island, $turn, $cell);
     }
 
     public function generate(): string
@@ -34,10 +26,5 @@ class DestructionByTyphoonLog implements ILog
             ['text' => '台風' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],
             ['text' => 'により吹き飛ばされました。'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

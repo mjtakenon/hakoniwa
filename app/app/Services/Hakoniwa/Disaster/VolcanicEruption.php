@@ -41,13 +41,13 @@ class VolcanicEruption implements IDisaster
         foreach ($mountains as $mountain) {
             $terrain->setCell($mountain->getPoint(), new Mountain(point: $mountain->getPoint()));
             if ($mountain->getType() === Mine::TYPE) {
-                $logs->add(new MineClosureLog($island, $turn, deep_copy($mountain)));
+                $logs->add(new MineClosureLog($island, deep_copy($mountain)));
             }
         }
 
         $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth() - 1), mt_rand(0, \HakoniwaService::getMaxHeight() - 1));
 
-        $logs->add(new OccurVolcanicEruptionLog($island, $turn, $point));
+        $logs->add(new OccurVolcanicEruptionLog($island, $point));
 
         $terrain->setCell($point, new Volcano(point: $point));
 
@@ -56,18 +56,18 @@ class VolcanicEruption implements IDisaster
         foreach ($aroundCells as $cell) {
             if ($cell::ELEVATION === -2) {
                 if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
-                    $logs->add(new DestructionShipLog($island, $turn, $cell));
+                    $logs->add(new DestructionShipLog($island, $cell));
                 } else {
-                    $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));
+                    $logs->add(new DestructionByVolcanicEruptionLog($island, $cell));
                 }
                 $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
             } else if ($cell::ELEVATION === -1 || $cell::ELEVATION === 0) {
                 if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
-                    $logs->add(new ScatterAwayByVolcanicEruptionLog($island, $turn, $cell));
+                    $logs->add(new ScatterAwayByVolcanicEruptionLog($island, $cell));
                 } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
-                    $logs->add(new DestructionShipLog($island, $turn, $cell));
+                    $logs->add(new DestructionShipLog($island, $cell));
                 } else {
-                    $logs->add(new DestructionByVolcanicEruptionLog($island, $turn, $cell));
+                    $logs->add(new DestructionByVolcanicEruptionLog($island, $cell));
                 }
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             }

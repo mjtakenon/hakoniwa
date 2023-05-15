@@ -32,19 +32,19 @@ class AfforestationPlan extends Plan
         $cell = $terrain->getCell($this->point);
         $logs = Logs::create();
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, self::CONSTRUCTABLE_CELLS, true)) {
-            $logs->add(new AbortInvalidCellLog($island, $turn, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         $terrain->setCell($this->point, new Forest(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteCellLog($island, $turn, $this->point, $this, LogVisibility::VISIBILITY_PRIVATE));
-        $logs->add(new AfforestationLog($island, $turn));
+        $logs->add(new ExecuteCellLog($island, $this->point, $this, LogVisibility::VISIBILITY_PRIVATE));
+        $logs->add(new AfforestationLog($island));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

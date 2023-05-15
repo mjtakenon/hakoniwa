@@ -2,27 +2,17 @@
 
 namespace App\Services\Hakoniwa\Log;
 
-use App\Models\Island;
-use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Ship\CombatantShip;
 
-class AbortReturnNotFoundLog implements ILog
+class AbortReturnNotFoundLog extends LogRow
 {
-    private Turn $turn;
     private string $visibility;
     private CombatantShip $cell;
 
-    public function __construct(Turn $turn, CombatantShip $cell, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(CombatantShip $cell, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
-        $this->turn = $turn;
         $this->visibility = $visibility;
         $this->cell = $cell;
-    }
-
-    public static function create(Turn $turn, CombatantShip $cell, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
-    {
-        return new static($turn, $cell, $visibility);
     }
 
     public function generate(): string

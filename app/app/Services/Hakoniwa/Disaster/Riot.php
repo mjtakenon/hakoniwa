@@ -30,8 +30,8 @@ class Riot implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
-        $logs->add(new OccurRiotLog($island, $turn));
-        $logs->add(new OccurFoodShortageLog($island, $turn));
+        $logs->add(new OccurRiotLog($island));
+        $logs->add(new OccurFoodShortageLog($island));
 
         $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
             return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_RIOT];
@@ -52,7 +52,7 @@ class Riot implements IDisaster
             } else {
                 $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
             }
-            $logs->add(new DestructionByRiotLog($island, $turn, $cell));
+            $logs->add(new DestructionByRiotLog($island, $cell));
         }
 
         return new DisasterResult($terrain, $status, $logs);

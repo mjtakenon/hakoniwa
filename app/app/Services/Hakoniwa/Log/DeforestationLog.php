@@ -2,22 +2,13 @@
 
 namespace App\Services\Hakoniwa\Log;
 
-use App\Models\Turn;
-
-class DeforestationLog implements ILog
+class DeforestationLog extends LogRow
 {
-    private Turn $turn;
     private int $amount;
 
-    public function __construct(Turn $turn, int $amount)
+    public function __construct(int $amount)
     {
-        $this->turn = $turn;
         $this->amount = $amount;
-    }
-
-    public static function create(Turn $turn, int $amount)
-    {
-        return new static($turn, $amount);
     }
 
     public function generate(): string

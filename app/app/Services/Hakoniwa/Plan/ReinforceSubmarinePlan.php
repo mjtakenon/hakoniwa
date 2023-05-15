@@ -54,14 +54,14 @@ class ReinforceSubmarinePlan extends Plan
         }
 
         if ($submarines->isEmpty()) {
-            $logs->add(new AbortNoShipLog($island, $turn, $this, new Submarine(point: new Point(0, 0))));
+            $logs->add(new AbortNoShipLog($island, $this, new Submarine(point: new Point(0, 0))));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         // 対象が自島の場合は中止とする
         if ($this->getTargetIsland() === $island->id) {
-            $logs->add(new AbortInvalidIslandLog($island, $turn, $this));
+            $logs->add(new AbortInvalidIslandLog($island, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }

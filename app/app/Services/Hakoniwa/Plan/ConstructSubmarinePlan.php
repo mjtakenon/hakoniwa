@@ -45,13 +45,13 @@ class ConstructSubmarinePlan extends Plan
         $logs = Logs::create();
         if ($status->getFunds() < self::PRICE) {
             $this->amount = 0;
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
             $this->amount = 0;
-            $logs->add(new AbortNoDevelopmentPointsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortNoDevelopmentPointsLog($island, $this->point, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -62,7 +62,7 @@ class ConstructSubmarinePlan extends Plan
 
         if ($seaCells->count() <= 0) {
             $this->amount = 0;
-            $logs->add(new AbortInvalidTerrainLog($island, $turn, $this));
+            $logs->add(new AbortInvalidTerrainLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -79,7 +79,7 @@ class ConstructSubmarinePlan extends Plan
         ));
 
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteLog($island, $turn, $this));
+        $logs->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

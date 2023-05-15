@@ -51,7 +51,7 @@ class Pirate extends CombatantShip
 
         // 他の島のもので規定ターンを過ぎていたら返す
         if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
-            $logs->add(new DisappearPirateLog($island, $turn, deep_copy($this)));
+            $logs->add(new DisappearPirateLog($island, deep_copy($this)));
             if ($this->elevation === -1) {
                 $terrain->setCell($this->getPoint(), new Shallow(point: $this->getPoint()));
             } else {
@@ -84,14 +84,14 @@ class Pirate extends CombatantShip
             if ($enemyShip->damage >= 100) {
                 $attackDamage -= $enemyShip->damage - 100;
                 $enemyShip->damage = 100;
-                $logs->add(new AttackAndDefeatLog($island, $turn, deep_copy($this), deep_copy($enemyShip), $attackDamage));
+                $logs->add(new AttackAndDefeatLog(deep_copy($this), deep_copy($enemyShip), $attackDamage));
                 if ($enemyShip->getElevation() === -1) {
                     $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
                 } else {
                     $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));
                 }
             } else {
-                $logs->add(new AttackLog($island, $turn, deep_copy($this), deep_copy($enemyShip), $attackDamage));
+                $logs->add(new AttackLog(deep_copy($this), deep_copy($enemyShip), $attackDamage));
                 $terrain->setCell($enemyShip->getPoint(), $enemyShip);
             }
         } else {
@@ -125,7 +125,7 @@ class Pirate extends CombatantShip
             if ($destroyTargetCells->count() >= 1) {
                 /** @var Cell $destroyTarget */
                 $destroyTarget = $destroyTargetCells->random();
-                $logs->add(new DestructionByShipLog($island, $turn, deep_copy($destroyTarget), deep_copy($this)));
+                $logs->add(new DestructionByShipLog($island, deep_copy($destroyTarget), deep_copy($this)));
                 $terrain->setCell($destroyTarget->getPoint(), new Wasteland(point: $destroyTarget->getPoint()));
             }
         }

@@ -3,28 +3,20 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
-use App\Services\Hakoniwa\Cell\Cell;
+use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Plan\Plan;
 
-class MissileHitToMonsterLog implements ILog
+class MissileHitToMonsterLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
-    private Cell $cell;
+    private Monster $monster;
     private Plan $plan;
 
-    public function __construct(Island $island, Turn $turn, Cell $cell, Plan $plan)
+    public function __construct(Island $island, Monster $monster, Plan $plan)
     {
         $this->island = $island;
-        $this->turn = $turn;
-        $this->cell = $cell;
+        $this->monster = $monster;
         $this->plan = $plan;
-    }
-
-    public static function create(Island $island, Turn $turn, Cell $cell, Plan $plan)
-    {
-        return new static($island, $turn, $cell, $plan);
     }
 
     public function generate(): string
@@ -34,17 +26,12 @@ class MissileHitToMonsterLog implements ILog
             ['text' => 'から発射された'],
             ['text' => str_replace('発射', '', $this->plan->getName()), 'style' => StyleConst::BOLD],
             ['text' => 'は'],
-            ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') ', 'style' => StyleConst::BOLD],
+            ['text' => ' (' . $this->monster->getPoint()->x . ',' . $this->monster->getPoint()->y . ') ', 'style' => StyleConst::BOLD],
             ['text' => 'の'],
-            ['text' => $this->cell->getName(), 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
+            ['text' => $this->monster->getName(), 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
             ['text' => 'に命中、', 'style' => StyleConst::BOLD],
-            ['text' => $this->cell->getName(), 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
-            $this->cell->getHitPoints() >= 1 ? ['text' => 'は苦しそうに咆哮しました。'] : ['text' => 'は力尽き、倒れました。'],
+            ['text' => $this->monster->getName(), 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
+            $this->monster->getHitPoints() >= 1 ? ['text' => 'は苦しそうに咆哮しました。'] : ['text' => 'は力尽き、倒れました。'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

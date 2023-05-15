@@ -63,7 +63,7 @@ class Hamunemu extends Monster
 
         if ($this->getDisappearancePopulation() > $status->getPopulation()) {
             $logs = Logs::create();
-            $logs->add(new DisappearMonsterLog($island, $turn, $this));
+            $logs->add(new DisappearMonsterLog($island, $this));
             $terrain->setCell($this->point, new Wasteland(point: $this->point));
             return new PassTurnResult($terrain, $status, $logs);
         }
@@ -89,7 +89,7 @@ class Hamunemu extends Monster
         $monster = $this;
         $terrain->setCell($this->point, new Wasteland(point: $this->point));
 
-        $logs->add(new DestructionByMonsterLog($island, $turn, $moveTarget, $this));
+        $logs->add(new DestructionByMonsterLog($island, $moveTarget, $this));
         $monster->point = $moveTarget->point;
         // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
         $passTurnResult = $terrain->setCell($monster->getPoint(), $monster)->passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);

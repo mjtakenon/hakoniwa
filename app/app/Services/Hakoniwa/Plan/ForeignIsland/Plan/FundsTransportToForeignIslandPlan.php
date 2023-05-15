@@ -36,8 +36,8 @@ class FundsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
             $toTerrain->setCell($seaCell->getPoint(), new TransportShip(point: $seaCell->getPoint(), elevation: $seaCell->getElevation()));
         }
 
-        $fromLogs->add(new FundsTransportationLog($toIsland, $turn, $amount, true));
-        $toLogs->add(new FundsTransportationLog($fromIsland, $turn, $amount, false));
+        $fromLogs->add(new FundsTransportationLog($toIsland, $amount, true));
+        $toLogs->add(new FundsTransportationLog($fromIsland, $amount, false));
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }

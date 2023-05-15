@@ -36,7 +36,7 @@ class PassTurnResult
     }
 
     /**
-     * @return array
+     * @return Logs
      */
     public function getLogs(): Logs
     {

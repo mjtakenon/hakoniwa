@@ -56,20 +56,20 @@ class ResourcesTransportationPlan extends Plan
         }
 
         if ($transportShips->isEmpty()) {
-            $logs->add(new AbortNoShipLog($island, $turn, $this, new TransportShip(point: new Point(0,0))));
+            $logs->add(new AbortNoShipLog($island, $this, new TransportShip(point: new Point(0,0))));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getResources() < self::UNIT * $this->amount) {
-            $logs->add(new AbortLackOfResourcesLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfResourcesLog($island, $this->point, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         // 対象が自島でない場合、後で処理する
         if ($this->getTargetIsland() === $island->id) {
-            $logs->add(new AbortTargetSelfIslandLog($island, $turn, $this));
+            $logs->add(new AbortTargetSelfIslandLog($island, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }

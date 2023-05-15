@@ -3,22 +3,14 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 
-class AbandonmentLog implements ILog
+class AbandonmentLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
 
-    public function __construct(Island $island, Turn $turn)
+    public function __construct(Island $island)
     {
         $this->island = $island;
-        $this->turn = $turn;
-    }
-
-    public static function create(Island $island, Turn $turn)
-    {
-        return new static($island, $turn);
     }
 
     public function generate(): string
@@ -27,10 +19,5 @@ class AbandonmentLog implements ILog
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'は放棄され、無人島になりました...'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

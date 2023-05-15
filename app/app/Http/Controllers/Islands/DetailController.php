@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Islands;
 
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandLog;
+use App\Models\IslandStatus;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\LogVisibility;
 use App\Services\Hakoniwa\Terrain\Terrain;

@@ -27,7 +27,7 @@ class CashFlowPlan extends Plan
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteLog($island, $turn, $this));
+        $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

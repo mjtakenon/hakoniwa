@@ -12,7 +12,7 @@ use App\Services\Hakoniwa\Cell\HasPopulation\Town;
 use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
 use App\Services\Hakoniwa\Cell\Monster\MonsterConst;
-use App\Services\Hakoniwa\Log\AppeardMonsterLog;
+use App\Services\Hakoniwa\Log\AppearMonsterLog;
 use App\Services\Hakoniwa\Log\Logs;
 use App\Services\Hakoniwa\Status\Status;
 use App\Services\Hakoniwa\Terrain\Terrain;
@@ -59,7 +59,7 @@ class AppearanceMonster implements IDisaster
             $monster = $appearableMonsters->random();
             /** @var Monster $monsterCell */
             $monsterCell = new $monster(point: $cell->getPoint(), remain_move_times: 0);
-            $logs->add(new AppeardMonsterLog($island, $turn, $cell, $monsterCell));
+            $logs->add(new AppearMonsterLog($island, $cell, $monsterCell));
 
             $terrain->setCell($cell->getPoint(), $monsterCell);
         }

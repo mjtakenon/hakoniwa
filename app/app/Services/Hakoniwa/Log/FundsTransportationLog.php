@@ -3,31 +3,20 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
-use App\Services\Hakoniwa\Plan\FoodsTransportationPlan;
-use App\Services\Hakoniwa\Plan\Plan;
-use App\Services\Hakoniwa\Util\Point;
 
-class FundsTransportationLog implements ILog
+class FundsTransportationLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private string $visibility;
     private int $amount;
     private bool $isFrom;
 
-    public function __construct(Island $island, Turn $turn, int $amount, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(Island $island, int $amount, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->visibility = $visibility;
         $this->amount = $amount;
         $this->isFrom = $isFrom;
-    }
-
-    public static function create(Island $island, Turn $turn, int $amount, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
-    {
-        return new static($island, $turn, $amount, $isFrom, $visibility);
     }
 
     public function generate(): string

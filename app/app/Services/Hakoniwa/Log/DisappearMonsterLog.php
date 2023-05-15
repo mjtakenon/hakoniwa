@@ -3,25 +3,17 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Monster\Monster;
 
-class DisappearMonsterLog implements ILog
+class DisappearMonsterLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private Monster $monster;
 
-    public function __construct(Island $island, Turn $turn, Monster $monster)
+    public function __construct(Island $island, Monster $monster)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->monster = $monster;
-    }
-
-    public static function create(Island $island, Turn $turn, Monster $monster)
-    {
-        return new static($island, $turn, $monster);
     }
 
     public function generate(): string
@@ -34,10 +26,5 @@ class DisappearMonsterLog implements ILog
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'に興味を失い帰っていきました...'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

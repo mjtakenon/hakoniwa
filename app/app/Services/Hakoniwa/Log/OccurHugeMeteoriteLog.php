@@ -3,25 +3,17 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Util\Point;
 
-class OccurHugeMeteoriteLog implements ILog
+class OccurHugeMeteoriteLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private Point $point;
 
-    public function __construct(Island $island, Turn $turn, Point $point)
+    public function __construct(Island $island, Point $point)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->point = $point;
-    }
-
-    public static function create(Island $island, Turn $turn, Point $point)
-    {
-        return new static($island, $turn, $point);
     }
 
     public function generate(): string
@@ -32,10 +24,5 @@ class OccurHugeMeteoriteLog implements ILog
             ['text' => '巨大隕石', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
             ['text' => 'が落下！'],
         ]);
-    }
-
-    public function getVisibility(): string
-    {
-        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

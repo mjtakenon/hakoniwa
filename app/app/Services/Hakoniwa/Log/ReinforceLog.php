@@ -3,31 +3,23 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 
-class ReinforceLog implements ILog
+class ReinforceLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private string $visibility;
     private int $amount;
     private Plan $plan;
     private bool $isFrom;
 
-    public function __construct(Island $island, Turn $turn, int $amount, Plan $plan, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(Island $island, int $amount, Plan $plan, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->visibility = $visibility;
         $this->amount = $amount;
         $this->plan = $plan;
         $this->isFrom = $isFrom;
-    }
-
-    public static function create(Island $island, Turn $turn, int $amount, Plan $plan, bool $isFrom, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
-    {
-        return new static($island, $turn, $amount, $plan, $isFrom, $visibility);
     }
 
     public function generate(): string

@@ -3,30 +3,22 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Plan\Plan;
 use App\Services\Hakoniwa\Util\Point;
 
-class ExecuteCellLog implements ILog
+class ExecuteCellLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private Point $point;
     private Plan $plan;
     private string $visibility;
 
-    public function __construct(Island $island, Turn $turn, Point $point, Plan $plan, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(Island $island, Point $point, Plan $plan, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->point = $point;
         $this->plan = $plan;
         $this->visibility = $visibility;
-    }
-
-    public static function create(Island $island, Turn $turn, Point $point, Plan $plan, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
-    {
-        return new static($island, $turn, $point, $plan, $visibility);
     }
 
     public function generate(): string

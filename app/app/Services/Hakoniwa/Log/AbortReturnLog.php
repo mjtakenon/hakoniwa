@@ -3,27 +3,19 @@
 namespace App\Services\Hakoniwa\Log;
 
 use App\Models\Island;
-use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 
-class AbortReturnLog implements ILog
+class AbortReturnLog extends LogRow
 {
     private Island $island;
-    private Turn $turn;
     private string $visibility;
     private Cell $cell;
 
-    public function __construct(Island $island, Turn $turn, Cell $cell, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(Island $island, Cell $cell, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
     {
         $this->island = $island;
-        $this->turn = $turn;
         $this->visibility = $visibility;
         $this->cell = $cell;
-    }
-
-    public static function create(Island $island, Turn $turn, Cell $cell, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
-    {
-        return new static($island, $turn, $cell, $visibility);
     }
 
     public function generate(): string

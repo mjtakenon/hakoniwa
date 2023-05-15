@@ -71,13 +71,13 @@ class FiringMissilePlan extends Plan
         }
 
         if ($missileBases->isEmpty()) {
-            $logs->add(new AbortNoMissileBaseLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortNoMissileBaseLog($island, $this->point, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
@@ -100,7 +100,7 @@ class FiringMissilePlan extends Plan
             for ($n = 0; $n < $missileBase->getLevel(); $n++) {
                 if ($this->amount === 0) {
                     if ($firingCount >= 1) {
-                        $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
+                        $logs->add(new MissileFiringLog($island, $this->point, $this, $firingCount));
                     }
                     $this->amount = 0;
                     return new ExecutePlanResult($terrain, $status, $logs, true);
@@ -108,9 +108,9 @@ class FiringMissilePlan extends Plan
 
                 if ($status->getFunds() < self::PRICE) {
                     if ($firingCount >= 1) {
-                        $logs->add(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
+                        $logs->add(new MissileFiringLog($island, $this->point, $this, $firingCount));
                     }
-                    $logs->add(new AbortLackOfFundsLog($island, $turn, $this->point, $this));
+                    $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
                     $this->amount = 0;
                     return new ExecutePlanResult($terrain, $status, $logs, true);
                 }
@@ -122,18 +122,18 @@ class FiringMissilePlan extends Plan
                 $firingCount += 1;
 
                 if ($targetCell::TYPE === OutOfRegion::TYPE) {
-                    $logs->add(new MissileOutOfRegionLog($island, $turn, $targetCell->getPoint(), $this));
+                    $logs->add(new MissileOutOfRegionLog($island, $targetCell->getPoint(), $this));
                 } else if ($targetCell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
                     /** @var Monster $targetCell */
                     // 硬化などによる無効化
                     if ($targetCell->isAttackDisabled()) {
-                        $logs->add(new MissileDisabledToMonsterLog($island, $turn, $targetCell, $this));
+                        $logs->add(new MissileDisabledToMonsterLog($island, $targetCell, $this));
                         continue;
                     }
 
                     // 命中
                     $targetCell->setHitPoints($targetCell->getHitPoints() - 1);
-                    $logs->add(new MissileHitToMonsterLog($island, $turn, deep_copy($targetCell), $this));
+                    $logs->add(new MissileHitToMonsterLog($island, deep_copy($targetCell), $this));
                     if ($targetCell->getHitPoints() >= 1) {
                         $terrain->setCell($targetCell->getPoint(), $targetCell);
                     } else {
@@ -142,20 +142,20 @@ class FiringMissilePlan extends Plan
                         $targetCells = $terrain->getAroundCells($this->point, $this->getAccuracy(), true);
                         $targetCells->add($terrain->getCell($this->point));
 
-                        $logs->add(new SoldMonsterCorpseLog($turn, $targetCell));
+                        $logs->add(new SoldMonsterCorpseLog($targetCell));
                         $status->setFunds($status->getFunds() + $targetCell->getCorpsePrice());
 
                         $missileBase->setExperience($missileBase->getExperience() + $targetCell->getExperience());
                         $terrain->setCell($missileBase->getPoint(), $missileBase);
                     }
                 } else {
-                    $logs->add(new MissileSelfDestructLog($island, $turn, $targetCell->getPoint(), $this));
+                    $logs->add(new MissileSelfDestructLog($island, $targetCell->getPoint(), $this));
                 }
             }
         }
 
         if ($firingCount >= 1) {
-            $logs->unshift(new MissileFiringLog($island, $turn, $this->point, $this, $firingCount));
+            $logs->unshift(new MissileFiringLog($island, $this->point, $this, $firingCount));
         }
         $this->amount = 0;
         return new ExecutePlanResult($terrain, $status, $logs, true);
