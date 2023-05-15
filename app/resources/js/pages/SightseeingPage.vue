@@ -6,7 +6,10 @@
         <hr/>
         <island-viewer></island-viewer>
         <hr/>
-        <log-viewer></log-viewer>
+        <log-viewer
+            :title="store.island.name + '島の近況'"
+            :parsed-logs="store.logs"
+        ></log-viewer>
     </div>
 </template>
 
@@ -20,7 +23,7 @@ import {Hakoniwa} from "../store/Entity/Hakoniwa";
 import {Status} from "../store/Entity/Status";
 import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
-import {Log} from "../store/Entity/Log";
+import {LogParser, LogProps} from "../store/Entity/Log";
 
 export default defineComponent({
     components: {
@@ -41,12 +44,15 @@ export default defineComponent({
     },
     setup(props) {
         const store = useMainStore();
+        const parser = new LogParser();
+        const logs = parser.parse(props.island.logs, props.island.summary);
+
         store.$patch({
             hakoniwa: props.hakoniwa,
             island: props.island,
             status: props.island.status,
             terrains: props.island.terrains,
-            logs: props.island.logs
+            logs: logs
         })
         return { store }
     },
@@ -69,7 +75,7 @@ export default defineComponent({
                 status: Status,
                 terrains: Array<Terrain>,
                 plans: Array<Plan>,
-                logs: Array<Log>
+                logs: LogProps[]
             }>
         },
     },

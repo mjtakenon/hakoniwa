@@ -12,7 +12,10 @@
             <plan-list class="max-lg:order-2 grow"></plan-list>
         </div>
         <hr/>
-        <log-viewer></log-viewer>
+        <log-viewer
+            :title="store.island.name + '島の近況'"
+            :parsed-logs="store.logs"
+        ></log-viewer>
     </div>
 </template>
 
@@ -31,8 +34,8 @@ import {Island} from "../store/Entity/Island";
 import {Status} from "../store/Entity/Status";
 import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
-import {Log} from "../store/Entity/Log";
 import {Turn} from "../store/Entity/Turn";
+import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 
 export default defineComponent({
     components: {
@@ -69,6 +72,10 @@ export default defineComponent({
             next_time: new Date(props.turn.next_time)
         }
 
+        // Logsのparse
+        const parser = new LogParser();
+        const logs = parser.parse(props.island.logs, props.island.summary);
+
         // Pinia
         const store = useMainStore();
         store.$patch({
@@ -76,7 +83,7 @@ export default defineComponent({
             island: props.island,
             status: props.island.status,
             terrains: props.island.terrains,
-            logs: props.island.logs,
+            logs: logs,
             plans: lodash.cloneDeep(props.island.plans),
             sentPlans: lodash.cloneDeep(props.island.plans),
             planCandidate: candidates,
@@ -101,12 +108,13 @@ export default defineComponent({
                 status: Status,
                 terrains: Array<Terrain>,
                 plans: Array<Plan>,
-                logs: Array<Log>
+                logs: LogProps[],
+                summary: SummaryProps[]
             }>
         },
         planCandidate: {
             required: true,
-            type: Object as PropType<{[K in string]: Plan["data"]}>
+            type: Object as PropType<{ [K in string]: Plan["data"] }>
         },
         targetIslands: {
             required: true,
@@ -118,7 +126,7 @@ export default defineComponent({
                 turn: number,
                 next_time: string
             }>
-        }
+        },
     },
 });
 </script>

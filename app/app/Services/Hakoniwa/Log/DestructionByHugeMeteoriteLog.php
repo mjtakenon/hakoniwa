@@ -30,8 +30,7 @@ class DestructionByHugeMeteoriteLog implements ILog
     {
         if ($this->range === 0 || $this->range === 1) {
             return json_encode([
-                ['text' => 'ターン ' . $this->turn->turn . ' : '],
-                ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
+                    ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
                 ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') の'],
                 ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ],
                 ['text' => 'は、'],
@@ -41,7 +40,6 @@ class DestructionByHugeMeteoriteLog implements ILog
         }
 
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') の'],
             ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ],

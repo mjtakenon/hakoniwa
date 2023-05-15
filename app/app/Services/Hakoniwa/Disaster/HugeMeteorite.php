@@ -37,6 +37,8 @@ class HugeMeteorite implements IDisaster
 
         $terrain->setCell($point, new Sea(point: $point));
 
+        $logs->add(new OccurHugeMeteoriteLog($island, $turn, $point));
+
         // 周囲1hex
         /** @var Cell $cell */
         foreach ($around1HexCells as $cell) {
@@ -81,8 +83,6 @@ class HugeMeteorite implements IDisaster
                 }
             }
         }
-
-        $logs->add(new OccurHugeMeteoriteLog($island, $turn, $point));
 
         return new DisasterResult($terrain, $status, $logs);
     }

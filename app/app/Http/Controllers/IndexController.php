@@ -7,6 +7,7 @@ use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Log\LogVisibility;
+use Illuminate\Support\Collection;
 
 class IndexController extends Controller
 {
@@ -24,9 +25,20 @@ class IndexController extends Controller
 
         $logs = IslandLog::whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
-        ->where('visibility', LogVisibility::VISIBILITY_GLOBAL)
-        ->orderByDesc('id')
-        ->get('log');
+            ->where('visibility', LogVisibility::VISIBILITY_GLOBAL)
+            ->orderByDesc('id')
+            ->get()
+            ->groupBy('turn.turn')
+            ->map(function ($groupedLog, $turn) {
+                /** @var Collection $groupedLog */
+                return [
+                    'data' => $groupedLog->map(function ($log) {
+                        /** @var IslandLog $log */
+                        return $log->log;
+                    }),
+                    'turn' => $turn,
+                ];
+            });
 
         return view('pages.index', [
             'islands' => $islands->map(function ($island) {
@@ -49,7 +61,7 @@ class IndexController extends Controller
                 ];
             }),
             'turn' => $turn,
-            'logs' => $logs,
+            'logs' => array_values($logs->toArray()),
         ]);
     }
 }

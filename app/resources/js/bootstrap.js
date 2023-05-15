@@ -19,6 +19,7 @@ import PlanPage from "./pages/PlanPage.vue";
 import VueHeader from "./components/VueHeader.vue";
 import TurnViewer from "./components/TurnViewer.vue";
 import RankingViewer from "./components/RankingViewer.vue";
+import LogViewer from "./components/LogViewer.vue";
 
 const app = createApp({
     components:{
@@ -27,6 +28,7 @@ const app = createApp({
         VueHeader,
         TurnViewer,
         RankingViewer,
+        LogViewer,
     }
 });
 

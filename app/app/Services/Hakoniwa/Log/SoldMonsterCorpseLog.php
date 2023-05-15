@@ -27,7 +27,6 @@ class SoldMonsterCorpseLog implements ILog
     public function generate(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->monster->getName(), 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
             ['text' => 'の残骸は、'],
             ['text' => $this->monster->getCorpsePrice() . '億円', 'style' => StyleConst::BOLD],
