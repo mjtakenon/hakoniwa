@@ -23,7 +23,6 @@ class DeforestationLog implements ILog
     public function generate(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => '伐採した木材から、'],
             ['text' => $this->amount, 'style' => StyleConst::BOLD],
             ['text' => '㌧の資源を得ました。'],

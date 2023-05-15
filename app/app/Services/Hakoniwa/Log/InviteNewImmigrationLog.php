@@ -24,7 +24,6 @@ class InviteNewImmigrationLog implements ILog
     public function generate(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => '新たな入植者を得ましたが、'],
             ['text' => '発展ポイントが激減', 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],
             ['text' => 'しました...'],

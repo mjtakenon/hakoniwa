@@ -24,7 +24,6 @@ class OccurFoodShortageLog implements ILog
     public function generate(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => 'の'],
             ['text' => '食料が不足' , 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER],

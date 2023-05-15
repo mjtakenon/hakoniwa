@@ -34,7 +34,6 @@ class AttackLog implements ILog
     public function generate(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => ' (' . $this->offenciveShip->getPoint()->x . ',' . $this->offenciveShip->getPoint()->y . ') 地点の'],
             $this->offenciveShip->getAffiliationId() >= 1 ? ['text' => $this->offenciveShip->getAffiliationName() . '島所属', 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ] : ['text' => ''],
             $this->offenciveShip->getAffiliationId() >= 1 ? ['text' => $this->offenciveShip->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_WARNING ] : ['text' => $this->offenciveShip->getName(), 'style' => StyleConst::BOLD.StyleConst::COLOR_DANGER ],

@@ -33,7 +33,6 @@ class AbortInvalidCellLog implements ILog
     public function generate(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
             ['text' => ' (' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],

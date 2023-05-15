@@ -28,7 +28,6 @@ class AbortReturnNotFoundLog implements ILog
     public function generate(): string
     {
         return json_encode([
-            ['text' => 'ターン ' . $this->turn->turn . ' : '],
             $this->visibility === LogVisibility::VISIBILITY_PRIVATE ? ['text' => '(極秘) '] : ['text' => ''],
             ['text' => $this->cell->getAffiliationName() . '島'],
             ['text' => '所属の'],
