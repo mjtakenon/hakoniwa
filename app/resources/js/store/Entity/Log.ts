@@ -49,7 +49,6 @@ export class LogParser {
             // dataのparse
             for (const line of turnLog.data) {
                 const parsed: LogText[] = JSON.parse(line);
-                if (parsed[1].text === "収支") continue; // 収支のログを削除
                 const contexts: LogText[] = parsed.filter(txt => txt.text !== '');// 空文字のログを削除
                 texts.push(contexts.slice(1));
                 rawTexts.push(contexts);
