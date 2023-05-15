@@ -12,7 +12,10 @@
             <plan-list class="max-lg:order-2 grow"></plan-list>
         </div>
         <hr/>
-        <log-viewer></log-viewer>
+        <log-viewer
+            :title="store.island.name + '島の近況'"
+            :logs="store.logs"
+        ></log-viewer>
     </div>
 </template>
 

@@ -44,7 +44,6 @@ export interface SummaryProps {
 export class LogParser {
     parse(logs: LogProps[], summaries?: SummaryProps[]) {
         const result: Log[] = []
-        console.debug(logs);
         for (const turnLog of logs) {
             const texts: LogText[][] = [];
             const rawTexts: LogText[][] = [];

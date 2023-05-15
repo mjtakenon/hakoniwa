@@ -1,9 +1,9 @@
 <template>
     <div id="logs">
         <div class="subtitle">
-            {{ store.island.name }}島の近況
+            {{ title }}
         </div>
-        <div class="turn-log" v-for="(log, logIndex) of store.logs" :key="'log-' + logIndex">
+        <div class="turn-log" v-for="(log, logIndex) of logs" :key="'log-' + logIndex">
             <div class="turn-title">
                 <div class="turn-title-inner">
                     <span class="turn-title-inner-text">ターン</span>
@@ -89,23 +89,11 @@
     </div>
 </template>
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, Prop, PropType} from "vue";
 import {useMainStore} from "../store/MainStore";
 import {LogParser, Log} from "../store/Entity/Log";
 
 export default defineComponent({
-    data() {
-        return {
-            logs: [] as Log[]
-        }
-    },
-    setup() {
-        const store = useMainStore();
-        return {store};
-    },
-    mounted() {
-
-    },
     methods: {
         getBgColor(num: number): string {
             if (num > 0) return 'border-blue-200'
@@ -116,6 +104,18 @@ export default defineComponent({
             if (num > 0) return 'text-blue-600'
             if (num === 0) return 'text-black'
             return 'text-red-600'
+        }
+    },
+    mounted() {
+    },
+    props: {
+        title: {
+            required: true,
+            type: String
+        },
+        logs: {
+            required: true,
+            type: Array as PropType<Log[]>
         }
     }
 });
