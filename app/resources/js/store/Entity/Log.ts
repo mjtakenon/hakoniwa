@@ -1,4 +1,4 @@
-import {forEach} from "lodash";
+import {forEach, sum} from "lodash";
 
 export interface Log {
     turn: number,
@@ -42,8 +42,9 @@ export interface SummaryProps {
 }
 
 export class LogParser {
-    parse(logs: LogProps[], summaries: SummaryProps[]) {
+    parse(logs: LogProps[], summaries?: SummaryProps[]) {
         const result: Log[] = []
+        console.debug(logs);
         for (const turnLog of logs) {
             const texts: LogText[][] = [];
             const rawTexts: LogText[][] = [];
@@ -56,19 +57,25 @@ export class LogParser {
                 texts.push(contexts.slice(1));
                 rawTexts.push(contexts);
             }
-            const summary = summaries.find(summary => summary.turn === turnLog.turn);
-            result.push({
+
+            const data: Log = {
                 turn: turnLog.turn,
-                summary: {
+                texts: texts.reverse(),
+                rawTexts: rawTexts.reverse()
+            }
+
+            if (summaries !== null && summaries !== undefined) {
+                const summary = summaries?.find(summary => summary.turn === turnLog.turn);
+                data.summary = {
                     foods: summary.foods,
                     funds: summary.funds,
                     resources: summary.resources,
                     population: summary.population,
                     points: summary.development_points
-                },
-                texts: texts.reverse(),
-                rawTexts: rawTexts.reverse()
-            })
+                }
+            }
+
+            result.push(data)
         }
         return result;
     }

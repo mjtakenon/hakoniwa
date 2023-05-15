@@ -33,7 +33,7 @@
                         </template>
                     </div>
                 </div>
-                <div class="turn-summaries">
+                <div v-if="log.hasOwnProperty('summary')" class="turn-summaries">
                     <div class="summary-box" :class="getBgColor(log.summary.foods)">
                         <span class="summary-box-title">🍎食料</span>
                         <span class="summary-box-num" :class="getTextColor(log.summary.foods)">
