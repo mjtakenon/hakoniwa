@@ -1,5 +1,3 @@
-import {forEach, sum} from "lodash";
-
 export interface Log {
     turn: number,
     summary?: LogSummary,
@@ -63,17 +61,18 @@ export class LogParser {
                 rawTexts: rawTexts.reverse()
             }
 
-            if (summaries !== null && summaries !== undefined) {
+            if (summaries !== null && summaries !== undefined && summaries.length > 0) {
                 const summary = summaries?.find(summary => summary.turn === turnLog.turn);
-                data.summary = {
-                    foods: summary.foods,
-                    funds: summary.funds,
-                    resources: summary.resources,
-                    population: summary.population,
-                    points: summary.development_points
+                if(summary !== null && summary !== undefined) {
+                    data.summary = {
+                        foods: summary.foods,
+                        funds: summary.funds,
+                        resources: summary.resources,
+                        population: summary.population,
+                        points: summary.development_points
+                    }
                 }
             }
-
             result.push(data)
         }
         return result;

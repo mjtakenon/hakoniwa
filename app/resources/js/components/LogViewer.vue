@@ -1,4 +1,4 @@
-<template>
+<template v-if="logs.length > 0">
     <div id="logs">
         <div class="subtitle">
             {{ title }}
@@ -89,11 +89,15 @@
     </div>
 </template>
 <script lang="ts">
-import {defineComponent, Prop, PropType} from "vue";
-import {useMainStore} from "../store/MainStore";
-import {LogParser, Log} from "../store/Entity/Log";
+import {defineComponent, PropType} from "vue";
+import {LogParser, Log, LogProps} from "../store/Entity/Log";
 
 export default defineComponent({
+    data() {
+        return {
+            logs: [] as Log[]
+        }
+    },
     methods: {
         getBgColor(num: number): string {
             if (num > 0) return 'border-blue-200'
@@ -107,15 +111,25 @@ export default defineComponent({
         }
     },
     mounted() {
+        if (this.unparsedLogs !== undefined) {
+            const parser = new LogParser();
+            this.logs = parser.parse(this.unparsedLogs);
+        } else {
+            this.logs = this.parsedLogs
+        }
     },
     props: {
         title: {
-            required: true,
+            required: false,
             type: String
         },
-        logs: {
-            required: true,
+        parsedLogs: {
+            required: false,
             type: Array as PropType<Log[]>
+        },
+        unparsedLogs: {
+            required: false,
+            type: Array as PropType<LogProps[]>
         }
     }
 });

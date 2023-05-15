@@ -39,40 +39,10 @@
                 ></ranking-viewer>
             @endforeach
 
-            <div id="logs">
-                <h2 class="subtitle"> 最近の出来事 </h2>
-                {{--                <div v-for="log of $store.state.logs" :key="log.id">--}}
-                {{--            <span v-for="context of JSON.parse(log.log)" :key="context.text">--}}
-                {{--                <a v-if="context.hasOwnProperty('link')" :href="context.link" :style="context.style">--}}
-                {{--                    {{ context.text }}--}}
-                {{--                </a>--}}
-                {{--                <span v-else :style="context.style">--}}
-                {{--                    {{ context.text }}--}}
-                {{--                </span>--}}
-                {{--            </span>--}}
-                {{--                </div>--}}
-                @foreach($logs as $log)
-                    <div class="log-texts">
-                        @foreach(json_decode($log->log) as $context)
-                            <span>
-                            @if(property_exists($context, 'link'))
-                                <a href="{{$context->link}}" style="{{$context->style}}">
-                                    {{ $context->text }}
-                                </a>
-                            @else
-                                @if(property_exists($context, 'style'))
-                                    <span style="{{$context->style}}">
-                                        {{ $context->text }}
-                                    </span>
-                                @else
-                                    <span>{{ $context->text }}</span>
-                                @endif
-                            @endif
-                            </span>
-                        @endforeach
-                    </div>
-                @endforeach
-            </div>
+            <log-viewer
+                :title="'最近の出来事'"
+                :unparsed-logs="@js($logs)"
+            ></log-viewer>
         </div>
     </div>
 @endsection

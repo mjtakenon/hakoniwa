@@ -8,7 +8,7 @@
         <hr/>
         <log-viewer
             :title="store.island.name + '島の近況'"
-            :logs="store.logs"
+            :parsed-logs="store.logs"
         ></log-viewer>
     </div>
 </template>
@@ -23,7 +23,7 @@ import {Hakoniwa} from "../store/Entity/Hakoniwa";
 import {Status} from "../store/Entity/Status";
 import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
-import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
+import {LogParser, LogProps} from "../store/Entity/Log";
 
 export default defineComponent({
     components: {

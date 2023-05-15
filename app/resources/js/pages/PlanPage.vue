@@ -14,7 +14,7 @@
         <hr/>
         <log-viewer
             :title="store.island.name + '島の近況'"
-            :logs="store.logs"
+            :parsed-logs="store.logs"
         ></log-viewer>
     </div>
 </template>
