@@ -161,7 +161,7 @@ export default defineComponent({
         // sp
             @apply max-md:bg-gray-300 max-md:rounded-r-3xl max-md:w-2/5 max-md:px-2 max-md:py-1 max-md:drop-shadow;
         // desktop
-            @apply md:border-r md:border-gray-300;
+            @apply md:border-r md:border-gray-300 md:pr-2;
 
             .turn-title-inner {
             // general
@@ -169,7 +169,7 @@ export default defineComponent({
             // sp
                 @apply w-full max-md:flex;
             // desktop
-                @apply md:w-fit md:mr-2;
+                @apply md:mr-2;
 
                 .turn-title-inner-text {
                 // general
@@ -205,7 +205,7 @@ export default defineComponent({
                 // sp
                 @apply grid-cols-2 max-md:mt-3;
                 // desktop
-                @apply md:grid-cols-5 md:pl-[20vw];
+                @apply md:grid-cols-5 md:pl-[10%] lg:pl-[25%];
 
                 .summary-box {
                     @apply w-full flex items-center px-0.5 border-b-2;
