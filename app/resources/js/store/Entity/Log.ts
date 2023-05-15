@@ -1,8 +1,7 @@
 export interface Log {
     turn: number,
     summary?: LogSummary,
-    texts: LogText[][],
-    rawTexts: LogText[][]
+    texts: LogText[][]
 }
 
 export interface LogSummary {
@@ -44,20 +43,17 @@ export class LogParser {
         const result: Log[] = []
         for (const turnLog of logs) {
             const texts: LogText[][] = [];
-            const rawTexts: LogText[][] = [];
 
             // dataのparse
             for (const line of turnLog.data) {
                 const parsed: LogText[] = JSON.parse(line);
                 const contexts: LogText[] = parsed.filter(txt => txt.text !== '');// 空文字のログを削除
-                texts.push(contexts.slice(1));
-                rawTexts.push(contexts);
+                texts.push(contexts);
             }
 
             const data: Log = {
                 turn: turnLog.turn,
-                texts: texts.reverse(),
-                rawTexts: rawTexts.reverse()
+                texts: texts.reverse()
             }
 
             if (summaries !== null && summaries !== undefined && summaries.length > 0) {
