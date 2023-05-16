@@ -398,7 +398,7 @@ class Terrain implements JsonEncodable
     {
         return $this->terrain->flatten(1)->filter(function ($cell) use ($attribute) {
             /** @var Cell $cell */
-            return $cell::TYPE[$attribute];
+            return $cell::ATTRIBUTE[$attribute];
         });
     }
 
