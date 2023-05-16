@@ -46,7 +46,7 @@ class FundsTransportationPlan extends Plan
     {
         $logs = Logs::create();
 
-        $transportShips = $terrain->findByType([TransportShip::TYPE]);
+        $transportShips = $terrain->findByTypes([TransportShip::TYPE]);
 
         if ($this->amount === 0) {
             $this->amount = 100;

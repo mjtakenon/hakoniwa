@@ -6,6 +6,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use App\Services\Hakoniwa\Cell\Cell;
 use App\Services\Hakoniwa\Cell\Ship\Battleship;
+use App\Services\Hakoniwa\Cell\Ship\CombatantShip;
 use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
 use App\Services\Hakoniwa\Log\AbortNoShipLog;
 use App\Services\Hakoniwa\Log\Logs;
@@ -42,9 +43,9 @@ class ReinforceBattleshipPlan extends Plan
     {
         $logs = Logs::create();
 
-        $battleships = $terrain->getTerrain()->flatten(1)->filter(function ($cell) use ($island) {
-            /** @var Cell $cell */
-            return $cell::TYPE === Battleship::TYPE && $cell->getAffiliationId() === $island->id;
+        $battleships = $terrain->findByTypes([Battleship::TYPE])->filter(function ($cell) use ($island) {
+            /** @var CombatantShip $cell */
+            return $cell->getAffiliationId() === $island->id;
         });
 
         if ($this->amount === 0) {

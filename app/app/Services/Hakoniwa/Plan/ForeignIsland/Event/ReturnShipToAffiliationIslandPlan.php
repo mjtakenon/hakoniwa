@@ -36,7 +36,7 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
             return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
-        $seaCells = $toTerrain->findByType([Sea::TYPE, Shallow::TYPE]);
+        $seaCells = $toTerrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
 
         // 元の島に空いているセルがなければログだけ出してスキップする
         if ($seaCells->isEmpty()) {

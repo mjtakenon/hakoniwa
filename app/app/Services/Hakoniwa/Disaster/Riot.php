@@ -33,9 +33,7 @@ class Riot implements IDisaster
         $logs->add(new OccurRiotLog($island));
         $logs->add(new OccurFoodShortageLog($island));
 
-        $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_RIOT];
-        });
+        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_RIOT);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {

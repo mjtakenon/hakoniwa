@@ -12,6 +12,7 @@ use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\LargeFactory;
 use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
+use App\Services\Hakoniwa\Cell\Mountain;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\OutOfRegion;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
@@ -195,8 +196,8 @@ class Terrain implements JsonEncodable
 
     public function getEnvironment(): string
     {
-        $hasFactory = $this->findByType([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
-        $hasOilField = $this->findByType([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
+        $hasFactory = $this->findByTypes([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
+        $hasOilField = $this->findByTypes([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
 
         if ($hasFactory && $hasOilField) {
             return Status::ENVIRONMENT_NORMAL;
@@ -209,14 +210,9 @@ class Terrain implements JsonEncodable
 
     public function aggregateArea(): int
     {
-        $area = 0;
         /** @var Cell $cell */
-        foreach ($this->terrain->flatten(1) as $cell) {
-            if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
-                $area += 100;
-            }
-        }
-        return $area;
+        $landCells = $this->findByAttribute(CellTypeConst::IS_LAND)->count();
+        return $landCells * 100;
     }
 
     public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
@@ -226,6 +222,7 @@ class Terrain implements JsonEncodable
         /** @var Cell $cell */
         foreach ($this->terrain->flatten(1) as $cell) {
 
+            // 怪獣の移動などで既に行動されている場合、セルのTypeが変わるため処理を行わない
             if ($cell->getType() !== $this->getCell($cell->getPoint())->getType()) {
                 continue;
             }
@@ -389,7 +386,7 @@ class Terrain implements JsonEncodable
         return new DisasterResult($this, $status, $logs);
     }
 
-    public function findByType(array $cellTypes): Collection
+    public function findByTypes(array $cellTypes): Collection
     {
         return $this->terrain->flatten(1)->filter(function ($cell) use ($cellTypes) {
             /** @var Cell $cell */
@@ -397,18 +394,26 @@ class Terrain implements JsonEncodable
         });
     }
 
+    public function findByAttribute(string $attribute): Collection
+    {
+        return $this->terrain->flatten(1)->filter(function ($cell) use ($attribute) {
+            /** @var Cell $cell */
+            return $cell::TYPE[$attribute];
+        });
+    }
+
     public function inviteNewImmigration(Status $status): void
     {
         $status->setDevelopmentPoints($status->getDevelopmentPoints() / 2);
         /** @var Cell $targetCell */
-        $plains = $this->findByType([Plain::TYPE, Wasteland::TYPE]);
+        $plains = $this->findByTypes([Plain::TYPE, Wasteland::TYPE]);
         if (!$plains->isEmpty()) {
             $targetCell = $plains->random();
             $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
             return;
         }
 
-        $shallows = $this->findByType([Shallow::TYPE]);
+        $shallows = $this->findByTypes([Shallow::TYPE, Mountain::TYPE]);
         if (!$shallows->isEmpty()) {
             $targetCell = $shallows->random();
             $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));

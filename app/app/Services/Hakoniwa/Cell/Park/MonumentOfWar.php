@@ -25,11 +25,11 @@ class MonumentOfWar extends Park
 
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
-        if ($terrain->findByType([self::TYPE])->count() >= 1) {
+        if ($terrain->findByTypes([self::TYPE])->count() >= 1) {
             return false;
         }
 
-        $missileBaseCells = $terrain->findByType([MissileBase::TYPE]);
+        $missileBaseCells = $terrain->findByTypes([MissileBase::TYPE]);
         /** @var MissileBase $missileBaseCell */
         foreach ($missileBaseCells as $missileBaseCell) {
             if ($missileBaseCell->getLevel() >= self::CONSTRUCTABLE_BASE_LEVEL) {

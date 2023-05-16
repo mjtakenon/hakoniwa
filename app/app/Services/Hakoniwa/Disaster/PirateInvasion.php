@@ -35,7 +35,7 @@ class PirateInvasion implements IDisaster
             return new DisasterResult($terrain, $status, $logs);
         }
 
-        $seaCells = $terrain->findByType([Sea::TYPE, Shallow::TYPE]);
+        $seaCells = $terrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
 
         $maxPiratesCount = (int)floor($status->getPopulation() / 80000);
         $maxPiratesCount = min(5, $maxPiratesCount);

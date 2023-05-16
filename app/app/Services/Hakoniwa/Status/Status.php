@@ -111,11 +111,11 @@ class Status
         if ($this->foodsProductionNumberOfPeople > 0) {
             // 食料生産
             $farmProductionNumberOfPeople = $terrain
-                ->findByType([Farm::TYPE])
+                ->findByTypes([Farm::TYPE])
                 ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionNumberOfPeople(); });
 
             $farmDomeProductionNumberOfPeople = $terrain
-                ->findByType([FarmDome::TYPE])
+                ->findByTypes([FarmDome::TYPE])
                 ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionNumberOfPeople(); });
 
             $farmRatio = $farmProductionNumberOfPeople / ($farmProductionNumberOfPeople + $farmDomeProductionNumberOfPeople);

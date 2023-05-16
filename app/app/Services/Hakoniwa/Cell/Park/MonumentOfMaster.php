@@ -27,7 +27,7 @@ class MonumentOfMaster extends Park
         if ($status->getProducedFunds() <= self::CONSTRUCTABLE_FUNDS_THRESHOLD) {
             return false;
         }
-        if ($terrain->findByType([self::TYPE])->count() >= 1) {
+        if ($terrain->findByTypes([self::TYPE])->count() >= 1) {
             return false;
         }
         return true;

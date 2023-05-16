@@ -59,9 +59,7 @@ class SlimeLegend extends Monster
 
     private function getDivisionProbably(Terrain $terrain): float
     {
-        $monsterCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::IS_MONSTER];
-        });
+        $monsterCells = $terrain->findByAttribute(CellTypeConst::IS_MONSTER);
 
         if ($monsterCells->count() < 7) {
             return 1.0/3;

@@ -27,7 +27,7 @@ class MonumentOfMining extends Park
         if ($status->getProducedResources() <= self::CONSTRUCTABLE_RESOURCES_THRESHOLD) {
             return false;
         }
-        if ($terrain->findByType([self::TYPE])->count() >= 1) {
+        if ($terrain->findByTypes([self::TYPE])->count() >= 1) {
             return false;
         }
         return true;

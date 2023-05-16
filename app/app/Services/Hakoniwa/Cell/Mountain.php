@@ -44,7 +44,7 @@ class Mountain extends Cell
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
     {
-        $mountains = $terrain->findByType([Volcano::TYPE, Mine::TYPE]);
+        $mountains = $terrain->findByTypes([Volcano::TYPE, Mine::TYPE]);
 
         if ($mountains->count() >= 1) {
             return new PassTurnResult($terrain, $status, Logs::create());

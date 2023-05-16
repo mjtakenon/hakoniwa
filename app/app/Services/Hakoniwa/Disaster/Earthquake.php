@@ -29,9 +29,7 @@ class Earthquake implements IDisaster
 
         $logs->add(new OccurEarthquakeLog($island));
 
-        $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE];
-        });
+        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {

@@ -21,7 +21,7 @@ class FundsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
 
-        $seaCells = $fromTerrain->findByType([Sea::TYPE, Shallow::TYPE]);
+        $seaCells = $fromTerrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
 
         $amount = $this->plan->getAmount() * FundsTransportationPlan::UNIT;
 

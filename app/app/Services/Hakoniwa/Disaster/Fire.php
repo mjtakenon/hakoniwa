@@ -22,9 +22,7 @@ class Fire implements IDisaster
         $logs = Logs::create();
 
         /** @var Cell $cell */
-        $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_FIRE];
-        });
+        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_FIRE);
 
         foreach ($candidates as $cell) {
 

@@ -43,9 +43,7 @@ class AttractActivitiesPlan extends Plan
         }
 
         /** @var Cell $cell */
-        $hasPopulationCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::HAS_POPULATION];
-        });
+        $hasPopulationCells = $terrain->findByAttribute(CellTypeConst::HAS_POPULATION);
 
         foreach ($hasPopulationCells as $cell) {
             $addPopulation = random_int(1, 3) * 100;

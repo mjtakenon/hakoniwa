@@ -27,7 +27,7 @@ class MonumentOfAgriculture extends Park
         if ($status->getProducedFoods() <= self::CONSTRUCTABLE_FOODS_THRESHOLD) {
             return false;
         }
-        if ($terrain->findByType([self::TYPE])->count() >= 1) {
+        if ($terrain->findByTypes([self::TYPE])->count() >= 1) {
             return false;
         }
         return true;

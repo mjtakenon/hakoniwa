@@ -37,9 +37,7 @@ class Tsunami implements IDisaster
 
         $logs->add(new OccurTsunamiLog($island));
 
-        $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI];
-        });
+        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {

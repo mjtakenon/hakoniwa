@@ -25,16 +25,16 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
 
-        $seaCells = $toTerrain->findByType([Sea::TYPE, Shallow::TYPE]);
+        $seaCells = $toTerrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
 
         if ($seaCells->isEmpty()) {
             $fromLogs->add(new AbortInvalidTerrainLog($fromIsland, $this->plan));
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
-        $battleships = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) use ($fromIsland) {
+        $battleships = $fromTerrain->findByTypes([Battleship::TYPE])->filter(function ($cell) use ($fromIsland) {
             /** @var CombatantShip $cell */
-            return $cell::TYPE === Battleship::TYPE && $cell->getAffiliationId() === $fromIsland->id;
+            return $cell->getAffiliationId() === $fromIsland->id;
         })->sort(function($cell) {
             /** @var CombatantShip $cell */
             return $cell->getDamage();

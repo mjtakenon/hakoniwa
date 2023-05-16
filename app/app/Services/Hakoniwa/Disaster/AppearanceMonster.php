@@ -32,11 +32,9 @@ class AppearanceMonster implements IDisaster
         }
 
         /** @var Cell $cell */
-        $candidates = $terrain->findByType([Village::TYPE, Town::TYPE, City::TYPE, Metropolis::TYPE]);
+        $candidates = $terrain->findByTypes([Village::TYPE, Town::TYPE, City::TYPE, Metropolis::TYPE]);
 
-        $monsterCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::IS_MONSTER];
-        });
+        $monsterCells = $terrain->findByAttribute(CellTypeConst::IS_MONSTER);
         $occurProbability = self::OCCUR_PROBABILITY / pow(2, $monsterCells->count());
 
         foreach ($candidates as $cell) {

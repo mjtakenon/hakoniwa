@@ -44,7 +44,7 @@ class ConstructBattleshipPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        $seaCells = $terrain->findByType([Sea::TYPE, Shallow::TYPE]);
+        $seaCells = $terrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
 
         if ($seaCells->count() <= 0) {
             $this->amount = 0;

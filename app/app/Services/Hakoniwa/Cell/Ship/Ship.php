@@ -84,7 +84,7 @@ abstract class Ship extends Cell
     {
         $logs = Logs::create();
 
-        $seaCells = $terrain->findByType([Sea::TYPE, Shallow::TYPE]);
+        $seaCells = $terrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
 
         if ($seaCells->count() <= 0) {
             return new PassTurnResult($terrain, $status, $logs);

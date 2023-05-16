@@ -41,9 +41,7 @@ class Typhoon implements IDisaster
 
         $logs->add(new OccurTyphoonLog($island));
 
-        $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TYPHOON];
-        });
+        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_TYPHOON);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {
