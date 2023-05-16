@@ -23,12 +23,6 @@ class Status
     public const ENVIRONMENT_NORMAL = 'normal';
     public const ENVIRONMENT_GOOD = 'good';
     public const ENVIRONMENT_BEST = 'best';
-    public const ENVIRONMENT = [
-        self::ENVIRONMENT_BEST => '最高',
-        self::ENVIRONMENT_GOOD => '良好',
-        self::ENVIRONMENT_NORMAL => '通常',
-    ];
-
     private const FOODS_PRODUCTION_COEF = [
         self::ENVIRONMENT_NORMAL => 0.3,
         self::ENVIRONMENT_GOOD => 0.6,
