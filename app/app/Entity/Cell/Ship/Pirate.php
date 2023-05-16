@@ -94,7 +94,7 @@ class Pirate extends CombatantShip
             }
         } else {
             // 海岸沿いの建造物を破壊
-            $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+            $candidates = $terrain->getCells()->flatten(1)->filter(function ($cell) {
                 return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI] || $cell::ATTRIBUTE[CellTypeConst::IS_SHIP];
             });
             $seaCells = new Collection();

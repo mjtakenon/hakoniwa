@@ -61,7 +61,7 @@ class FiringMissilePlan extends Plan
         $targetCells = $terrain->getAroundCells($this->point, $this->getAccuracy(), true);
         $targetCells->add($terrain->getCell($this->point));
 
-        $missileBases = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
+        $missileBases = $terrain->getCells()->flatten(1)->filter(function ($cell) {
             /** @var Cell $cell */
             return array_key_exists(IMissileFireable::class, class_implements($cell));
         });

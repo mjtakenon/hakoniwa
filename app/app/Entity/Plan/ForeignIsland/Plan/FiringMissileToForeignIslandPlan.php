@@ -33,7 +33,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
         $targetCells = $toTerrain->getAroundCells($this->plan->getPoint(), $this->plan->getAccuracy(), true);
         $targetCells->add($toTerrain->getCell($this->plan->getPoint()));
 
-        $missileBases = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) {
+        $missileBases = $fromterrain->getCells()->flatten(1)->filter(function ($cell) {
             /** @var Cell $cell */
             return array_key_exists(IMissileFireable::class, class_implements($cell));
         });

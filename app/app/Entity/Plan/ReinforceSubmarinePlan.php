@@ -44,7 +44,7 @@ class ReinforceSubmarinePlan extends Plan
     {
         $logs = Logs::create();
 
-        $submarines = $terrain->getTerrain()->flatten(1)->filter(function ($cell) use ($island) {
+        $submarines = $terrain->getCells()->flatten(1)->filter(function ($cell) use ($island) {
             /** @var Cell $cell */
             return $cell::TYPE === Submarine::TYPE && $cell->getAffiliationId() === $island->id;
         });
