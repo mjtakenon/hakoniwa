@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('island_logs', function (Blueprint $table) {
-            $table->string('visibility',32)->after('log')->default(\App\Services\Hakoniwa\Log\LogVisibility::VISIBILITY_PUBLIC);
+            $table->string('visibility',32)->after('log')->default(\App\Entity\Log\LogVisibility::VISIBILITY_PUBLIC);
             $table->index(['turn_id', 'visibility'], 'island_logs_turn_id_visibility_index');
         });
     }

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Register;
 
+use App\Entity\Log\IslandFoundLog;
+use App\Entity\Plan\Plans;
+use App\Entity\Status\Status;
+use App\Entity\Terrain\Terrain;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\IslandLog;
@@ -9,11 +13,6 @@ use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
-use App\Models\User;
-use App\Services\Hakoniwa\Log\IslandFoundLog;
-use App\Services\Hakoniwa\Plan\Plans;
-use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
 
 class IndexController extends Controller
 {

@@ -2,6 +2,17 @@
 
 namespace App\Console\Commands;
 
+use App\Entity\Log\AbandonmentLog;
+use App\Entity\Log\AbortInvalidIslandLog;
+use App\Entity\Log\InviteNewImmigrationLog;
+use App\Entity\Log\LogRow;
+use App\Entity\Log\Logs;
+use App\Entity\Log\UnpopulatedIslandLog;
+use App\Entity\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
+use App\Entity\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
+use App\Entity\Plan\Plans;
+use App\Entity\Status\Status;
+use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\IslandHistory;
 use App\Models\IslandLog;
@@ -9,17 +20,6 @@ use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Log\AbandonmentLog;
-use App\Services\Hakoniwa\Log\AbortInvalidIslandLog;
-use App\Services\Hakoniwa\Log\InviteNewImmigrationLog;
-use App\Services\Hakoniwa\Log\LogRow;
-use App\Services\Hakoniwa\Log\Logs;
-use App\Services\Hakoniwa\Log\UnpopulatedIslandLog;
-use App\Services\Hakoniwa\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
-use App\Services\Hakoniwa\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
-use App\Services\Hakoniwa\Plan\Plans;
-use App\Services\Hakoniwa\Status\Status;
-use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 

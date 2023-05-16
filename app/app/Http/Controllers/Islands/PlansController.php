@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Islands;
 
+use App\Entity\Plan\Plans;
+use App\Entity\Terrain\Terrain;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Trait\WebApi;
 use App\Models\Island;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Plan\Plans;
-use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Support\Collection;
 
 class PlansController extends Controller
