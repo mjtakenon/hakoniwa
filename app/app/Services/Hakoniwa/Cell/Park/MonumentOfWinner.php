@@ -24,12 +24,10 @@ class MonumentOfWinner extends Park
 
     public static function canBuild(Terrain $terrain, Status $status): bool
     {
-        // TODO: 実装
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-                return $cell::TYPE === self::TYPE;
-            })->count() >= 1) {
+        if ($terrain->findByType([self::TYPE])->count() >= 1) {
             return false;
         }
+        // TODO: ぞぎが実装されたら実装する
         return false;
     }
 

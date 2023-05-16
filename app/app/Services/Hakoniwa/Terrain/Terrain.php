@@ -11,6 +11,7 @@ use App\Services\Hakoniwa\Cell\Forest;
 use App\Services\Hakoniwa\Cell\HasPopulation\Village;
 use App\Services\Hakoniwa\Cell\Lake;
 use App\Services\Hakoniwa\Cell\LargeFactory;
+use App\Services\Hakoniwa\Cell\MissileBase\MissileBase;
 use App\Services\Hakoniwa\Cell\Oilfield;
 use App\Services\Hakoniwa\Cell\OutOfRegion;
 use App\Services\Hakoniwa\Cell\PassTurnResult;
@@ -112,8 +113,6 @@ class Terrain implements JsonEncodable
                     $this->terrain[$y][$x] = new Plain(point: new Point($x, $y));
                 } else if ($n < 38) {
                     $this->terrain[$y][$x] = new Shallow(point: new Point($x, $y));
-//                } else if ($n < 39) {
-//                    $this->terrain[$y][$x] = new MissileBase(new Point($x, $y));
                 } else {
                     break;
                 }
@@ -196,18 +195,8 @@ class Terrain implements JsonEncodable
 
     public function getEnvironment(): string
     {
-        $hasFactory = false;
-        $hasOilField = false;
-
-        /** @var Cell $cell */
-        foreach ($this->terrain->flatten(1) as $cell) {
-            if (in_array($cell::TYPE, [Factory::TYPE, LargeFactory::TYPE], true)) {
-                $hasFactory = true;
-            }
-            if ($cell::TYPE === Oilfield::TYPE) {
-                $hasOilField = true;
-            }
-        }
+        $hasFactory = $this->findByType([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
+        $hasOilField = $this->findByType([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
 
         if ($hasFactory && $hasOilField) {
             return Status::ENVIRONMENT_NORMAL;
@@ -400,7 +389,7 @@ class Terrain implements JsonEncodable
         return new DisasterResult($this, $status, $logs);
     }
 
-    public function find(array $cellTypes): Collection
+    public function findByType(array $cellTypes): Collection
     {
         return $this->terrain->flatten(1)->filter(function ($cell) use ($cellTypes) {
             /** @var Cell $cell */
@@ -412,14 +401,14 @@ class Terrain implements JsonEncodable
     {
         $status->setDevelopmentPoints($status->getDevelopmentPoints() / 2);
         /** @var Cell $targetCell */
-        $plains = $this->find([Plain::TYPE, Wasteland::TYPE]);
+        $plains = $this->findByType([Plain::TYPE, Wasteland::TYPE]);
         if (!$plains->isEmpty()) {
             $targetCell = $plains->random();
             $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
             return;
         }
 
-        $shallows = $this->find([Shallow::TYPE]);
+        $shallows = $this->findByType([Shallow::TYPE]);
         if (!$shallows->isEmpty()) {
             $targetCell = $shallows->random();
             $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));

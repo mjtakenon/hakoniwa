@@ -36,7 +36,7 @@ class VolcanicEruption implements IDisaster
         }
 
         // 既存の火山と鉱山は休火山になる
-        $mountains = $terrain->find([Volcano::TYPE, Mine::TYPE]);
+        $mountains = $terrain->findByType([Volcano::TYPE, Mine::TYPE]);
         /** @var Cell $mountain */
         foreach ($mountains as $mountain) {
             $terrain->setCell($mountain->getPoint(), new Mountain(point: $mountain->getPoint()));

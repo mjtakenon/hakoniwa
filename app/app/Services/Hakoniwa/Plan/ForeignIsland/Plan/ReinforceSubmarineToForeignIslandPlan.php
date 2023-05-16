@@ -26,10 +26,7 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
 
-        $seaCells = $toTerrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            /** @var Cell $cell */
-            return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE]);
-        });
+        $seaCells = $toTerrain->findByType([Sea::TYPE, Shallow::TYPE]);
 
         if ($seaCells->isEmpty()) {
             $fromLogs->add(new AbortInvalidTerrainLog($fromIsland, $this->plan));

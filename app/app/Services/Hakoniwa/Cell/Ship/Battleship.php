@@ -70,10 +70,8 @@ class Battleship extends CombatantShip
     {
         $logs = Logs::create();
 
-        $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
-            // TODO: 海賊以外が追加されたら増やす
-            return in_array($cell::TYPE, [Pirate::TYPE], true);
-        });
+        // TODO: 海賊以外が追加されたら増やす
+        $enemyShips = $terrain->findByType([Pirate::TYPE]);
 
         if ($enemyShips->count() <= 0) {
             // ダメージを受けていて、戦闘していない場合は回復する

@@ -21,10 +21,7 @@ class FoodsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
 
-        $seaCells = $fromTerrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            /** @var Cell $cell */
-            return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE]);
-        });
+        $seaCells = $fromTerrain->findByType([Sea::TYPE, Shallow::TYPE]);
 
         $amount = $this->plan->getAmount() * FoodsTransportationPlan::UNIT;
 

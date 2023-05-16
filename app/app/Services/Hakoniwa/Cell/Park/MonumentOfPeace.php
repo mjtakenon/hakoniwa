@@ -26,9 +26,7 @@ class MonumentOfPeace extends Park
         if ($status->getPopulation() <= self::CONSTRUCTABLE_POPULATION_THRESHOLD) {
             return false;
         }
-        if ($terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-                return $cell::TYPE === self::TYPE;
-            })->count() >= 1) {
+        if ($terrain->findByType([self::TYPE])->count() >= 1) {
             return false;
         }
         return true;

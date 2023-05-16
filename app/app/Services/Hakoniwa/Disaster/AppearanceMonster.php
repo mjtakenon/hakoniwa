@@ -32,9 +32,7 @@ class AppearanceMonster implements IDisaster
         }
 
         /** @var Cell $cell */
-        $candidates = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            return in_array($cell::TYPE, [Village::TYPE, Town::TYPE, City::TYPE, Metropolis::TYPE]);
-        });
+        $candidates = $terrain->findByType([Village::TYPE, Town::TYPE, City::TYPE, Metropolis::TYPE]);
 
         $monsterCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
             return $cell::ATTRIBUTE[CellTypeConst::IS_MONSTER];

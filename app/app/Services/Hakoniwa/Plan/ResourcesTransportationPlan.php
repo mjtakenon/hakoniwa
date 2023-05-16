@@ -46,10 +46,7 @@ class ResourcesTransportationPlan extends Plan
     {
         $logs = Logs::create();
 
-        $transportShips = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            /** @var Cell $cell */
-            return $cell::TYPE === TransportShip::TYPE;
-        });
+        $transportShips = $terrain->findByType([TransportShip::TYPE]);
 
         if ($this->amount === 0) {
             $this->amount = 100;

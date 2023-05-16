@@ -44,10 +44,7 @@ class ConstructTransportShipPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        $seaCells = $terrain->getTerrain()->flatten(1)->filter(function ($cell) {
-            /** @var Cell $cell */
-            return in_array($cell::TYPE, [Sea::TYPE, Shallow::TYPE], true);
-        });
+        $seaCells = $terrain->findByType([Sea::TYPE, Shallow::TYPE]);
 
         if ($seaCells->count() <= 0) {
             $this->amount = 0;

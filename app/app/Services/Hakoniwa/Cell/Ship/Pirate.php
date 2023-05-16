@@ -60,9 +60,7 @@ class Pirate extends CombatantShip
             return new PassTurnResult($terrain, $status, $logs);
         }
 
-        $enemyShips = $terrain->getTerrain()->flatten(1)->filter(function($cell) {
-            return in_array($cell::TYPE, [Battleship::TYPE, Submarine::TYPE], true);
-        });
+        $enemyShips = $terrain->findByType([Battleship::TYPE, Submarine::TYPE]);
 
         if ($enemyShips->count() >= 1) {
             // 艦船がいる場合、攻撃する
