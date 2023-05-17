@@ -1,0 +1,109 @@
+/**
+    [テーマの定義について]
+    Material Design 3(以下MD3)をベースにしています。
+    https://m3.material.io/
+
+    MD3からの変更点としては、Tertiary(3次色)を削除しています。
+    Dark SchemeのSurfaceについてもBackgroundと色が被らないように多少修正しています。
+    またAlert色を新たに定義しています。
+
+    加えてオプションで以下の色を定義しています。
+    --theme-on-link: リンク色
+    --theme-plus/on-plus: ログでプラスになった時の色
+    --theme-minus/on-minus: ログでマイナスになった時の色
+    Plus/Minusについてはテーマに合わせて定義しているので、MD3のカラーシステム（0～100の10段階でトーンを指定）に準拠していません。
+
+    SCSSの変数定義は本来$ですが、これを使うとtailwind.config.cssが読み込めなくなってしまうため
+    標準のCSSと同様の--を付ける方式で変数を定義しています。
+
+    作る時はここを使うと使いやすいです。
+    https://m3.material.io/theme-builder#/custom
+ */
+
+.theme-light {
+    // Primary
+    --theme-primary: #00639b;
+    --theme-on-primary: #ffffff;
+    --theme-primary-container: #cee5ff;
+    --theme-on-primary-container: #001d33;
+
+    // Secondary
+    --theme-secondary: #006b56;
+    --theme-on-secondary: #ffffff;
+    --theme-secondary-container: #7ef8d5;
+    --theme-on-secondary-container: #002018;
+
+    // Alert
+    --theme-alert: #765b00;
+    --theme-on-alert: #ffffff;
+    --theme-alert-container: #ffdf93;
+    --theme-on-alert-container: #241a00;
+
+    // Error
+    --theme-error: #ba1a1a;
+    --theme-on-error: #ffffff;
+    --theme-error-container :#ffdad6;
+    --theme-on-error-container: #410002;
+
+    // Plus, Minus
+    --theme-plus: #cee5ff;
+    --theme-on-plus: #0078e1;
+    --theme-minus :#ffdad6;
+    --theme-on-minus: #ff0b14;
+
+    // Background, Surface
+    --theme-background: #fcfcff;
+    --theme-on-background: #1a1c1e;
+    --theme-surface: #ffffff;
+    --theme-on-surface: #1a1c1e;
+
+    // Texts
+    --theme-on-link: #485fc7;
+    --theme-outline: #72777f;
+    --theme-surface-variant: #dee3eb;
+    --theme-on-surface-variant: #42474e;
+}
+
+.theme-dark {
+    // Primary
+    --theme-primary: #96cbff;
+    --theme-on-primary: #003353;
+    --theme-primary-container: #004a76;
+    --theme-on-primary-container: #cee5ff;
+
+    // Secondary
+    --theme-secondary: #5fdbb9;
+    --theme-on-secondary: #00382c;
+    --theme-secondary-container: #005140;
+    --theme-on-secondary-container: #7ef8d5;
+
+    // Alert
+    --theme-alert: #edc148;
+    --theme-on-alert: #3e2e00;
+    --theme-alert-container: #594400;
+    --theme-on-alert-container: #ffdf93;
+
+    // Error
+    --theme-error: #ffb4ab;
+    --theme-on-error: #690005;
+    --theme-error-container: #93000a;
+    --theme-on-error-container: #ffdad6;
+
+    // Plus, Minus
+    --theme-plus: #004a76;
+    --theme-on-plus: #5fb3ff;
+    --theme-minus :#93000a;
+    --theme-on-minus: #ff6c72;
+
+    // Background, Surface
+    --theme-background: #24272a;
+    --theme-on-background: #e2e2e5;
+    --theme-surface: #34373b;
+    --theme-on-surface: #e2e2e5;
+
+    // Others
+    --theme-on-link: #acb7e7;
+    --theme-outline: #8c9198;
+    --theme-surface-variant: #42474e;
+    --theme-on-surface-variant: #c2c7cf;
+}

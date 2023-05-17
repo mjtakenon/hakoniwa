@@ -1,11 +1,11 @@
 <template>
     <div
         id="plan-list"
-        :class="[isPlanSent ? 'bg-gray-200' : 'bg-danger-light']"
+        :class="[isPlanSent ? 'bg-surface-variant' : 'bg-error-container text-on-error-container']"
     >
         <div class="send-status">
-            <div v-if="isPlanSent" class="send-status-text bg-success"> -- 計画送信済み --</div>
-            <div v-else class="send-status-text bg-danger-dark"> -- 計画未送信 --</div>
+            <div v-if="isPlanSent" class="send-status-text bg-background text-on-background"> -- 計画送信済み --</div>
+            <div v-else class="send-status-text bg-error text-on-error"> -- 計画未送信 --</div>
         </div>
         <div class="plans">
             <div
@@ -76,7 +76,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 #plan-list {
     @apply rounded-xl mx-1 lg:ml-3 mb-3 p-2 w-[45%] max-w-[230px] lg:max-h-[496px] text-left overflow-x-visible overflow-y-scroll drop-shadow-md;
 

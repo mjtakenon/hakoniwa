@@ -23,18 +23,24 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .turn-box {
-    @apply bg-success-dark p-1 rounded drop-shadow-md
+    @apply bg-primary text-on-primary p-1 rounded drop-shadow-md;
+
+    .turn-box-title {
+        @apply font-bold;
+    }
+
+    .turn-box-text-big, .turn-box-text-medium {
+        @apply text-center font-black;
+    }
+
+    .turn-box-text-big {
+        @apply text-3xl
+    }
+
+    .turn-box-text-medium {
+        @apply text-lg;
+    }
 }
 
-.turn-box-title {
-    @apply text-success-light font-bold
-}
 
-.turn-box-text-big {
-    @apply text-white text-center text-3xl font-black
-}
-
-.turn-box-text-medium {
-    @apply text-white text-center text-lg font-black
-}
 </style>

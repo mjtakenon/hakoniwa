@@ -1,7 +1,7 @@
 @extends('components.app')
 @section('title', '島を探しに行く')
 @section('contents')
-    <section id="register">
+    <section id="register" class="theme-light">
         <h1 class="title">島を探しに行く</h1>
         <form method="POST" name="register" action="{{ config('app.url').'/register' }}">
             @csrf

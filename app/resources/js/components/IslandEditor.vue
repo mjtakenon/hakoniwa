@@ -66,7 +66,7 @@
                 </div>
 
                 <button
-                    class="inline-block mr-3"
+                    class="plan-window-close"
                     @click="onClickClosePlan"
                 >×</button>
             </div>
@@ -331,22 +331,26 @@ export default defineComponent({
     }
 
     .plan-window {
-        @apply block absolute bg-gray-300 w-fit max-lg:min-w-[230px] max-lg:max-w-[230px] max-lg:-translate-x-1/2 lg:max-w-[240px] rounded-md drop-shadow-md text-left overflow-hidden max-md:text-sm border border-gray-800 z-30;
+        @apply block absolute bg-surface-variant text-on-surface-variant w-fit max-lg:min-w-[230px] max-lg:max-w-[230px] max-lg:-translate-x-1/2 lg:max-w-[240px] rounded-md drop-shadow-xl text-left overflow-hidden max-md:text-sm border border-primary dark:border-primary-container z-30;
         @apply animate-fadein;
 
         .plan-window-header {
-            @apply flex p-0 m-0 bg-gray-700 text-white items-center;
+            @apply flex p-0 m-0 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container items-center;
+
+            .plan-window-close {
+                @apply inline-block bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container p-0 border-none hover:bg-primary hover:dark:bg-primary-container drop-shadow-none mr-3;
+            }
         }
 
         .plan-window-select {
-            @apply w-full px-2 max-md:py-1 hover:bg-primary;
+            @apply w-full px-2 max-md:py-1 hover:bg-on-primary;
 
             .action-name {
                 @apply inline-block font-bold text-sm md:text-base mr-1;
             }
 
             .action-price {
-                @apply inline-block text-gray-700 text-xs md:text-sm;
+                @apply inline-block text-xs;
             }
 
             &:not(:last-child) {
