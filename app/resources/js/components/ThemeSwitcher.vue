@@ -37,7 +37,7 @@ export default defineComponent({
     },
     methods: {
         changeTheme(theme: Theme) {
-            console.log(theme);
+            console.debug(theme);
             this.appElement.classList.remove(...this.appElement.classList);
             this.appElement.classList.add(theme.themeClass);
             this.appElement.classList.add(theme.type.toString());
