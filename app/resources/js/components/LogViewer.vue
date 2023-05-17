@@ -100,14 +100,14 @@ export default defineComponent({
     },
     methods: {
         getBgColor(num: number): string {
-            if (num > 0) return 'border-blue-200'
-            if (num === 0) return 'border-gray-300'
-            return 'border-red-200'
+            if (num > 0) return 'border-plus'
+            if (num === 0) return 'border-surface-variant'
+            return 'border-minus'
         },
         getTextColor(num: number): string {
-            if (num > 0) return 'text-blue-600'
-            if (num === 0) return 'text-black'
-            return 'text-red-600'
+            if (num > 0) return 'text-on-plus'
+            if (num === 0) return 'text-on-surface-variant'
+            return 'text-on-minus'
         }
     },
     mounted() {
@@ -135,55 +135,55 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 
 #logs {
-// general
-    @apply text-left w-full mt-10 mb-10 bg-gray-100 pb-4 drop-shadow-md overflow-hidden;
-// desktop
+    // general
+    @apply text-left w-full mt-10 bg-surface pb-4 drop-shadow-md overflow-hidden;
+    // desktop
     @apply lg:rounded-2xl;
 
     .subtitle {
-        @apply mt-0 py-3 px-3 border-b border-b-gray-300 mb-3 w-full bg-success-dark text-white;
+        @apply mt-0 py-3 px-3 mb-3 w-full bg-primary text-on-primary font-bold;
     }
 
     .turn-log {
-    // general
-        @apply border-b border-b-gray-300 flex items-start;
-    // sp
+        // general
+        @apply flex items-start;
+        // sp
         @apply text-sm mb-1 max-md:mt-4 max-md:pb-6 max-md:flex-wrap;
-    // desktop
-        @apply md:text-base md:mx-5 lg:mb-0.5;
+        // desktop
+        @apply md:border-b-2 md:border-b-surface-variant mt-4 md:text-base md:mx-5 lg:mb-0.5;
 
         .turn-title {
-        // general
+            // general
             @apply my-1;
-        // sp
-            @apply max-md:bg-gray-300 max-md:rounded-r-3xl max-md:w-2/5 max-md:px-2 max-md:py-1 max-md:drop-shadow;
-        // desktop
-            @apply md:border-r md:border-gray-300 md:pr-2;
+            // sp
+            @apply max-md:bg-surface-variant max-md:rounded-r-3xl max-md:w-2/5 max-md:px-2 max-md:py-1 max-md:drop-shadow;
+            // desktop
+            @apply md:border-r-2 md:border-surface-variant md:pr-2;
 
             .turn-title-inner {
-            // general
+                // general
                 @apply text-center;
-            // sp
+                // sp
                 @apply w-full max-md:flex;
-            // desktop
+                // desktop
                 @apply md:mr-2;
 
                 .turn-title-inner-text {
-                // general
-                    @apply text-xs text-gray-500;
-                // desktop
+                    // general
+                    @apply text-xs text-on-surface-variant;
+                    // desktop
                     @apply md:block;
                 }
 
                 .turn-title-inner-number {
-                // general
+                    // general
                     @apply mt-auto font-bold text-lg;
-                // sp
+                    // sp
                     @apply max-md:grow max-md:text-center;
-                // desktop
+                    // desktop
                     @apply md:block md:-mt-1;
                 }
             }
@@ -199,9 +199,13 @@ export default defineComponent({
                 @apply pl-2 flex;
             }
 
+            .log:last-child {
+                @apply mb-3;
+            }
+
             .turn-summaries {
                 // general
-                @apply mt-auto grid gap-2 text-left;
+                @apply mt-2 grid gap-2 text-left;
                 // sp
                 @apply grid-cols-2 max-md:mt-3;
                 // desktop
@@ -211,13 +215,15 @@ export default defineComponent({
                     @apply w-full flex items-center px-0.5 border-b-2;
 
                     .summary-box-title {
-                        @apply text-gray-600 text-[6px] mr-1;
+                        @apply text-on-surface-variant text-[6px] mr-1;
                     }
+
                     .summary-box-num {
                         @apply text-sm font-bold grow text-right;
                     }
+
                     .summary-box-unit {
-                        @apply text-gray-600 text-[6px] ml-1 text-right;
+                        @apply text-on-surface-variant text-[6px] ml-1 text-right;
                     }
                 }
             }

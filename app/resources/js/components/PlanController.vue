@@ -3,9 +3,9 @@
         <div class="mb-4">
             <div class="section-header">動作</div>
             <div class="action">
-                <button class="action-button button-white" @click="onClickInsert">挿入</button>
-                <button class="action-button button-white" @click="onClickOverwrite">上書き</button>
-                <button class="action-button button-white" @click="onClickDelete">削除</button>
+                <button class="action-button dark:button-variant-reverse" @click="onClickInsert">挿入</button>
+                <button class="action-button dark:button-variant-reverse" @click="onClickOverwrite">上書き</button>
+                <button class="action-button dark:button-variant-reverse" @click="onClickDelete">削除</button>
             </div>
         </div>
 
@@ -69,7 +69,7 @@
                     </option>
                 </select>
             </div>
-            <div class="dev-plan border-t-2 pt-2 border-gray-300">
+            <div class="dev-plan pt-2">
                 <p class="title-block">目標の島:</p>
                 <div class="plan-target-island">
                     <select class="target-select" v-model="store.selectedTargetIsland">
@@ -77,7 +77,7 @@
                             {{ targetIsland.name }} 島
                         </option>
                     </select>
-                    <a class="button-white target-open" :href="'/islands/' + store.selectedTargetIsland" target="_blank"> 開く </a>
+                    <a class="target-open button-surface dark:button-variant-reverse" :href="'/islands/' + store.selectedTargetIsland" target="_blank"> 開く </a>
                 </div>
             </div>
         </div>
@@ -87,10 +87,10 @@
             <div class="mb-2 px-2 text-left">
                 <p class="title-sm-block">コマンド移動</p>
                 <div class="move-command">
-                    <button class="button-white move-command-button mr-2" @click="onClickMoveUp"
+                    <button class="move-command-button mr-2 dark:button-variant-reverse" @click="onClickMoveUp"
                             :disabled="store.selectedPlanNumber <= 1">▲
                     </button>
-                    <button class="button-white move-command-button" @click="onClickMoveDown"
+                    <button class="move-command-button dark:button-variant-reverse" @click="onClickMoveDown"
                             :disabled="store.selectedPlanNumber >= MAX_PLAN_NUMBER">▼
                     </button>
                 </div>
@@ -101,12 +101,12 @@
                     :class="{'button-disabled': store.isSendingPlan}"
                     @click="onClickSendPlan">
                     <span v-if="!store.isSendingPlan">計画送信</span>
-                    <div
+                    <span
                         v-if="store.isSendingPlan"
                         class="button-circle"
                     >
-                        <div class="button-circle-spin"></div>
-                    </div>
+                        <span class="button-circle-spin"></span>
+                    </span>
                 </button>
 
             </div>
@@ -288,19 +288,19 @@ export default defineComponent({
 </script>
 
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 #plan-controller {
-    @apply w-[45%] bg-gray-200 rounded-xl mx-1 lg:mr-2 mb-3 p-1 max-lg:h-fit lg:p-2 max-w-[230px] drop-shadow-md;
+    @apply w-[45%] bg-surface-variant text-on-surface-variant rounded-xl mx-1 lg:mr-2 mb-3 p-1 max-lg:h-fit lg:p-2 max-w-[230px] drop-shadow-md;
 
     .section-header {
-        @apply w-full text-left pl-2 text-gray-500 border-gray-500 border-b mb-2 text-sm;
+        @apply w-full text-left pl-2 text-on-surface-variant border-on-surface-variant border-b mb-2 text-sm;
     }
 
     .action {
         @apply px-1 lg:px-2 grid grid-cols-3 gap-2;
 
         .action-button {
-            @apply p-1 max-lg:text-xs;
+            @apply p-1 max-lg:text-xs lg:text-sm;
         }
     }
 
@@ -355,10 +355,10 @@ export default defineComponent({
         }
 
         .button-circle {
-            @apply flex justify-center;
+            @apply flex block justify-center;
 
             .button-circle-spin {
-                @apply animate-spin m-1 w-4 h-4 border-2 border-white rounded-full border-t-transparent;
+                @apply block animate-spin m-1 w-4 h-4 border-2 border-primary rounded-full border-t-transparent;
             }
         }
     }

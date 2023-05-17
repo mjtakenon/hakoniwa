@@ -162,15 +162,15 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .stats {
     @apply container px-2 py-1 md:mx-auto mb-3 md:mb-6 max-w-full grid grid-cols-3 md:grid-cols-5 gap-2;
 
     .stats-box {
-        @apply bg-gray-200 rounded-xl p-2 drop-shadow-md;
+        @apply bg-surface-variant rounded-xl p-2 drop-shadow-md;
 
         .stats-box-title {
-            @apply font-bold text-left text-gray-600 text-xs lg:text-sm;
+            @apply font-bold text-left text-on-surface-variant text-xs lg:text-sm;
         }
 
         .stats-box-data {

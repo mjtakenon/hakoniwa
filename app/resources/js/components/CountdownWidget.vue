@@ -86,19 +86,19 @@ export default defineComponent({
     @apply flex w-full justify-between h-6 mb-4 lg:mb-2 drop-shadow;
 
     .countdown-box {
-        @apply inline-flex items-center px-2 bg-gray-300;
+        @apply inline-flex items-center px-2 bg-surface-variant;
     }
 
     .countdown-box-updated {
-        @apply bg-danger-dark text-white;
+        @apply bg-error text-on-error dark:bg-error-container dark:text-on-error-container;
     }
 
     .countdown-label {
-        @apply text-xs text-gray-600;
+        @apply text-xs text-on-surface-variant;
     }
 
     .countdown-unit {
-        @apply text-[8px] mt-auto mb-[2px] mr-1 text-gray-600;
+        @apply text-[8px] mt-auto mb-[2px] mr-1 text-on-surface-variant;
     }
 
     .countdown-unit:last-child {

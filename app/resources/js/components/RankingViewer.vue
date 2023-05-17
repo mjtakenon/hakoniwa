@@ -119,12 +119,12 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .ranking {
-    @apply flex flex-wrap mb-2 p-0 rounded-xl border-2 bg-gray-100 border-gray-300 drop-shadow-md text-black;
+    @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface;
 
     .ranking-index {
-        @apply px-3 inline-flex items-center border-gray-300;
+        @apply px-3 inline-flex items-center border-surface-variant;
         @apply max-md:w-full max-md:py-2;
         @apply max-md:border-b-2 md:border-r-2 md:w-1/4;
 
@@ -133,7 +133,7 @@ export default defineComponent({
         }
 
         .ranking-index-name {
-            @apply grow font-black text-center text-lg text-link;
+            @apply grow font-black text-center text-lg text-on-link;
         }
     }
 
@@ -141,7 +141,7 @@ export default defineComponent({
         @apply grow pl-1 pr-3 py-1 grid grid-cols-2 md:grid-cols-5;
 
         .ranking-summary-title {
-            @apply font-bold text-gray-500 text-xs underline;
+            @apply font-bold text-on-surface-variant text-xs underline;
         }
 
         .ranking-summary-data {
