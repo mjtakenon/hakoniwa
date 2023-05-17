@@ -21,7 +21,7 @@ abstract class Cell
         CellConst::HAS_FOODS_PRODUCTION_CAPACITY => false,
         CellConst::HAS_FUNDS_PRODUCTION_CAPACITY => false,
         CellConst::HAS_RESOURCES_PRODUCTION_CAPACITY => false,
-        CellConst::HAS_MAINTENANCE_CAPACITY => false,
+        CellConst::HAS_MAINTENANCE_NUMBER_OF_PEOPLE => false,
         CellConst::HAS_WOODS => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
@@ -45,9 +45,9 @@ abstract class Cell
     protected Point $point;
 
     protected int $population = 0;
-    protected int $fundsProductionNumberOfPeople = 0;
-    protected int $foodsProductionNumberOfPeople = 0;
-    protected int $resourcesProductionNumberOfPeople = 0;
+    protected int $fundsProductionCapacity = 0;
+    protected int $foodsProductionCapacity = 0;
+    protected int $resourcesProductionCapacity = 0;
     protected int $maintenanceNumberOfPeople = 0;
     protected int $woods = 0;
     protected int $elevation = self::ELEVATION;
@@ -124,19 +124,19 @@ abstract class Cell
         $this->population = $population;
     }
 
-    public function getFoodsProductionNumberOfPeople(): int
+    public function getFoodsProductionCapacity(): int
     {
-        return $this->foodsProductionNumberOfPeople;
+        return $this->foodsProductionCapacity;
     }
 
-    public function getFundsProductionNumberOfPeople(): int
+    public function getFundsProductionCapacity(): int
     {
-        return $this->fundsProductionNumberOfPeople;
+        return $this->fundsProductionCapacity;
     }
 
-    public function getResourcesProductionNumberOfPeople(): int
+    public function getResourcesProductionCapacity(): int
     {
-        return $this->resourcesProductionNumberOfPeople;
+        return $this->resourcesProductionCapacity;
     }
 
     public function getWoods(): int

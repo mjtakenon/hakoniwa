@@ -18,9 +18,9 @@ class IslandStatus extends Model
         'funds' => 'integer',
         'foods' => 'integer',
         'resources' => 'integer',
-        'funds_production_number_of_people' => 'integer',
-        'foods_production_number_of_people' => 'integer',
-        'resources_production_number_of_people' => 'integer',
+        'funds_production_capacity' => 'integer',
+        'foods_production_capacity' => 'integer',
+        'resources_production_capacity' => 'integer',
         'area' => 'integer',
     ];
 
@@ -31,9 +31,9 @@ class IslandStatus extends Model
         'funds',
         'foods',
         'resources',
-        'funds_production_number_of_people',
-        'foods_production_number_of_people',
-        'resources_production_number_of_people',
+        'funds_production_capacity',
+        'foods_production_capacity',
+        'resources_production_capacity',
         'environment',
         'area',
     ];

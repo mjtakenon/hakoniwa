@@ -14,8 +14,8 @@ class Factory extends Cell
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
     public const TYPE = 'factory';
     public const NAME = '工場';
-    const PRODUCTION_NUMBER_OF_PEOPLE = 20000;
-    const SEASIDE_PRODUCTION_NUMBER_OF_PEOPLE = 30000;
+    const PRODUCTION_CAPACITY = 20000;
+    const SEASIDE_PRODUCTION_CAPACITY = 30000;
 
     const ATTRIBUTE = [
         CellConst::IS_LAND => true,
@@ -43,7 +43,7 @@ class Factory extends Cell
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
-        $arr['data']['fundsProductionNumberOfPeople'] = $this->fundsProductionNumberOfPeople;
+        $arr['data']['fundsProductionCapacity'] = $this->fundsProductionCapacity;
         return $arr;
     }
 
@@ -51,10 +51,10 @@ class Factory extends Cell
     {
         parent::__construct(...$data);
 
-        if (array_key_exists('fundsProductionNumberOfPeople', $data)) {
-            $this->fundsProductionNumberOfPeople = $data['fundsProductionNumberOfPeople'];
+        if (array_key_exists('fundsProductionCapacity', $data)) {
+            $this->fundsProductionCapacity = $data['fundsProductionCapacity'];
         } else {
-            $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
         }
     }
 
@@ -62,7 +62,7 @@ class Factory extends Cell
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
-            $this->fundsProductionNumberOfPeople . '人規模';
+            $this->fundsProductionCapacity . '人規模';
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
@@ -72,9 +72,9 @@ class Factory extends Cell
             return $cell::ATTRIBUTE[CellConst::IS_LAND];
         });
         if ($seasideCells->count() >= 1) {
-            $this->fundsProductionNumberOfPeople = self::SEASIDE_PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->fundsProductionCapacity = self::SEASIDE_PRODUCTION_CAPACITY;
         } else {
-            $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
     }

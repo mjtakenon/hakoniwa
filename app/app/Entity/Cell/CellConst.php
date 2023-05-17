@@ -83,7 +83,7 @@ class CellConst
     const HAS_FOODS_PRODUCTION_CAPACITY = 'has_foods_production_capacity';
     const HAS_FUNDS_PRODUCTION_CAPACITY = 'has_funds_production_capacity';
     const HAS_RESOURCES_PRODUCTION_CAPACITY = 'has_resources_production_capacity';
-    const HAS_MAINTENANCE_CAPACITY = 'has_maintenance_capacity';
+    const HAS_MAINTENANCE_NUMBER_OF_PEOPLE = 'has_maintenance_number_of_people';
     const HAS_POPULATION = 'has_population';
     const HAS_WOODS = 'has_woods';
     const DESTRUCTIBLE_BY_FIRE = 'destructible_by_fire';

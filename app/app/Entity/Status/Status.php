@@ -38,9 +38,9 @@ class Status
     private int $foods;
     private int $resources;
     private int $population;
-    private int $fundsProductionNumberOfPeople;
-    private int $foodsProductionNumberOfPeople;
-    private int $resourcesProductionNumberOfPeople;
+    private int $fundsProductionCapacity;
+    private int $foodsProductionCapacity;
+    private int $resourcesProductionCapacity;
     private string $environment;
     private int $area;
     private int $abandonedTurn = 0;
@@ -70,9 +70,9 @@ class Status
         $this->foods = $islandStatus->foods;
         $this->resources = $islandStatus->resources;
         $this->population = $islandStatus->population;
-        $this->fundsProductionNumberOfPeople = $islandStatus->funds_production_number_of_people;
-        $this->foodsProductionNumberOfPeople = $islandStatus->foods_production_number_of_people;
-        $this->resourcesProductionNumberOfPeople = $islandStatus->resources_production_number_of_people;
+        $this->fundsProductionCapacity = $islandStatus->funds_production_capacity;
+        $this->foodsProductionCapacity = $islandStatus->foods_production_capacity;
+        $this->resourcesProductionCapacity = $islandStatus->resources_production_capacity;
         $this->environment = $islandStatus->environment;
         $this->area = $islandStatus->area;
         $this->abandonedTurn = $islandStatus->abandoned_turn;
@@ -85,49 +85,49 @@ class Status
         $this->aggregate($terrain);
 
         // 生産人口算出
-        $realFundsProductionNumberOfPeople = 0;
-        $realFoodsProductionNumberOfPeople = 0;
-        $realResourcesProductionNumberOfPeople = 0;
+        $realFundsProductionCapacity = 0;
+        $realFoodsProductionCapacity = 0;
+        $realResourcesProductionCapacity = 0;
 
         $workablePeople = $this->population - $terrain->aggregateMaintenanceNumberOfPeople($island);
-        $sumProductionNumberOfPeople = $this->foodsProductionNumberOfPeople + $this->fundsProductionNumberOfPeople + $this->resourcesProductionNumberOfPeople;
+        $sumProductionCapacity = $this->foodsProductionCapacity + $this->fundsProductionCapacity + $this->resourcesProductionCapacity;
 
-        if ($sumProductionNumberOfPeople > 0) {
-            $realFundsProductionNumberOfPeople =
-                min([((float)($this->fundsProductionNumberOfPeople) / $sumProductionNumberOfPeople) * $workablePeople, $this->fundsProductionNumberOfPeople]);
-            $realFoodsProductionNumberOfPeople =
-                min([((float)($this->foodsProductionNumberOfPeople) / $sumProductionNumberOfPeople) * $workablePeople, $this->foodsProductionNumberOfPeople]);
-            $realResourcesProductionNumberOfPeople =
-                min([((float)($this->resourcesProductionNumberOfPeople) / $sumProductionNumberOfPeople) * $workablePeople, $this->resourcesProductionNumberOfPeople]);
+        if ($sumProductionCapacity > 0) {
+            $realFundsProductionCapacity =
+                min([((float)($this->fundsProductionCapacity) / $sumProductionCapacity) * $workablePeople, $this->fundsProductionCapacity]);
+            $realFoodsProductionCapacity =
+                min([((float)($this->foodsProductionCapacity) / $sumProductionCapacity) * $workablePeople, $this->foodsProductionCapacity]);
+            $realResourcesProductionCapacity =
+                min([((float)($this->resourcesProductionCapacity) / $sumProductionCapacity) * $workablePeople, $this->resourcesProductionCapacity]);
         }
 
-        if ($this->foodsProductionNumberOfPeople > 0) {
+        if ($this->foodsProductionCapacity > 0) {
             // 食料生産
-            $farmProductionNumberOfPeople = $terrain
+            $farmProductionCapacity = $terrain
                 ->findByTypes([Farm::TYPE])
-                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionNumberOfPeople(); });
+                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionCapacity(); });
 
-            $farmDomeProductionNumberOfPeople = $terrain
+            $farmDomeProductionCapacity = $terrain
                 ->findByTypes([FarmDome::TYPE])
-                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionNumberOfPeople(); });
+                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionCapacity(); });
 
-            $farmRatio = $farmProductionNumberOfPeople / ($farmProductionNumberOfPeople + $farmDomeProductionNumberOfPeople);
-            $farmDomeRatio = $farmDomeProductionNumberOfPeople / ($farmProductionNumberOfPeople + $farmDomeProductionNumberOfPeople);
+            $farmRatio = $farmProductionCapacity / ($farmProductionCapacity + $farmDomeProductionCapacity);
+            $farmDomeRatio = $farmDomeProductionCapacity / ($farmProductionCapacity + $farmDomeProductionCapacity);
 
-            $this->producedFoods = $realFoodsProductionNumberOfPeople * $farmRatio * self::FOODS_PRODUCTION_COEF[$this->environment];
-            $this->producedFoods += $realFoodsProductionNumberOfPeople * $farmDomeRatio * self::FOODS_PRODUCTION_COEF[self::ENVIRONMENT_BEST];
+            $this->producedFoods = $realFoodsProductionCapacity * $farmRatio * self::FOODS_PRODUCTION_COEF[$this->environment];
+            $this->producedFoods += $realFoodsProductionCapacity * $farmDomeRatio * self::FOODS_PRODUCTION_COEF[self::ENVIRONMENT_BEST];
             $this->foods += $this->producedFoods;
         }
 
         // 資源生産
-        $this->producedResources = $realResourcesProductionNumberOfPeople * self::RESOURCES_PRODUCTION_COEF;
+        $this->producedResources = $realResourcesProductionCapacity * self::RESOURCES_PRODUCTION_COEF;
         $this->resources += $this->producedResources;
 
         // 資金生産
-        $realFundsProductionNumberOfPeople = min([$this->resources / self::RESOURCES_CONSUMPTION_COEF, $realFundsProductionNumberOfPeople]);
-        $this->producedFunds = $realFundsProductionNumberOfPeople * self::FUNDS_PRODUCTION_COEF;
+        $realFundsProductionCapacity = min([$this->resources / self::RESOURCES_CONSUMPTION_COEF, $realFundsProductionCapacity]);
+        $this->producedFunds = $realFundsProductionCapacity * self::FUNDS_PRODUCTION_COEF;
         $this->funds += $this->producedFunds;
-        $this->resources -= $realFundsProductionNumberOfPeople * self::RESOURCES_CONSUMPTION_COEF;
+        $this->resources -= $realFundsProductionCapacity * self::RESOURCES_CONSUMPTION_COEF;
 
         // 食料消費
         $this->foods -= $this->population * self::FOODS_CONSUMPTION_COEF;
@@ -148,9 +148,9 @@ class Status
     public function aggregate(Terrain $terrain)
     {
         $this->population = $terrain->aggregatePopulation();
-        $this->fundsProductionNumberOfPeople = $terrain->aggregateFundsProductionNumberOfPeople();
-        $this->foodsProductionNumberOfPeople = $terrain->aggregateFoodsProductionNumberOfPeople();
-        $this->resourcesProductionNumberOfPeople = $terrain->aggregateResourcesProductionNumberOfPeople();
+        $this->fundsProductionCapacity = $terrain->aggregateFundsProductionCapacity();
+        $this->foodsProductionCapacity = $terrain->aggregateFoodsProductionCapacity();
+        $this->resourcesProductionCapacity = $terrain->aggregateResourcesProductionCapacity();
         $this->environment = $terrain->getEnvironment();
         $this->area = $terrain->aggregateArea();
     }
@@ -245,25 +245,25 @@ class Status
     /**
      * @return int
      */
-    public function getFundsProductionNumberOfPeople(): int
+    public function getFundsProductionCapacity(): int
     {
-        return $this->fundsProductionNumberOfPeople;
+        return $this->fundsProductionCapacity;
     }
 
     /**
      * @return int
      */
-    public function getFoodsProductionNumberOfPeople(): int
+    public function getFoodsProductionCapacity(): int
     {
-        return $this->foodsProductionNumberOfPeople;
+        return $this->foodsProductionCapacity;
     }
 
     /**
      * @return int
      */
-    public function getResourcesProductionNumberOfPeople(): int
+    public function getResourcesProductionCapacity(): int
     {
-        return $this->resourcesProductionNumberOfPeople;
+        return $this->resourcesProductionCapacity;
     }
 
     /**

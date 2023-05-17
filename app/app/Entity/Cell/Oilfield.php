@@ -15,7 +15,7 @@ class Oilfield extends Cell
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land16.gif';
     public const TYPE = 'oilfield';
     public const NAME = '油田';
-    const PRODUCTION_NUMBER_OF_PEOPLE = 20000;
+    const PRODUCTION_CAPACITY = 20000;
     const ATTRIBUTE = [
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
@@ -45,17 +45,17 @@ class Oilfield extends Cell
     {
         parent::__construct(...$data);
 
-        if (array_key_exists('resourcesProductionNumberOfPeople', $data)) {
-            $this->resourcesProductionNumberOfPeople = $data['resourcesProductionNumberOfPeople'];
+        if (array_key_exists('resourcesProductionCapacity', $data)) {
+            $this->resourcesProductionCapacity = $data['resourcesProductionCapacity'];
         } else {
-            $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->resourcesProductionCapacity = self::PRODUCTION_CAPACITY;
         }
     }
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
-        $arr['data']['resourcesProductionNumberOfPeople'] = $this->resourcesProductionNumberOfPeople;
+        $arr['data']['resourcesProductionCapacity'] = $this->resourcesProductionCapacity;
         return $arr;
     }
 
@@ -63,15 +63,15 @@ class Oilfield extends Cell
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
-            $this->resourcesProductionNumberOfPeople . '人規模';
+            $this->resourcesProductionCapacity . '人規模';
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
-        $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+        $this->resourcesProductionCapacity = self::PRODUCTION_CAPACITY;
 
         if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_MINE_AND_OILFIELD_CAPACITY_AVAILABLE_POINTS) {
-            $this->resourcesProductionNumberOfPeople *= 2;
+            $this->resourcesProductionCapacity *= 2;
         }
 
         return new PassTurnResult($terrain, $status, Logs::create());

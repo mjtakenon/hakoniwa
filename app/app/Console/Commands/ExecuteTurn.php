@@ -264,9 +264,9 @@ class ExecuteTurn extends Command
                     $newIslandStatus->foods = $status->getFoods();
                     $newIslandStatus->resources = $status->getResources();
                     $newIslandStatus->population = $status->getPopulation();
-                    $newIslandStatus->funds_production_number_of_people = $status->getFundsProductionNumberOfPeople();
-                    $newIslandStatus->foods_production_number_of_people = $status->getFoodsProductionNumberOfPeople();
-                    $newIslandStatus->resources_production_number_of_people = $status->getResourcesProductionNumberOfPeople();
+                    $newIslandStatus->funds_production_capacity = $status->getFundsProductionCapacity();
+                    $newIslandStatus->foods_production_capacity = $status->getFoodsProductionCapacity();
+                    $newIslandStatus->resources_production_capacity = $status->getResourcesProductionCapacity();
                     $newIslandStatus->environment = $status->getEnvironment();
                     $newIslandStatus->area = $status->getArea();
                     $newIslandStatus->abandoned_turn = $status->getAbandonedTurn();

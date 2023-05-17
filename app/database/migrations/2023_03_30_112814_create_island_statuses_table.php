@@ -22,9 +22,9 @@ return new class extends Migration
             $table->integer('funds');
             $table->integer('foods');
             $table->integer('resources');
-            $table->integer('funds_production_number_of_people');
-            $table->integer('foods_production_number_of_people');
-            $table->integer('resources_production_number_of_people');
+            $table->integer('funds_production_capacity');
+            $table->integer('foods_production_capacity');
+            $table->integer('resources_production_capacity');
             $table->string('environment', 32);
             $table->integer('area');
             $table->datetime('created_at');

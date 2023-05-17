@@ -149,34 +149,34 @@ class Terrain implements JsonEncodable
         return array_sum($population);
     }
 
-    public function aggregateFundsProductionNumberOfPeople(): int
+    public function aggregateFundsProductionCapacity(): int
     {
-        $fundsProductionNumberOfPeople = [];
+        $fundsProductionCapacity = [];
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
-            $fundsProductionNumberOfPeople[] = $cell->getFundsProductionNumberOfPeople();
+            $fundsProductionCapacity[] = $cell->getFundsProductionCapacity();
         }
-        return array_sum($fundsProductionNumberOfPeople);
+        return array_sum($fundsProductionCapacity);
     }
 
-    public function aggregateFoodsProductionNumberOfPeople(): int
+    public function aggregateFoodsProductionCapacity(): int
     {
-        $foodsProductionNumberOfPeople = [];
+        $foodsProductionCapacity = [];
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
-            $foodsProductionNumberOfPeople[] = $cell->getFoodsProductionNumberOfPeople();
+            $foodsProductionCapacity[] = $cell->getFoodsProductionCapacity();
         }
-        return array_sum($foodsProductionNumberOfPeople);
+        return array_sum($foodsProductionCapacity);
     }
 
-    public function aggregateResourcesProductionNumberOfPeople(): int
+    public function aggregateResourcesProductionCapacity(): int
     {
-        $resourcesProductionNumberOfPeople = [];
+        $resourcesProductionCapacity = [];
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
-            $resourcesProductionNumberOfPeople[] = $cell->getResourcesProductionNumberOfPeople();
+            $resourcesProductionCapacity[] = $cell->getResourcesProductionCapacity();
         }
-        return array_sum($resourcesProductionNumberOfPeople);
+        return array_sum($resourcesProductionCapacity);
     }
 
     public function aggregateMaintenanceNumberOfPeople(Island $island): int

@@ -107,9 +107,9 @@ export default defineComponent({
                 foods: number,
                 resources: number,
                 population: number,
-                funds_production_number_of_people: number,
-                foods_production_number_of_people: number,
-                resources_production_number_of_people: number,
+                funds_production_capacity: number,
+                foods_production_capacity: number,
+                resources_production_capacity: number,
                 environment: string,
                 area: number
                 abandoned_turn: number
