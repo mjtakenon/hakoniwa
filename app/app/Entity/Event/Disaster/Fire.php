@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByFireLog;
 use App\Entity\Log\Logs;
@@ -22,7 +22,7 @@ class Fire implements IDisaster
         $logs = Logs::create();
 
         /** @var Cell $cell */
-        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_FIRE);
+        $candidates = $terrain->findByAttribute(CellConst::DESTRUCTIBLE_BY_FIRE);
 
         foreach ($candidates as $cell) {
 
@@ -33,7 +33,7 @@ class Fire implements IDisaster
             $aroundCells = $terrain->getAroundCells($cell->getPoint());
 
             $aroundCells = $aroundCells->filter(function ($c) {
-                return $c::ATTRIBUTE[CellTypeConst::PREVENTING_FIRE];
+                return $c::ATTRIBUTE[CellConst::PREVENTING_FIRE];
             });
 
             if ($aroundCells->count() >= 1) {

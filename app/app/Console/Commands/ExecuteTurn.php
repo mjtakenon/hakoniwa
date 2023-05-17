@@ -2,14 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Entity\Event\Disaster\Disaster;
+use App\Entity\Event\ForeignIsland\ForeignIslandEvent;
 use App\Entity\Log\AbandonmentLog;
 use App\Entity\Log\AbortInvalidIslandLog;
 use App\Entity\Log\InviteNewImmigrationLog;
 use App\Entity\Log\LogRow;
 use App\Entity\Log\Logs;
 use App\Entity\Log\UnpopulatedIslandLog;
-use App\Entity\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
-use App\Entity\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\TargetedToForeignIslandPlan;
 use App\Entity\Plan\Plans;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -77,7 +78,7 @@ class ExecuteTurn extends Command
                 $prevStatusList = new Collection();
                 $logsList = new Collection();
                 $foreignIslandTargetedPlans = new Collection();
-                $foreignIslandOccurEvents = new Collection();
+                $foreignIslandEvents = new Collection();
 
                 /** @var Island $island */
                 foreach ($islands as $island) {
@@ -166,13 +167,13 @@ class ExecuteTurn extends Command
                     $logs = $logsList->get($island->id);
 
                     // 災害
-                    $occurDisasterResult = $terrain->occurDisaster($island, $status, $turn);
-                    $status = $occurDisasterResult->getStatus();
-                    $logs->merge($occurDisasterResult->getLogs());
+                    $disasterResult = Disaster::occur($island, $terrain, $status, $turn);
+                    $status = $disasterResult->getStatus();
+                    $logs->merge($disasterResult->getLogs());
 
                     // セル処理
                     // FIXME: 本来災害はセル処理の後だが、隕石→湖判定の順番を考慮し逆にしている
-                    $passTurnResult = $terrain->passTurn($island, $status, $turn, $foreignIslandOccurEvents);
+                    $passTurnResult = $terrain->passTurn($island, $status, $turn, $foreignIslandEvents);
                     $status = $passTurnResult->getStatus();
                     $logs->merge($passTurnResult->getLogs());
 
@@ -204,8 +205,8 @@ class ExecuteTurn extends Command
                 }
 
                 // セル処理によって発生した計画の実行
-                /** @var ForeignIslandOccurEvent $plan */
-                foreach ($foreignIslandOccurEvents as $plan) {
+                /** @var ForeignIslandEvent $plan */
+                foreach ($foreignIslandEvents as $plan) {
                     /** @var Island $toIsland */
                     $toIsland = $islands->find($plan->getToIsland());
                     /** @var Island $fromIsland */
@@ -263,9 +264,9 @@ class ExecuteTurn extends Command
                     $newIslandStatus->foods = $status->getFoods();
                     $newIslandStatus->resources = $status->getResources();
                     $newIslandStatus->population = $status->getPopulation();
-                    $newIslandStatus->funds_production_number_of_people = $status->getFundsProductionNumberOfPeople();
-                    $newIslandStatus->foods_production_number_of_people = $status->getFoodsProductionNumberOfPeople();
-                    $newIslandStatus->resources_production_number_of_people = $status->getResourcesProductionNumberOfPeople();
+                    $newIslandStatus->funds_production_capacity = $status->getFundsProductionCapacity();
+                    $newIslandStatus->foods_production_capacity = $status->getFoodsProductionCapacity();
+                    $newIslandStatus->resources_production_capacity = $status->getResourcesProductionCapacity();
                     $newIslandStatus->environment = $status->getEnvironment();
                     $newIslandStatus->area = $status->getArea();
                     $newIslandStatus->abandoned_turn = $status->getAbandonedTurn();

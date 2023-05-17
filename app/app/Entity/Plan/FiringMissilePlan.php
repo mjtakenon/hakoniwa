@@ -3,7 +3,7 @@
 namespace App\Entity\Plan;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\MissileBase\IMissileFireable;
 use App\Entity\Cell\MissileBase\MissileBase;
 use App\Entity\Cell\Monster\Monster;
@@ -18,7 +18,7 @@ use App\Entity\Log\MissileHitToMonsterLog;
 use App\Entity\Log\MissileOutOfRegionLog;
 use App\Entity\Log\MissileSelfDestructLog;
 use App\Entity\Log\SoldMonsterCorpseLog;
-use App\Entity\Plan\ForeignIsland\Plan\FiringMissileToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\FiringMissileToForeignIslandPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
@@ -123,7 +123,7 @@ class FiringMissilePlan extends Plan
 
                 if ($targetCell::TYPE === OutOfRegion::TYPE) {
                     $logs->add(new MissileOutOfRegionLog($island, $targetCell->getPoint(), $this));
-                } else if ($targetCell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
+                } else if ($targetCell::ATTRIBUTE[CellConst::IS_MONSTER]) {
                     /** @var Monster $targetCell */
                     // 硬化などによる無効化
                     if ($targetCell->isAttackDisabled()) {

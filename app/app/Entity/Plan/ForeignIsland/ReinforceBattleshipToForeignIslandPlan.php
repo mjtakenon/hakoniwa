@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Plan\ForeignIsland\Plan;
+namespace App\Entity\Plan\ForeignIsland;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Sea;

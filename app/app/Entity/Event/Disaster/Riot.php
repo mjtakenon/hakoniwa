@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
 use App\Entity\Cell\Volcano;
@@ -33,7 +33,7 @@ class Riot implements IDisaster
         $logs->add(new OccurRiotLog($island));
         $logs->add(new OccurFoodShortageLog($island));
 
-        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_RIOT);
+        $candidates = $terrain->findByAttribute(CellConst::DESTRUCTIBLE_BY_RIOT);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {

@@ -3,7 +3,7 @@
 namespace App\Entity\Cell\Monster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByDividedMonsterLog;
@@ -59,7 +59,7 @@ class Slime extends Monster
 
     private function getDivisionProbably(Terrain $terrain): float
     {
-        $monsterCells = $terrain->findByAttribute(CellTypeConst::IS_MONSTER);
+        $monsterCells = $terrain->findByAttribute(CellConst::IS_MONSTER);
 
         if ($monsterCells->count() < 7) {
             return 1.0/3;
@@ -68,7 +68,7 @@ class Slime extends Monster
         return 0.02;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         if ($this->remainMoveTimes <= 0) {
             return new PassTurnResult($terrain, $status, Logs::create());
@@ -87,7 +87,7 @@ class Slime extends Monster
         $aroundCells = $terrain->getAroundCells($this->point);
         /** @var Collection $moveTargets */
         $moveTargets = $aroundCells->random(min(3, $aroundCells->count()))->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER];
+            return $cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_MONSTER];
         });
 
         if ($moveTargets->count() <= 0) {
@@ -109,7 +109,7 @@ class Slime extends Monster
             $monster->point = $moveTarget->point;
             // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
             $terrain->setCell($monster->getPoint(), $monster);
-$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
             $terrain = $passTurnResult->getTerrain();
             $status = $passTurnResult->getStatus();
@@ -123,7 +123,7 @@ $passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $te
             $monster->point = $moveTarget->point;
             // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
             $terrain->setCell($monster->getPoint(), $monster);
-$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
             $terrain = $passTurnResult->getTerrain();
             $status = $passTurnResult->getStatus();

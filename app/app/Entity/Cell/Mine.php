@@ -15,24 +15,24 @@ class Mine extends Cell
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano_mine.png';
     public const TYPE = 'mine';
     public const NAME = '採掘場';
-    const PRODUCTION_NUMBER_OF_PEOPLE = 50000;
+    const PRODUCTION_CAPACITY = 50000;
     const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => true,
-        CellTypeConst::IS_MONSTER => false,
-        CellTypeConst::IS_SHIP => false,
-        CellTypeConst::HAS_POPULATION => false,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => false,
-        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
-        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
-        CellTypeConst::PREVENTING_FIRE => false,
-        CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => true,
+        CellConst::IS_LAND => true,
+        CellConst::IS_MONSTER => false,
+        CellConst::IS_SHIP => false,
+        CellConst::HAS_POPULATION => false,
+        CellConst::DESTRUCTIBLE_BY_FIRE => false,
+        CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => false,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => false,
+        CellConst::DESTRUCTIBLE_BY_RIOT => false,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => false,
+        CellConst::PREVENTING_FIRE => false,
+        CellConst::PREVENTING_TYPHOON => false,
+        CellConst::PREVENTING_TSUNAMI => true,
     ];
     public const ELEVATION = 1;
 
@@ -45,17 +45,17 @@ class Mine extends Cell
     {
         parent::__construct(...$data);
 
-        if (array_key_exists('resourcesProductionNumberOfPeople', $data)) {
-            $this->resourcesProductionNumberOfPeople = $data['resourcesProductionNumberOfPeople'];
+        if (array_key_exists('resourcesProductionCapacity', $data)) {
+            $this->resourcesProductionCapacity = $data['resourcesProductionCapacity'];
         } else {
-            $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->resourcesProductionCapacity = self::PRODUCTION_CAPACITY;
         }
     }
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
-        $arr['data']['resourcesProductionNumberOfPeople'] = $this->resourcesProductionNumberOfPeople;
+        $arr['data']['resourcesProductionCapacity'] = $this->resourcesProductionCapacity;
         return $arr;
     }
 
@@ -63,15 +63,15 @@ class Mine extends Cell
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
-            $this->resourcesProductionNumberOfPeople . '人規模';
+            $this->resourcesProductionCapacity . '人規模';
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
-        $this->resourcesProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+        $this->resourcesProductionCapacity = self::PRODUCTION_CAPACITY;
 
         if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_MINE_AND_OILFIELD_CAPACITY_AVAILABLE_POINTS) {
-            $this->resourcesProductionNumberOfPeople *= 2;
+            $this->resourcesProductionCapacity *= 2;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
     }

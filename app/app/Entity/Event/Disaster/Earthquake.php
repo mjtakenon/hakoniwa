@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByEarthquakeLog;
 use App\Entity\Log\Logs;
@@ -29,7 +29,7 @@ class Earthquake implements IDisaster
 
         $logs->add(new OccurEarthquakeLog($island));
 
-        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE);
+        $candidates = $terrain->findByAttribute(CellConst::DESTRUCTIBLE_BY_EARTHQUAKE);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {

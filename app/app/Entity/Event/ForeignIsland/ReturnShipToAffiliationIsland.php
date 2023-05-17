@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Plan\ForeignIsland\Event;
+namespace App\Entity\Event\ForeignIsland;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Sea;
@@ -15,9 +15,9 @@ use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\Turn;
 
-class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
+class ReturnShipToAffiliationIsland extends ForeignIslandEvent
 {
-    public function execute(Island $fromIsland, ?Island $toIsland, Terrain $fromTerrain, ?Terrain $toTerrain, Status $fromStatus, ?Status $toStatus, Turn $turn): ForeignIslandOccurEventResult
+    public function execute(Island $fromIsland, ?Island $toIsland, Terrain $fromTerrain, ?Terrain $toTerrain, Status $fromStatus, ?Status $toStatus, Turn $turn): ForeignIslandEventResult
     {
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
@@ -33,7 +33,7 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
             $combatantShip = $this->cell;
             $fromLogs->add(new AbortReturnNotFoundLog($combatantShip));
 
-            return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+            return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
         $seaCells = $toTerrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
@@ -41,7 +41,7 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
         // 元の島に空いているセルがなければログだけ出してスキップする
         if ($seaCells->isEmpty()) {
             $fromLogs->add(new AbortReturnLog($fromIsland, $this->cell));
-            return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+            return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
         if ($this->cell->getElevation() === -1) {
@@ -63,6 +63,6 @@ class ReturnShipToAffiliationIslandPlan extends ForeignIslandOccurEvent
         $fromLogs->add(new ReturnLog($toIsland, $this->cell, true));
         $toLogs->add(new ReturnLog($fromIsland, $this->cell, false));
 
-        return new ForeignIslandOccurEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+        return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }
 }

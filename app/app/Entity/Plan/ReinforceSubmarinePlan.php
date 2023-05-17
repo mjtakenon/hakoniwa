@@ -7,7 +7,7 @@ use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Log\AbortInvalidIslandLog;
 use App\Entity\Log\AbortNoShipLog;
 use App\Entity\Log\Logs;
-use App\Entity\Plan\ForeignIsland\Plan\ReinforceSubmarineToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\ReinforceSubmarineToForeignIslandPlan;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;

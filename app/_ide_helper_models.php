@@ -158,9 +158,9 @@ namespace App\Models{
  * @property int $funds
  * @property int $foods
  * @property int $resources
- * @property int $funds_production_number_of_people
- * @property int $foods_production_number_of_people
- * @property int $resources_production_number_of_people
+ * @property int $funds_production_capacity
+ * @property int $foods_production_capacity
+ * @property int $resources_production_capacity
  * @property string $environment
  * @property int $area
  * @property int $abandoned_turn
@@ -176,14 +176,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereDevelopmentPoints($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereEnvironment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereFoods($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereFoodsProductionNumberOfPeople($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereFoodsProductionCapacity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereFunds($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereFundsProductionNumberOfPeople($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereFundsProductionCapacity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereIslandId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus wherePopulation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereResources($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereResourcesProductionNumberOfPeople($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereResourcesProductionCapacity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus whereTurnId($value)
  */
 	class IslandStatus extends \Eloquent {}

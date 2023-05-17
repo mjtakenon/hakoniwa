@@ -13,22 +13,28 @@ use Illuminate\Support\Collection;
 abstract class Cell
 {
     public const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => false,
-        CellTypeConst::IS_MONSTER => false,
-        CellTypeConst::IS_SHIP => false,
-        CellTypeConst::HAS_POPULATION => false,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => false,
-        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
-        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
-        CellTypeConst::PREVENTING_FIRE => false,
-        CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => false,
+        CellConst::IS_LAND => false,
+        CellConst::IS_MONSTER => false,
+        CellConst::IS_SHIP => false,
+        CellConst::IS_MISSILE_BASE => false,
+        CellConst::HAS_POPULATION => false,
+        CellConst::HAS_FOODS_PRODUCTION_CAPACITY => false,
+        CellConst::HAS_FUNDS_PRODUCTION_CAPACITY => false,
+        CellConst::HAS_RESOURCES_PRODUCTION_CAPACITY => false,
+        CellConst::HAS_MAINTENANCE_NUMBER_OF_PEOPLE => false,
+        CellConst::HAS_WOODS => false,
+        CellConst::DESTRUCTIBLE_BY_FIRE => false,
+        CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_METEORITE => false,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => false,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => false,
+        CellConst::DESTRUCTIBLE_BY_RIOT => false,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => false,
+        CellConst::PREVENTING_FIRE => false,
+        CellConst::PREVENTING_TYPHOON => false,
+        CellConst::PREVENTING_TSUNAMI => false,
     ];
 
     public const ELEVATION = 0;
@@ -39,9 +45,9 @@ abstract class Cell
     protected Point $point;
 
     protected int $population = 0;
-    protected int $fundsProductionNumberOfPeople = 0;
-    protected int $foodsProductionNumberOfPeople = 0;
-    protected int $resourcesProductionNumberOfPeople = 0;
+    protected int $fundsProductionCapacity = 0;
+    protected int $foodsProductionCapacity = 0;
+    protected int $resourcesProductionCapacity = 0;
     protected int $maintenanceNumberOfPeople = 0;
     protected int $woods = 0;
     protected int $elevation = self::ELEVATION;
@@ -118,19 +124,19 @@ abstract class Cell
         $this->population = $population;
     }
 
-    public function getFoodsProductionNumberOfPeople(): int
+    public function getFoodsProductionCapacity(): int
     {
-        return $this->foodsProductionNumberOfPeople;
+        return $this->foodsProductionCapacity;
     }
 
-    public function getFundsProductionNumberOfPeople(): int
+    public function getFundsProductionCapacity(): int
     {
-        return $this->fundsProductionNumberOfPeople;
+        return $this->fundsProductionCapacity;
     }
 
-    public function getResourcesProductionNumberOfPeople(): int
+    public function getResourcesProductionCapacity(): int
     {
-        return $this->resourcesProductionNumberOfPeople;
+        return $this->resourcesProductionCapacity;
     }
 
     public function getWoods(): int
@@ -151,10 +157,10 @@ abstract class Cell
 
     static public function fromJson(string $type, $data): Cell
     {
-        return new (CellTypeConst::getClassByType($type))(...get_object_vars($data));
+        return new (CellConst::getClassByType($type))(...get_object_vars($data));
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         return new PassTurnResult($terrain, $status, Logs::create());
     }

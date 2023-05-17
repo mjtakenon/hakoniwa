@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByTsunamiLog;
 use App\Entity\Log\Logs;
@@ -37,13 +37,13 @@ class Tsunami implements IDisaster
 
         $logs->add(new OccurTsunamiLog($island));
 
-        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI);
+        $candidates = $terrain->findByAttribute(CellConst::DESTRUCTIBLE_BY_TSUNAMI);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {
             $aroundCells = $terrain->getAroundCells($cell->getPoint(), 1, true);
             $preventCells = $aroundCells->filter(function ($cell) {
-                return $cell::ATTRIBUTE[CellTypeConst::PREVENTING_TSUNAMI];
+                return $cell::ATTRIBUTE[CellConst::PREVENTING_TSUNAMI];
             });
 
             if (self::DESTRUCTION_PROBABILITIES_PER_SEA_CELLS[$preventCells->count()] <= Rand::mt_rand_float()) {

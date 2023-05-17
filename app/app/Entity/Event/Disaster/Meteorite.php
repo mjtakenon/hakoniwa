@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
 use App\Entity\Cell\Wasteland;
@@ -35,13 +35,13 @@ class Meteorite implements IDisaster
         do {
             $point = new Point(mt_rand(0, \HakoniwaService::getMaxWidth()-1),mt_rand(0, \HakoniwaService::getMaxHeight()-1));
             $cell = $terrain->getCell($point);
-            if (!$cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_METEORITE]) {
+            if (!$cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_METEORITE]) {
                 continue;
             }
 
-            if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
+            if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
                 $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $cell));
-            } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+            } else if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
                 $logs->add(new DestructionShipLog($island, $cell));
             } else {
                 $logs->add(new DestructionByMeteoriteLog($island, $cell));

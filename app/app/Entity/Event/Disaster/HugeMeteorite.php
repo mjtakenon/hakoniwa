@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
 use App\Entity\Cell\Wasteland;
@@ -46,9 +46,9 @@ class HugeMeteorite implements IDisaster
                 return $c->getPoint()->toString() === $cell->getPoint()->toString();
             });
 
-            if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
+            if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
                 $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $cell));
-            } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+            } else if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
                 $logs->add(new DestructionShipLog($island, $cell));
             } else {
                 $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 1));
@@ -65,10 +65,10 @@ class HugeMeteorite implements IDisaster
 
         // 周囲2hex
         foreach ($around2HexCells as $cell) {
-            if ($cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX]) {
-                if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
+            if ($cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX]) {
+                if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
                     $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $cell));
-                } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+                } else if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
                     $logs->add(new DestructionShipLog($island, $cell));
                 } else {
                     $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 2));

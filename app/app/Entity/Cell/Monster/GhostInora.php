@@ -3,7 +3,7 @@
 namespace App\Entity\Cell\Monster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByMonsterLog;
@@ -55,7 +55,7 @@ class GhostInora extends Monster
         return self::DEFAULT_MOVE_TIMES;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         if ($this->remainMoveTimes <= 0) {
             return new PassTurnResult($terrain, $status, Logs::create());
@@ -74,7 +74,7 @@ class GhostInora extends Monster
         $aroundCells = $terrain->getAroundCells($this->point, 4);
         /** @var Collection $moveTargets */
         $moveTargets = $aroundCells->random(min(3, $aroundCells->count()))->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER];
+            return $cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_MONSTER];
         });
 
         if ($moveTargets->count() <= 0) {
@@ -93,7 +93,7 @@ class GhostInora extends Monster
         $monster->point = $moveTarget->point;
         // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
         $terrain->setCell($monster->getPoint(), $monster);
-$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
         $terrain = $passTurnResult->getTerrain();
         $status = $passTurnResult->getStatus();

@@ -29,29 +29,29 @@ class Plain extends Cell
     ];
 
     const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => true,
-        CellTypeConst::IS_MONSTER => false,
-        CellTypeConst::IS_SHIP => false,
-        CellTypeConst::HAS_POPULATION => false,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
-        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
-        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
-        CellTypeConst::PREVENTING_FIRE => false,
-        CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => true,
+        CellConst::IS_LAND => true,
+        CellConst::IS_MONSTER => false,
+        CellConst::IS_SHIP => false,
+        CellConst::HAS_POPULATION => false,
+        CellConst::DESTRUCTIBLE_BY_FIRE => false,
+        CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => true,
+        CellConst::DESTRUCTIBLE_BY_RIOT => false,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => true,
+        CellConst::PREVENTING_FIRE => false,
+        CellConst::PREVENTING_TYPHOON => false,
+        CellConst::PREVENTING_TSUNAMI => true,
     ];
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $immigrableCells = $cells->filter(function ($cell) {

@@ -2,7 +2,7 @@
 
 namespace App\Entity\Cell\HasPopulation;
 
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 
 class Village extends City
 {
@@ -12,22 +12,22 @@ class Village extends City
     public const MIN_POPULATION = 100;
     public const MAX_POPULATION = 3000;
     const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => true,
-        CellTypeConst::IS_MONSTER => false,
-        CellTypeConst::IS_SHIP => false,
-        CellTypeConst::HAS_POPULATION => true,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
-        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
-        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
-        CellTypeConst::PREVENTING_FIRE => false,
-        CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => true,
+        CellConst::IS_LAND => true,
+        CellConst::IS_MONSTER => false,
+        CellConst::IS_SHIP => false,
+        CellConst::HAS_POPULATION => true,
+        CellConst::DESTRUCTIBLE_BY_FIRE => false,
+        CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => true,
+        CellConst::DESTRUCTIBLE_BY_RIOT => false,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => true,
+        CellConst::PREVENTING_FIRE => false,
+        CellConst::PREVENTING_TYPHOON => false,
+        CellConst::PREVENTING_TSUNAMI => true,
     ];
 
     protected string $imagePath = self::IMAGE_PATH;

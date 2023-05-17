@@ -14,26 +14,26 @@ class LargeFactory extends Cell
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land86.gif';
     public const TYPE = 'large_factory';
     public const NAME = '大工場';
-    const PRODUCTION_NUMBER_OF_PEOPLE = 40000;
-    const SEASIDE_PRODUCTION_NUMBER_OF_PEOPLE = 60000;
+    const PRODUCTION_CAPACITY = 40000;
+    const SEASIDE_PRODUCTION_CAPACITY = 60000;
 
     const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => true,
-        CellTypeConst::IS_MONSTER => false,
-        CellTypeConst::IS_SHIP => false,
-        CellTypeConst::HAS_POPULATION => false,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
-        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_RIOT => true,
-        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
-        CellTypeConst::PREVENTING_FIRE => false,
-        CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => true,
+        CellConst::IS_LAND => true,
+        CellConst::IS_MONSTER => false,
+        CellConst::IS_SHIP => false,
+        CellConst::HAS_POPULATION => false,
+        CellConst::DESTRUCTIBLE_BY_FIRE => true,
+        CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => true,
+        CellConst::DESTRUCTIBLE_BY_RIOT => true,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => true,
+        CellConst::PREVENTING_FIRE => false,
+        CellConst::PREVENTING_TYPHOON => false,
+        CellConst::PREVENTING_TSUNAMI => true,
     ];
 
     protected string $imagePath = self::IMAGE_PATH;
@@ -43,7 +43,7 @@ class LargeFactory extends Cell
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
         $arr = parent::toArray($isPrivate, $withStatic);
-        $arr['data']['fundsProductionNumberOfPeople'] = $this->fundsProductionNumberOfPeople;
+        $arr['data']['fundsProductionCapacity'] = $this->fundsProductionCapacity;
         return $arr;
     }
 
@@ -51,10 +51,10 @@ class LargeFactory extends Cell
     {
         parent::__construct(...$data);
 
-        if (array_key_exists('fundsProductionNumberOfPeople', $data)) {
-            $this->fundsProductionNumberOfPeople = $data['fundsProductionNumberOfPeople'];
+        if (array_key_exists('fundsProductionCapacity', $data)) {
+            $this->fundsProductionCapacity = $data['fundsProductionCapacity'];
         } else {
-            $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
         }
     }
 
@@ -62,19 +62,19 @@ class LargeFactory extends Cell
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
-            $this->fundsProductionNumberOfPeople . '人規模';
+            $this->fundsProductionCapacity . '人規模';
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $seasideCells = $cells->reject(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::IS_LAND];
+            return $cell::ATTRIBUTE[CellConst::IS_LAND];
         });
         if ($seasideCells->count() >= 1) {
-            $this->fundsProductionNumberOfPeople = self::SEASIDE_PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->fundsProductionCapacity = self::SEASIDE_PRODUCTION_CAPACITY;
         } else {
-            $this->fundsProductionNumberOfPeople = self::PRODUCTION_NUMBER_OF_PEOPLE;
+            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
     }

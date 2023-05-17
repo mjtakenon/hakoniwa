@@ -93,17 +93,17 @@ export default defineComponent({
             },
             {
                 title: "農業",
-                numText: this.store.status.foods_production_number_of_people.toLocaleString(),
+                numText: this.store.status.foods_production_capacity.toLocaleString(),
                 unit: "人規模"
             },
             {
                 title: "工業",
-                numText: this.store.status.funds_production_number_of_people.toLocaleString(),
+                numText: this.store.status.funds_production_capacity.toLocaleString(),
                 unit: "人規模"
             },
             {
                 title: "資源生産",
-                numText: this.store.status.resources_production_number_of_people.toLocaleString(),
+                numText: this.store.status.resources_production_capacity.toLocaleString(),
                 unit: "人規模"
             },
         ]

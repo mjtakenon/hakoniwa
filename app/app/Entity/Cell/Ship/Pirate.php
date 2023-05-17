@@ -3,7 +3,7 @@
 namespace App\Entity\Cell\Ship;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
@@ -45,7 +45,7 @@ class Pirate extends CombatantShip
             ($this->damage > 0 ? PHP_EOL . '破損率 ' . $this->damage . '%' : '');
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -95,7 +95,7 @@ class Pirate extends CombatantShip
         } else {
             // 海岸沿いの建造物を破壊
             $candidates = $terrain->getCells()->flatten(1)->filter(function ($cell) {
-                return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI] || $cell::ATTRIBUTE[CellTypeConst::IS_SHIP];
+                return $cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_TSUNAMI] || $cell::ATTRIBUTE[CellConst::IS_SHIP];
             });
             $seaCells = new Collection();
 
@@ -107,7 +107,7 @@ class Pirate extends CombatantShip
             }
 
             if ($seaCells->count() <= 0) {
-                return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+                return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
             }
 
             // 攻撃対象の隣へ移動
@@ -117,7 +117,7 @@ class Pirate extends CombatantShip
 
             // 攻撃対象のセルを取得し、攻撃
             $destroyTargetCells = $terrain->getAroundCells($seaCell->getPoint())->filter(function ($cell) {
-                return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI];
+                return $cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_TSUNAMI];
             });
 
             if ($destroyTargetCells->count() >= 1) {

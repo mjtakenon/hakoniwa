@@ -3,7 +3,7 @@
 namespace App\Entity\Terrain;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Factory;
 use App\Entity\Cell\Forest;
 use App\Entity\Cell\HasPopulation\Village;
@@ -17,9 +17,6 @@ use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
 use App\Entity\Cell\Volcano;
 use App\Entity\Cell\Wasteland;
-use App\Entity\Disaster\DisasterConst;
-use App\Entity\Disaster\DisasterResult;
-use App\Entity\Disaster\IDisaster;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Util\Normal;
@@ -152,34 +149,34 @@ class Terrain implements JsonEncodable
         return array_sum($population);
     }
 
-    public function aggregateFundsProductionNumberOfPeople(): int
+    public function aggregateFundsProductionCapacity(): int
     {
-        $fundsProductionNumberOfPeople = [];
+        $fundsProductionCapacity = [];
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
-            $fundsProductionNumberOfPeople[] = $cell->getFundsProductionNumberOfPeople();
+            $fundsProductionCapacity[] = $cell->getFundsProductionCapacity();
         }
-        return array_sum($fundsProductionNumberOfPeople);
+        return array_sum($fundsProductionCapacity);
     }
 
-    public function aggregateFoodsProductionNumberOfPeople(): int
+    public function aggregateFoodsProductionCapacity(): int
     {
-        $foodsProductionNumberOfPeople = [];
+        $foodsProductionCapacity = [];
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
-            $foodsProductionNumberOfPeople[] = $cell->getFoodsProductionNumberOfPeople();
+            $foodsProductionCapacity[] = $cell->getFoodsProductionCapacity();
         }
-        return array_sum($foodsProductionNumberOfPeople);
+        return array_sum($foodsProductionCapacity);
     }
 
-    public function aggregateResourcesProductionNumberOfPeople(): int
+    public function aggregateResourcesProductionCapacity(): int
     {
-        $resourcesProductionNumberOfPeople = [];
+        $resourcesProductionCapacity = [];
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
-            $resourcesProductionNumberOfPeople[] = $cell->getResourcesProductionNumberOfPeople();
+            $resourcesProductionCapacity[] = $cell->getResourcesProductionCapacity();
         }
-        return array_sum($resourcesProductionNumberOfPeople);
+        return array_sum($resourcesProductionCapacity);
     }
 
     public function aggregateMaintenanceNumberOfPeople(Island $island): int
@@ -209,11 +206,11 @@ class Terrain implements JsonEncodable
     public function aggregateArea(): int
     {
         /** @var Cell $cell */
-        $landCells = $this->findByAttribute(CellTypeConst::IS_LAND)->count();
+        $landCells = $this->findByAttribute(CellConst::IS_LAND)->count();
         return $landCells * 100;
     }
 
-    public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -225,11 +222,11 @@ class Terrain implements JsonEncodable
                 continue;
             }
 
-            if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER] && (float)config('app.hakoniwa.monster_action_probably') <= Rand::mt_rand_float()) {
+            if ($cell::ATTRIBUTE[CellConst::IS_MONSTER] && (float)config('app.hakoniwa.monster_action_probably') <= Rand::mt_rand_float()) {
                 continue;
             }
 
-            $passTurnResult = $cell->passTurn($island, $this, $status, $turn, $foreignIslandOccurEvents);
+            $passTurnResult = $cell->passTurn($island, $this, $status, $turn, $foreignIslandEvents);
 
             $this->cells = $passTurnResult->getTerrain()->getCells();
             $status = $passTurnResult->getStatus();
@@ -327,7 +324,7 @@ class Terrain implements JsonEncodable
         foreach ($this->cells->flatten(1) as $cell) {
             if ($cell::TYPE === Lake::TYPE) {
                 $this->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-            } else if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+            } else if ($cell::ATTRIBUTE[CellConst::IS_LAND]) {
                 $isChecked[$cell->getPoint()->toString()] = true;
                 continue;
             }
@@ -367,21 +364,6 @@ class Terrain implements JsonEncodable
         });
 
         return $this;
-    }
-
-    public function occurDisaster(Island $island, Status $status, Turn $turn): DisasterResult
-    {
-        $logs = Logs::create();
-
-        /** @var IDisaster $disaster */
-        foreach (DisasterConst::DISASTERS as $disaster) {
-            $disasterResult = $disaster::occur($island, $this, $status, $turn);
-            $this->cells = $disasterResult->getTerrain()->getCells();
-            $status = $disasterResult->getStatus();
-            $logs->merge($disasterResult->getLogs());
-        }
-
-        return new DisasterResult($this, $status, $logs);
     }
 
     public function findByTypes(array $cellTypes): Collection
