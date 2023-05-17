@@ -79,6 +79,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $island_id
+ * @property int $user_id
  * @property string $name
  * @property string $owner_name
  * @property \Illuminate\Support\Carbon $created_at
@@ -92,6 +93,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|IslandHistory whereIslandId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandHistory whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IslandHistory whereOwnerName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IslandHistory whereUserId($value)
  */
 	class IslandHistory extends \Eloquent {}
 }
@@ -106,6 +108,8 @@ namespace App\Models{
  * @property mixed $log
  * @property string $visibility
  * @property \Illuminate\Support\Carbon $created_at
+ * @property-read \App\Models\Island|null $island
+ * @property-read \App\Models\Turn|null $turn
  * @method static \Illuminate\Database\Eloquent\Builder|IslandLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IslandLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IslandLog query()
@@ -161,6 +165,8 @@ namespace App\Models{
  * @property int $area
  * @property int $abandoned_turn
  * @property \Illuminate\Support\Carbon $created_at
+ * @property-read \App\Models\Island|null $island
+ * @property-read \App\Models\Turn|null $turn
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IslandStatus query()

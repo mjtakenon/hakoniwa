@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\Hakoniwa\Status\Status;
+use App\Entity\Status\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,7 +38,7 @@ class IslandStatus extends Model
         'area',
     ];
 
-    public function toStatus(): Status
+    public function toEntity(): Status
     {
         return Status::create()->fromModel($this);
     }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Islands;
 
+use App\Entity\Log\LogVisibility;
+use App\Entity\Terrain\Terrain;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Log\LogVisibility;
-use App\Services\Hakoniwa\Terrain\Terrain;
 use Illuminate\Support\Collection;
 
 class DetailController extends Controller
@@ -72,7 +72,7 @@ class DetailController extends Controller
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                 ],
-                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(false, true),
+                'terrains' => $islandTerrain->toEntity()->toArray(false, true),
                 'logs' => array_values($islandLogs->toArray()),
                 'summary' => $summary->map(function ($status, $index) use ($summary) {
                     if ($summary->count() - 1 > $index) {

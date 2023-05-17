@@ -2,9 +2,9 @@
 
 namespace App\Services\Hakoniwa;
 
-use App\Services\Hakoniwa\Plan\Plan;
-use App\Services\Hakoniwa\Plan\PlanConst;
-use App\Services\Hakoniwa\Plan\Plans;
+use App\Entity\Plan\Plan;
+use App\Entity\Plan\PlanConst;
+use App\Entity\Plan\Plans;
 use Illuminate\Support\ServiceProvider;
 
 class PlanService extends ServiceProvider

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Entity\Log\LogVisibility;
 use App\Models\Island;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\Turn;
-use App\Services\Hakoniwa\Log\LogVisibility;
 use Illuminate\Support\Collection;
 
 class IndexController extends Controller
