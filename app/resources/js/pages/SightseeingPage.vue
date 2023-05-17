@@ -3,9 +3,7 @@
         <div class="title mt-2">{{ store.island.name }}島へようこそ！</div>
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
-        <hr/>
         <island-viewer></island-viewer>
-        <hr/>
         <log-viewer
             :title="store.island.name + '島の近況'"
             :parsed-logs="store.logs"

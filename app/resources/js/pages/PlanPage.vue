@@ -3,7 +3,6 @@
         <div class="title mt-2">{{ store.island.name }}島開発計画</div>
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
-        <hr/>
         <div class="flex flex-wrap items-stretch mx-auto justify-center">
             <plan-controller class="max-lg:order-2 grow"></plan-controller>
             <div class="max-lg:order-1 max-lg:w-full z-30">
@@ -11,7 +10,6 @@
             </div>
             <plan-list class="max-lg:order-2 grow"></plan-list>
         </div>
-        <hr/>
         <log-viewer
             :title="store.island.name + '島の近況'"
             :parsed-logs="store.logs"

@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar">
-        <a class="navbar-left text-black" href="/">
+        <a class="navbar-left text-on-surface" href="/">
             <div class="navbar-brand">
                 <img src="/favicon.ico">
             </div>
@@ -9,15 +9,16 @@
             </div>
         </a>
         <button id="hamburger-button" @click="isOpenHamburgerMenu=!isOpenHamburgerMenu">
-            <img src="/img/hakoniwa/ui/hamburger.svg">
+            <img class="hamburger-icon" src="/img/hakoniwa/ui/hamburger.svg">
         </button>
 
         <div class="hamburger-elements"
-             :class="[isOpenHamburgerMenu ? 'max-md:max-h-36' : 'max-md:max-h-0']">
+             :class="[isOpenHamburgerMenu ? 'max-md:max-h-44' : 'max-md:max-h-0']">
             <div v-if="isLoggedIn" class="navbar-menu">
                 <div class="navbar-item navbar-username">
                     {{ user.name }}
                 </div>
+                <theme-switcher></theme-switcher>
                 <a v-if="isIslandRegistered" class="navbar-item button-primary"
                    :href="'/islands/'+ownedIsland.id+'/plans'"> <!--fixme:island_id-->
                     開発画面に行く
@@ -29,9 +30,9 @@
                     <form method="POST" name="logout" action="/logout">
                         <input type="hidden" name="_token" :value="csrfToken">
                         <a href="javascript:logout.submit()">
-                            <div class="button-white">
+                            <button>
                                 ログアウト
-                            </div>
+                            </button>
                         </a>
                     </form>
                 </div>
@@ -55,19 +56,26 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
+import ThemeSwitcher from "./ThemeSwitcher.vue";
 
 export default defineComponent({
+    components: {ThemeSwitcher},
     data() {
         return {
             isOpenHamburgerMenu: false,
         }
     },
     setup() {
+        // TODO: どうにかして設定したカラースキームを取得する
+        document.getElementById("app").classList.add("theme-light");
+        document.getElementById("app").classList.add("light");
+        // document.getElementById("app").classList.add("theme-dark");
+        // document.getElementById("app").classList.add("dark");
     },
     methods: {
     },
     mounted() {
-        // console.log(this.$props)
+
     },
     computed: {
     },
@@ -81,16 +89,16 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 
 .navbar {
-    @apply min-w-full mb-3 pt-2 pb-2 md:px-5 flex flex-wrap bg-gray-100 drop-shadow-md items-center;
+    @apply min-w-full mb-3 pt-2 pb-2 md:px-5 flex flex-wrap bg-surface text-on-surface drop-shadow-md items-center;
 
     .navbar-left {
         @apply inline-flex mx-3 items-center;
 
         .navbar-brand {
-            @apply inline-block mr-5 h-full;
+            @apply inline-block mr-5 h-full dark:filter dark:invert;
         }
 
         .navbar-title {
@@ -99,7 +107,11 @@ export default defineComponent({
     }
 
     #hamburger-button {
-        @apply ml-auto mr-3 block w-7 h-7 md:hidden;
+        @apply ml-auto mr-3 block w-7 h-7 md:hidden bg-none hover:bg-none border-none drop-shadow-none p-0;
+
+        .hamburger-icon {
+            @apply dark:filter dark:invert;
+        }
     }
 
     .hamburger-elements {

@@ -5,39 +5,43 @@ module.exports = {
         "./resources/**/*.ts",
         "./resources/**/*.vue"
     ],
+    darkMode: "class",
     theme: {
         extend: {
             screens: {
                 xs: '350px'
             },
             colors: {
-                primary: {
-                    light: "#7df6de",
-                    DEFAULT: "#00d1b2",
-                    dark: "#4b9389"
-                },
-                link: "#485fc7",
-                success: {
-                    light: "#b6ddff",
-                    DEFAULT: "#3e8ed0",
-                    dark: "#1b598c"
-                },
-                info: {
-                    light: "#aff8d7",
-                    DEFAULT: "#48c78e",
-                    dark: "#1a7e51"
-                },
-                warning: {
-                    light: "#e8dcc5",
-                    DEFAULT: "#ffe08a",
-                    dark: "#fb8c00"
-                },
-                danger: {
-                    light: "#ffabbe",
-                    DEFAULT: "#f14668",
-                    dark: "#a62640"
-                }
+                "primary": "var(--theme-primary)",
+                "on-primary": "var(--theme-on-primary)",
+                "primary-container": "var(--theme-primary-container)",
+                "on-primary-container": "var(--theme-on-primary-container)",
+                "secondary": "var(--theme-secondary)",
+                "on-secondary": "var(--theme-on-secondary)",
+                "secondary-container": "var(--theme-secondary-container)",
+                "on-secondary-container": "var(--theme-on-secondary-container)",
+                "alert": "var(--theme-alert)",
+                "on-alert": "var(--theme-on-alert)",
+                "alert-container": "var(--theme-alert-container)",
+                "on-alert-container": "var(--theme-on-alert-container)",
+                "error": "var(--theme-error)",
+                "on-error": "var(--theme-on-error)",
+                "error-container": "var(--theme-error-container)",
+                "on-error-container": "var(--theme-on-error-container)",
+                "plus": "var(--theme-plus)",
+                "on-plus": "var(--theme-on-plus)",
+                "minus": "var(--theme-minus)",
+                "on-minus": "var(--theme-on-minus)",
+                "background": "var(--theme-background)",
+                "on-background": "var(--theme-on-background)",
+                "surface": "var(--theme-surface)",
+                "on-surface": "var(--theme-on-surface)",
+                "on-link": "var(--theme-on-link)",
+                "outline-color": "var(--theme-outline)",
+                "surface-variant": "var(--theme-surface-variant)",
+                "on-surface-variant": "var(--theme-on-surface-variant)"
             },
+            outlineColor: "outline-color",
             animation: {
                 "fadein": "fadein 0.3s",
                 "slide-in-left": "slide-in-left 1.2s"
