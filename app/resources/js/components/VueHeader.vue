@@ -13,7 +13,7 @@
         </button>
 
         <div class="hamburger-elements"
-             :class="[isOpenHamburgerMenu ? 'max-md:max-h-36' : 'max-md:max-h-0']">
+             :class="[isOpenHamburgerMenu ? 'max-md:max-h-44' : 'max-md:max-h-0']">
             <div v-if="isLoggedIn" class="navbar-menu">
                 <div class="navbar-item navbar-username">
                     {{ user.name }}
