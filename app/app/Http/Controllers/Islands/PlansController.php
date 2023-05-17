@@ -34,7 +34,7 @@ class PlansController extends Controller
         $turn = Turn::latest()->firstOrFail();
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
-        $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail()->plan;
+        $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail();
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
         $islandLogs = $island->islandLogs()
@@ -85,8 +85,8 @@ class PlansController extends Controller
                     'area' => $islandStatus->area,
                     'abandoned_turn' => $islandStatus->abandoned_turn,
                 ],
-                'terrains' => Terrain::fromJson($islandTerrain->terrain)->toArray(true, true),
-                'plans' => Plans::fromJson($islandPlans)->toArray(true),
+                'terrains' => $islandTerrain->toEntity()->toArray(true, true),
+                'plans' => $islandPlans->toEntity()->toArray(true),
                 'logs' => array_values($islandLogs->toArray()),
                 'summary' => $summary->map(function ($status, $index) use ($summary) {
                     if ($summary->count() - 1 > $index) {

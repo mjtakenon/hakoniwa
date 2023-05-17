@@ -38,7 +38,7 @@ class IslandStatus extends Model
         'area',
     ];
 
-    public function toStatus(): Status
+    public function toEntity(): Status
     {
         return Status::create()->fromModel($this);
     }

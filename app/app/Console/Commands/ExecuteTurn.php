@@ -85,10 +85,10 @@ class ExecuteTurn extends Command
                     $islandTerrain = $island->islandTerrains->firstOrFail();
                     $islandStatus = $island->islandStatuses->firstOrFail();
 
-                    $planList->put($island->id, Plans::fromJson($islandPlan->plan));
-                    $terrainList->put($island->id, Terrain::fromJson($islandTerrain->terrain));
-                    $statusList->put($island->id, $islandStatus->toStatus());
-                    $prevStatusList->put($island->id, $islandStatus->toStatus());
+                    $planList->put($island->id, $islandPlan->toEntity());
+                    $terrainList->put($island->id, $islandTerrain->toEntity());
+                    $statusList->put($island->id, $islandStatus->toEntity());
+                    $prevStatusList->put($island->id, $islandStatus->toEntity());
                     $logsList->put($island->id, Logs::create());
                 }
 
