@@ -3,15 +3,18 @@
 namespace App\Entity\Log;
 
 use App\Entity\Cell\Ship\CombatantShip;
+use App\Models\Island;
 
 class AttackLog extends LogRow
 {
+    private Island $island;
     private CombatantShip $offenciveShip;
     private CombatantShip $defenciveShip;
     private int $damage;
 
-    public function __construct(CombatantShip $offenciveShip, CombatantShip $defenciveShip, int $damage)
+    public function __construct(Island $island, CombatantShip $offenciveShip, CombatantShip $defenciveShip, int $damage)
     {
+        $this->island = $island;
         $this->offenciveShip = $offenciveShip;
         $this->defenciveShip = $defenciveShip;
         $this->damage = $damage;
@@ -20,6 +23,7 @@ class AttackLog extends LogRow
     public function generate(): string
     {
         return json_encode([
+            ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD],
             ['text' => ' (' . $this->offenciveShip->getPoint()->x . ',' . $this->offenciveShip->getPoint()->y . ') 地点の'],
             $this->offenciveShip->getAffiliationId() >= 1 ? ['text' => $this->offenciveShip->getAffiliationName() . '島所属', 'style' => StyleConst::BOLD . StyleConst::COLOR_WARNING] : ['text' => ''],
             $this->offenciveShip->getAffiliationId() >= 1 ? ['text' => $this->offenciveShip->getName(), 'style' => StyleConst::BOLD . StyleConst::COLOR_WARNING] : ['text' => $this->offenciveShip->getName(), 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],

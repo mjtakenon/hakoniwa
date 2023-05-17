@@ -82,14 +82,14 @@ class Pirate extends CombatantShip
             if ($enemyShip->damage >= 100) {
                 $attackDamage -= $enemyShip->damage - 100;
                 $enemyShip->damage = 100;
-                $logs->add(new AttackAndDefeatLog(deep_copy($this), deep_copy($enemyShip), $attackDamage));
+                $logs->add(new AttackAndDefeatLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
                 if ($enemyShip->getElevation() === -1) {
                     $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
                 } else {
                     $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));
                 }
             } else {
-                $logs->add(new AttackLog(deep_copy($this), deep_copy($enemyShip), $attackDamage));
+                $logs->add(new AttackLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
                 $terrain->setCell($enemyShip->getPoint(), $enemyShip);
             }
         } else {
