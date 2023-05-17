@@ -70,7 +70,7 @@ class Forest extends Cell
         return '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName();
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         if ($this->woods >= self::MAX_WOODS) {
             return new PassTurnResult($terrain, $status, Logs::create());

@@ -68,7 +68,7 @@ class Slime extends Monster
         return 0.02;
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         if ($this->remainMoveTimes <= 0) {
             return new PassTurnResult($terrain, $status, Logs::create());
@@ -109,7 +109,7 @@ class Slime extends Monster
             $monster->point = $moveTarget->point;
             // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
             $terrain->setCell($monster->getPoint(), $monster);
-$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
             $terrain = $passTurnResult->getTerrain();
             $status = $passTurnResult->getStatus();
@@ -123,7 +123,7 @@ $passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $te
             $monster->point = $moveTarget->point;
             // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
             $terrain->setCell($monster->getPoint(), $monster);
-$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
             $terrain = $passTurnResult->getTerrain();
             $status = $passTurnResult->getStatus();

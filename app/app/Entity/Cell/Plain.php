@@ -51,7 +51,7 @@ class Plain extends Cell
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $immigrableCells = $cells->filter(function ($cell) {

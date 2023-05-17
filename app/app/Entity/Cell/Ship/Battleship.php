@@ -66,7 +66,7 @@ class Battleship extends CombatantShip
         }
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -82,10 +82,10 @@ class Battleship extends CombatantShip
 
             // 他の島のもので規定ターンを過ぎていたら返す
             if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
-                $foreignIslandOccurEvents->add(new ReturnShipToAffiliationIsland($island->id, $this->getAffiliationId(), $this));
+                $foreignIslandEvents->add(new ReturnShipToAffiliationIsland($island->id, $this->getAffiliationId(), $this));
                 return new PassTurnResult($terrain, $status, $logs);
             }
-            return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+            return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
         }
 
         // 艦船がいる場合、攻撃する

@@ -64,7 +64,7 @@ class FarmDome extends Cell
             $this->foodsProductionNumberOfPeople . '人規模';
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
         $lakesideCells = $cells->filter(function ($cell) {

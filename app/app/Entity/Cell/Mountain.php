@@ -41,7 +41,7 @@ class Mountain extends Cell
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $mountains = $terrain->findByTypes([Volcano::TYPE, Mine::TYPE]);
 

@@ -17,9 +17,6 @@ use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
 use App\Entity\Cell\Volcano;
 use App\Entity\Cell\Wasteland;
-use App\Entity\Event\Disaster\DisasterConst;
-use App\Entity\Event\Disaster\DisasterResult;
-use App\Entity\Event\Disaster\IDisaster;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Util\Normal;
@@ -213,7 +210,7 @@ class Terrain implements JsonEncodable
         return $landCells * 100;
     }
 
-    public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -229,7 +226,7 @@ class Terrain implements JsonEncodable
                 continue;
             }
 
-            $passTurnResult = $cell->passTurn($island, $this, $status, $turn, $foreignIslandOccurEvents);
+            $passTurnResult = $cell->passTurn($island, $this, $status, $turn, $foreignIslandEvents);
 
             $this->cells = $passTurnResult->getTerrain()->getCells();
             $status = $passTurnResult->getStatus();
@@ -367,21 +364,6 @@ class Terrain implements JsonEncodable
         });
 
         return $this;
-    }
-
-    public function occurDisaster(Island $island, Status $status, Turn $turn): DisasterResult
-    {
-        $logs = Logs::create();
-
-        /** @var IDisaster $disaster */
-        foreach (DisasterConst::DISASTERS as $disaster) {
-            $disasterResult = $disaster::occur($island, $this, $status, $turn);
-            $this->cells = $disasterResult->getTerrain()->getCells();
-            $status = $disasterResult->getStatus();
-            $logs->merge($disasterResult->getLogs());
-        }
-
-        return new DisasterResult($this, $status, $logs);
     }
 
     public function findByTypes(array $cellTypes): Collection

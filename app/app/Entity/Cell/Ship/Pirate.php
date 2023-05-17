@@ -45,7 +45,7 @@ class Pirate extends CombatantShip
             ($this->damage > 0 ? PHP_EOL . '破損率 ' . $this->damage . '%' : '');
     }
 
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandOccurEvents): PassTurnResult
+    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -107,7 +107,7 @@ class Pirate extends CombatantShip
             }
 
             if ($seaCells->count() <= 0) {
-                return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);
+                return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
             }
 
             // 攻撃対象の隣へ移動
