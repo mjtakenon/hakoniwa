@@ -3,7 +3,7 @@
 namespace App\Entity\Terrain;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Factory;
 use App\Entity\Cell\Forest;
 use App\Entity\Cell\HasPopulation\Village;
@@ -206,7 +206,7 @@ class Terrain implements JsonEncodable
     public function aggregateArea(): int
     {
         /** @var Cell $cell */
-        $landCells = $this->findByAttribute(CellTypeConst::IS_LAND)->count();
+        $landCells = $this->findByAttribute(CellConst::IS_LAND)->count();
         return $landCells * 100;
     }
 
@@ -222,7 +222,7 @@ class Terrain implements JsonEncodable
                 continue;
             }
 
-            if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER] && (float)config('app.hakoniwa.monster_action_probably') <= Rand::mt_rand_float()) {
+            if ($cell::ATTRIBUTE[CellConst::IS_MONSTER] && (float)config('app.hakoniwa.monster_action_probably') <= Rand::mt_rand_float()) {
                 continue;
             }
 
@@ -324,7 +324,7 @@ class Terrain implements JsonEncodable
         foreach ($this->cells->flatten(1) as $cell) {
             if ($cell::TYPE === Lake::TYPE) {
                 $this->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-            } else if ($cell::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+            } else if ($cell::ATTRIBUTE[CellConst::IS_LAND]) {
                 $isChecked[$cell->getPoint()->toString()] = true;
                 continue;
             }

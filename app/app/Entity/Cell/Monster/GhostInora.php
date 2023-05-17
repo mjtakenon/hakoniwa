@@ -3,7 +3,7 @@
 namespace App\Entity\Cell\Monster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByMonsterLog;
@@ -74,7 +74,7 @@ class GhostInora extends Monster
         $aroundCells = $terrain->getAroundCells($this->point, 4);
         /** @var Collection $moveTargets */
         $moveTargets = $aroundCells->random(min(3, $aroundCells->count()))->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::DESTRUCTIBLE_BY_MONSTER];
+            return $cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_MONSTER];
         });
 
         if ($moveTargets->count() <= 0) {

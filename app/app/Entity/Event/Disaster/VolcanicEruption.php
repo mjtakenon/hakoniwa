@@ -3,7 +3,7 @@
 namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Mine;
 use App\Entity\Cell\Mountain;
 use App\Entity\Cell\Shallow;
@@ -55,16 +55,16 @@ class VolcanicEruption implements IDisaster
         /** @var Cell $cell */
         foreach ($aroundCells as $cell) {
             if ($cell::ELEVATION === -2) {
-                if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+                if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
                     $logs->add(new DestructionShipLog($island, $cell));
                 } else {
                     $logs->add(new DestructionByVolcanicEruptionLog($island, $cell));
                 }
                 $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
             } else if ($cell::ELEVATION === -1 || $cell::ELEVATION === 0) {
-                if ($cell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
+                if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
                     $logs->add(new ScatterAwayByVolcanicEruptionLog($island, $cell));
-                } else if ($cell::ATTRIBUTE[CellTypeConst::IS_SHIP]) {
+                } else if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
                     $logs->add(new DestructionShipLog($island, $cell));
                 } else {
                     $logs->add(new DestructionByVolcanicEruptionLog($island, $cell));

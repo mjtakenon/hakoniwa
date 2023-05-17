@@ -3,7 +3,7 @@
 namespace App\Entity\Plan;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\Logs;
@@ -42,7 +42,7 @@ class AttractActivitiesPlan extends Plan
         }
 
         /** @var Cell $cell */
-        $hasPopulationCells = $terrain->findByAttribute(CellTypeConst::HAS_POPULATION);
+        $hasPopulationCells = $terrain->findByAttribute(CellConst::HAS_POPULATION);
 
         foreach ($hasPopulationCells as $cell) {
             $addPopulation = random_int(1, 3) * 100;

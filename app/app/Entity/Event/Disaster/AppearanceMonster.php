@@ -3,7 +3,7 @@
 namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\HasPopulation\City;
 use App\Entity\Cell\HasPopulation\Metropolis;
 use App\Entity\Cell\HasPopulation\Town;
@@ -34,7 +34,7 @@ class AppearanceMonster implements IDisaster
         /** @var Cell $cell */
         $candidates = $terrain->findByTypes([Village::TYPE, Town::TYPE, City::TYPE, Metropolis::TYPE]);
 
-        $monsterCells = $terrain->findByAttribute(CellTypeConst::IS_MONSTER);
+        $monsterCells = $terrain->findByAttribute(CellConst::IS_MONSTER);
         $occurProbability = self::OCCUR_PROBABILITY / pow(2, $monsterCells->count());
 
         foreach ($candidates as $cell) {
@@ -45,7 +45,7 @@ class AppearanceMonster implements IDisaster
 
             $aroundCells = $terrain->getAroundCells($cell->getPoint(), 1, true);
             $seasideCells = $aroundCells->filter(function ($cell) {
-                return !$cell::ATTRIBUTE[CellTypeConst::IS_LAND];
+                return !$cell::ATTRIBUTE[CellConst::IS_LAND];
             });
 
             if ($seasideCells->count() <= 0) {

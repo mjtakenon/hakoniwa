@@ -3,7 +3,7 @@
 namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Plain;
 use App\Entity\Log\DestructionByTyphoonLog;
 use App\Entity\Log\Logs;
@@ -37,13 +37,13 @@ class Typhoon implements IDisaster
 
         $logs->add(new OccurTyphoonLog($island));
 
-        $candidates = $terrain->findByAttribute(CellTypeConst::DESTRUCTIBLE_BY_TYPHOON);
+        $candidates = $terrain->findByAttribute(CellConst::DESTRUCTIBLE_BY_TYPHOON);
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {
             $aroundCells = $terrain->getAroundCells($cell->getPoint());
             $preventCells = $aroundCells->filter(function ($cell) {
-                return $cell::ATTRIBUTE[CellTypeConst::PREVENTING_TYPHOON];
+                return $cell::ATTRIBUTE[CellConst::PREVENTING_TYPHOON];
             });
 
             if (self::DESTRUCTION_PROBABILITIES_PER_PREVENT_CELLS[$preventCells->count()] <= Rand::mt_rand_float()) {

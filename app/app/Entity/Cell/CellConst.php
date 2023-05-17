@@ -30,9 +30,9 @@ use App\Entity\Cell\Ship\Pirate;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Cell\Ship\TransportShip;
 
-class CellTypeConst
+class CellConst
 {
-    const CELL_TYPE_LIST = [
+    const CELLS = [
         City::TYPE => City::class,
         Factory::TYPE => Factory::class,
         Farm::TYPE => Farm::class,
@@ -79,7 +79,13 @@ class CellTypeConst
     const IS_LAND = 'is_land';
     const IS_MONSTER = 'is_monster';
     const IS_SHIP = 'is_ship';
+    const IS_MISSILE_BASE = 'is_missile_base';
+    const HAS_FOODS_PRODUCTION_CAPACITY = 'has_foods_production_capacity';
+    const HAS_FUNDS_PRODUCTION_CAPACITY = 'has_funds_production_capacity';
+    const HAS_RESOURCES_PRODUCTION_CAPACITY = 'has_resources_production_capacity';
+    const HAS_MAINTENANCE_CAPACITY = 'has_maintenance_capacity';
     const HAS_POPULATION = 'has_population';
+    const HAS_WOODS = 'has_woods';
     const DESTRUCTIBLE_BY_FIRE = 'destructible_by_fire';
     const DESTRUCTIBLE_BY_TSUNAMI = 'destructible_by_tsunami';
     const DESTRUCTIBLE_BY_EARTHQUAKE = 'destructible_by_earthquake';
@@ -93,8 +99,13 @@ class CellTypeConst
     const PREVENTING_TYPHOON = 'preventing_typhoon';
     const PREVENTING_TSUNAMI = 'preventing_tsunami';
 
+    const ELEVATION_MOUNTAIN = 1;
+    const ELEVATION_PLAIN = 0;
+    const ELEVATION_SHALLOW = -1;
+    const ELEVATION_SEA = -2;
+
     static public function getClassByType(string $type): string
     {
-        return self::CELL_TYPE_LIST[$type];
+        return self::CELLS[$type];
     }
 }

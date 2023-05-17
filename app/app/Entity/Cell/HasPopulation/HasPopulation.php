@@ -3,7 +3,7 @@
 namespace App\Entity\Cell\HasPopulation;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\Plain;
 use App\Entity\Log\Logs;
@@ -22,22 +22,22 @@ abstract class HasPopulation extends Cell
     private const FOOD_SHORTAGES_MAX_POPULATION_INCREMENTAL_RATE = -1;
 
     const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => true,
-        CellTypeConst::IS_MONSTER => false,
-        CellTypeConst::IS_SHIP => false,
-        CellTypeConst::HAS_POPULATION => true,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => true,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
-        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_RIOT => false,
-        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => true,
-        CellTypeConst::PREVENTING_FIRE => false,
-        CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => true,
+        CellConst::IS_LAND => true,
+        CellConst::IS_MONSTER => false,
+        CellConst::IS_SHIP => false,
+        CellConst::HAS_POPULATION => true,
+        CellConst::DESTRUCTIBLE_BY_FIRE => true,
+        CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => true,
+        CellConst::DESTRUCTIBLE_BY_RIOT => false,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => true,
+        CellConst::PREVENTING_FIRE => false,
+        CellConst::PREVENTING_TYPHOON => false,
+        CellConst::PREVENTING_TSUNAMI => true,
     ];
 
     protected int $minPopulation;
@@ -72,7 +72,7 @@ abstract class HasPopulation extends Cell
     {
         $cells = $terrain->getAroundCells($this->point);
         $seasideCells = $cells->reject(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::IS_LAND];
+            return $cell::ATTRIBUTE[CellConst::IS_LAND];
         });
         return $seasideCells->count() >= 1;
     }

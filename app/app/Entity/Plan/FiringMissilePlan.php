@@ -3,7 +3,7 @@
 namespace App\Entity\Plan;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\MissileBase\IMissileFireable;
 use App\Entity\Cell\MissileBase\MissileBase;
 use App\Entity\Cell\Monster\Monster;
@@ -123,7 +123,7 @@ class FiringMissilePlan extends Plan
 
                 if ($targetCell::TYPE === OutOfRegion::TYPE) {
                     $logs->add(new MissileOutOfRegionLog($island, $targetCell->getPoint(), $this));
-                } else if ($targetCell::ATTRIBUTE[CellTypeConst::IS_MONSTER]) {
+                } else if ($targetCell::ATTRIBUTE[CellConst::IS_MONSTER]) {
                     /** @var Monster $targetCell */
                     // 硬化などによる無効化
                     if ($targetCell->isAttackDisabled()) {

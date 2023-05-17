@@ -2,7 +2,7 @@
 
 namespace App\Entity\Cell\Ship;
 
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 
 class TransportShip extends Ship
 {
@@ -13,22 +13,22 @@ class TransportShip extends Ship
     public const MAINTENANCE_NUMBER_OF_PEOPLE = 1000;
 
     const ATTRIBUTE = [
-        CellTypeConst::IS_LAND => false,
-        CellTypeConst::IS_MONSTER => false,
-        CellTypeConst::IS_SHIP => true,
-        CellTypeConst::HAS_POPULATION => false,
-        CellTypeConst::DESTRUCTIBLE_BY_FIRE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TSUNAMI => false,
-        CellTypeConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_TYPHOON => false,
-        CellTypeConst::DESTRUCTIBLE_BY_METEORITE => true,
-        CellTypeConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
-        CellTypeConst::DESTRUCTIBLE_BY_MISSILE => false,
-        CellTypeConst::DESTRUCTIBLE_BY_RIOT => true,
-        CellTypeConst::DESTRUCTIBLE_BY_MONSTER => false,
-        CellTypeConst::PREVENTING_FIRE => false,
-        CellTypeConst::PREVENTING_TYPHOON => false,
-        CellTypeConst::PREVENTING_TSUNAMI => false,
+        CellConst::IS_LAND => false,
+        CellConst::IS_MONSTER => false,
+        CellConst::IS_SHIP => true,
+        CellConst::HAS_POPULATION => false,
+        CellConst::DESTRUCTIBLE_BY_FIRE => false,
+        CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_METEORITE => true,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => false,
+        CellConst::DESTRUCTIBLE_BY_RIOT => true,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => false,
+        CellConst::PREVENTING_FIRE => false,
+        CellConst::PREVENTING_TYPHOON => false,
+        CellConst::PREVENTING_TSUNAMI => false,
     ];
 
     protected string $shallowImagePath = self::SHALLOW_IMAGE_PATH;

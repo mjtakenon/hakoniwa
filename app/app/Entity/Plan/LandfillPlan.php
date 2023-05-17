@@ -3,7 +3,7 @@
 namespace App\Entity\Plan;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\CellTypeConst;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Lake;
 use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
@@ -56,7 +56,7 @@ class LandfillPlan extends Plan
         }
 
         $landCells = $terrain->getAroundCells($cell->getPoint())->filter(function ($cell) {
-            return $cell::ATTRIBUTE[CellTypeConst::IS_LAND];
+            return $cell::ATTRIBUTE[CellConst::IS_LAND];
         });
 
         if ($landCells->count() === 0) {
@@ -72,7 +72,7 @@ class LandfillPlan extends Plan
             $aroundGroundCount = 0;
             /** @var Cell $c */
             foreach ($cells as $c) {
-                if ($c::ATTRIBUTE[CellTypeConst::IS_LAND]) {
+                if ($c::ATTRIBUTE[CellConst::IS_LAND]) {
                     $aroundGroundCount += 1;
                 }
             }
