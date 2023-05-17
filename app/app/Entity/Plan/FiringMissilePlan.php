@@ -18,7 +18,7 @@ use App\Entity\Log\MissileHitToMonsterLog;
 use App\Entity\Log\MissileOutOfRegionLog;
 use App\Entity\Log\MissileSelfDestructLog;
 use App\Entity\Log\SoldMonsterCorpseLog;
-use App\Entity\Plan\ForeignIsland\Plan\FiringMissileToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\FiringMissileToForeignIslandPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;

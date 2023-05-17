@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;

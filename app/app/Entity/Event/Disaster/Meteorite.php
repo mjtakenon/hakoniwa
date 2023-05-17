@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Disaster;
+namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\CellTypeConst;
 use App\Entity\Cell\Sea;

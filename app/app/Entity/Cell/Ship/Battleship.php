@@ -5,10 +5,10 @@ namespace App\Entity\Cell\Ship;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
+use App\Entity\Event\ForeignIsland\ReturnShipToAffiliationIsland;
 use App\Entity\Log\AttackAndDefeatLog;
 use App\Entity\Log\AttackLog;
 use App\Entity\Log\Logs;
-use App\Entity\Plan\ForeignIsland\Event\ReturnShipToAffiliationIslandPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
@@ -82,7 +82,7 @@ class Battleship extends CombatantShip
 
             // 他の島のもので規定ターンを過ぎていたら返す
             if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
-                $foreignIslandOccurEvents->add(new ReturnShipToAffiliationIslandPlan($island->id, $this->getAffiliationId(), $this));
+                $foreignIslandOccurEvents->add(new ReturnShipToAffiliationIsland($island->id, $this->getAffiliationId(), $this));
                 return new PassTurnResult($terrain, $status, $logs);
             }
             return parent::passTurn($island, $terrain, $status, $turn, $foreignIslandOccurEvents);

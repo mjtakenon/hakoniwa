@@ -9,7 +9,7 @@ use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\AbortNoShipLog;
 use App\Entity\Log\AbortTargetSelfIslandLog;
 use App\Entity\Log\Logs;
-use App\Entity\Plan\ForeignIsland\Plan\FundsTransportToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\FundsTransportToForeignIslandPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;

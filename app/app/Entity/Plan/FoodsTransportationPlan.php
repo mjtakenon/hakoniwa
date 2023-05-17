@@ -9,7 +9,7 @@ use App\Entity\Log\AbortLackOfFoodsLog;
 use App\Entity\Log\AbortNoShipLog;
 use App\Entity\Log\AbortTargetSelfIslandLog;
 use App\Entity\Log\Logs;
-use App\Entity\Plan\ForeignIsland\Plan\FoodsTransportToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\FoodsTransportToForeignIslandPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;

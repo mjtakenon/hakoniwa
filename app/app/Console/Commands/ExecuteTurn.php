@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Entity\Event\ForeignIsland\ForeignIslandEvent;
 use App\Entity\Log\AbandonmentLog;
 use App\Entity\Log\AbortInvalidIslandLog;
 use App\Entity\Log\InviteNewImmigrationLog;
 use App\Entity\Log\LogRow;
 use App\Entity\Log\Logs;
 use App\Entity\Log\UnpopulatedIslandLog;
-use App\Entity\Plan\ForeignIsland\Event\ForeignIslandOccurEvent;
-use App\Entity\Plan\ForeignIsland\Plan\TargetedToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\TargetedToForeignIslandPlan;
 use App\Entity\Plan\Plans;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -204,7 +204,7 @@ class ExecuteTurn extends Command
                 }
 
                 // セル処理によって発生した計画の実行
-                /** @var ForeignIslandOccurEvent $plan */
+                /** @var ForeignIslandEvent $plan */
                 foreach ($foreignIslandOccurEvents as $plan) {
                     /** @var Island $toIsland */
                     $toIsland = $islands->find($plan->getToIsland());

@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Entity\Plan\ForeignIsland\Plan;
+namespace App\Entity\Plan\ForeignIsland;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Sea;
 use App\Entity\Cell\Shallow;
 use App\Entity\Cell\Ship\TransportShip;
-use App\Entity\Log\FoodsTransportationLog;
+use App\Entity\Log\FundsTransportationLog;
 use App\Entity\Log\Logs;
-use App\Entity\Plan\FoodsTransportationPlan;
+use App\Entity\Plan\FundsTransportationPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\Turn;
 
-class FoodsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
+class FundsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
     public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
     {
@@ -23,9 +23,9 @@ class FoodsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
 
         $seaCells = $fromTerrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
 
-        $amount = $this->plan->getAmount() * FoodsTransportationPlan::UNIT;
+        $amount = $this->plan->getAmount() * FundsTransportationPlan::UNIT;
 
-        $toStatus->setFoods($toStatus->getFoods() + $amount);
+        $toStatus->setFunds($toStatus->getFunds() + $amount);
 
         if ($seaCells->count() >= 1) {
             /** @var Cell $seaCell */
@@ -33,8 +33,8 @@ class FoodsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
             $toTerrain->setCell($seaCell->getPoint(), new TransportShip(point: $seaCell->getPoint(), elevation: $seaCell->getElevation()));
         }
 
-        $fromLogs->add(new FoodsTransportationLog($toIsland, $amount, true));
-        $toLogs->add(new FoodsTransportationLog($fromIsland, $amount, false));
+        $fromLogs->add(new FundsTransportationLog($toIsland, $amount, true));
+        $toLogs->add(new FundsTransportationLog($fromIsland, $amount, false));
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
     }

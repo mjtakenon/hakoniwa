@@ -7,7 +7,7 @@ use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Log\AbortInvalidIslandLog;
 use App\Entity\Log\AbortNoShipLog;
 use App\Entity\Log\Logs;
-use App\Entity\Plan\ForeignIsland\Plan\ReinforceBattleshipToForeignIslandPlan;
+use App\Entity\Plan\ForeignIsland\ReinforceBattleshipToForeignIslandPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;
