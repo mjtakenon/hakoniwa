@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan;
 
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\TransportShip;
@@ -78,7 +79,7 @@ class FundsTransportationPlan extends Plan
 
         /** @var TransportShip $transportShip */
         $transportShip = $transportShips->random();
-        if ($transportShip->getElevation() === -1) {
+        if ($transportShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
             $terrain->setCell($transportShip->getPoint(), new Shallow(point: $transportShip->getPoint()));
         } else {
             $terrain->setCell($transportShip->getPoint(), new Sea(point: $transportShip->getPoint()));

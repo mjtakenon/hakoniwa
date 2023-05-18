@@ -36,7 +36,7 @@ class Mountain extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => true,
     ];
-    public const ELEVATION = 1;
+    public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
     private const ACTIVATE_PROBABILITY = 0.3;
 
     protected string $imagePath = self::IMAGE_PATH;

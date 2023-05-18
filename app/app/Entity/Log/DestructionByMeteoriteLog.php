@@ -3,6 +3,7 @@
 namespace App\Entity\Log;
 
 use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Models\Island;
 
 class DestructionByMeteoriteLog extends LogRow
@@ -24,7 +25,7 @@ class DestructionByMeteoriteLog extends LogRow
             ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD . StyleConst::COLOR_WARNING],
             ['text' => 'に'],
             ['text' => '隕石が落下', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
-            $this->cell::ELEVATION < 0 ? ['text' => 'し、海底がえぐられました。'] : ($this->cell::ELEVATION === 0 ? ['text' => 'し、一帯が水没しました。'] : ['text' => 'し、山が消し飛びました。']),
+            $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => 'し、海底がえぐられました。'] : ($this->cell::ELEVATION === 0 ? ['text' => 'し、一帯が水没しました。'] : ['text' => 'し、山が消し飛びました。']),
         ]);
     }
 }

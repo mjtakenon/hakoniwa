@@ -47,9 +47,9 @@ class Meteorite implements IDisaster
                 $logs->add(new DestructionByMeteoriteLog($island, $cell));
             }
 
-            if ($cell::ELEVATION === 1) {
+            if ($cell::ELEVATION === CellConst::ELEVATION_MOUNTAIN) {
                 $terrain->setCell($point, new Wasteland(point: $point));
-            } else if ($cell::ELEVATION === 0) {
+            } else if ($cell::ELEVATION === CellConst::ELEVATION_PLAIN) {
                 $terrain->setCell($point, new Shallow(point: $point));
             } else {
                 $terrain->setCell($point, new Sea(point: $point));

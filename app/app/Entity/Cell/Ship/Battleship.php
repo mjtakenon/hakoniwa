@@ -2,6 +2,7 @@
 
 namespace App\Entity\Cell\Ship;
 
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
@@ -110,7 +111,7 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
             $enemyShip->damage = 100;
 
             $logs->add(new AttackAndDefeatLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-            if ($enemyShip->getElevation() === -1) {
+            if ($enemyShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
                 $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
             } else {
                 $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));

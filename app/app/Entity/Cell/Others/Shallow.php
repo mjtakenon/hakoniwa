@@ -27,7 +27,7 @@ class Shallow extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => false,
     ];
-    public const ELEVATION = -1;
+    public const ELEVATION = CellConst::ELEVATION_SHALLOW;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;

@@ -3,6 +3,7 @@
 namespace App\Entity\Event\ForeignIsland;
 
 use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\CombatantShip;
@@ -24,7 +25,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
 
         // 帰還先の島がない場合、当該セルを消すだけとする
         if (is_null($toIsland)) {
-            if ($this->cell->getElevation() === -1) {
+            if ($this->cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
                 $fromTerrain->setCell($this->cell->getPoint(), new Shallow(point: $this->cell->getPoint()));
             } else {
                 $fromTerrain->setCell($this->cell->getPoint(), new Sea(point: $this->cell->getPoint()));
@@ -44,7 +45,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
             return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
 
-        if ($this->cell->getElevation() === -1) {
+        if ($this->cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
             $fromTerrain->setCell($this->cell->getPoint(), new Shallow(point: $this->cell->getPoint()));
         } else {
             $fromTerrain->setCell($this->cell->getPoint(), new Sea(point: $this->cell->getPoint()));

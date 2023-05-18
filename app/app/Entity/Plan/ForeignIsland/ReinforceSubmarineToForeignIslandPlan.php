@@ -3,6 +3,7 @@
 namespace App\Entity\Plan\ForeignIsland;
 
 use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\CombatantShip;
@@ -54,7 +55,7 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
         foreach ($submarines as $submarine) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            if ($submarine->getElevation() === -1) {
+            if ($submarine->getElevation() === CellConst::ELEVATION_SHALLOW) {
                 $fromTerrain->setCell($submarine->getPoint(), new Shallow(point: $submarine->getPoint()));
             } else {
                 $fromTerrain->setCell($submarine->getPoint(), new Sea(point: $submarine->getPoint()));

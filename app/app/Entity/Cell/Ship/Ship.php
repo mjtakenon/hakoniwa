@@ -70,7 +70,7 @@ abstract class Ship extends Cell
         $beforeCell->elevation = $afterCell->getElevation();
         $terrain->setCell($beforeCell->point, $beforeCell);
 
-        if ($beforeCellCopy->getElevation() === -1) {
+        if ($beforeCellCopy->getElevation() === CellConst::ELEVATION_SHALLOW) {
             $terrain->setCell($beforeCellCopy->getPoint(), new Shallow(point: $beforeCellCopy->getPoint()));
         } else {
             $terrain->setCell($beforeCellCopy->getPoint(), new Sea(point: $beforeCellCopy->getPoint()));

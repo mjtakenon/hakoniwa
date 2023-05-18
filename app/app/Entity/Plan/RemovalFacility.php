@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan;
 
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Plain;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
@@ -36,11 +37,11 @@ class RemovalFacility extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        if ($cell->getElevation() === 1) {
+        if ($cell->getElevation() === CellConst::ELEVATION_MOUNTAIN) {
             $terrain->setCell($this->point, new Volcano(point: $this->point));
-        } else if ($cell->getElevation() === 0) {
+        } else if ($cell->getElevation() === CellConst::ELEVATION_PLAIN) {
             $terrain->setCell($this->point, new Plain(point: $this->point));
-        } else if ($cell->getElevation() === -1) {
+        } else if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
             $terrain->setCell($this->point, new Shallow(point: $this->point));
         } else {
             $terrain->setCell($this->point, new Sea(point: $this->point));

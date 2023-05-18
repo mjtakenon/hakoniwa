@@ -30,7 +30,7 @@ abstract class Cell
         CellConst::PREVENTING_TSUNAMI => false,
     ];
 
-    public const ELEVATION = 0;
+    public const ELEVATION = CellConst::ELEVATION_PLAIN;
 
     protected string $name;
     protected string $imagePath;

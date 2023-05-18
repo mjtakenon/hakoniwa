@@ -3,6 +3,7 @@
 namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Log\DestructionByLandSubsidenceLog;
@@ -35,13 +36,13 @@ class LandSubsidence implements IDisaster
         $logs->add(new OccurLandSubsidenceLog($island));
 
         $candidates = $terrain->getCells()->flatten(1)->filter(function ($cell) {
-            return $cell::ELEVATION === -1 || $cell::ELEVATION === 0;
+            return $cell::ELEVATION === CellConst::ELEVATION_SHALLOW || $cell::ELEVATION === CellConst::ELEVATION_PLAIN;
         });
 
         /** @var Cell $cell */
         foreach ($candidates as $cell) {
 
-            if ($cell::ELEVATION === -1) {
+            if ($cell::ELEVATION === CellConst::ELEVATION_SHALLOW) {
                 $logs->add(new DestructionByLandSubsidenceLog($island, $cell));
                 $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
                 continue;
