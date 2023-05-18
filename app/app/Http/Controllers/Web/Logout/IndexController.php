@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Logout;
+namespace App\Http\Controllers\Web\Logout;
 
 use App\Http\Controllers\Controller;
+
 class IndexController extends Controller
 {
     public function post() {

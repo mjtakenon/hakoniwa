@@ -25,44 +25,35 @@ Route::prefix('/')->middleware(array_merge($baseMiddleware))->group( function() 
 });
 
 Route::prefix('/islands')->middleware(array_merge($baseMiddleware))->group( function() {
-    Route::get('{island_id}', [\App\Http\Controllers\Islands\DetailController::class, 'get'])
+    Route::get('{island_id}', [\App\Http\Controllers\Web\Islands\DetailController::class, 'get'])
         ->where('island_id', '[0-9]+');
 });
 
 Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
 
     Route::middleware(['auth:sanctum'])->group(function() {
-        Route::get('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'get'])
-            ->where('island_id', '[0-9]+');
-        Route::put('{island_id}/plans', [\App\Http\Controllers\Islands\PlansController::class, 'put'])
+        Route::get('{island_id}/plans', [\App\Http\Controllers\Web\Islands\PlansController::class, 'get'])
             ->where('island_id', '[0-9]+');
     });
-
 //    Route::get('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'get']);
 //    Route::post('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'post']);
 });
 
 Route::prefix('/register')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
-    Route::get('', [\App\Http\Controllers\Register\IndexController::class, 'get']);
-    Route::post('', [\App\Http\Controllers\Register\IndexController::class, 'post']);
+    Route::get('', [\App\Http\Controllers\Web\Register\IndexController::class, 'get']);
+    Route::post('', [\App\Http\Controllers\Web\Register\IndexController::class, 'post']);
 });
 
 Route::prefix('/logout')->middleware(array_merge($baseMiddleware))->group( function() {
-    Route::post('', [\App\Http\Controllers\Logout\IndexController::class, 'post']);
+    Route::post('', [\App\Http\Controllers\Web\Logout\IndexController::class, 'post']);
 });
 
 Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->group( function() {
-    Route::get('redirect', [\App\Http\Controllers\Auth\Google\RedirectController::class, 'get'])->name('login');
-    Route::get('callback', [\App\Http\Controllers\Auth\Google\CallbackController::class, 'get']);
+    Route::get('redirect', [\App\Http\Controllers\Web\Auth\Google\RedirectController::class, 'get'])->name('login');
+    Route::get('callback', [\App\Http\Controllers\Web\Auth\Google\CallbackController::class, 'get']);
 });
 
 Route::prefix('/auth/yahoo/')->middleware(array_merge($baseMiddleware, []))->group( function () {
-    Route::get('redirect', [\App\Http\Controllers\Auth\YahooJapan\RedirectController::class, 'get']);
-    Route::get('callback', [\App\Http\Controllers\Auth\YahooJapan\CallbackController::class, 'get']);
+    Route::get('redirect', [\App\Http\Controllers\Web\Auth\YahooJapan\RedirectController::class, 'get']);
+    Route::get('callback', [\App\Http\Controllers\Web\Auth\YahooJapan\CallbackController::class, 'get']);
 });
-
-Route::prefix('/test/')->group( function() {
-    Route::get('{id}', [\App\Http\Controllers\Test\DetailController::class, 'get']);
-});
-
-//, ['auth:sanctum']

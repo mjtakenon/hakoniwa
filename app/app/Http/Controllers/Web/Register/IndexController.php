@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Register;
+namespace App\Http\Controllers\Web\Register;
 
 use App\Entity\Log\IslandFoundLog;
 use App\Entity\Plan\Plans;

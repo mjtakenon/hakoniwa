@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth\YahooJapan;
+namespace App\Http\Controllers\Web\Auth\YahooJapan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
