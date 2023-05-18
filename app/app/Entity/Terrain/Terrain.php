@@ -201,7 +201,6 @@ class Terrain implements JsonEncodable
 
     public function aggregateArea(): int
     {
-        /** @var Cell $cell */
         $landCells = $this->findByAttribute(CellConst::IS_LAND)->count();
         return $landCells * self::AREA_PER_CELL;
     }

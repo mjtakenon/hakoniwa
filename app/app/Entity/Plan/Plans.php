@@ -21,22 +21,6 @@ class Plans implements JsonEncodable
         $this->plans = $plans;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getPlans(): Collection
-    {
-        return $this->plans;
-    }
-
-    /**
-     * @param Collection $plans
-     */
-    public function setPlans(Collection $plans): void
-    {
-        $this->plans = $plans;
-    }
-
     public static function init(): static
     {
         $plans = new Collection();

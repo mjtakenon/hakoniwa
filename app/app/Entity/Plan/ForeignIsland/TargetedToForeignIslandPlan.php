@@ -23,25 +23,16 @@ abstract class TargetedToForeignIslandPlan
 
     public abstract function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult;
 
-    /**
-     * @return int
-     */
     public function getFromIsland(): int
     {
         return $this->fromIsland;
     }
 
-    /**
-     * @return int
-     */
     public function getToIsland(): int
     {
         return $this->toIsland;
     }
 
-    /**
-     * @return Plan
-     */
     public function getPlan(): Plan
     {
         return $this->plan;
