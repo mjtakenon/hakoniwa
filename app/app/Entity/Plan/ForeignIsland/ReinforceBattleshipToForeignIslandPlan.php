@@ -3,8 +3,9 @@
 namespace App\Entity\Plan\ForeignIsland;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
+use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Log\AbortInvalidTerrainLog;
@@ -53,7 +54,7 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
         foreach ($battleships as $battleship) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            if ($battleship->getElevation() === -1) {
+            if ($battleship->getElevation() === CellConst::ELEVATION_SHALLOW) {
                 $fromTerrain->setCell($battleship->getPoint(), new Shallow(point: $battleship->getPoint()));
             } else {
                 $fromTerrain->setCell($battleship->getPoint(), new Sea(point: $battleship->getPoint()));

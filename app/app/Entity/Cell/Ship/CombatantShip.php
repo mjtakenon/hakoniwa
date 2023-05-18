@@ -2,7 +2,7 @@
 
 namespace App\Entity\Cell\Ship;
 
-abstract class CombatantShip extends Ship
+abstract class CombatantShip extends Ship implements ICombatantShip
 {
     public const DEFAULT_EXPERIENCE = 0;
     public const DEFAULT_DAMAGE = 0;
@@ -66,9 +66,6 @@ abstract class CombatantShip extends Ship
         return $this->getOffensivePower()/2 - $target->getDefencePower()/4 + random_int(0, 5);
     }
 
-    /**
-     * @return int
-     */
     public function getExperience(): int
     {
         return $this->experience;
@@ -84,73 +81,46 @@ abstract class CombatantShip extends Ship
         return 1;
     }
 
-    /**
-     * @param int $experience
-     */
     public function setExperience(int $experience): void
     {
         $this->experience = $experience;
     }
 
-    /**
-     * @return int
-     */
     public function getDamage(): int
     {
         return $this->damage;
     }
 
-    /**
-     * @param int $damage
-     */
     public function setDamage(int $damage): void
     {
         $this->damage = $damage;
     }
 
-    /**
-     * @return int
-     */
     public function getOffensivePower(): int
     {
         return $this->offensivePower + 0.1 * $this->getLevel();
     }
 
-    /**
-     * @return int
-     */
     public function getDefencePower(): int
     {
         return $this->defencePower + 0.1 * $this->getLevel();
     }
 
-    /**
-     * @return int|null
-     */
     public function getAffiliationId(): ?int
     {
         return $this->affiliationId;
     }
 
-    /**
-     * @return string
-     */
     public function getAffiliationName(): string
     {
         return $this->affiliationName;
     }
 
-    /**
-     * @return int|null
-     */
     public function getReturnTurn(): ?int
     {
         return $this->returnTurn;
     }
 
-    /**
-     * @param int|null $returnTurn
-     */
     public function setReturnTurn(?int $returnTurn): void
     {
         $this->returnTurn = $returnTurn;

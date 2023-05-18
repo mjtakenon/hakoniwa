@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\PassTurnResult;
+use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -9,6 +12,7 @@ use App\Entity\Util\Rand;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
+use App\Entity\Cell\CellConst;
 
 class Mountain extends Cell
 {
@@ -19,7 +23,6 @@ class Mountain extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -33,7 +36,7 @@ class Mountain extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => true,
     ];
-    public const ELEVATION = 1;
+    public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
     private const ACTIVATE_PROBABILITY = 0.3;
 
     protected string $imagePath = self::IMAGE_PATH;

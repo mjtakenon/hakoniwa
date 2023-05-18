@@ -2,7 +2,7 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Factory;
+use App\Entity\Cell\FundsProduction\Factory;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\ExecuteCellLog;

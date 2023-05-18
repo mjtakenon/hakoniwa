@@ -4,8 +4,8 @@ namespace App\Entity\Cell\HasPopulation;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Plain;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Plain;
 use App\Entity\Log\Logs;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
@@ -14,7 +14,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-abstract class HasPopulation extends Cell
+abstract class HasPopulation extends Cell implements IHasPopulation
 {
     private const DEFAULT_MIN_POPULATION_INCREMENTAL_RATE = 1;
     private const DEFAULT_MAX_POPULATION_INCREMENTAL_RATE = 10;
@@ -25,7 +25,6 @@ abstract class HasPopulation extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => true,
         CellConst::DESTRUCTIBLE_BY_FIRE => true,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
@@ -173,5 +172,15 @@ abstract class HasPopulation extends Cell
 
         $terrain->setCell($this->point, new Plain(point: $this->point));
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getPopulation(): int
+    {
+        return $this->population;
+    }
+
+    public function setPopulation($population): void
+    {
+        $this->population = $population;
     }
 }

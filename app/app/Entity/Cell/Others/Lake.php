@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
+
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 
 class Lake extends Cell
 {
@@ -11,7 +14,6 @@ class Lake extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -25,7 +27,7 @@ class Lake extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => true,
     ];
-    public const ELEVATION = -1;
+    public const ELEVATION = CellConst::ELEVATION_SHALLOW;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;

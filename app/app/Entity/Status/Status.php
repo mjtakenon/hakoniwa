@@ -3,8 +3,8 @@
 namespace App\Entity\Status;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\Farm;
-use App\Entity\Cell\FarmDome;
+use App\Entity\Cell\FoodsProduction\Farm;
+use App\Entity\Cell\FoodsProduction\FarmDome;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\IslandStatus;
@@ -174,113 +174,71 @@ class Status
         }
     }
 
-    /**
-     * @return int
-     */
     public function getDevelopmentPoints(): int
     {
         return $this->developmentPoints;
     }
 
-    /**
-     * @return int
-     */
     public function getFunds(): int
     {
         return $this->funds;
     }
 
-    /**
-     * @param int $funds
-     */
     public function setFunds(int $funds): void
     {
         $this->funds = $funds;
     }
 
-    /**
-     * @param int $resources
-     */
     public function setResources(int $resources): void
     {
         $this->resources = $resources;
     }
 
-    /**
-     * @param int $developmentPoints
-     */
     public function setDevelopmentPoints(int $developmentPoints): void
     {
         $this->developmentPoints = $developmentPoints;
     }
 
-    /**
-     * @return int
-     */
     public function getFoods(): int
     {
         return $this->foods;
     }
 
-    /**
-     * @param int $foods
-     */
     public function setFoods(int $foods): void
     {
         $this->foods = $foods;
     }
 
-    /**
-     * @return int
-     */
     public function getResources(): int
     {
         return $this->resources;
     }
 
-    /**
-     * @return int
-     */
     public function getPopulation(): int
     {
         return $this->population;
     }
 
-    /**
-     * @return int
-     */
     public function getFundsProductionCapacity(): int
     {
         return $this->fundsProductionCapacity;
     }
 
-    /**
-     * @return int
-     */
     public function getFoodsProductionCapacity(): int
     {
         return $this->foodsProductionCapacity;
     }
 
-    /**
-     * @return int
-     */
     public function getResourcesProductionCapacity(): int
     {
         return $this->resourcesProductionCapacity;
     }
 
-    /**
-     * @return string
-     */
     public function getEnvironment(): string
     {
         return $this->environment;
     }
 
-    /**
-     * @return int
-     */
     public function getArea(): int
     {
         return $this->area;
@@ -291,9 +249,6 @@ class Status
         return $this->abandonedTurn;
     }
 
-    /**
-     * @param int $abandonedTurn
-     */
     public function setAbandonedTurn(int $abandonedTurn): void
     {
         $this->abandonedTurn = $abandonedTurn;

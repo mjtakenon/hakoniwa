@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\FoodsProduction;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Lake;
+use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
@@ -10,7 +14,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Farm extends Cell
+class Farm extends Cell implements IFoodsProduction
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land72.gif';
     public const TYPE = 'farm';
@@ -21,7 +25,6 @@ class Farm extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -81,5 +84,10 @@ class Farm extends Cell
             $this->foodsProductionCapacity *= 2;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getFoodsProductionCapacity(): int
+    {
+        return $this->foodsProductionCapacity;
     }
 }

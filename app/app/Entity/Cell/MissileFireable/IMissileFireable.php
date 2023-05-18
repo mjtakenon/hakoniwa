@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Cell\MissileBase;
+namespace App\Entity\Cell\MissileFireable;
 
 interface IMissileFireable
 {

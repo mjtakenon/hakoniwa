@@ -2,9 +2,11 @@
 
 namespace App\Entity\Cell\Ship;
 
+use App\Entity\Cell\CellConst;
+use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
 use App\Entity\Event\ForeignIsland\ReturnShipToAffiliationIsland;
 use App\Entity\Log\AttackAndDefeatLog;
 use App\Entity\Log\AttackLog;
@@ -16,7 +18,7 @@ use App\Models\Turn;
 use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
-class Battleship extends CombatantShip
+class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
 {
     public const MAINTENANCE_NUMBER_OF_PEOPLE = 5000;
 
@@ -60,7 +62,7 @@ class Battleship extends CombatantShip
     public function getMaintenanceNumberOfPeople(Island $island): int
     {
         if ($island->id === $this->getAffiliationId()) {
-            return parent::getMaintenanceNumberOfPeople($island);
+            return $this->maintenanceNumberOfPeople;
         } else {
             return 0;
         }
@@ -109,7 +111,7 @@ class Battleship extends CombatantShip
             $enemyShip->damage = 100;
 
             $logs->add(new AttackAndDefeatLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-            if ($enemyShip->getElevation() === -1) {
+            if ($enemyShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
                 $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
             } else {
                 $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));

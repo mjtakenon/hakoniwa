@@ -2,8 +2,8 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Mine;
-use App\Entity\Cell\Volcano;
+use App\Entity\Cell\Others\Volcano;
+use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\ExecuteCellLog;

@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\HasWoods;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -9,7 +12,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Forest extends Cell
+class Forest extends Cell implements IHasWoods
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land6.gif';
     public const TYPE = 'forest';
@@ -23,7 +26,6 @@ class Forest extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -77,5 +79,10 @@ class Forest extends Cell
         }
         $this->woods += self::INCREMENT_WOODS;
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getWoods(): int
+    {
+        return $this->woods;
     }
 }

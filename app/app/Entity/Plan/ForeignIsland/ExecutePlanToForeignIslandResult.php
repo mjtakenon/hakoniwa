@@ -25,49 +25,31 @@ class ExecutePlanToForeignIslandResult
         $this->toLogs = $toLogs;
     }
 
-    /**
-     * @return Status
-     */
     public function getFromStatus(): Status
     {
         return $this->fromStatus;
     }
 
-    /**
-     * @return Status
-     */
     public function getToStatus(): Status
     {
         return $this->toStatus;
     }
 
-    /**
-     * @return Terrain
-     */
     public function getFromTerrain(): Terrain
     {
         return $this->fromTerrain;
     }
 
-    /**
-     * @return Terrain
-     */
     public function getToTerrain(): Terrain
     {
         return $this->toTerrain;
     }
 
-    /**
-     * @return Logs
-     */
     public function getFromLogs(): Logs
     {
         return $this->fromLogs;
     }
 
-    /**
-     * @return Logs
-     */
     public function getToLogs(): Logs
     {
         return $this->toLogs;

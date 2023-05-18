@@ -3,9 +3,9 @@
 namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Wasteland;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Log\DestructionByMeteoriteLog;
 use App\Entity\Log\DestructionShipLog;
 use App\Entity\Log\Logs;
@@ -47,9 +47,9 @@ class Meteorite implements IDisaster
                 $logs->add(new DestructionByMeteoriteLog($island, $cell));
             }
 
-            if ($cell::ELEVATION === 1) {
+            if ($cell::ELEVATION === CellConst::ELEVATION_MOUNTAIN) {
                 $terrain->setCell($point, new Wasteland(point: $point));
-            } else if ($cell::ELEVATION === 0) {
+            } else if ($cell::ELEVATION === CellConst::ELEVATION_PLAIN) {
                 $terrain->setCell($point, new Shallow(point: $point));
             } else {
                 $terrain->setCell($point, new Sea(point: $point));

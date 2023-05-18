@@ -4,9 +4,9 @@ namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Wasteland;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Log\DestructionByHugeMeteoriteLog;
 use App\Entity\Log\DestructionShipLog;
 use App\Entity\Log\Logs;
@@ -54,9 +54,9 @@ class HugeMeteorite implements IDisaster
                 $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 1));
             }
 
-            if ($cell::ELEVATION <= -1) {
+            if ($cell::ELEVATION <= CellConst::ELEVATION_SHALLOW) {
                 $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
-            } else if ($cell::ELEVATION === 1) {
+            } else if ($cell::ELEVATION === CellConst::ELEVATION_MOUNTAIN) {
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             } else {
                 $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
@@ -74,9 +74,9 @@ class HugeMeteorite implements IDisaster
                     $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 2));
                 }
 
-                if ($cell->getElevation() === -1) {
+                if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
                     $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-                } else if ($cell->getElevation() <= -2) {
+                } else if ($cell->getElevation() <= CellConst::ELEVATION_SEA) {
                     $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
                 } else {
                     $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));

@@ -3,6 +3,7 @@
 namespace App\Entity\Log;
 
 use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Models\Island;
 
 class DestructionByVolcanicEruptionLog extends LogRow
@@ -23,8 +24,8 @@ class DestructionByVolcanicEruptionLog extends LogRow
             ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') の'],
             ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD . StyleConst::COLOR_WARNING],
             ['text' => 'は'],
-            $this->cell::ELEVATION < 0 ? ['text' => '海底が隆起'] : ['text' => '火砕流', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
-            $this->cell::ELEVATION < 0 ? ['text' => 'しました。'] : ['text' => 'にのみこまれました。'],
+            $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => '海底が隆起'] : ['text' => '火砕流', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
+            $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => 'しました。'] : ['text' => 'にのみこまれました。'],
         ]);
     }
 }

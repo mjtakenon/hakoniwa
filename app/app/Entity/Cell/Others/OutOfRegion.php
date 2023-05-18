@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
 
-class Shallow extends Cell
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+
+class OutOfRegion extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
-    public const TYPE = 'shallow';
-    public const NAME = '浅瀬';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land0.gif';
+    public const TYPE = 'out_of_region';
+    public const NAME = '領域外';
     const ATTRIBUTE = [
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -25,7 +27,7 @@ class Shallow extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => false,
     ];
-    public const ELEVATION = -1;
+    public const ELEVATION = CellConst::ELEVATION_SEA;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;

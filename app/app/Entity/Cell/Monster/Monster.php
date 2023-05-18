@@ -4,8 +4,8 @@ namespace App\Entity\Cell\Monster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByMonsterLog;
 use App\Entity\Log\DisappearMonsterLog;
 use App\Entity\Log\Logs;
@@ -15,13 +15,12 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-abstract class Monster extends Cell
+abstract class Monster extends Cell implements IMonster
 {
     const ATTRIBUTE = [
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => true,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -70,16 +69,10 @@ abstract class Monster extends Cell
             '体力 ' . $this->getHitPoints();
     }
 
-    abstract public function getAppearancePopulation(): int;
-
     public function getDisappearancePopulation(): int
     {
         return $this->getAppearancePopulation() / 4;
     }
-
-    abstract public function getExperience(): int;
-
-    abstract public function getCorpsePrice(): int;
 
     public function getHitPoints(): int
     {
@@ -91,9 +84,6 @@ abstract class Monster extends Cell
         $this->hitPoints = $hitPoints;
     }
 
-    abstract public function getDefaultHitPoints(): int;
-
-    abstract public function getDefaultMoveTimes(): int;
     public function isAttackDisabled(): bool
     {
         return false;
@@ -137,7 +127,7 @@ abstract class Monster extends Cell
         $monster->point = $moveTarget->point;
         // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
         $terrain->setCell($monster->getPoint(), $monster);
-$passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
+        $passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
         $terrain = $passTurnResult->getTerrain();
         $status = $passTurnResult->getStatus();

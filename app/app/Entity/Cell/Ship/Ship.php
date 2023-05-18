@@ -4,9 +4,9 @@ namespace App\Entity\Cell\Ship;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -21,7 +21,6 @@ abstract class Ship extends Cell
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => true,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -38,7 +37,7 @@ abstract class Ship extends Cell
 
     protected string $shallowImagePath;
     protected string $seaImagePath;
-    protected int $elevation = -1;
+    protected int $elevation = CellConst::ELEVATION_SHALLOW;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
@@ -54,13 +53,13 @@ abstract class Ship extends Cell
         if (array_key_exists('elevation', $data)) {
             $this->elevation = $data['elevation'];
         } else {
-            $this->elevation = -1;
+            $this->elevation = CellConst::ELEVATION_SHALLOW;
         }
     }
 
     public function getImagePath(): string
     {
-        return $this->elevation === -1 ? $this->shallowImagePath : $this->seaImagePath;
+        return $this->elevation === CellConst::ELEVATION_SHALLOW ? $this->shallowImagePath : $this->seaImagePath;
     }
 
     protected function move(Terrain $terrain, Cell $beforeCell, Cell $afterCell): Terrain
@@ -71,7 +70,7 @@ abstract class Ship extends Cell
         $beforeCell->elevation = $afterCell->getElevation();
         $terrain->setCell($beforeCell->point, $beforeCell);
 
-        if ($beforeCellCopy->getElevation() === -1) {
+        if ($beforeCellCopy->getElevation() === CellConst::ELEVATION_SHALLOW) {
             $terrain->setCell($beforeCellCopy->getPoint(), new Shallow(point: $beforeCellCopy->getPoint()));
         } else {
             $terrain->setCell($beforeCellCopy->getPoint(), new Sea(point: $beforeCellCopy->getPoint()));

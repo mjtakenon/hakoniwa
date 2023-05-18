@@ -2,7 +2,7 @@
 
 namespace App\Entity\Cell\Park;
 
-use App\Entity\Cell\MissileBase\MissileBase;
+use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;

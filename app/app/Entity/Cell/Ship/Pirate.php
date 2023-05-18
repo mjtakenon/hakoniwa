@@ -4,10 +4,10 @@ namespace App\Entity\Cell\Ship;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Wasteland;
 use App\Entity\Log\AttackAndDefeatLog;
 use App\Entity\Log\AttackLog;
 use App\Entity\Log\DestructionByShipLog;
@@ -52,7 +52,7 @@ class Pirate extends CombatantShip
         // 他の島のもので規定ターンを過ぎていたら返す
         if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
             $logs->add(new DisappearPirateLog($island, deep_copy($this)));
-            if ($this->elevation === -1) {
+            if ($this->elevation === CellConst::ELEVATION_SHALLOW) {
                 $terrain->setCell($this->getPoint(), new Shallow(point: $this->getPoint()));
             } else {
                 $terrain->setCell($this->getPoint(), new Sea(point: $this->getPoint()));
@@ -83,7 +83,7 @@ class Pirate extends CombatantShip
                 $attackDamage -= $enemyShip->damage - 100;
                 $enemyShip->damage = 100;
                 $logs->add(new AttackAndDefeatLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-                if ($enemyShip->getElevation() === -1) {
+                if ($enemyShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
                     $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
                 } else {
                     $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));

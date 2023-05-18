@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\FundsProduction;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -9,7 +12,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Factory extends Cell
+class Factory extends Cell implements IFundsProduction
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
     public const TYPE = 'factory';
@@ -21,7 +24,6 @@ class Factory extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => true,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
@@ -39,6 +41,8 @@ class Factory extends Cell
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
+    protected int $productionCapacity = self::PRODUCTION_CAPACITY;
+    protected int $seasideProductionCapacity = self::SEASIDE_PRODUCTION_CAPACITY;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
@@ -54,7 +58,7 @@ class Factory extends Cell
         if (array_key_exists('fundsProductionCapacity', $data)) {
             $this->fundsProductionCapacity = $data['fundsProductionCapacity'];
         } else {
-            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
+            $this->fundsProductionCapacity = $this->productionCapacity;
         }
     }
 
@@ -72,10 +76,15 @@ class Factory extends Cell
             return $cell::ATTRIBUTE[CellConst::IS_LAND];
         });
         if ($seasideCells->count() >= 1) {
-            $this->fundsProductionCapacity = self::SEASIDE_PRODUCTION_CAPACITY;
+            $this->fundsProductionCapacity = $this->seasideProductionCapacity;
         } else {
-            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
+            $this->fundsProductionCapacity = $this->productionCapacity;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getFundsProductionCapacity(): int
+    {
+        return $this->fundsProductionCapacity;
     }
 }

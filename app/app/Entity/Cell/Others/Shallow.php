@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
 
-class Volcano extends Cell
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+
+class Shallow extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano.png';
-    public const TYPE = 'volcano';
-    public const NAME = '火山';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
+    public const TYPE = 'shallow';
+    public const NAME = '浅瀬';
     const ATTRIBUTE = [
-        CellConst::IS_LAND => true,
+        CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -23,9 +25,9 @@ class Volcano extends Cell
         CellConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellConst::PREVENTING_FIRE => false,
         CellConst::PREVENTING_TYPHOON => false,
-        CellConst::PREVENTING_TSUNAMI => true,
+        CellConst::PREVENTING_TSUNAMI => false,
     ];
-    public const ELEVATION = 1;
+    public const ELEVATION = CellConst::ELEVATION_SHALLOW;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;

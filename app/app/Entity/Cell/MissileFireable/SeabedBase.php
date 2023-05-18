@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Entity\Cell\MissileBase;
+namespace App\Entity\Cell\MissileFireable;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Forest;
-use App\Entity\Cell\Sea;
+use App\Entity\Cell\HasWoods\Forest;
+use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
+use App\Entity\Cell\Others\Sea;
+use App\Models\Island;
 
-class SeabedBase extends Cell implements IMissileFireable
+class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumberOfPeople
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land12.gif';
     public const TYPE = 'seabed_base';
@@ -26,7 +28,6 @@ class SeabedBase extends Cell implements IMissileFireable
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -40,7 +41,7 @@ class SeabedBase extends Cell implements IMissileFireable
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => false,
     ];
-    public const ELEVATION = -2;
+    public const ELEVATION = CellConst::ELEVATION_SEA;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
@@ -99,5 +100,10 @@ class SeabedBase extends Cell implements IMissileFireable
     public function getExperience(): int
     {
         return $this->experience;
+    }
+
+    public function getMaintenanceNumberOfPeople(Island $island): int
+    {
+        return $this->maintenanceNumberOfPeople;
     }
 }

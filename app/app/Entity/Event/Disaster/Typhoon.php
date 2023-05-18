@@ -4,7 +4,7 @@ namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Plain;
+use App\Entity\Cell\Others\Plain;
 use App\Entity\Log\DestructionByTyphoonLog;
 use App\Entity\Log\Logs;
 use App\Entity\Log\OccurTyphoonLog;

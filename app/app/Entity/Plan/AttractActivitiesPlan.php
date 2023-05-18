@@ -4,6 +4,7 @@ namespace App\Entity\Plan;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\HasPopulation\IHasPopulation;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\Logs;
@@ -41,8 +42,8 @@ class AttractActivitiesPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        /** @var Cell $cell */
-        $hasPopulationCells = $terrain->findByAttribute(CellConst::HAS_POPULATION);
+        /** @var IHasPopulation $cell */
+        $hasPopulationCells = $terrain->findByInterface(IHasPopulation::class);
 
         foreach ($hasPopulationCells as $cell) {
             $addPopulation = random_int(1, 3) * 100;

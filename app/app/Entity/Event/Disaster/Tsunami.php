@@ -4,7 +4,7 @@ namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Wasteland;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Log\DestructionByTsunamiLog;
 use App\Entity\Log\Logs;
 use App\Entity\Log\OccurTsunamiLog;

@@ -2,11 +2,11 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Mountain;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Volcano;
-use App\Entity\Cell\Wasteland;
+use App\Entity\Cell\Others\Mountain;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Volcano;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\AbortNoDevelopmentPointsLog;

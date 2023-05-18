@@ -4,10 +4,10 @@ namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Volcano;
-use App\Entity\Cell\Wasteland;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Volcano;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Log\DestructionByRiotLog;
 use App\Entity\Log\Logs;
 use App\Entity\Log\OccurFoodShortageLog;
@@ -41,11 +41,11 @@ class Riot implements IDisaster
                 continue;
             }
 
-            if ($cell->getElevation() >= 1) {
+            if ($cell->getElevation() >= CellConst::ELEVATION_MOUNTAIN) {
                 $terrain->setCell($cell->getPoint(), new Volcano(point: $cell->getPoint()));
-            } else if ($cell->getElevation() === 0) {
+            } else if ($cell->getElevation() === CellConst::ELEVATION_PLAIN) {
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
-            } else if ($cell->getElevation() === -1) {
+            } else if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
                 $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
             } else {
                 $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));

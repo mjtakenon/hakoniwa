@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\ResourcesProduction;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
@@ -10,31 +13,30 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Oilfield extends Cell
+class Mine extends Cell implements IResourcesProduction
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land16.gif';
-    public const TYPE = 'oilfield';
-    public const NAME = '油田';
-    const PRODUCTION_CAPACITY = 20000;
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano_mine.png';
+    public const TYPE = 'mine';
+    public const NAME = '採掘場';
+    const PRODUCTION_CAPACITY = 50000;
     const ATTRIBUTE = [
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
         CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
         CellConst::DESTRUCTIBLE_BY_METEORITE => true,
-        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
-        CellConst::DESTRUCTIBLE_BY_MISSILE => true,
-        CellConst::DESTRUCTIBLE_BY_RIOT => true,
-        CellConst::DESTRUCTIBLE_BY_MONSTER => true,
+        CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => false,
+        CellConst::DESTRUCTIBLE_BY_MISSILE => false,
+        CellConst::DESTRUCTIBLE_BY_RIOT => false,
+        CellConst::DESTRUCTIBLE_BY_MONSTER => false,
         CellConst::PREVENTING_FIRE => false,
         CellConst::PREVENTING_TYPHOON => false,
-        CellConst::PREVENTING_TSUNAMI => false,
+        CellConst::PREVENTING_TSUNAMI => true,
     ];
-    public const ELEVATION = -1;
+    public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
@@ -73,7 +75,11 @@ class Oilfield extends Cell
         if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_MINE_AND_OILFIELD_CAPACITY_AVAILABLE_POINTS) {
             $this->resourcesProductionCapacity *= 2;
         }
-
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getResourcesProductionCapacity(): int
+    {
+        return $this->resourcesProductionCapacity;
     }
 }

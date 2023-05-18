@@ -3,6 +3,7 @@
 namespace App\Entity\Log;
 
 use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Models\Island;
 
 class DestructionByLandSubsidenceLog extends LogRow
@@ -24,7 +25,7 @@ class DestructionByLandSubsidenceLog extends LogRow
             ['text' => $this->cell::NAME, 'style' => StyleConst::BOLD . StyleConst::COLOR_WARNING],
             ['text' => 'は'],
             ['text' => '地盤が沈下', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],
-            $this->cell::ELEVATION < 0 ? ['text' => 'しました'] : ['text' => 'し、一帯が水没しました。'],
+            $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => 'しました'] : ['text' => 'し、一帯が水没しました。'],
         ]);
     }
 }

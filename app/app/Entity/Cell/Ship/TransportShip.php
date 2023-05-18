@@ -3,8 +3,10 @@
 namespace App\Entity\Cell\Ship;
 
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
+use App\Models\Island;
 
-class TransportShip extends Ship
+class TransportShip extends Ship implements IHasMaintenanceNumberOfPeople
 {
     public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/transport_ship_sea.png';
     public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/transport_ship_shallow.png';
@@ -16,7 +18,6 @@ class TransportShip extends Ship
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => true,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -55,5 +56,10 @@ class TransportShip extends Ship
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
             '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL;
+    }
+
+    public function getMaintenanceNumberOfPeople(Island $island): int
+    {
+        return $this->maintenanceNumberOfPeople;
     }
 }

@@ -16,13 +16,6 @@ abstract class Cell
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::IS_MISSILE_BASE => false,
-        CellConst::HAS_POPULATION => false,
-        CellConst::HAS_FOODS_PRODUCTION_CAPACITY => false,
-        CellConst::HAS_FUNDS_PRODUCTION_CAPACITY => false,
-        CellConst::HAS_RESOURCES_PRODUCTION_CAPACITY => false,
-        CellConst::HAS_MAINTENANCE_NUMBER_OF_PEOPLE => false,
-        CellConst::HAS_WOODS => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -37,7 +30,7 @@ abstract class Cell
         CellConst::PREVENTING_TSUNAMI => false,
     ];
 
-    public const ELEVATION = 0;
+    public const ELEVATION = CellConst::ELEVATION_PLAIN;
 
     protected string $name;
     protected string $imagePath;
@@ -112,41 +105,6 @@ abstract class Cell
     public function getPoint(): Point
     {
         return $this->point;
-    }
-
-    public function getPopulation(): int
-    {
-        return $this->population;
-    }
-
-    public function setPopulation($population)
-    {
-        $this->population = $population;
-    }
-
-    public function getFoodsProductionCapacity(): int
-    {
-        return $this->foodsProductionCapacity;
-    }
-
-    public function getFundsProductionCapacity(): int
-    {
-        return $this->fundsProductionCapacity;
-    }
-
-    public function getResourcesProductionCapacity(): int
-    {
-        return $this->resourcesProductionCapacity;
-    }
-
-    public function getWoods(): int
-    {
-        return $this->woods;
-    }
-
-    public function getMaintenanceNumberOfPeople(Island $island): int
-    {
-        return $this->maintenanceNumberOfPeople;
     }
 
     public function getInfoString(bool $isPrivate = false): string

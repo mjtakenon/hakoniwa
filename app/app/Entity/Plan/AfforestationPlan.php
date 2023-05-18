@@ -2,7 +2,7 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Forest;
+use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\AfforestationLog;

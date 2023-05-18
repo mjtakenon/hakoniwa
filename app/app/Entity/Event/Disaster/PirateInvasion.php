@@ -3,8 +3,8 @@
 namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\Pirate;
 use App\Entity\Log\Logs;
 use App\Entity\Log\PirateInvasionLog;
