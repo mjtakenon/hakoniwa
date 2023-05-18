@@ -110,9 +110,9 @@ export const useMainStore = defineStore('main', {
     },
     actions: {
         async putPlan() {
-            console.debug('PUT', '/islands/' + this.island.id + '/plans')
+            console.debug('PUT', '/api/islands/' + this.island.id + '/plans')
             await axios.put(
-                '/islands/' + this.island.id + '/plans',
+                '/api/islands/' + this.island.id + '/plans',
                 {
                     plan: JSON.stringify(this.plans),
                 }

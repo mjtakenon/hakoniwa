@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Islands;
+namespace App\Http\Controllers\Web\Islands;
 
 use App\Http\Controllers\Controller;
+
 class BbsController extends Controller
 {
     public function get() {

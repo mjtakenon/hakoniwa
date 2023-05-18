@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Help;
+namespace App\Http\Controllers\Web\Help;
 
 use App\Http\Controllers\Controller;
 

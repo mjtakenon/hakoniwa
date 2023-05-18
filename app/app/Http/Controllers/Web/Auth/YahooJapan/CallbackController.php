@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth\YahooJapan;
+namespace App\Http\Controllers\Web\Auth\YahooJapan;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserAuthentication;
 use Illuminate\Support\Str;
-use YConnect\Credential\ClientCredential;
-use YConnect\YConnectClient;
 
 class CallbackController extends Controller
 {

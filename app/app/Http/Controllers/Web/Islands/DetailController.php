@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Islands;
+namespace App\Http\Controllers\Web\Islands;
 
 use App\Entity\Log\LogVisibility;
-use App\Entity\Terrain\Terrain;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\IslandLog;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Google;
+namespace App\Http\Controllers\Web\Auth\Google;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;

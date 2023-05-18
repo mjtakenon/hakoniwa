@@ -2,10 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Api\WebApi;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
 {
+    use WebApi;
+
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      *
@@ -14,6 +17,10 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+        if ($request->is('api/*')) {
+            $this->forbidden()->throwResponse();
+        }
+
         if (! $request->expectsJson()) {
             return route('login',[],false);
         }

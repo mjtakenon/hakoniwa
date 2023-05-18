@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Islands;
+namespace App\Http\Controllers\Web\Islands;
 
-use App\Entity\Plan\Plans;
-use App\Entity\Terrain\Terrain;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Trait\WebApi;
 use App\Models\Island;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
@@ -14,8 +11,6 @@ use Illuminate\Support\Collection;
 
 class PlansController extends Controller
 {
-    use WebApi;
-
     // TODO Consider to reduce count of recent turns log after making log detail page.
     const DEFAULT_SHOW_LOG_TURNS = 20;
 
@@ -120,45 +115,5 @@ class PlansController extends Controller
                 'next_time' => $turn->next_turn_scheduled_at->format('Y-m-d H:i:s')
             ]
         ]);
-    }
-
-    public function put(int $islandId): \Illuminate\Http\JsonResponse
-    {
-        $validator = \Validator::make(\Request::all(), [
-            'plan' => 'string|required',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->badRequest();
-        }
-
-        if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $islandId) {
-            return $this->forbidden();
-        }
-
-        $island = Island::find($islandId);
-
-        if (is_null($island) || !is_null($island->deleted_at)) {
-            return $this->notFound();
-        }
-
-        $validated = $validator->safe()->collect();
-
-        $turn = Turn::latest()->firstOrFail();
-
-        $plan = $validated->get('plan');
-
-        if (!\PlanService::isValidPlans($plan)) {
-            return $this->badRequest();
-        }
-
-        $plans = Plans::fromJson($plan);
-
-        $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
-
-        $islandPlan->plan = $plans->toJson();
-        $islandPlan->save();
-
-        return response()->json(['plan' => $plans->toArray(true)]);
     }
 }
