@@ -37,7 +37,7 @@ abstract class Ship extends Cell
 
     protected string $shallowImagePath;
     protected string $seaImagePath;
-    protected int $elevation = -1;
+    protected int $elevation = CellConst::ELEVATION_SHALLOW;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
@@ -53,13 +53,13 @@ abstract class Ship extends Cell
         if (array_key_exists('elevation', $data)) {
             $this->elevation = $data['elevation'];
         } else {
-            $this->elevation = -1;
+            $this->elevation = CellConst::ELEVATION_SHALLOW;
         }
     }
 
     public function getImagePath(): string
     {
-        return $this->elevation === -1 ? $this->shallowImagePath : $this->seaImagePath;
+        return $this->elevation === CellConst::ELEVATION_SHALLOW ? $this->shallowImagePath : $this->seaImagePath;
     }
 
     protected function move(Terrain $terrain, Cell $beforeCell, Cell $afterCell): Terrain

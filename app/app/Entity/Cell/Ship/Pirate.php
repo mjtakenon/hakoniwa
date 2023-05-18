@@ -52,7 +52,7 @@ class Pirate extends CombatantShip
         // 他の島のもので規定ターンを過ぎていたら返す
         if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
             $logs->add(new DisappearPirateLog($island, deep_copy($this)));
-            if ($this->elevation === -1) {
+            if ($this->elevation === CellConst::ELEVATION_SHALLOW) {
                 $terrain->setCell($this->getPoint(), new Shallow(point: $this->getPoint()));
             } else {
                 $terrain->setCell($this->getPoint(), new Sea(point: $this->getPoint()));
