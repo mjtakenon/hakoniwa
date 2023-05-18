@@ -2,8 +2,8 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Oilfield;
-use App\Entity\Cell\Shallow;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\ResourcesProduction\Oilfield;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\ExecuteCellLog;

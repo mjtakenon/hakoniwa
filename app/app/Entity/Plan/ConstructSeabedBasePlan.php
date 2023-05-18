@@ -3,7 +3,7 @@
 namespace App\Entity\Plan;
 
 use App\Entity\Cell\MissileBase\SeabedBase;
-use App\Entity\Cell\Sea;
+use App\Entity\Cell\Others\Sea;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\AbortNoDevelopmentPointsLog;

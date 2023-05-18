@@ -2,8 +2,8 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Forest;
-use App\Entity\Cell\Plain;
+use App\Entity\Cell\HasWoods\Forest;
+use App\Entity\Cell\Others\Plain;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\DeforestationLog;
 use App\Entity\Log\ExecuteCellLog;

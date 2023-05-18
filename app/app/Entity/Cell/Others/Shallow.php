@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
 
-class Sea extends Cell
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+
+class Shallow extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land0.gif';
-    public const TYPE = 'sea';
-    public const NAME = '海';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land14.gif';
+    public const TYPE = 'shallow';
+    public const NAME = '浅瀬';
     const ATTRIBUTE = [
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
@@ -25,7 +28,7 @@ class Sea extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => false,
     ];
-    public const ELEVATION = -2;
+    public const ELEVATION = -1;
 
     protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;

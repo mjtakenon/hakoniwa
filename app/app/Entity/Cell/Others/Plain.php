@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\FoodsProduction\Farm;
 use App\Entity\Cell\HasPopulation\City;
 use App\Entity\Cell\HasPopulation\Metropolis;
 use App\Entity\Cell\HasPopulation\Town;
 use App\Entity\Cell\HasPopulation\Village;
+use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -13,6 +16,7 @@ use App\Entity\Util\Rand;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
+use App\Entity\Cell\CellConst;
 
 class Plain extends Cell
 {

@@ -4,8 +4,8 @@ namespace App\Entity\Cell\Monster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Wasteland;
 use App\Entity\Log\DestructionByDividedMonsterLog;
 use App\Entity\Log\DestructionByMonsterLog;
 use App\Entity\Log\DisappearMonsterLog;

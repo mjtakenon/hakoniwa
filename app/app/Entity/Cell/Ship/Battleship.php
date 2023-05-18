@@ -2,9 +2,9 @@
 
 namespace App\Entity\Cell\Ship;
 
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
 use App\Entity\Event\ForeignIsland\ReturnShipToAffiliationIsland;
 use App\Entity\Log\AttackAndDefeatLog;
 use App\Entity\Log\AttackLog;

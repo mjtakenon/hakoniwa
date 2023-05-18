@@ -3,8 +3,8 @@
 namespace App\Entity\Status;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\Farm;
-use App\Entity\Cell\FarmDome;
+use App\Entity\Cell\FoodsProduction\Farm;
+use App\Entity\Cell\FoodsProduction\FarmDome;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\IslandStatus;

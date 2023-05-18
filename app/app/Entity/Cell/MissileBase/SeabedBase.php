@@ -4,8 +4,8 @@ namespace App\Entity\Cell\MissileBase;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Forest;
-use App\Entity\Cell\Sea;
+use App\Entity\Cell\HasWoods\Forest;
+use App\Entity\Cell\Others\Sea;
 
 class SeabedBase extends Cell implements IMissileFireable
 {

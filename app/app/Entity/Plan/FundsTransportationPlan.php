@@ -2,8 +2,8 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\TransportShip;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\AbortNoShipLog;

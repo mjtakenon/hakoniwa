@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
+
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 
 class Lake extends Cell
 {

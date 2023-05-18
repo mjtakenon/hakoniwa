@@ -1,31 +1,35 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\FoodsProduction;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Lake;
+use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
+use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Factory extends Cell
+class Farm extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
-    public const TYPE = 'factory';
-    public const NAME = '工場';
+    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land72.gif';
+    public const TYPE = 'farm';
+    public const NAME = '農場';
     const PRODUCTION_CAPACITY = 20000;
-    const SEASIDE_PRODUCTION_CAPACITY = 30000;
-
+    const LAKESIDE_PRODUCTION_CAPACITY = 30000;
     const ATTRIBUTE = [
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
         CellConst::HAS_POPULATION => false,
-        CellConst::DESTRUCTIBLE_BY_FIRE => true,
+        CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
-        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
-        CellConst::DESTRUCTIBLE_BY_TYPHOON => false,
+        CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
+        CellConst::DESTRUCTIBLE_BY_TYPHOON => true,
         CellConst::DESTRUCTIBLE_BY_METEORITE => true,
         CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX => true,
         CellConst::DESTRUCTIBLE_BY_MISSILE => true,
@@ -40,41 +44,45 @@ class Factory extends Cell
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
-    {
-        $arr = parent::toArray($isPrivate, $withStatic);
-        $arr['data']['fundsProductionCapacity'] = $this->fundsProductionCapacity;
-        return $arr;
-    }
-
     public function __construct(...$data)
     {
         parent::__construct(...$data);
 
-        if (array_key_exists('fundsProductionCapacity', $data)) {
-            $this->fundsProductionCapacity = $data['fundsProductionCapacity'];
+        if (array_key_exists('foodsProductionCapacity', $data)) {
+            $this->foodsProductionCapacity = $data['foodsProductionCapacity'];
         } else {
-            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
+            $this->foodsProductionCapacity = self::PRODUCTION_CAPACITY;
         }
+    }
+
+    public function toArray(bool $isPrivate = false, bool $withStatic = false): array
+    {
+        $arr = parent::toArray($isPrivate, $withStatic);
+        $arr['data']['foodsProductionCapacity'] = $this->foodsProductionCapacity;
+        return $arr;
     }
 
     public function getInfoString(bool $isPrivate = false): string
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
-            $this->fundsProductionCapacity . '人規模';
+            $this->foodsProductionCapacity . '人規模';
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $cells = $terrain->getAroundCells($this->point);
-        $seasideCells = $cells->reject(function ($cell) {
-            return $cell::ATTRIBUTE[CellConst::IS_LAND];
+        $lakesideCells = $cells->filter(function ($cell) {
+            return $cell::TYPE === Lake::TYPE;
         });
-        if ($seasideCells->count() >= 1) {
-            $this->fundsProductionCapacity = self::SEASIDE_PRODUCTION_CAPACITY;
+        if ($lakesideCells->count() >= 1) {
+            $this->foodsProductionCapacity = self::LAKESIDE_PRODUCTION_CAPACITY;
         } else {
-            $this->fundsProductionCapacity = self::PRODUCTION_CAPACITY;
+            $this->foodsProductionCapacity = self::PRODUCTION_CAPACITY;
+        }
+
+        if ($status->getDevelopmentPoints() >= DevelopmentPointsConst::INCREMENT_FARM_CAPACITY_AVAILABLE_POINTS) {
+            $this->foodsProductionCapacity *= 2;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
     }

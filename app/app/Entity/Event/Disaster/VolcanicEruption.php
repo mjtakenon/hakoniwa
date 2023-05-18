@@ -4,11 +4,11 @@ namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Mine;
-use App\Entity\Cell\Mountain;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Volcano;
-use App\Entity\Cell\Wasteland;
+use App\Entity\Cell\Others\Mountain;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Volcano;
+use App\Entity\Cell\Others\Wasteland;
+use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Log\DestructionByVolcanicEruptionLog;
 use App\Entity\Log\DestructionShipLog;
 use App\Entity\Log\Logs;

@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Entity\Cell;
+namespace App\Entity\Cell\Others;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\PassTurnResult;
+use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -9,6 +12,7 @@ use App\Entity\Util\Rand;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
+use App\Entity\Cell\CellConst;
 
 class Mountain extends Cell
 {

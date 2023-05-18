@@ -4,8 +4,8 @@ namespace App\Entity\Cell\HasPopulation;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Plain;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Plain;
 use App\Entity\Log\Logs;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;

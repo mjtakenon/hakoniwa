@@ -4,10 +4,10 @@ namespace App\Entity\Cell\Ship;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Wasteland;
 use App\Entity\Log\AttackAndDefeatLog;
 use App\Entity\Log\AttackLog;
 use App\Entity\Log\DestructionByShipLog;

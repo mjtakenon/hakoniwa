@@ -4,7 +4,7 @@ namespace App\Entity\Cell\MissileBase;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Forest;
+use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;

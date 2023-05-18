@@ -16,13 +16,7 @@ abstract class Cell
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
-        CellConst::IS_MISSILE_BASE => false,
         CellConst::HAS_POPULATION => false,
-        CellConst::HAS_FOODS_PRODUCTION_CAPACITY => false,
-        CellConst::HAS_FUNDS_PRODUCTION_CAPACITY => false,
-        CellConst::HAS_RESOURCES_PRODUCTION_CAPACITY => false,
-        CellConst::HAS_MAINTENANCE_NUMBER_OF_PEOPLE => false,
-        CellConst::HAS_WOODS => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -119,7 +113,7 @@ abstract class Cell
         return $this->population;
     }
 
-    public function setPopulation($population)
+    public function setPopulation($population): void
     {
         $this->population = $population;
     }

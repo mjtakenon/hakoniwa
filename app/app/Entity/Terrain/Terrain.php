@@ -4,19 +4,19 @@ namespace App\Entity\Terrain;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\Factory;
-use App\Entity\Cell\Forest;
+use App\Entity\Cell\FundsProduction\Factory;
+use App\Entity\Cell\FundsProduction\LargeFactory;
 use App\Entity\Cell\HasPopulation\Village;
-use App\Entity\Cell\Lake;
-use App\Entity\Cell\LargeFactory;
-use App\Entity\Cell\Mountain;
-use App\Entity\Cell\OutOfRegion;
+use App\Entity\Cell\HasWoods\Forest;
+use App\Entity\Cell\Others\Lake;
+use App\Entity\Cell\Others\Mountain;
+use App\Entity\Cell\Others\OutOfRegion;
+use App\Entity\Cell\Others\Plain;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Volcano;
+use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
-use App\Entity\Cell\Plain;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Volcano;
-use App\Entity\Cell\Wasteland;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Util\Normal;
@@ -379,6 +379,14 @@ class Terrain implements JsonEncodable
         return $this->cells->flatten(1)->filter(function ($cell) use ($attribute) {
             /** @var Cell $cell */
             return $cell::ATTRIBUTE[$attribute];
+        });
+    }
+
+    public function findByImplements(string $interface): Collection
+    {
+        return $this->cells->flatten(1)->filter(function ($cell) use ($interface) {
+            /** @var Cell $cell */
+            return array_key_exists($interface, class_implements($cell));
         });
     }
 

@@ -3,8 +3,8 @@
 namespace App\Entity\Plan\ForeignIsland;
 
 use App\Entity\Cell\Cell;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Log\AbortInvalidTerrainLog;

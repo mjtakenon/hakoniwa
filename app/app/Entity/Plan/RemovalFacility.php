@@ -2,10 +2,10 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\Plain;
-use App\Entity\Cell\Sea;
-use App\Entity\Cell\Shallow;
-use App\Entity\Cell\Volcano;
+use App\Entity\Cell\Others\Plain;
+use App\Entity\Cell\Others\Sea;
+use App\Entity\Cell\Others\Shallow;
+use App\Entity\Cell\Others\Volcano;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\ExecuteCellLog;
 use App\Entity\Log\Logs;
