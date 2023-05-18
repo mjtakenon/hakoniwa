@@ -21,7 +21,6 @@ abstract class Monster extends Cell implements IMonster
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => true,
         CellConst::IS_SHIP => false,
-        CellConst::HAS_POPULATION => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
