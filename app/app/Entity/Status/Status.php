@@ -90,6 +90,10 @@ class Status
         $realResourcesProductionCapacity = 0;
 
         $workablePeople = $this->population - $terrain->aggregateMaintenanceNumberOfPeople($island);
+        if ($workablePeople < 0) {
+            $workablePeople = 0;
+        }
+
         $sumProductionCapacity = $this->foodsProductionCapacity + $this->fundsProductionCapacity + $this->resourcesProductionCapacity;
 
         if ($sumProductionCapacity > 0) {
