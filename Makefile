@@ -7,6 +7,7 @@ down:
 setup: 
 	make build
 	make up
+	make create-log-file
 	make composer-install
 	make init-db
 	make init-db-testing
@@ -26,7 +27,7 @@ start:
 logs:
 	docker compose logs
 logs-watch:
-	docker compose logs -f
+	docker compose logs -f --tail 100
 
 exec-app: 
 	docker compose exec --user www-data app /bin/bash
@@ -41,6 +42,9 @@ seeding-testing:
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
 	docker compose exec --user debian app sudo php artisan ide-helper:model --nowrite
+create-log-file:
+	docker compose exec --user debian app sudo chown www-data:www-data /app/storage/ -R
+	docker compose exec --user debian app sudo chmod 777 /app/storage/ -R
 next-turn:
 	docker compose exec --user www-data app php artisan execute:turn
 
