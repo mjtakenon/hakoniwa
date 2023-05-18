@@ -80,7 +80,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="postcss">
+<style scoped lang="scss">
 
 #countdown-widget {
     @apply flex w-full justify-between h-6 mb-4 lg:mb-2 drop-shadow;
@@ -98,11 +98,11 @@ export default defineComponent({
     }
 
     .countdown-unit {
-        @apply text-[8px] mt-auto mb-[2px] mr-1 text-on-surface-variant;
+        @apply text-[0.5rem] mt-auto mb-0.5 mr-1 text-on-surface-variant;
     }
 
     .countdown-unit:last-child {
-        @apply mr-0
+        @apply mr-0;
     }
 }
 </style>
