@@ -215,7 +215,7 @@ export default defineComponent({
                     @apply w-full flex items-center px-0.5 border-b-2;
 
                     .summary-box-title {
-                        @apply text-on-surface-variant text-[6px] mr-1;
+                        @apply text-on-surface-variant text-[0.6rem] mr-1;
                     }
 
                     .summary-box-num {
@@ -223,7 +223,7 @@ export default defineComponent({
                     }
 
                     .summary-box-unit {
-                        @apply text-on-surface-variant text-[6px] ml-1 text-right;
+                        @apply text-on-surface-variant text-[0.6rem] ml-1 text-right;
                     }
                 }
             }
