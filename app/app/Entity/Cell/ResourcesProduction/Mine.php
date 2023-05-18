@@ -13,7 +13,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Mine extends Cell
+class Mine extends Cell implements IResourcesProduction
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano_mine.png';
     public const TYPE = 'mine';
@@ -77,5 +77,10 @@ class Mine extends Cell
             $this->resourcesProductionCapacity *= 2;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getResourcesProductionCapacity(): int
+    {
+        return $this->resourcesProductionCapacity;
     }
 }

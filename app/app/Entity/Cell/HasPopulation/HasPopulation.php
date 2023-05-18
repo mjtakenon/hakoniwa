@@ -14,7 +14,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-abstract class HasPopulation extends Cell
+abstract class HasPopulation extends Cell implements IHasPopulation
 {
     private const DEFAULT_MIN_POPULATION_INCREMENTAL_RATE = 1;
     private const DEFAULT_MAX_POPULATION_INCREMENTAL_RATE = 10;
@@ -173,5 +173,15 @@ abstract class HasPopulation extends Cell
 
         $terrain->setCell($this->point, new Plain(point: $this->point));
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getPopulation(): int
+    {
+        return $this->population;
+    }
+
+    public function setPopulation($population): void
+    {
+        $this->population = $population;
     }
 }

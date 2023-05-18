@@ -14,7 +14,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Farm extends Cell
+class Farm extends Cell implements IFoodsProduction
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land72.gif';
     public const TYPE = 'farm';
@@ -85,5 +85,10 @@ class Farm extends Cell
             $this->foodsProductionCapacity *= 2;
         }
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getFoodsProductionCapacity(): int
+    {
+        return $this->foodsProductionCapacity;
     }
 }

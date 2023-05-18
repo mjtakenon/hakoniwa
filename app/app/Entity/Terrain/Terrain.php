@@ -4,10 +4,14 @@ namespace App\Entity\Terrain;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\FoodsProduction\IFoodsProduction;
 use App\Entity\Cell\FundsProduction\Factory;
+use App\Entity\Cell\FundsProduction\IFundsProduction;
 use App\Entity\Cell\FundsProduction\LargeFactory;
+use App\Entity\Cell\HasPopulation\IHasPopulation;
 use App\Entity\Cell\HasPopulation\Village;
 use App\Entity\Cell\HasWoods\Forest;
+use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
 use App\Entity\Cell\Others\Lake;
 use App\Entity\Cell\Others\Mountain;
 use App\Entity\Cell\Others\OutOfRegion;
@@ -17,6 +21,7 @@ use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
+use App\Entity\Cell\ResourcesProduction\IResourcesProduction;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Util\Normal;
@@ -29,6 +34,7 @@ use Illuminate\Support\Collection;
 
 class Terrain implements JsonEncodable
 {
+    public const AREA_PER_CELL = 100;
     private Collection $cells;
 
     public function __construct()
@@ -141,52 +147,42 @@ class Terrain implements JsonEncodable
 
     public function aggregatePopulation(): int
     {
-        $population = [];
-        /** @var Cell $cell */
-        foreach ($this->cells->flatten(1) as $cell) {
-            $population[] = $cell->getPopulation();
-        }
-        return array_sum($population);
+        return $this->findByInterface(IHasPopulation::class)->sum(function($cell) {
+            /** @var IHasPopulation $cell */
+            return $cell->getPopulation();
+        });
     }
 
     public function aggregateFundsProductionCapacity(): int
     {
-        $fundsProductionCapacity = [];
-        /** @var Cell $cell */
-        foreach ($this->cells->flatten(1) as $cell) {
-            $fundsProductionCapacity[] = $cell->getFundsProductionCapacity();
-        }
-        return array_sum($fundsProductionCapacity);
+        return $this->findByInterface(IFundsProduction::class)->sum(function($cell) {
+            /** @var IFundsProduction $cell */
+            return $cell->getFundsProductionCapacity();
+        });
     }
 
     public function aggregateFoodsProductionCapacity(): int
     {
-        $foodsProductionCapacity = [];
-        /** @var Cell $cell */
-        foreach ($this->cells->flatten(1) as $cell) {
-            $foodsProductionCapacity[] = $cell->getFoodsProductionCapacity();
-        }
-        return array_sum($foodsProductionCapacity);
+        return $this->findByInterface(IFoodsProduction::class)->sum(function($cell) {
+            /** @var IFoodsProduction $cell */
+            return $cell->getFoodsProductionCapacity();
+        });
     }
 
     public function aggregateResourcesProductionCapacity(): int
     {
-        $resourcesProductionCapacity = [];
-        /** @var Cell $cell */
-        foreach ($this->cells->flatten(1) as $cell) {
-            $resourcesProductionCapacity[] = $cell->getResourcesProductionCapacity();
-        }
-        return array_sum($resourcesProductionCapacity);
+        return $this->findByInterface(IResourcesProduction::class)->sum(function($cell) {
+            /** @var IResourcesProduction $cell */
+            return $cell->getResourcesProductionCapacity();
+        });
     }
 
     public function aggregateMaintenanceNumberOfPeople(Island $island): int
     {
-        $maintenanceNumberOfPeople = [];
-        /** @var Cell $cell */
-        foreach ($this->cells->flatten(1) as $cell) {
-            $maintenanceNumberOfPeople[] = $cell->getMaintenanceNumberOfPeople($island);
-        }
-        return array_sum($maintenanceNumberOfPeople);
+        return $this->findByInterface(IHasMaintenanceNumberOfPeople::class)->sum(function($cell) use ($island) {
+            /** @var IHasMaintenanceNumberOfPeople $cell */
+            return $cell->getMaintenanceNumberOfPeople($island);
+        });
     }
 
     public function getEnvironment(): string
@@ -207,7 +203,7 @@ class Terrain implements JsonEncodable
     {
         /** @var Cell $cell */
         $landCells = $this->findByAttribute(CellConst::IS_LAND)->count();
-        return $landCells * 100;
+        return $landCells * self::AREA_PER_CELL;
     }
 
     public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
@@ -382,7 +378,7 @@ class Terrain implements JsonEncodable
         });
     }
 
-    public function findByImplements(string $interface): Collection
+    public function findByInterface(string $interface): Collection
     {
         return $this->cells->flatten(1)->filter(function ($cell) use ($interface) {
             /** @var Cell $cell */

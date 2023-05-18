@@ -12,7 +12,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Forest extends Cell
+class Forest extends Cell implements IHasWoods
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land6.gif';
     public const TYPE = 'forest';
@@ -80,5 +80,10 @@ class Forest extends Cell
         }
         $this->woods += self::INCREMENT_WOODS;
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getWoods(): int
+    {
+        return $this->woods;
     }
 }

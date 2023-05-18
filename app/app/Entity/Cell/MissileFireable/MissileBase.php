@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Entity\Cell\MissileBase;
+namespace App\Entity\Cell\MissileFireable;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\HasWoods\Forest;
+use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -13,7 +14,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class MissileBase extends Cell implements IMissileFireable
+class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumberOfPeople
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land9.gif';
     public const TYPE = 'missile_base';
@@ -124,5 +125,10 @@ class MissileBase extends Cell implements IMissileFireable
     public function getExperience(): int
     {
         return $this->experience;
+    }
+
+    public function getMaintenanceNumberOfPeople(Island $island): int
+    {
+        return $this->maintenanceNumberOfPeople;
     }
 }

@@ -108,41 +108,6 @@ abstract class Cell
         return $this->point;
     }
 
-    public function getPopulation(): int
-    {
-        return $this->population;
-    }
-
-    public function setPopulation($population): void
-    {
-        $this->population = $population;
-    }
-
-    public function getFoodsProductionCapacity(): int
-    {
-        return $this->foodsProductionCapacity;
-    }
-
-    public function getFundsProductionCapacity(): int
-    {
-        return $this->fundsProductionCapacity;
-    }
-
-    public function getResourcesProductionCapacity(): int
-    {
-        return $this->resourcesProductionCapacity;
-    }
-
-    public function getWoods(): int
-    {
-        return $this->woods;
-    }
-
-    public function getMaintenanceNumberOfPeople(Island $island): int
-    {
-        return $this->maintenanceNumberOfPeople;
-    }
-
     public function getInfoString(bool $isPrivate = false): string
     {
         return

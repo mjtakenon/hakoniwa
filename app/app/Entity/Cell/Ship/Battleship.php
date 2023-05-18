@@ -2,6 +2,7 @@
 
 namespace App\Entity\Cell\Ship;
 
+use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\PassTurnResult;
@@ -16,7 +17,7 @@ use App\Models\Turn;
 use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
-class Battleship extends CombatantShip
+class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
 {
     public const MAINTENANCE_NUMBER_OF_PEOPLE = 5000;
 
@@ -60,7 +61,7 @@ class Battleship extends CombatantShip
     public function getMaintenanceNumberOfPeople(Island $island): int
     {
         if ($island->id === $this->getAffiliationId()) {
-            return parent::getMaintenanceNumberOfPeople($island);
+            return $this->maintenanceNumberOfPeople;
         } else {
             return 0;
         }

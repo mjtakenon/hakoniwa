@@ -13,7 +13,7 @@ use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class Oilfield extends Cell
+class Oilfield extends Cell implements IResourcesProduction
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land16.gif';
     public const TYPE = 'oilfield';
@@ -78,5 +78,10 @@ class Oilfield extends Cell
         }
 
         return new PassTurnResult($terrain, $status, Logs::create());
+    }
+
+    public function getResourcesProductionCapacity(): int
+    {
+        return $this->resourcesProductionCapacity;
     }
 }

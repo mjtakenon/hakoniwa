@@ -2,7 +2,7 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Cell\MissileBase\MissileBase;
+use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\AfforestationLog;

@@ -4,8 +4,8 @@ namespace App\Entity\Plan;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
-use App\Entity\Cell\MissileBase\IMissileFireable;
-use App\Entity\Cell\MissileBase\MissileBase;
+use App\Entity\Cell\MissileFireable\IMissileFireable;
+use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Cell\Monster\Monster;
 use App\Entity\Cell\Others\OutOfRegion;
 use App\Entity\Cell\Others\Wasteland;

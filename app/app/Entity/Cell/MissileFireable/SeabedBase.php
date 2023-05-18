@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Entity\Cell\MissileBase;
+namespace App\Entity\Cell\MissileFireable;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\HasWoods\Forest;
+use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
 use App\Entity\Cell\Others\Sea;
+use App\Models\Island;
 
-class SeabedBase extends Cell implements IMissileFireable
+class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumberOfPeople
 {
     public const IMAGE_PATH = '/img/hakoniwa/hakogif/land12.gif';
     public const TYPE = 'seabed_base';
@@ -99,5 +101,10 @@ class SeabedBase extends Cell implements IMissileFireable
     public function getExperience(): int
     {
         return $this->experience;
+    }
+
+    public function getMaintenanceNumberOfPeople(Island $island): int
+    {
+        return $this->maintenanceNumberOfPeople;
     }
 }
