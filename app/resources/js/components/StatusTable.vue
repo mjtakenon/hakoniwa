@@ -177,7 +177,7 @@ export default defineComponent({
             @apply flex items-end flex-wrap h-8;
 
             .stats-box-num-wrapper {
-                @apply grow h-[27px] text-right;
+                @apply grow text-right;
             }
 
             .stats-box-data-num {
@@ -185,7 +185,7 @@ export default defineComponent({
             }
 
             .stat-box-data-unit {
-                @apply max-lg:w-full max-lg:-mt-1.5 text-[4px] lg:text-sm text-right lg:pl-2;
+                @apply max-lg:w-full max-lg:-mt-1.5 text-[0.6rem] lg:text-sm text-right lg:pl-2;
             }
         }
     }
