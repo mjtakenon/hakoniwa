@@ -77,7 +77,12 @@
                             {{ targetIsland.name }} 島
                         </option>
                     </select>
-                    <a class="target-open button-surface dark:button-variant-reverse" :href="'/islands/' + store.selectedTargetIsland" target="_blank"> 開く </a>
+                    <button
+                        class="target-open button-surface dark:button-variant-reverse"
+                        @click="openIslandPopup"
+                    >
+                        開く
+                    </button>
                 </div>
             </div>
         </div>
@@ -280,7 +285,11 @@ export default defineComponent({
         onClickSendPlan() {
             this.store.isSendingPlan = true;
             this.store.putPlan()
-        }
+        },
+        openIslandPopup() {
+            this.store.getIslandTerrain(this.store.selectedTargetIsland);
+            this.store.isOpenPopup = true;
+        },
     },
     computed: {},
     props: [],

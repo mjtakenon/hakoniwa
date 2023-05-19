@@ -14,6 +14,7 @@
             :title="store.island.name + '島の近況'"
             :parsed-logs="store.logs"
         ></log-viewer>
+        <island-popup></island-popup>
     </div>
 </template>
 
@@ -34,10 +35,12 @@ import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
 import {Turn} from "../store/Entity/Turn";
 import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
+import IslandPopup from "../components/IslandPopup.vue";
 
 export default defineComponent({
     components: {
         IslandEditor,
+        IslandPopup,
         PlanController,
         StatusTable,
         LogViewer,
