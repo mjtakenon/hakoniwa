@@ -234,25 +234,28 @@ export default defineComponent({
             }
         },
     },
-        computed: {
-            isSelectedCell() {
-                return (x, y) => {
-                    if (this.store.selectedPoint === null) {
-                        return false;
-                    }
-                    return x === this.store.selectedPoint.x && y === this.store.selectedPoint.y
+    computed: {
+        isSelectedCell() {
+            return (x, y) => {
+                if (this.store.selectedPoint === null) {
+                    return false;
                 }
-            },
-            isReferencedCell() {
-                return (x, y) => {
-                    let referencedPlan = this.store.plans[this.store.selectedPlanNumber-1]
-                    if (!referencedPlan.data.usePoint) {
-                        return false;
-                    }
-                    return x === referencedPlan.data.point.x && y === referencedPlan.data.point.y && referencedPlan.data.usePoint
-                }
-            },
+                return x === this.store.selectedPoint.x && y === this.store.selectedPoint.y
+            }
         },
+        isReferencedCell() {
+            return (x, y) => {
+                let referencedPlan = this.store.plans[this.store.selectedPlanNumber-1]
+                if (!referencedPlan.data.usePoint) {
+                    return false;
+                }
+                if (referencedPlan.data.useTargetIsland && referencedPlan.data.targetIsland !== this.store.island.id) {
+                    return false;
+                }
+                return x === referencedPlan.data.point.x && y === referencedPlan.data.point.y && referencedPlan.data.usePoint
+            }
+        },
+    },
     props: [],
 });
 </script>

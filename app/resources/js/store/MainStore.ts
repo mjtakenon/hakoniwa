@@ -20,7 +20,7 @@ const ISLAND_ENVIRONMENT = {
 export interface PiniaState {
     hakoniwa: Hakoniwa,
     island: Island,
-    terrains: Array<Terrain>,
+    terrains: Terrain[],
     status: Status,
     logs: Array<Log>,
     plans: Plan[],
@@ -37,6 +37,8 @@ export interface PiniaState {
     showNotification: boolean,
     turn: Turn,
     theme: Theme,
+    isOpenPopup: boolean,
+    isLoadingTerrain: boolean,
 }
 
 export const useMainStore = defineStore('main', {
@@ -79,7 +81,9 @@ export const useMainStore = defineStore('main', {
                 name: "light",
                 themeClass: "theme-light",
                 type: "light"
-            }
+            },
+            isOpenPopup: false,
+            isLoadingTerrain: false,
         }
     },
     getters: {
@@ -106,6 +110,10 @@ export const useMainStore = defineStore('main', {
                     defaultAmountString: '',
                 }
             }
+        },
+        selectedTargetIslandName(): string {
+            const target = this.targetIslands.find(island => island.id === this.selectedTargetIsland);
+            return target.name;
         }
     },
     actions: {
@@ -131,6 +139,30 @@ export const useMainStore = defineStore('main', {
                     this.planSendingResult = err.response.status;
                     this.showNotification = true;
                     console.error(err);
+                })
+        },
+        async getIslandTerrain(id: number) {
+            this.isLoadingTerrain = true;
+            const target = this.targetIslands.filter(island => island.id === id);
+            if (target.length < 1) throw new Error("存在しない島IDです");
+            if (target.length > 1) throw new Error("targetIslandに島が重複しています");
+            // 既にロード済みの場合
+            if (target[0].terrains !== undefined) {
+                this.isLoadingTerrain = false;
+                return;
+            }
+
+            console.debug('GET', '/api/islands/' + id)
+            await axios.get(
+                '/api/islands/' + id,
+            )
+                .then(res => {
+                    target[0].terrains = res.data.island.terrains;
+                    this.isLoadingTerrain = false;
+                })
+                .catch(err => {
+                    console.debug(err);
+                    throw new Error("島の地形取得時にエラーが発生しました")
                 })
         }
     }
