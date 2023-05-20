@@ -26,12 +26,13 @@ $baseMiddleware = [
     'auth:sanctum',
 ];
 
-Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
-    Route::get('{island_id}', [\App\Http\Controllers\Api\Islands\DetailController::class, 'get'])
+Route::prefix('/islands/{island_id}')->middleware($baseMiddleware)->group( function() {
+    Route::get('/', [\App\Http\Controllers\Api\Islands\DetailController::class, 'get'])
         ->where('island_id', '[0-9]+');
 
-    Route::middleware(['auth:sanctum'])->group(function() {
-        Route::put('{island_id}/plans', [\App\Http\Controllers\Api\Islands\PlansController::class, 'put'])
-            ->where('island_id', '[0-9]+');
-    });
+    Route::put('/plans', [\App\Http\Controllers\Api\Islands\PlansController::class, 'put'])
+        ->where('island_id', '[0-9]+');
+
+    Route::post('/comments', [\App\Http\Controllers\Api\Islands\CommentsController::class, 'post'])
+        ->where('island_id', '[0-9]+');
 });

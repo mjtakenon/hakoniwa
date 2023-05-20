@@ -26,6 +26,7 @@ class DetailController extends Controller
 
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
+        $islandComment = $island->islandComments->first();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
             ->whereIn('visibility', [LogConst::VISIBILITY_GLOBAL, LogConst::VISIBILITY_PUBLIC])
@@ -59,6 +60,7 @@ class DetailController extends Controller
                 'id' => $island->id,
                 'name' => $island->name,
                 'owner_name' => $island->owner_name,
+                'comment' => $islandComment->comment ?? null,
                 'status' => [
                     'development_points' => $islandStatus->development_points,
                     'funds' => $islandStatus->funds,
