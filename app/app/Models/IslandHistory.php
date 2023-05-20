@@ -13,13 +13,12 @@ class IslandHistory extends Model
 
     public static function createFromIsland(Island $island): static
     {
-        $islandHistory = new IslandHistory();
+        $islandHistory = new self();
         $islandHistory->island_id = $island->id;
         $islandHistory->user_id = $island->user_id;
         $islandHistory->name = $island->name;
         $islandHistory->owner_name = $island->owner_name;
         $islandHistory->deleted_at = $island->deleted_at;
-        $islandHistory->save();
         return $islandHistory;
     }
 }

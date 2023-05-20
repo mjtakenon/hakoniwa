@@ -195,7 +195,8 @@ class ExecuteTurn extends Command
                     // 一定ターン以上資金繰りが続いた場合、放棄する
                     if (!is_null(config('app.hakoniwa.island_abandon_turn')) && $status->getAbandonedTurn() >= config('app.hakoniwa.island_abandon_turn')) {
                         $island->deleted_at = now();
-                        IslandHistory::createFromIsland($island);
+                        $islandHistory = IslandHistory::createFromIsland($island);
+                        $islandHistory->save();
                         $logs = Logs::create();
                         $logs->add(new AbandonmentLog($island));
                     }

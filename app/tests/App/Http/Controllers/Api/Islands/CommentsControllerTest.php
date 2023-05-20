@@ -64,7 +64,7 @@ class CommentsControllerTest extends TestCase
                 'comment' => 'test_comment',
             ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
         $this->assertNull(IslandComment::find(1));
     }
 
@@ -79,7 +79,7 @@ class CommentsControllerTest extends TestCase
                 'comment' => 'test_comment',
             ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
         $this->assertNull(IslandComment::find(1));
     }
 
