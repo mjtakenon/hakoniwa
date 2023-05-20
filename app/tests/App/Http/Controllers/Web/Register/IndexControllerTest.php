@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Http\Controllers\Register;
+namespace Tests\App\Http\Controllers\Web\Register;
 
 use App\Models\Island;
 use App\Models\IslandPlan;

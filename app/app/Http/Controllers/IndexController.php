@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entity\Log\LogConst;
 use App\Models\Island;
+use App\Models\IslandComment;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\Turn;
@@ -18,8 +19,8 @@ class IndexController extends Controller
 
         $islands = Island::select('*', 'islands.id as id')
             ->where('turn_id', $turn->id)
-            ->whereNull('deleted_at')
             ->join('island_statuses','islands.id','=','island_statuses.island_id')
+            ->leftJoin('island_comments','islands.id','=','island_comments.island_id')
             ->orderBy('island_statuses.development_points', 'desc')
             ->get();
 
@@ -42,11 +43,12 @@ class IndexController extends Controller
 
         return view('pages.index', [
             'islands' => $islands->map(function ($island) {
-                /** @var Island | IslandStatus $island */
+                /** @var Island | IslandStatus | IslandComment $island */
                 return [
                     'id' => $island->id,
                     'name' => $island->name,
                     'owner_name' => $island->owner_name,
+                    'comment' => $island->comment,
                     'development_points' => $island->development_points,
                     'funds' => $island->funds,
                     'foods' => $island->foods,
