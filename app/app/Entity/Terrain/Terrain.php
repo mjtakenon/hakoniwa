@@ -22,6 +22,7 @@ use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\ResourcesProduction\IResourcesProduction;
+use App\Entity\JsonCodable;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Util\Normal;
@@ -29,10 +30,9 @@ use App\Entity\Util\Point;
 use App\Entity\Util\Rand;
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\JsonEncodable;
 use Illuminate\Support\Collection;
 
-class Terrain implements JsonEncodable
+class Terrain implements JsonCodable
 {
     public const AREA_PER_CELL = 100;
     private Collection $cells;
