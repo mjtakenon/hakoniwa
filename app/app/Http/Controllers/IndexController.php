@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Entity\Log\LogVisibility;
+use App\Entity\Log\LogConst;
 use App\Models\Island;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
@@ -25,7 +25,7 @@ class IndexController extends Controller
 
         $logs = IslandLog::whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
-            ->where('visibility', LogVisibility::VISIBILITY_GLOBAL)
+            ->where('visibility', LogConst::VISIBILITY_GLOBAL)
             ->orderByDesc('id')
             ->get()
             ->groupBy('turn.turn')

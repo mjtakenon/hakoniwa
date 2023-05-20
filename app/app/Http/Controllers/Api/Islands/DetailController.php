@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Islands;
 
-use App\Entity\Log\LogVisibility;
+use App\Entity\Log\LogConst;
 use App\Http\Controllers\Api\WebApi;
 use App\Http\Controllers\Controller;
 use App\Models\Island;

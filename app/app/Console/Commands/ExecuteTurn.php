@@ -4,12 +4,12 @@ namespace App\Console\Commands;
 
 use App\Entity\Event\Disaster\Disaster;
 use App\Entity\Event\ForeignIsland\ForeignIslandEvent;
-use App\Entity\Log\AbandonmentLog;
-use App\Entity\Log\AbortInvalidIslandLog;
-use App\Entity\Log\InviteNewImmigrationLog;
 use App\Entity\Log\LogRow;
+use App\Entity\Log\LogRow\AbandonmentLog;
+use App\Entity\Log\LogRow\AbortInvalidIslandLog;
+use App\Entity\Log\LogRow\InviteNewImmigrationLog;
+use App\Entity\Log\LogRow\UnpopulatedIslandLog;
 use App\Entity\Log\Logs;
-use App\Entity\Log\UnpopulatedIslandLog;
 use App\Entity\Plan\ForeignIsland\TargetedToForeignIslandPlan;
 use App\Entity\Plan\Plans;
 use App\Entity\Status\Status;
@@ -44,8 +44,9 @@ class ExecuteTurn extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws \Throwable
      */
-    public function handle()
+    public function handle(): int
     {
         \Log::info('start ' . $this->signature);
         $now = hrtime(true);
@@ -186,8 +187,8 @@ class ExecuteTurn extends Command
                     // 人口0の場合、発展ポイントを減らして村を生成
                     if ($status->getPopulation() === 0) {
                         $terrain->inviteNewImmigration($status);
-                        $logs->add(new InviteNewImmigrationLog());
                         $logs->add(new UnpopulatedIslandLog($island));
+                        $logs->add(new InviteNewImmigrationLog());
                         $status->aggregate($terrain);
                     }
 

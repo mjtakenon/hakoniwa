@@ -5,7 +5,7 @@ namespace App\Entity\Event\Disaster;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Wasteland;
-use App\Entity\Log\DestructionByFireLog;
+use App\Entity\Log\LogRow\DestructionByFireLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;

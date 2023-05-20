@@ -197,7 +197,6 @@ return [
 
 
         App\Providers\HakoniwaServiceProvider::class,
-        App\Providers\IslandServiceProvider::class,
         App\Providers\PlanServiceProvider::class,
 
         App\Providers\YConnectClientBuilderServiceProvider::class,
@@ -218,7 +217,6 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
 
         'HakoniwaService' => App\Facades\HakoniwaService::class,
-        'IslandService' => App\Facades\IslandService::class,
         'PlanService' => App\Facades\PlanService::class,
         'YConnectClientBuilderService' => App\Facades\YConnectClientBuilderService::class,
 

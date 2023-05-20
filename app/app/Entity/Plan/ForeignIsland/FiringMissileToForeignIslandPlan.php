@@ -9,14 +9,14 @@ use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Cell\Monster\Monster;
 use App\Entity\Cell\Others\OutOfRegion;
 use App\Entity\Cell\Others\Wasteland;
-use App\Entity\Log\AbortLackOfFundsLog;
+use App\Entity\Log\LogRow\AbortLackOfFundsLog;
+use App\Entity\Log\LogRow\MissileDisabledToMonsterLog;
+use App\Entity\Log\LogRow\MissileFiringLog;
+use App\Entity\Log\LogRow\MissileHitToMonsterLog;
+use App\Entity\Log\LogRow\MissileOutOfRegionLog;
+use App\Entity\Log\LogRow\MissileSelfDestructLog;
+use App\Entity\Log\LogRow\SoldMonsterCorpseLog;
 use App\Entity\Log\Logs;
-use App\Entity\Log\MissileDisabledToMonsterLog;
-use App\Entity\Log\MissileFiringLog;
-use App\Entity\Log\MissileHitToMonsterLog;
-use App\Entity\Log\MissileOutOfRegionLog;
-use App\Entity\Log\MissileSelfDestructLog;
-use App\Entity\Log\SoldMonsterCorpseLog;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
@@ -46,16 +46,16 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
             for ($n = 0; $n < $missileBase->getLevel(); $n++) {
                 if ($amount === 0) {
                     if ($firingCount >= 1) {
-                        $fromLogs->add(new MissileFiringLog($toIsland, $this->plan->getPoint(), $this->plan, $firingCount));
+                        $fromLogs->add(new MissileFiringLog($toIsland, $this->plan, $firingCount));
                     }
                     return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
                 }
 
                 if ($fromStatus->getFunds() < $this->plan->getPrice()) {
                     if ($firingCount >= 1) {
-                        $fromLogs->add(new MissileFiringLog($toIsland, $this->plan->getPoint(), $this->plan, $firingCount));
+                        $fromLogs->add(new MissileFiringLog($toIsland, $this->plan, $firingCount));
                     }
-                    $fromLogs->add(new AbortLackOfFundsLog($fromIsland, $this->plan->getPoint(), $this->plan));
+                    $fromLogs->add(new AbortLackOfFundsLog($fromIsland, $this->plan));
                     return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
                 }
                 $fromStatus->setFunds($fromStatus->getFunds() - $this->plan->getPrice());
@@ -99,7 +99,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
         }
 
         if ($firingCount >= 1) {
-            $fromLogs->add(new MissileFiringLog($toIsland, $this->plan->getPoint(), $this->plan, $firingCount));
+            $fromLogs->add(new MissileFiringLog($toIsland, $this->plan, $firingCount));
         }
 
         return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);

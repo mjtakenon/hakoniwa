@@ -2,16 +2,18 @@
 
 namespace App\Entity\Plan;
 
+use App\Entity\JsonCodable;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\OwnIsland\CashFlowPlan;
+use App\Entity\Plan\OwnIsland\ExecutePlanResult;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;
 use App\Models\Island;
 use App\Models\Turn;
-use App\Services\Hakoniwa\JsonEncodable;
 use Illuminate\Support\Collection;
 
-class Plans implements JsonEncodable
+class Plans implements JsonCodable
 {
     const MAX_PLANS = 30;
     private Collection $plans;
