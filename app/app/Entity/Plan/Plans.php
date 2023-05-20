@@ -3,6 +3,8 @@
 namespace App\Entity\Plan;
 
 use App\Entity\Log\Logs;
+use App\Entity\Plan\OwnIsland\CashFlowPlan;
+use App\Entity\Plan\OwnIsland\ExecutePlanResult;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;

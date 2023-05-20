@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Plan;
+namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;

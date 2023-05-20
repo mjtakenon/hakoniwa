@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Entity\Plan;
+namespace App\Entity\Plan\OwnIsland;
 
-use App\Entity\Cell\FoodsProduction\Farm;
+use App\Entity\Cell\Others\Volcano;
+use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Log\LogRow\AbortInvalidCellLog;
 use App\Entity\Log\LogRow\AbortLackOfFundsLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class ConstructFarmPlan extends Plan
+class ConstructMinePlan extends Plan
 {
-    public const KEY = 'construct_farm';
+    public const KEY = 'construct_mine';
 
-    public const NAME = '農場整備';
-    public const PRICE = 20;
+    public const NAME = '採掘場整備';
+    public const PRICE = 300;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
 
     protected string $key = self::KEY;
@@ -33,12 +35,12 @@ class ConstructFarmPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        if (!in_array($cell::TYPE, self::CONSTRUCTABLE_CELLS, true)) {
+        if (!in_array($cell::TYPE, [Volcano::TYPE], true)) {
             $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        $terrain->setCell($this->point, new Farm(point: $this->point));
+        $terrain->setCell($this->point, new Mine(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);

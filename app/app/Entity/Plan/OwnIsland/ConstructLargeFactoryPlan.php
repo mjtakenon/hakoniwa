@@ -1,41 +1,31 @@
 <?php
 
-namespace App\Entity\Plan;
+namespace App\Entity\Plan\OwnIsland;
 
-use App\Entity\Cell\Park\MonumentOfAgriculture;
-use App\Entity\Cell\Park\MonumentOfMaster;
-use App\Entity\Cell\Park\MonumentOfMining;
-use App\Entity\Cell\Park\MonumentOfPeace;
-use App\Entity\Cell\Park\MonumentOfWar;
-use App\Entity\Cell\Park\MonumentOfWinner;
-use App\Entity\Cell\Park\Park;
+use App\Entity\Cell\FundsProduction\Factory;
+use App\Entity\Cell\FundsProduction\LargeFactory;
 use App\Entity\Log\LogRow\AbortInvalidCellLog;
 use App\Entity\Log\LogRow\AbortLackOfFundsLog;
+use App\Entity\Log\LogRow\AbortNoDevelopmentPointsLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\Plan;
+use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class ConstructParkPlan extends Plan
+class ConstructLargeFactoryPlan extends Plan
 {
-    public const KEY = 'construct_park';
+    public const KEY = 'construct_large_factory';
 
-    public const NAME = '公園整備';
-    public const PRICE = 3000;
+    public const NAME = '工場拡張';
+    public const PRICE = 1000;
     public const PRICE_STRING = '(' . self::PRICE . '億円)';
 
-    public const PARKS = [
-        MonumentOfAgriculture::class,
-        MonumentOfMining::class,
-        MonumentOfMaster::class,
-        MonumentOfPeace::class,
-        MonumentOfWar::class,
-        MonumentOfWinner::class,
-        Park::class,
-    ];
+    public const EXECUTABLE_DEVELOPMENT_POINT = DevelopmentPointsConst::CONSTRUCT_LARGE_FACTORY_AVAILABLE_POINTS;
 
     protected string $key = self::KEY;
     protected string $name = self::NAME;
@@ -51,19 +41,17 @@ class ConstructParkPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        if (!in_array($cell::TYPE, self::CONSTRUCTABLE_CELLS, true)) {
+        if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
+            $logs->add(new AbortNoDevelopmentPointsLog($island, $this));
+            return new ExecutePlanResult($terrain, $status, $logs, false);
+        }
+
+        if ($cell::TYPE !== Factory::TYPE) {
             $logs->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
-        /** @var Park $park */
-        foreach (self::PARKS as $park) {
-            if ($park::canBuild($terrain, $status)) {
-                $terrain->setCell($this->point, new $park(point: $this->point));
-                break;
-            }
-        }
-
+        $terrain->setCell($this->point, new LargeFactory(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);

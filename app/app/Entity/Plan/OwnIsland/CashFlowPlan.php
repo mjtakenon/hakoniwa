@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Entity\Plan;
+namespace App\Entity\Plan\OwnIsland;
 
-use App\Entity\Log\LogRow\AbandonmentLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
-use App\Models\IslandHistory;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
-class AbandonmentPlan extends Plan
+class CashFlowPlan extends Plan
 {
-    public const KEY = 'abandonment';
+    public const KEY = 'cash_flow';
 
-    public const NAME = '島の放棄';
-    public const PRICE = 0;
-    public const PRICE_STRING = '(無料)';
+    public const NAME = '資金繰り';
+    public const PRICE = -10;
+    public const PRICE_STRING = '(+' . self::PRICE*-1 . '億円)';
     public const USE_POINT = false;
 
     protected string $key = self::KEY;
@@ -28,13 +27,8 @@ class AbandonmentPlan extends Plan
 
     public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
-        $island->deleted_at = now();
-
-        IslandHistory::createFromIsland($island);
-        $logs = Logs::create();
-        $logs->add(new ExecuteLog($island, $this));
-        $logs->add(new AbandonmentLog($island));
-
+        $status->setFunds($status->getFunds() - self::PRICE);
+        $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

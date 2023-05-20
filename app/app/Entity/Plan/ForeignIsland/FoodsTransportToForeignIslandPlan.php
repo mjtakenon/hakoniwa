@@ -8,7 +8,7 @@ use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\TransportShip;
 use App\Entity\Log\LogRow\FoodsTransportationLog;
 use App\Entity\Log\Logs;
-use App\Entity\Plan\FoodsTransportationPlan;
+use App\Entity\Plan\OwnIsland\FoodsTransportationPlan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;

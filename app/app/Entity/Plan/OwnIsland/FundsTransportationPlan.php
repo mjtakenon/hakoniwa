@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Plan;
+namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Sea;
@@ -11,6 +11,7 @@ use App\Entity\Log\LogRow\AbortNoShipLog;
 use App\Entity\Log\LogRow\AbortTargetSelfIslandLog;
 use App\Entity\Log\Logs;
 use App\Entity\Plan\ForeignIsland\FundsTransportToForeignIslandPlan;
+use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;

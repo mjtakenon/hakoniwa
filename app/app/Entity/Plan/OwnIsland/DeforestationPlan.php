@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Plan;
+namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\Others\Plain;
@@ -8,6 +8,7 @@ use App\Entity\Log\LogRow\AbortInvalidCellLog;
 use App\Entity\Log\LogRow\DeforestationLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;

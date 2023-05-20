@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Plan;
+namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Others\Sea;
@@ -10,6 +10,7 @@ use App\Entity\Log\LogRow\AbortInvalidTerrainLog;
 use App\Entity\Log\LogRow\AbortLackOfFundsLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;

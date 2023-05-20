@@ -2,6 +2,36 @@
 
 namespace App\Entity\Plan;
 
+use App\Entity\Plan\OwnIsland\AbandonmentPlan;
+use App\Entity\Plan\OwnIsland\AfforestationPlan;
+use App\Entity\Plan\OwnIsland\AttractActivitiesPlan;
+use App\Entity\Plan\OwnIsland\CashFlowPlan;
+use App\Entity\Plan\OwnIsland\ConstructBattleshipPlan;
+use App\Entity\Plan\OwnIsland\ConstructFactoryPlan;
+use App\Entity\Plan\OwnIsland\ConstructFarmDomePlan;
+use App\Entity\Plan\OwnIsland\ConstructFarmPlan;
+use App\Entity\Plan\OwnIsland\ConstructLargeFactoryPlan;
+use App\Entity\Plan\OwnIsland\ConstructMinePlan;
+use App\Entity\Plan\OwnIsland\ConstructMissileBasePlan;
+use App\Entity\Plan\OwnIsland\ConstructOilfieldPlan;
+use App\Entity\Plan\OwnIsland\ConstructParkPlan;
+use App\Entity\Plan\OwnIsland\ConstructSeabedBasePlan;
+use App\Entity\Plan\OwnIsland\ConstructSubmarinePlan;
+use App\Entity\Plan\OwnIsland\ConstructTransportShipPlan;
+use App\Entity\Plan\OwnIsland\DeforestationPlan;
+use App\Entity\Plan\OwnIsland\ExcavationPlan;
+use App\Entity\Plan\OwnIsland\FiringHighAccuracyMissilePlan;
+use App\Entity\Plan\OwnIsland\FiringMissilePlan;
+use App\Entity\Plan\OwnIsland\FoodsTransportationPlan;
+use App\Entity\Plan\OwnIsland\FundsTransportationPlan;
+use App\Entity\Plan\OwnIsland\GradingPlan;
+use App\Entity\Plan\OwnIsland\GroundLevelingPlan;
+use App\Entity\Plan\OwnIsland\LandfillPlan;
+use App\Entity\Plan\OwnIsland\ReinforceBattleshipPlan;
+use App\Entity\Plan\OwnIsland\ReinforceSubmarinePlan;
+use App\Entity\Plan\OwnIsland\RemovalFacility;
+use App\Entity\Plan\OwnIsland\ResourcesTransportationPlan;
+
 class PlanConst
 {
     const PLAN_LIST = [

@@ -27,6 +27,7 @@ use App\Entity\Cell\ResourcesProduction\Oilfield;
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Cell\Ship\TransportShip;
+use App\Entity\Plan\OwnIsland\ExecutePlanResult;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;
