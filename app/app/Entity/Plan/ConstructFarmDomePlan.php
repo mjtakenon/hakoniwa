@@ -4,10 +4,10 @@ namespace App\Entity\Plan;
 
 use App\Entity\Cell\FoodsProduction\Farm;
 use App\Entity\Cell\FoodsProduction\FarmDome;
-use App\Entity\Log\AbortInvalidCellLog;
-use App\Entity\Log\AbortLackOfFundsLog;
-use App\Entity\Log\AbortNoDevelopmentPointsLog;
-use App\Entity\Log\ExecuteLog;
+use App\Entity\Log\LogRow\AbortInvalidCellLog;
+use App\Entity\Log\LogRow\AbortLackOfFundsLog;
+use App\Entity\Log\LogRow\AbortNoDevelopmentPointsLog;
+use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;

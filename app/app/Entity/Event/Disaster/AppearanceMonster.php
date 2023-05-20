@@ -10,7 +10,7 @@ use App\Entity\Cell\HasPopulation\Town;
 use App\Entity\Cell\HasPopulation\Village;
 use App\Entity\Cell\Monster\Monster;
 use App\Entity\Cell\Monster\MonsterConst;
-use App\Entity\Log\AppearMonsterLog;
+use App\Entity\Log\LogRow\AppearMonsterLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;

@@ -4,8 +4,8 @@ namespace App\Entity\Plan;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Ship\Submarine;
-use App\Entity\Log\AbortInvalidIslandLog;
-use App\Entity\Log\AbortNoShipLog;
+use App\Entity\Log\LogRow\AbortInvalidIslandLog;
+use App\Entity\Log\LogRow\AbortNoShipLog;
 use App\Entity\Log\Logs;
 use App\Entity\Plan\ForeignIsland\ReinforceSubmarineToForeignIslandPlan;
 use App\Entity\Status\DevelopmentPointsConst;

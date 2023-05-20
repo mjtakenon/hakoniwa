@@ -4,8 +4,8 @@ namespace App\Entity\Plan;
 
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\CombatantShip;
-use App\Entity\Log\AbortInvalidIslandLog;
-use App\Entity\Log\AbortNoShipLog;
+use App\Entity\Log\LogRow\AbortInvalidIslandLog;
+use App\Entity\Log\LogRow\AbortNoShipLog;
 use App\Entity\Log\Logs;
 use App\Entity\Plan\ForeignIsland\ReinforceBattleshipToForeignIslandPlan;
 use App\Entity\Status\Status;

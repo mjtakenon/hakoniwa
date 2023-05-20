@@ -2,7 +2,7 @@
 
 namespace App\Entity\Plan;
 
-use App\Entity\Log\ExecuteLog;
+use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;

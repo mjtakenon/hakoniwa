@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Register;
 
-use App\Entity\Log\IslandFoundLog;
+use App\Entity\Log\LogRow\IslandFoundLog;
 use App\Entity\Plan\Plans;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;

@@ -4,12 +4,12 @@ namespace App\Entity\Plan;
 
 use App\Entity\Cell\MissileFireable\SeabedBase;
 use App\Entity\Cell\Others\Sea;
-use App\Entity\Log\AbortInvalidCellLog;
-use App\Entity\Log\AbortLackOfFundsLog;
-use App\Entity\Log\AbortNoDevelopmentPointsLog;
-use App\Entity\Log\ExecuteLog;
+use App\Entity\Log\LogRow\AbortInvalidCellLog;
+use App\Entity\Log\LogRow\AbortLackOfFundsLog;
+use App\Entity\Log\LogRow\AbortNoDevelopmentPointsLog;
+use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
-use App\Entity\Log\LogVisibility;
+use App\Entity\Log\LogConst;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -55,7 +55,7 @@ class ConstructSeabedBasePlan extends Plan
 
         $terrain->setCell($this->point, new SeabedBase(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteLog($island, $this, LogVisibility::VISIBILITY_PRIVATE));
+        $logs->add(new ExecuteLog($island, $this, LogConst::VISIBILITY_PRIVATE));
         $seabedBase = deep_copy($this);
         $seabedBase->point = new Point('?', '?');
         $logs->add(new ExecuteLog($island, $seabedBase));

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Islands;
 
-use App\Entity\Log\LogVisibility;
+use App\Entity\Log\LogConst;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\IslandLog;
@@ -28,7 +28,7 @@ class DetailController extends Controller
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
-            ->whereIn('visibility', [LogVisibility::VISIBILITY_GLOBAL, LogVisibility::VISIBILITY_PUBLIC])
+            ->whereIn('visibility', [LogConst::VISIBILITY_GLOBAL, LogConst::VISIBILITY_PUBLIC])
             ->with(['turn'])
             ->orderByDesc('id')
             ->get()

@@ -3,12 +3,12 @@
 namespace App\Entity\Plan;
 
 use App\Entity\Cell\HasWoods\Forest;
-use App\Entity\Log\AbortInvalidCellLog;
-use App\Entity\Log\AbortLackOfFundsLog;
-use App\Entity\Log\AfforestationLog;
-use App\Entity\Log\ExecuteLog;
+use App\Entity\Log\LogRow\AbortInvalidCellLog;
+use App\Entity\Log\LogRow\AbortLackOfFundsLog;
+use App\Entity\Log\LogRow\AfforestationLog;
+use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
-use App\Entity\Log\LogVisibility;
+use App\Entity\Log\LogConst;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
@@ -43,7 +43,7 @@ class AfforestationPlan extends Plan
 
         $terrain->setCell($this->point, new Forest(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteLog($island, $this, LogVisibility::VISIBILITY_PRIVATE));
+        $logs->add(new ExecuteLog($island, $this, LogConst::VISIBILITY_PRIVATE));
         $logs->add(new AfforestationLog($island));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }

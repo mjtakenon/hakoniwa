@@ -6,7 +6,7 @@ use App\Entity\Cell\Cell;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Ship\TransportShip;
-use App\Entity\Log\FoodsTransportationLog;
+use App\Entity\Log\LogRow\FoodsTransportationLog;
 use App\Entity\Log\Logs;
 use App\Entity\Plan\FoodsTransportationPlan;
 use App\Entity\Status\Status;
