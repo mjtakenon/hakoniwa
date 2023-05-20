@@ -4,6 +4,7 @@ namespace App\Entity\Cell\Others;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\FoodsProduction\Farm;
+use App\Entity\Cell\FoodsProduction\FarmDome;
 use App\Entity\Cell\HasPopulation\City;
 use App\Entity\Cell\HasPopulation\Metropolis;
 use App\Entity\Cell\HasPopulation\Town;
@@ -30,6 +31,7 @@ class Plain extends Cell
         Town::TYPE,
         Village::TYPE,
         Farm::TYPE,
+        FarmDome::TYPE,
     ];
 
     const ATTRIBUTE = [
