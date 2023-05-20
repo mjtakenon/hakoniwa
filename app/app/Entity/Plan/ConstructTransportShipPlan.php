@@ -40,7 +40,7 @@ class ConstructTransportShipPlan extends Plan
     {
         if ($status->getFunds() < self::PRICE) {
             $this->amount = 0;
-            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this->point, $this));
+            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 

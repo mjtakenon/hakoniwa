@@ -9,13 +9,11 @@ use App\Models\Island;
 class AbortNoDevelopmentPointsLog extends LogRow
 {
     private Island $island;
-    private Point $point;
     private Plan $plan;
 
-    public function __construct(Island $island, Point $point, Plan $plan)
+    public function __construct(Island $island, Plan $plan)
     {
         $this->island = $island;
-        $this->point = $point;
         $this->plan = $plan;
     }
 
@@ -23,7 +21,8 @@ class AbortNoDevelopmentPointsLog extends LogRow
     {
         return json_encode([
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD],
-            ['text' => ' (' . $this->point->x . ',' . $this->point->y . ') にて予定されていた'],
+            is_null($this->plan::USE_POINT) ? ['text' => ' (' . $this->plan->getPoint()->x . ',' . $this->plan->getPoint()->y . ') '] : ['text' => ''],
+            ['text' => 'にて予定されていた'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD],
             ['text' => 'は、発展ポイントが不足していたため'],
             ['text' => '中止', 'style' => StyleConst::BOLD . StyleConst::COLOR_DANGER],

@@ -4,8 +4,8 @@ namespace App\Entity\Util;
 
 class Point
 {
-    public $x;
-    public $y;
+    public int|string $x;
+    public int|string $y;
 
     public function __construct($x, $y)
     {

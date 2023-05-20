@@ -9,26 +9,21 @@ use App\Models\Island;
 class FindBuriedTreasureLog extends LogRow
 {
     private Island $island;
-    private Point $point;
     private Plan $plan;
     private int $amount;
-    private string $visibility;
 
-    public function __construct(Island $island, Point $point, Plan $plan, int $amount, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(Island $island, Plan $plan, int $amount)
     {
         $this->island = $island;
-        $this->point = $point;
         $this->plan = $plan;
         $this->amount = $amount;
-        $this->visibility = $visibility;
     }
 
     public function generate(): string
     {
         return json_encode([
-            $this->visibility === LogVisibility::VISIBILITY_PRIVATE ? ['text' => '(極秘) '] : ['text' => ''],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD],
-            ['text' => ' (' . $this->point->x . ',' . $this->point->y . ') の'],
+            ['text' => ' (' . $this->plan->getPoint()->x . ',' . $this->plan->getPoint()->y . ') の'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD],
             ['text' => 'を実施中に'],
             ['text' => '埋蔵金が発見', 'style' => StyleConst::BOLD],
@@ -40,6 +35,6 @@ class FindBuriedTreasureLog extends LogRow
 
     public function getVisibility(): string
     {
-        return $this->visibility;
+        return LogVisibility::VISIBILITY_PUBLIC;
     }
 }

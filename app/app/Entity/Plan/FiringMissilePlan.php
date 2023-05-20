@@ -71,13 +71,13 @@ class FiringMissilePlan extends Plan
         }
 
         if ($missileBases->isEmpty()) {
-            $logs->add(new AbortNoMissileBaseLog($island, $this->point, $this));
+            $logs->add(new AbortNoMissileBaseLog($island, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
@@ -100,7 +100,7 @@ class FiringMissilePlan extends Plan
             for ($n = 0; $n < $missileBase->getLevel(); $n++) {
                 if ($this->amount === 0) {
                     if ($firingCount >= 1) {
-                        $logs->add(new MissileFiringLog($island, $this->point, $this, $firingCount));
+                        $logs->add(new MissileFiringLog($island, $this, $firingCount));
                     }
                     $this->amount = 0;
                     return new ExecutePlanResult($terrain, $status, $logs, true);
@@ -108,9 +108,9 @@ class FiringMissilePlan extends Plan
 
                 if ($status->getFunds() < self::PRICE) {
                     if ($firingCount >= 1) {
-                        $logs->add(new MissileFiringLog($island, $this->point, $this, $firingCount));
+                        $logs->add(new MissileFiringLog($island, $this, $firingCount));
                     }
-                    $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
+                    $logs->add(new AbortLackOfFundsLog($island, $this));
                     $this->amount = 0;
                     return new ExecutePlanResult($terrain, $status, $logs, true);
                 }
@@ -155,7 +155,7 @@ class FiringMissilePlan extends Plan
         }
 
         if ($firingCount >= 1) {
-            $logs->unshift(new MissileFiringLog($island, $this->point, $this, $firingCount));
+            $logs->unshift(new MissileFiringLog($island, $this, $firingCount));
         }
         $this->amount = 0;
         return new ExecutePlanResult($terrain, $status, $logs, true);

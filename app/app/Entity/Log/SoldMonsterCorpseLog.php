@@ -22,4 +22,9 @@ class SoldMonsterCorpseLog extends LogRow
             ['text' => 'で売却されました。'],
         ]);
     }
+
+    public function getVisibility(): string
+    {
+        return LogVisibility::VISIBILITY_PUBLIC;
+    }
 }

@@ -59,7 +59,7 @@ class ResourcesTransportationPlan extends Plan
         }
 
         if ($status->getResources() < self::UNIT * $this->amount) {
-            $logs->add(new AbortLackOfResourcesLog($island, $this->point, $this));
+            $logs->add(new AbortLackOfResourcesLog($island, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }

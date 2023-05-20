@@ -21,9 +21,9 @@ class ExecuteLog extends LogRow
     public function generate(): string
     {
         return json_encode([
-            $this->visibility === LogVisibility::VISIBILITY_PRIVATE ? ['text' => '(極秘) '] : ['text' => '' ],
+            $this->visibility === LogVisibility::VISIBILITY_PRIVATE ? ['text' => '(極秘) '] : ['text' => ''],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => StyleConst::BOLD ],
-            ['text' => 'にて'],
+            is_null($this->plan::USE_POINT) ? ['text' => ' (' . $this->plan->getPoint()->x . ',' . $this->plan->getPoint()->y . ') にて'] : ['text' => 'にて'],
             ['text' => $this->plan->getName(), 'style' => StyleConst::BOLD ],
             ['text' => 'が行われました。'],
         ]);

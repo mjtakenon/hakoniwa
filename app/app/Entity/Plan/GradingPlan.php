@@ -5,7 +5,7 @@ namespace App\Entity\Plan;
 use App\Entity\Cell\Others\Plain;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
-use App\Entity\Log\ExecuteCellLog;
+use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\FindBuriedTreasureLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -32,18 +32,18 @@ class GradingPlan extends Plan
     {
         $cell = $terrain->getCell($this->point);
         if ($status->getFunds() < self::PRICE) {
-            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this->point, $this));
+            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, self::GRADABLE_CELLS, true)) {
-            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
+            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         $terrain->setCell($this->point, new Plain(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteCellLog($island, $this->point, $this));
+        $logs = Logs::create()->add(new ExecuteLog($island, $this));
 
         // 一定確率で埋蔵金を見つける
         if (self::FIND_BURIED_TREASURE_PROBABILITY <= Rand::mt_rand_float()) {
@@ -51,7 +51,7 @@ class GradingPlan extends Plan
         }
 
         $amount = random_int(100, 1000);
-        $logs->add(new FindBuriedTreasureLog($island, $this->point, $this, $amount));
+        $logs->add(new FindBuriedTreasureLog($island, $this, $amount));
         $status->setFunds($status->getFunds() + $amount);
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }

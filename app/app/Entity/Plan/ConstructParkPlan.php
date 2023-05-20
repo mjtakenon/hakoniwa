@@ -11,7 +11,7 @@ use App\Entity\Cell\Park\MonumentOfWinner;
 use App\Entity\Cell\Park\Park;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
-use App\Entity\Log\ExecuteCellLog;
+use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -47,12 +47,12 @@ class ConstructParkPlan extends Plan
         $logs = Logs::create();
 
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, self::CONSTRUCTABLE_CELLS, true)) {
-            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -65,7 +65,7 @@ class ConstructParkPlan extends Plan
         }
 
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteCellLog($island, $this->point, $this));
+        $logs->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

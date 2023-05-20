@@ -6,7 +6,7 @@ use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\ResourcesProduction\Oilfield;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
-use App\Entity\Log\ExecuteCellLog;
+use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -30,18 +30,18 @@ class ConstructOilfieldPlan extends Plan
     {
         $cell = $terrain->getCell($this->point);
         if ($status->getFunds() < self::PRICE) {
-            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this->point, $this));
+            $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if (!in_array($cell::TYPE, [Shallow::TYPE], true)) {
-            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
+            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         $terrain->setCell($this->point, new Oilfield(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs = Logs::create()->add(new ExecuteCellLog($island, $this->point, $this));
+        $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

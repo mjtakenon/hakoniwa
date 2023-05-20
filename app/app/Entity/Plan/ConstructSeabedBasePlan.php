@@ -7,7 +7,7 @@ use App\Entity\Cell\Others\Sea;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\AbortLackOfFundsLog;
 use App\Entity\Log\AbortNoDevelopmentPointsLog;
-use App\Entity\Log\ExecuteCellLog;
+use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\Logs;
 use App\Entity\Log\LogVisibility;
 use App\Entity\Status\DevelopmentPointsConst;
@@ -17,6 +17,7 @@ use App\Entity\Util\Point;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
+use function DeepCopy\deep_copy;
 
 class ConstructSeabedBasePlan extends Plan
 {
@@ -38,24 +39,26 @@ class ConstructSeabedBasePlan extends Plan
         $cell = $terrain->getCell($this->point);
         $logs = Logs::create();
         if ($status->getFunds() < self::PRICE) {
-            $logs->add(new AbortLackOfFundsLog($island, $this->point, $this));
+            $logs->add(new AbortLackOfFundsLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
-            $logs->add(new AbortNoDevelopmentPointsLog($island, $this->point, $this));
+            $logs->add(new AbortNoDevelopmentPointsLog($island, $this));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         if ($cell::TYPE !== Sea::TYPE) {
-            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
         $terrain->setCell($this->point, new SeabedBase(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
-        $logs->add(new ExecuteCellLog($island, $this->point, $this, LogVisibility::VISIBILITY_PRIVATE));
-        $logs->add(new ExecuteCellLog($island, new Point('?', '?'), $this));
+        $logs->add(new ExecuteLog($island, $this, LogVisibility::VISIBILITY_PRIVATE));
+        $seabedBase = deep_copy($this);
+        $seabedBase->point = new Point('?', '?');
+        $logs->add(new ExecuteLog($island, $seabedBase));
         return new ExecutePlanResult($terrain, $status, $logs, true);
     }
 }

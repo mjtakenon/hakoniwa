@@ -8,7 +8,7 @@ use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Others\Volcano;
 use App\Entity\Log\AbortInvalidCellLog;
-use App\Entity\Log\ExecuteCellLog;
+use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -33,7 +33,7 @@ class RemovalFacility extends Plan
         $cell = $terrain->getCell($this->point);
 
         if (!in_array($cell::TYPE, self::REMOVABLE_CELLS, true)) {
-            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
+            $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -47,7 +47,7 @@ class RemovalFacility extends Plan
             $terrain->setCell($this->point, new Sea(point: $this->point));
         }
 
-        $logs = Logs::create()->add(new ExecuteCellLog($island, $this->point, $this));
+        $logs = Logs::create()->add(new ExecuteLog($island, $this));
 
         return new ExecutePlanResult($terrain, $status, $logs, false);
     }

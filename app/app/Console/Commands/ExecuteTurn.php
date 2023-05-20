@@ -186,8 +186,8 @@ class ExecuteTurn extends Command
                     // 人口0の場合、発展ポイントを減らして村を生成
                     if ($status->getPopulation() === 0) {
                         $terrain->inviteNewImmigration($status);
-                        $logs->add(new InviteNewImmigrationLog());
                         $logs->add(new UnpopulatedIslandLog($island));
+                        $logs->add(new InviteNewImmigrationLog());
                         $status->aggregate($terrain);
                     }
 

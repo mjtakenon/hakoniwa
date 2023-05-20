@@ -59,7 +59,7 @@ class FoodsTransportationPlan extends Plan
         }
 
         if ($status->getFoods() < self::UNIT * $this->amount) {
-            $logs->add(new AbortLackOfFoodsLog($island, $this->point, $this));
+            $logs->add(new AbortLackOfFoodsLog($island, $this));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }

@@ -7,12 +7,10 @@ use App\Models\Island;
 class IslandFoundLog extends LogRow
 {
     private Island $island;
-    private string $visibility;
 
-    public function __construct(Island $island, string $visibility = LogVisibility::VISIBILITY_GLOBAL)
+    public function __construct(Island $island)
     {
         $this->island = $island;
-        $this->visibility = $visibility;
     }
 
     public function generate(): string
@@ -25,6 +23,6 @@ class IslandFoundLog extends LogRow
 
     public function getVisibility(): string
     {
-        return $this->visibility;
+        return LogVisibility::VISIBILITY_GLOBAL;
     }
 }

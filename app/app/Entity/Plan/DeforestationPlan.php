@@ -6,7 +6,7 @@ use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\Others\Plain;
 use App\Entity\Log\AbortInvalidCellLog;
 use App\Entity\Log\DeforestationLog;
-use App\Entity\Log\ExecuteCellLog;
+use App\Entity\Log\ExecuteLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -32,7 +32,7 @@ class DeforestationPlan extends Plan
         $logs = Logs::create();
 
         if (!in_array($cell::TYPE, [Forest::TYPE], true)) {
-            $logs->add(new AbortInvalidCellLog($island, $this->point, $this, $cell));
+            $logs->add(new AbortInvalidCellLog($island, $this, $cell));
             return new ExecutePlanResult($terrain, $status, $logs, false);
         }
 
@@ -41,7 +41,7 @@ class DeforestationPlan extends Plan
         $status->setFunds($status->getFunds() - self::PRICE);
         $status->setResources($status->getResources() + ($amount * Forest::WOODS_TO_RESOURCES_COEF));
         $logs->add(new DeforestationLog($amount * Forest::WOODS_TO_RESOURCES_COEF));
-        $logs->add(new ExecuteCellLog($island, $this->point, $this));
+        $logs->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, false);
     }
 }
