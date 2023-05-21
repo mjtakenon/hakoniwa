@@ -56,6 +56,7 @@ jobs:
       working-directory: ./app
     - name: Generate key
       run: php artisan key:generate --env=testing
+      working-directory: ./app
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
       working-directory: ./app
