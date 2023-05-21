@@ -32,7 +32,11 @@ class CommentsController
 
         $validated = $validator->safe()->collect();
 
-        $comment = $validated->get('comment');
+        $comment = $validated->get('comment', '');
+        $comment = preg_replace('/\A[\x00\s]++|[\x00\s]++\z/u', '', $comment);
+        if ($comment === '') {
+            $comment = null;
+        }
 
         return \DB::transaction(function () use ($island, $comment) {
 
@@ -45,7 +49,7 @@ class CommentsController
             $islandComment->comment = $comment;
             $islandComment->save();
 
-            return $this->ok(['comment' => null]);
+            return $this->ok(['comment' => $islandComment->comment]);
         });
     }
 }
