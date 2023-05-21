@@ -158,7 +158,6 @@ export const useMainStore = defineStore('main', {
                 '/api/islands/' + id,
             )
                 .then(res => {
-                    console.debug(res);
                     target[0].terrains = res.data.island.terrains;
                     target[0].comment = res.data.island.comment;
                     this.isLoadingTerrain = false;
@@ -183,6 +182,6 @@ export const useMainStore = defineStore('main', {
                 console.debug(err);
             })
             return result;
-        }
+        },
     }
 })

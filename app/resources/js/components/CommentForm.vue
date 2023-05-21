@@ -36,6 +36,7 @@
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
 import {UpdateStatus} from "../store/Entity/Network";
+import {stringEquals} from "../Utils";
 
 export default defineComponent({
     computed: {
@@ -46,7 +47,6 @@ export default defineComponent({
     data() {
         return {
             comment: "",
-            isCommentChanged: false,
             updateStatus: UpdateStatus.None as UpdateStatus,
         }
     },
@@ -57,26 +57,18 @@ export default defineComponent({
     mounted() {
         this.comment = this.store.island.comment;
     },
-    watch: {
-        comment() {
-            this.isCommentChanged = true;
-        }
-    },
     methods: {
         async submitComment() {
             (this.$refs.input as HTMLElement).blur();
-            if (!this.isCommentChanged) return;
-            this.isCommentChanged = false;
-            this.updateStatus = UpdateStatus.Updating;
+            if(stringEquals(this.comment, this.store.island.comment)) return;
 
+            this.updateStatus = UpdateStatus.Updating;
             const result = await this.store.postComment(this.comment);
 
             if (result) {
                 this.updateStatus = UpdateStatus.Success;
-                console.debug("comment update success");
             } else {
                 this.updateStatus = UpdateStatus.Failed;
-                console.debug("comment update failed");
             }
         }
     }
