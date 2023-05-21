@@ -71,4 +71,9 @@ class Island extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function latestComment(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(IslandComment::class, 'island_id')->latestOfMany();
+    }
 }

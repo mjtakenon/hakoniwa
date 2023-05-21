@@ -10,6 +10,7 @@ import axios from "axios";
 import {Point} from "./Entity/Point";
 import {Turn} from "./Entity/Turn";
 import {Theme} from "./Entity/Theme";
+import {UpdateStatus} from "./Entity/Network";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -45,7 +46,7 @@ export const useMainStore = defineStore('main', {
     state: (): PiniaState => {
         return {
             hakoniwa: {width: 0, height: 0},
-            island: {id: 0, name: '', owner_name: ''},
+            island: {id: 0, name: '', owner_name: '', comment: ''},
             terrains: [],
             status: {
                 area: 0,
@@ -157,13 +158,31 @@ export const useMainStore = defineStore('main', {
                 '/api/islands/' + id,
             )
                 .then(res => {
+                    console.debug(res);
                     target[0].terrains = res.data.island.terrains;
+                    target[0].comment = res.data.island.comment;
                     this.isLoadingTerrain = false;
                 })
                 .catch(err => {
                     console.debug(err);
                     throw new Error("島の地形取得時にエラーが発生しました")
                 })
+        },
+        async postComment(comment: string): Promise<boolean> {
+            let result = false;
+            console.debug('POST', '/api/islands/' + this.island.id + '/comments');
+            await axios.post(
+                '/api/islands/' + this.island.id + '/comments',
+                {
+                    comment: comment
+                }
+            ).then(res => {
+                result = true;
+                this.island.comment = comment;
+            }).catch(err => {
+                console.debug(err);
+            })
+            return result;
         }
     }
 })

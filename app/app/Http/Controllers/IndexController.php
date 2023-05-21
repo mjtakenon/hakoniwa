@@ -8,6 +8,7 @@ use App\Models\IslandComment;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\Turn;
+use Hamcrest\Core\Is;
 use Illuminate\Support\Collection;
 
 class IndexController extends Controller
@@ -16,13 +17,12 @@ class IndexController extends Controller
     public function get()
     {
         $turn = Turn::latest()->firstOrFail();
-
-        $islands = Island::select('*', 'islands.id as id')
-            ->where('turn_id', $turn->id)
-            ->join('island_statuses','islands.id','=','island_statuses.island_id')
-            ->leftJoin('island_comments','islands.id','=','island_comments.island_id')
-            ->orderBy('island_statuses.development_points', 'desc')
-            ->get();
+        $islands = Island::with(['latestComment', 'islandStatuses' =>
+            function ($query) use ($turn) {
+                $query->where('turn_id', $turn->id)
+                    ->orderByDesc('island_statuses.development_points');
+            }
+        ])->get();
 
         $logs = IslandLog::whereIn('turn_id',
             Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
@@ -44,22 +44,26 @@ class IndexController extends Controller
         return view('pages.index', [
             'islands' => $islands->map(function ($island) {
                 /** @var Island | IslandStatus | IslandComment $island */
+
+                $status = $island->islandStatuses->first();
+                $comment = $island->latestComment()->get()->first();
+
                 return [
                     'id' => $island->id,
                     'name' => $island->name,
                     'owner_name' => $island->owner_name,
-                    'comment' => $island->comment,
-                    'development_points' => $island->development_points,
-                    'funds' => $island->funds,
-                    'foods' => $island->foods,
-                    'resources' => $island->resources,
-                    'population' => $island->population,
-                    'funds_production_capacity' => $island->funds_production_capacity,
-                    'foods_production_capacity' => $island->foods_production_capacity,
-                    'resources_production_capacity' => $island->resources_production_capacity,
-                    'environment' => $island->environment,
-                    'area' => $island->area,
-                    'abandoned_turn' => $island->abandoned_turn,
+                    'comment' => $comment->comment ?? null,
+                    'development_points' => $status->development_points,
+                    'funds' => $status->funds,
+                    'foods' => $status->foods,
+                    'resources' => $status->resources,
+                    'population' => $status->population,
+                    'funds_production_capacity' => $status->funds_production_capacity,
+                    'foods_production_capacity' => $status->foods_production_capacity,
+                    'resources_production_capacity' => $status->resources_production_capacity,
+                    'environment' => $status->environment,
+                    'area' => $status->area,
+                    'abandoned_turn' => $status->abandoned_turn,
                 ];
             }),
             'turn' => $turn,
