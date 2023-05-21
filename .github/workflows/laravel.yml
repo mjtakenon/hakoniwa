@@ -2,9 +2,9 @@ name: Laravel
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   laravel-tests:
@@ -44,9 +44,6 @@ jobs:
       with:
         php-version: '8.2.4'
     - uses: actions/checkout@v3
-#     - name: Copy .env
-#       run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
-#       working-directory: ./app
     - name: composer install
       if: steps.cache.outputs.cache-hit != 'true'
       run: composer install -n --prefer-dist
@@ -60,16 +57,9 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
       working-directory: ./app
-#     - name: Create Database
-#       run: |
-#         mkdir -p database
-#         touch database/database.sqlite
     - name: migrate
       run: php artisan migrate --env=testing
       working-directory: ./app
     - name: Execute tests (Unit and Feature tests) via PHPUnit
-#       env:
-#         DB_CONNECTION: sqlite
-#         DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit --configuration phpunit.xml tests/ 
+      run: php artisan test tests/App
       working-directory: ./app

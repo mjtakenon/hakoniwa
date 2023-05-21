@@ -18,17 +18,9 @@ trait CreatesApplication
         $app->make(Kernel::class)->bootstrap();
 
         if (!\App::environment('testing')) {
-            throw new \Exception('testing環境以外のDBに接続しているため中断します。 host:' . \DB::getConfig()['host']);
+            throw new \Exception('testing環境以外のDBに接続しているため中断します。 environment:' . \App::environment());
         }
-
-        \DB::beginTransaction();
 
         return $app;
     }
-
-    public function __destruct()
-    {
-        \DB::rollBack();
-    }
-
 }
