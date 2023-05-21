@@ -46,7 +46,7 @@ jobs:
     - uses: actions/checkout@v3
 #     - name: Copy .env
 #       run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
-      working-directory: ./app
+#       working-directory: ./app
     - name: composer install
       if: steps.cache.outputs.cache-hit != 'true'
       run: composer install -n --prefer-dist
