@@ -71,5 +71,5 @@ jobs:
 #       env:
 #         DB_CONNECTION: sqlite
 #         DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit --configuration phpunit.xml /app/tests/ 
+      run: vendor/bin/phpunit --configuration phpunit.xml app/tests/ 
       working-directory: ./app
