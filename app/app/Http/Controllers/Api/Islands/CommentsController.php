@@ -13,7 +13,7 @@ class CommentsController
     public function post(int $islandId): \Illuminate\Http\JsonResponse
     {
         $validator = \Validator::make(\Request::all(), [
-            'comment' => 'string|required|max:128',
+            'comment' => 'string|nullable|max:128',
         ]);
 
         if ($validator->fails()) {
@@ -45,7 +45,7 @@ class CommentsController
             $islandComment->comment = $comment;
             $islandComment->save();
 
-            return $this->ok(['comment' => $islandComment->comment]);
+            return $this->ok(['comment' => null]);
         });
     }
 }

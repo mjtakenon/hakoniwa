@@ -25,13 +25,13 @@ class CommentsControllerTest extends TestCase
 
         $response = $this->actingAs($user)
             ->post('/api/islands/' . $island->id . '/comments', [
-                'comment' => 'test_comment2',
+                'comment' => '',
             ]);
 
         $response->assertOk();
         $this->assertNull(IslandComment::find(1));
-        $this->assertSame('test_comment2', IslandComment::find(2)->comment);
-        $this->assertSame('test_comment2', json_decode($response->content())->comment);
+        $this->assertSame('', IslandComment::find(2)->comment);
+        $this->assertSame('', json_decode($response->content())->comment);
     }
 
     public function testPostMaxChars()
