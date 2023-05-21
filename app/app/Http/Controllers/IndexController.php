@@ -17,17 +17,16 @@ class IndexController extends Controller
     public function get()
     {
         $turn = Turn::latest()->firstOrFail();
-        $islands = Island::with(['latestComment', 'islandStatuses' =>
-            function ($query) use ($turn) {
-                $query->where('turn_id', $turn->id)
-                    ->orderByDesc('island_statuses.development_points');
-            }
-        ])->get();
 
-        $logs = IslandLog::whereIn('turn_id',
-            Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
+        $islandStatuses = IslandStatus::where('turn_id', $turn->id)
+            ->orderByDesc('development_points')
+            ->with(['island', 'island.islandComments'])
+            ->get();
+
+        $logs = IslandLog::whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
             ->where('visibility', LogConst::VISIBILITY_GLOBAL)
             ->orderByDesc('id')
+            ->with(['turn'])
             ->get()
             ->groupBy('turn.turn')
             ->map(function ($groupedLog, $turn) {
@@ -42,11 +41,11 @@ class IndexController extends Controller
             });
 
         return view('pages.index', [
-            'islands' => $islands->map(function ($island) {
-                /** @var Island | IslandStatus | IslandComment $island */
+            'islands' => $islandStatuses->map(function ($status) {
+                /** @var Island | IslandStatus | IslandComment $status */
 
-                $status = $island->islandStatuses->first();
-                $comment = $island->latestComment()->get()->first();
+                $island = $status->island;
+                $comment = $status->island->islandComments->first();
 
                 return [
                     'id' => $island->id,
