@@ -17,7 +17,7 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        if (\DB::getConfig()['host'] !== 'db-testing') {
+        if (\App::environment() !== 'testing') {
             throw new \Exception('testing環境以外のDBに接続しているため中断します。 host:' . \DB::getConfig()['host']);
         }
 
