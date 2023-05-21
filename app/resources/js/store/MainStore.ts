@@ -178,7 +178,7 @@ export const useMainStore = defineStore('main', {
                 }
             ).then(res => {
                 result = true;
-                this.island.comment = comment;
+                this.island.comment = res.data.comment;
             }).catch(err => {
                 console.debug(err);
             })
