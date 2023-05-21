@@ -11,4 +11,11 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     protected $seed = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutVite();
+    }
 }
