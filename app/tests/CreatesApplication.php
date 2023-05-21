@@ -17,17 +17,9 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        if (\App::environment() !== 'testing') {
+        if (!\App::environment('testing')) {
             throw new \Exception('testing環境以外のDBに接続しているため中断します。 host:' . \DB::getConfig()['host']);
         }
-
-        foreach(\DB::select('SHOW TABLES') as $table) {
-            if ($table->Tables_in_hakoniwa !== 'migrations') {
-                \DB::table($table->Tables_in_hakoniwa)->truncate();
-            }
-        }
-
-        \Artisan::call('db:seed');
 
         \DB::beginTransaction();
 

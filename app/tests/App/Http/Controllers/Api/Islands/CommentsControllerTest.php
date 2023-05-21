@@ -20,8 +20,11 @@ class CommentsControllerTest extends TestCase
             ]);
 
         $response->assertOk();
-        $this->assertNotNull(IslandComment::find(1));
-        $this->assertSame('test_comment', IslandComment::find(1)->comment);
+        $this->assertSame(1, IslandComment::where('island_id', $island->id)->count());
+        $islandComment = IslandComment::where('island_id', $island->id)->first();
+        $this->assertSame($island->id, $islandComment->island_id);
+        $this->assertSame('test_comment', $islandComment->comment);
+        $this->assertSame('test_comment', json_decode($response->content())->comment);
 
         $response = $this->actingAs($user)
             ->post('/api/islands/' . $island->id . '/comments', [
@@ -29,9 +32,12 @@ class CommentsControllerTest extends TestCase
             ]);
 
         $response->assertOk();
-        $this->assertNull(IslandComment::find(1));
-        $this->assertSame('', IslandComment::find(2)->comment);
-        $this->assertSame('', json_decode($response->content())->comment);
+        $this->assertSame(1, IslandComment::where('island_id', $island->id)->count());
+        $this->assertNull(IslandComment::find($islandComment->id));
+        $islandComment = IslandComment::where('island_id', $island->id)->first();
+        $this->assertSame($island->id, $islandComment->island_id);
+        $this->assertNull($islandComment->comment);
+        $this->assertNull(json_decode($response->content())->comment);
     }
 
     public function testPostMaxChars()
