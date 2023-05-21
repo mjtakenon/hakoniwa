@@ -1,6 +1,6 @@
 # やまにてぃ🏝
 
-[![Laravel](https://github.com/mjtakenon/hakoniwa/actions/workflows/laravel.yml/badge.svg)](https://github.com/mjtakenon/hakoniwa/actions/workflows/laravel.yml)
+[![Laravel](https://github.com/mjtakenon/hakoniwa/actions/workflows/laravel.yml/badge.svg?branch=main)](https://github.com/mjtakenon/hakoniwa/actions/workflows/laravel.yml)
 
 ## 環境構築手順
 
