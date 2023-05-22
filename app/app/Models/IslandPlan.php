@@ -6,6 +6,9 @@ use App\Entity\Plan\Plans;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperIslandPlan
+ */
 class IslandPlan extends Model
 {
     use HasFactory;
