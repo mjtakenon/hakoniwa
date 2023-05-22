@@ -40,7 +40,6 @@ seeding-testing:
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
 	docker compose exec --user debian app sudo php artisan ide-helper:model --write-mixin
-	docker compose exec --user debian app sudo php artisan ide-helper:meta
 create-log-file:
 	docker compose exec --user debian app sudo chown www-data:www-data /app/storage/ -R
 	docker compose exec --user debian app sudo chmod 777 /app/storage/ -R
