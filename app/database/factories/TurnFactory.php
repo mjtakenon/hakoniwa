@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class IslandFactory extends Factory
+class TurnFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,17 +17,16 @@ class IslandFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->randomNumber(),
-            'name' => $this->faker->name,
-            'owner_name' => $this->faker->name,
+            'turn' => $this->faker->randomNumber(),
+            'next_turn_scheduled_at' => now(),
         ];
     }
 
-    public function setUser(User $user): Factory
+    public function setTurn(int $turn): Factory
     {
-        return $this->state(function () use ($user) {
+        return $this->state(function () use ($turn) {
             return [
-                'user_id' => $user->id,
+                'turn' => $turn,
             ];
         });
     }
