@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 $baseMiddleware = [
+    \App\Http\Middleware\MaintenanceFilter::class,
     \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
     \Illuminate\Session\Middleware\StartSession::class,
     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
