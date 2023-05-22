@@ -17,26 +17,10 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        if (\DB::getConfig()['host'] !== 'db-testing') {
-            throw new \Exception('testing環境以外のDBに接続しているため中断します。 host:' . \DB::getConfig()['host']);
+        if (!\App::environment('testing')) {
+            throw new \Exception('testing環境以外のDBに接続しているため中断します。 environment:' . \App::environment());
         }
-
-        foreach(\DB::select('SHOW TABLES') as $table) {
-            if ($table->Tables_in_hakoniwa !== 'migrations') {
-                \DB::table($table->Tables_in_hakoniwa)->truncate();
-            }
-        }
-
-        \Artisan::call('db:seed');
-
-        \DB::beginTransaction();
 
         return $app;
     }
-
-    public function __destruct()
-    {
-        \DB::rollBack();
-    }
-
 }

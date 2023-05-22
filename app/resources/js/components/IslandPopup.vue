@@ -5,7 +5,9 @@
             <div class="popup-window-header">
                 <div>
                     <span class="popup-title-target">target:</span>
-                    <span class="popup-island-name">{{ targetIslandName }}島</span>
+                    <span class="popup-island-name" :class="titleStyle">
+                        {{ targetIslandName }}島
+                    </span>
                 </div>
                 <button class="close-button" @click="closePopup">
                     ×
@@ -87,6 +89,14 @@
                     </div>
                 </div>
             </div>
+            <div class="comment-box">
+                <div class="comment-title">
+                    Comment:
+                </div>
+                <div class="comment-text">
+                    {{islandComment}}
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -108,6 +118,7 @@ export default defineComponent({
         return {
             MAX_PLAN_NUMBER: 30,
             targetIslandName: "",
+            targetIslandComment: "",
             targetTerrains: [] as Terrain[],
             showHoverWindow: false,
             showPlanWindow: false,
@@ -154,6 +165,7 @@ export default defineComponent({
             if (target.length < 1) throw new Error("対象の島が見つかりません");
             if (target[0].terrains === undefined) throw new Error("目標の島に地形情報がありません");
             this.targetTerrains = target[0].terrains;
+            this.targetIslandComment = target[0].comment;
         }
     },
     computed: {
@@ -165,6 +177,22 @@ export default defineComponent({
                 return x === this.selectedPoint.x && y === this.selectedPoint.y
             }
         },
+        titleStyle() {
+            if(this.targetIslandName.length > 16) {
+                return 'text-[0.5rem] lg:text-sm';
+            }
+            return 'text-base lg:text-lg'
+        },
+        hasComment() {
+            return this.targetIslandComment === null　|| this.targetIslandComment === undefined || this.targetIslandComment === "";
+        },
+        islandComment() {
+            if (this.hasComment) {
+                return "コメントはありません"
+            } else {
+                return this.targetIslandComment;
+            }
+        }
     },
     methods: {
         closePopup() {
@@ -329,14 +357,22 @@ export default defineComponent({
         .popup-island-name {
             // general
             @apply font-bold;
-            // sp
-            @apply text-base;
-            // desktop
-            @apply md:text-lg;
         }
 
         .close-button {
             @apply ml-auto p-0 text-xl bg-background border-none hover:bg-background drop-shadow-none;
+        }
+    }
+
+    .comment-box {
+        @apply w-full max-w-[498px] text-left px-2 leading-none;
+
+        .comment-title {
+            @apply text-xs md:text-sm text-on-surface-variant ;
+        }
+
+        .comment-text {
+            @apply text-sm px-1 leading-none md:text-base md:leading-none text-on-surface-variant;
         }
     }
 }

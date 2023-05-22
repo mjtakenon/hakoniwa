@@ -10,6 +10,7 @@
             </div>
             <plan-list class="max-lg:order-2 grow"></plan-list>
         </div>
+        <comment-form></comment-form>
         <log-viewer
             :title="store.island.name + '島の近況'"
             :parsed-logs="store.logs"
@@ -36,9 +37,11 @@ import {Plan} from "../store/Entity/Plan";
 import {Turn} from "../store/Entity/Turn";
 import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 import IslandPopup from "../components/IslandPopup.vue";
+import CommentForm from "../components/CommentForm.vue";
 
 export default defineComponent({
     components: {
+        CommentForm,
         IslandEditor,
         IslandPopup,
         PlanController,
@@ -111,6 +114,7 @@ export default defineComponent({
                 plans: Array<Plan>,
                 logs: LogProps[],
                 summary: SummaryProps[]
+                comment?: string,
             }>
         },
         planCandidate: {

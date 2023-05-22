@@ -27,12 +27,21 @@
                 </div>
             </div>
         </div>
+        <div class="stats-box comment-box">
+            <div class="stats-box-title">
+                コメント
+            </div>
+            <div class="island-comment" :class="{'text-sm text-on-surface-variant': hasComment}">
+                {{ islandComment }}
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
+import {has} from "lodash";
 
 export default defineComponent({
     data() {
@@ -120,6 +129,18 @@ export default defineComponent({
     unmounted() {
         window.removeEventListener("resize", this.onWindowSizeChanged);
     },
+    computed: {
+        hasComment() {
+            return this.store.island.comment === null　|| this.store.island.comment === undefined || this.store.island.comment === "";
+        },
+        islandComment() {
+            if (this.hasComment) {
+                return "コメントはありません"
+            } else {
+                return this.store.island.comment;
+            }
+        }
+    },
     methods: {
         updateFontSize() {
             this.statuses.forEach((status, index) => {
@@ -187,6 +208,14 @@ export default defineComponent({
             .stat-box-data-unit {
                 @apply max-lg:w-full max-lg:-mt-1.5 text-[0.6rem] lg:text-sm text-right lg:pl-2;
             }
+        }
+    }
+
+    .comment-box {
+        @apply col-span-3 md:col-span-5;
+
+        .island-comment {
+            @apply px-2 md:px-4 text-left leading-none;
         }
     }
 }
