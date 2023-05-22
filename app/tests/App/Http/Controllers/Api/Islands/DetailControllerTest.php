@@ -25,10 +25,10 @@ class DetailControllerTest extends TestCase
             ]);
 
         $response->assertOk();
-        $this->assertSame('test_name', Island::find(1)->name);
+        $this->assertSame('test_name', Island::find($island->id)->name);
         $this->assertSame('test_name', json_decode($response->content())->island->name);
-        $this->assertSame(IslandStatus::find(1)->funds, 9000);
-        $this->assertSame(IslandHistory::find(1)->name, $island->name);
+        $this->assertSame(IslandStatus::where('island_id', $island->id)->first()->funds, 9000);
+        $this->assertSame(IslandHistory::where('island_id', $island->id)->first()->name, $island->name);
 
         $response = $this->actingAs($user)
             ->patch('/api/islands/' . $island->id, [
@@ -37,13 +37,13 @@ class DetailControllerTest extends TestCase
             ]);
 
         $response->assertOk();
-        $this->assertSame('test_name2', Island::find(1)->name);
-        $this->assertSame('test_owner_name2', Island::find(1)->owner_name);
+        $this->assertSame('test_name2', Island::find($island->id)->name);
+        $this->assertSame('test_owner_name2', Island::find($island->id)->owner_name);
         $this->assertSame('test_name2', json_decode($response->content())->island->name);
         $this->assertSame('test_owner_name2', json_decode($response->content())->island->owner_name);
-        $this->assertSame(IslandStatus::find(1)->funds, 8000);
-        $this->assertSame(IslandHistory::find(2)->name, 'test_name');
-        $this->assertSame(IslandHistory::find(2)->owner_name, $island->owner_name);
+        $this->assertSame(IslandStatus::where('island_id', $island->id)->first()->funds, 8000);
+        $this->assertSame(IslandHistory::where('island_id', $island->id)->latest()->first()->name, 'test_name');
+        $this->assertSame(IslandHistory::where('island_id', $island->id)->latest()->first()->owner_name, $island->owner_name);
     }
     public function testPatchNoParamsSent()
     {
@@ -57,7 +57,7 @@ class DetailControllerTest extends TestCase
             ]);
 
         $response->assertBadRequest();
-        $this->assertSame(IslandStatus::find(1)->funds, 10000);
+        $this->assertSame(IslandStatus::where('island_id', $island->id)->first()->funds, 10000);
     }
 
     public function testPatchNotModify()
@@ -74,7 +74,7 @@ class DetailControllerTest extends TestCase
             ]);
 
         $response->assertBadRequest();
-        $this->assertSame(IslandStatus::find(1)->funds, 10000);
+        $this->assertSame(IslandStatus::where('island_id', $island->id)->first()->funds, 10000);
     }
     public function testPatchLackOfFunds()
     {
@@ -89,6 +89,6 @@ class DetailControllerTest extends TestCase
             ]);
 
         $response->assertBadRequest();
-        $this->assertSame(IslandStatus::find(1)->funds, 500);
+        $this->assertSame(IslandStatus::where('island_id', $island->id)->first()->funds, 500);
     }
 }

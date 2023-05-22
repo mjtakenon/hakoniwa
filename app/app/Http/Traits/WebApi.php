@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Traits;
 trait WebApi {
     function ok(array $data = [], int $status = 200, array $headers = [], int $options = 0): \Illuminate\Http\JsonResponse
     {

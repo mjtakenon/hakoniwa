@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Islands;
 
-use App\Http\Controllers\Api\WebApi;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\WebApi;
 use App\Models\Island;
 use App\Models\IslandHistory;
 use App\Models\Turn;
