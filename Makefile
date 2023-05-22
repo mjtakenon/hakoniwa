@@ -12,9 +12,7 @@ setup:
 	make init-db
 	make init-db-testing
 	make migrate
-	make migrate-testing
 	make seeding
-	make seeding-testing
 	make ide-helper-generate
 	make yarn-install
 	make yarn-run-dev
@@ -41,10 +39,13 @@ seeding-testing:
 	docker compose exec --user www-data app php artisan db:seed --env=testing
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
-	docker compose exec --user debian app sudo php artisan ide-helper:model --nowrite
+	docker compose exec --user debian app sudo php artisan ide-helper:model --write-mixin
 create-log-file:
 	docker compose exec --user debian app sudo chown www-data:www-data /app/storage/ -R
 	docker compose exec --user debian app sudo chmod 777 /app/storage/ -R
+	docker compose exec --user debian app sudo chmod 777 /app/bootstrap/cache/ -R
+	docker compose exec --user debian app sudo touch /app/.phpunit.result.cache
+	docker compose exec --user debian app sudo chmod 777 .phpunit.result.cache
 next-turn:
 	docker compose exec --user www-data app php artisan execute:turn
 
@@ -78,6 +79,4 @@ yarn-run-dev:
 	docker compose exec frontend bash -c "yarn run dev"
 
 testing:
-	make migrate-testing
-	make seeding-testing
-	docker compose exec app /app/vendor/phpunit/phpunit/phpunit /app/tests/
+	docker compose exec --user www-data app php artisan test tests/App

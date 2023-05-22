@@ -340,11 +340,11 @@ export default defineComponent({
             @apply w-full flex items-center max-lg:flex-wrap max-lg:justify-end;
 
             .target-select {
-                @apply lg:grow lg:mr-2 max-lg:w-full lg:float-right text-sm;
+                @apply lg:grow lg:mr-2 max-lg:w-full lg:float-right text-sm md:max-w-[80%];
             }
 
             .target-open {
-                @apply px-1 py-0.5 max-lg:mt-1 text-xs lg:text-sm;
+                @apply px-1 py-0.5 max-lg:mt-1 text-xs;
             }
         }
     }

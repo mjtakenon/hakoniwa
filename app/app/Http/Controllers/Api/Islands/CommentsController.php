@@ -13,7 +13,7 @@ class CommentsController
     public function post(int $islandId): \Illuminate\Http\JsonResponse
     {
         $validator = \Validator::make(\Request::all(), [
-            'comment' => 'string|required|max:128',
+            'comment' => 'string|nullable|max:128',
         ]);
 
         if ($validator->fails()) {
@@ -32,20 +32,32 @@ class CommentsController
 
         $validated = $validator->safe()->collect();
 
-        $comment = $validated->get('comment');
+        $comment = $validated->get('comment', '');
+        $comment = preg_replace('/\A[\x00\s]++|[\x00\s]++\z/u', '', $comment);
+        if ($comment === '') {
+            $comment = null;
+        }
 
         return \DB::transaction(function () use ($island, $comment) {
 
-            $island->islandComments->each(function ($oldIslandComment) {
-                $oldIslandComment->delete();
-            });
+            /** @var IslandComment $islandComment */
+            $islandComment = $island->islandComments->first();
+            if (!is_null($islandComment)) {
 
-            $islandComment = new IslandComment();
-            $islandComment->island_id = $island->id;
-            $islandComment->comment = $comment;
-            $islandComment->save();
+                if ($islandComment->comment === $comment) {
+                    return $this->ok(['comment' => $islandComment->comment]);
+                }
 
-            return $this->ok(['comment' => $islandComment->comment]);
+                $island->islandComments->each(function ($islandComment) {
+                    $islandComment->delete();
+                });
+            }
+            $newIslandComment = new IslandComment();
+            $newIslandComment->island_id = $island->id;
+            $newIslandComment->comment = $comment;
+            $newIslandComment->save();
+
+            return $this->ok(['comment' => $newIslandComment->comment]);
         });
     }
 }

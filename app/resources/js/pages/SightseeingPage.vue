@@ -21,10 +21,12 @@ import {Hakoniwa} from "../store/Entity/Hakoniwa";
 import {Status} from "../store/Entity/Status";
 import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
-import {LogParser, LogProps} from "../store/Entity/Log";
+import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
+import CommentForm from "../components/CommentForm.vue";
 
 export default defineComponent({
     components: {
+        CommentForm,
         IslandViewer,
         StatusTable,
         LogViewer,
@@ -74,6 +76,8 @@ export default defineComponent({
                 terrains: Array<Terrain>,
                 plans: Array<Plan>,
                 logs: LogProps[]
+                comment?: string,
+                summary: SummaryProps[],
             }>
         },
     },

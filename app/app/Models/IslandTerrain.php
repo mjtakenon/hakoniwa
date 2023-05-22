@@ -6,6 +6,9 @@ use App\Entity\Terrain\Terrain;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperIslandTerrain
+ */
 class IslandTerrain extends Model
 {
     use HasFactory;

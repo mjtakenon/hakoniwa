@@ -6,6 +6,9 @@ use App\Entity\Status\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperIslandStatus
+ */
 class IslandStatus extends Model
 {
     use HasFactory;

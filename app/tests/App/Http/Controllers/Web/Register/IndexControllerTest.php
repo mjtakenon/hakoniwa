@@ -27,10 +27,12 @@ class IndexControllerTest extends TestCase
             'island_name' => 'test_island_name',
             'owner_name' => 'test_owner_name',
         ]);
-        $response->assertRedirect('/islands/1/plans');
-        $this->assertNotNull(Island::find(1));
-        $this->assertNotNull(IslandTerrain::find(1));
-        $this->assertNotNull(IslandStatus::find(1));
-        $this->assertNotNull(IslandPlan::find(1));
+
+        $this->assertSame(1, Island::where('user_id', $user->id)->count());
+        $island = Island::where('user_id', $user->id)->first();
+        $response->assertRedirect('/islands/' . $island->id . '/plans');
+        $this->assertSame(1, IslandTerrain::where('island_id', $island->id)->count());
+        $this->assertSame(1, IslandStatus::where('island_id', $island->id)->count());
+        $this->assertSame(1, IslandPlan::where('island_id', $island->id)->count());
     }
 }

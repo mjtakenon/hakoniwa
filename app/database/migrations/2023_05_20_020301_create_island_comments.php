@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('island_comments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('island_id');
-            $table->string('comment', 128);
+            $table->string('comment', 128)->nullable();
             $table->datetime('created_at')->index();
             $table->softDeletes();
 

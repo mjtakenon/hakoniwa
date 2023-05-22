@@ -24,6 +24,7 @@ class DetailController extends Controller
         }
 
         $turn = Turn::latest()->firstOrFail();
+        $islandComment = $island->islandComments->first();
         $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
 
         return $this->ok([
@@ -31,6 +32,7 @@ class DetailController extends Controller
                 'id' => $island->id,
                 'name' => $island->name,
                 'owner_name' => $island->owner_name,
+                'comment' => $islandComment->comment ?? null,
                 'terrains' => $islandTerrain->toEntity()->toArray(false, true),
             ]
         ]);
