@@ -36,7 +36,7 @@ export interface PiniaState {
     planSendingResult: number,
     showNotification: boolean,
     turn: Turn,
-    theme: Theme,
+    theme?: Theme,
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
     patchIslandNameError: string,
@@ -77,11 +77,6 @@ export const useMainStore = defineStore('main', {
             turn: {
                 turn: 0,
                 next_time: new Date('1970/1/1 00:00:00')
-            },
-            theme: {
-                name: "light",
-                themeClass: "theme-light",
-                type: "light"
             },
             isOpenPopup: false,
             isLoadingTerrain: false,
@@ -203,6 +198,14 @@ export const useMainStore = defineStore('main', {
                 this.patchIslandNameError = err.response.data.code;
             })
             return result;
+        },
+        changeTheme(theme: Theme) {
+            const app = document.getElementById("app");
+            this.theme = theme;
+            app.classList.remove(...app.classList);
+            app.classList.add(theme.themeClass);
+            app.classList.add(theme.type.toString());
+            localStorage.setItem("theme", JSON.stringify(theme));
         }
     }
 })

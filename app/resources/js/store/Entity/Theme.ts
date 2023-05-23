@@ -6,3 +6,8 @@ export interface Theme{
     type: ThemeType
 }
 
+export const defaultTheme: Theme = {
+    name: "light",
+    themeClass: "theme-light",
+    type: "dark"
+}

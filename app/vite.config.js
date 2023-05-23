@@ -2,10 +2,17 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
+const inputs = ['resources/css/app.scss']
+if (process.env.NODE_ENV === "development") {
+    inputs.push('resources/js/debug.ts');
+} else {
+    inputs.push('resources/js/app.ts');
+}
+
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.scss', 'resources/js/app.ts'],
+            input: inputs,
             refresh: true,
         }),
         vue({

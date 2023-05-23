@@ -8,7 +8,6 @@
                 やまにてぃ（仮）
             </div>
         </a>
-        <theme-switcher v-if="isLoggedIn"></theme-switcher>
         <button id="hamburger-button" @click="isOpenHamburgerMenu=!isOpenHamburgerMenu">
             <img class="hamburger-icon" src="/img/hakoniwa/ui/hamburger.svg">
         </button>
@@ -58,6 +57,8 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
+import {useMainStore} from "../store/MainStore";
+import {defaultTheme} from "../store/Entity/Theme";
 
 export default defineComponent({
     components: {ThemeSwitcher},
@@ -67,16 +68,19 @@ export default defineComponent({
         }
     },
     setup() {
-        // TODO: どうにかして設定したカラースキームを取得する
-        document.getElementById("app").classList.add("theme-light");
-        document.getElementById("app").classList.add("light");
-        // document.getElementById("app").classList.add("theme-dark");
-        // document.getElementById("app").classList.add("dark");
-    },
-    methods: {
+        const store = useMainStore();
+        const theme = localStorage.getItem('theme');
+        if (store.theme === undefined) {
+            if (theme !== undefined) {
+                store.theme = JSON.parse(theme);
+            } else {
+                store.theme = defaultTheme;
+            }
+        }
+        return {store};
     },
     mounted() {
-
+        this.store.changeTheme(this.store.theme);
     },
     computed: {
     },

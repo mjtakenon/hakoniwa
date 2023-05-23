@@ -19,7 +19,6 @@ export default defineComponent({
                 { name: 'light', themeClass: 'theme-light', type: 'light' },
                 { name: 'dark', themeClass: 'theme-dark', type: 'dark' }
             ] as Theme[],
-            appElement: document.getElementById("app"),
             isDark: false
         }
     },
@@ -33,25 +32,12 @@ export default defineComponent({
     },
     mounted() {
         this.isDark = (this.store.theme.type === 'dark');
-        this.changeTheme(this.store.theme);
     },
     methods: {
-        changeTheme(theme: Theme) {
-            console.debug(theme);
-            this.appElement.classList.remove(...this.appElement.classList);
-            this.appElement.classList.add(theme.themeClass);
-            this.appElement.classList.add(theme.type.toString());
-            localStorage.setItem('theme', JSON.stringify(theme));
-        },
         onClickThemeToggle() {
             this.isDark = !this.isDark;
-            if(this.isDark) {
-                this.store.theme = this.theme[1];
-            }
-            else {
-                this.store.theme = this.theme[0];
-            }
-            this.changeTheme(this.store.theme);
+            if(this.isDark) this.store.changeTheme(this.theme[1])
+            else this.store.changeTheme(this.theme[0])
         }
     }
 })
