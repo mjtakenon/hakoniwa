@@ -25,6 +25,9 @@ RUN docker-php-ext-install \
   zip \
   opcache
 
+RUN pecl install xdebug && \
+    docker-php-ext-enable xdebug
+
 RUN mkdir -p /var/run/php-fpm && \
     touch /var/run/php-fpm/php-fpm.sock && \
     chown www-data:www-data /var/run/php-fpm/php-fpm.sock && \

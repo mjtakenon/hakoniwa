@@ -228,6 +228,7 @@ return [
         'island_abandon_turn' => env('ISLAND_ABANDONED_TURN')
     ],
 
-    'notification_webhook_url' => env('NOTIFICATION_WEBHOOK_URL')
+    'notification_webhook_url' => env('NOTIFICATION_WEBHOOK_URL'),
 
+    'is_system_maintenance' => env('IS_SYSTEM_MAINTENANCE'),
 ];
