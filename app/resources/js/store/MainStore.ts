@@ -9,7 +9,7 @@ import {Plan} from "./Entity/Plan";
 import axios from "axios";
 import {Point} from "./Entity/Point";
 import {Turn} from "./Entity/Turn";
-import {Theme} from "./Entity/Theme";
+import {defaultTheme, Theme} from "./Entity/Theme";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -36,7 +36,7 @@ export interface PiniaState {
     planSendingResult: number,
     showNotification: boolean,
     turn: Turn,
-    theme?: Theme,
+    theme: Theme,
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
     patchIslandNameError: string,
@@ -78,6 +78,7 @@ export const useMainStore = defineStore('main', {
                 turn: 0,
                 next_time: new Date('1970/1/1 00:00:00')
             },
+            theme: defaultTheme,
             isOpenPopup: false,
             isLoadingTerrain: false,
             patchIslandNameError: "",

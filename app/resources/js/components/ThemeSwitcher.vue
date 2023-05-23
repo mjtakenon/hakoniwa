@@ -15,33 +15,37 @@ import {useMainStore} from "../store/MainStore";
 export default defineComponent({
     data() {
         return {
-            theme: [
-                { name: 'light', themeClass: 'theme-light', type: 'light' },
-                { name: 'dark', themeClass: 'theme-dark', type: 'dark' }
+            themes: [
+                { name: "light", themeClass: "theme-light", type: "light" },
+                { name: "dark", themeClass: "theme-dark", type: "dark" }
             ] as Theme[],
-            isDark: false
         }
     },
     setup() {
         const store = useMainStore();
-        const theme = localStorage.getItem('theme');
-        if (theme !== undefined) {
-            store.theme = JSON.parse(theme);
-        }
-        return { store };
+        return {store};
     },
-    mounted() {
-        this.isDark = (this.store.theme.type === 'dark');
+    watch: {
+        theme() {
+            console.debug("changed");
+        }
+    },
+    computed: {
+        isDark() {
+            return this.store.theme.type === "dark";
+        }
     },
     methods: {
         onClickThemeToggle() {
-            this.isDark = !this.isDark;
-            if(this.isDark) this.store.changeTheme(this.theme[1])
-            else this.store.changeTheme(this.theme[0])
+            if(this.isDark) {
+                this.store.changeTheme(this.themes[0]);
+            }
+            else {
+                this.store.changeTheme(this.themes[1]);
+            }
         }
     }
 })
-
 </script>
 
 <style scoped lang="scss">

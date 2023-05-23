@@ -138,7 +138,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .island-settings {
     // general
-    @apply w-full bg-surface-variant rounded-md;
+    @apply w-full bg-surface-variant rounded-md mb-6;
     // sp
     @apply p-2;
     // desktop

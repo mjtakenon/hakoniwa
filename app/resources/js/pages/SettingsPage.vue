@@ -6,6 +6,7 @@
                 :change_island_name_price="change_island_name_price"
             >
             </island-name-settings>
+            <theme-settings></theme-settings>
         </div>
     </div>
 </template>
@@ -15,9 +16,10 @@ import {defineComponent, PropType} from 'vue'
 import {Status} from "../store/Entity/Status";
 import {useMainStore} from "../store/MainStore";
 import IslandNameSettings from "../components/IslandNameSettings.vue";
+import ThemeSettings from "../components/ThemeSettings.vue";
 
 export default defineComponent({
-    components: {IslandNameSettings},
+    components: {ThemeSettings, IslandNameSettings},
     setup(props) {
         const store = useMainStore();
         store.$patch({
