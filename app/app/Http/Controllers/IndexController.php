@@ -20,7 +20,8 @@ class IndexController extends Controller
 
         $islandStatuses = IslandStatus::where('turn_id', $turn->id)
             ->orderByDesc('development_points')
-            ->with(['island', 'island.islandComments'])
+            ->join('islands', 'island_id', '=', 'islands.id')
+            ->with(['island.islandComments'])
             ->get();
 
         $logs = IslandLog::whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
@@ -42,7 +43,7 @@ class IndexController extends Controller
 
         return view('pages.index', [
             'islands' => $islandStatuses->map(function ($status) {
-                /** @var Island | IslandStatus | IslandComment $status */
+                /** @var Island | IslandStatus $status */
 
                 $island = $status->island;
                 $comment = $status->island->islandComments->first();
