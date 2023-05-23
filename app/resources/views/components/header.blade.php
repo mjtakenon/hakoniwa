@@ -10,7 +10,7 @@
             :owned-island="{{ \HakoniwaService::getOwnedIsland() }}"
         @endif
     ></vue-header>
-    @if((env('APP_ENV') == 'local' || env('APP_ENV') == 'development') && file_exists(public_path('hot')))
+    @if(\App::environment('local') && file_exists(public_path('hot')))
         <debug-tools></debug-tools>
     @endif
 </header>
