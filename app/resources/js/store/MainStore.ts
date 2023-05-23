@@ -10,7 +10,6 @@ import axios from "axios";
 import {Point} from "./Entity/Point";
 import {Turn} from "./Entity/Turn";
 import {Theme} from "./Entity/Theme";
-import {UpdateStatus} from "./Entity/Network";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -40,6 +39,7 @@ export interface PiniaState {
     theme: Theme,
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
+    patchIslandNameError: string,
 }
 
 export const useMainStore = defineStore('main', {
@@ -85,6 +85,7 @@ export const useMainStore = defineStore('main', {
             },
             isOpenPopup: false,
             isLoadingTerrain: false,
+            patchIslandNameError: "",
         }
     },
     getters: {
@@ -183,5 +184,25 @@ export const useMainStore = defineStore('main', {
             })
             return result;
         },
+        async patchIslandName(name: string, owner: string): Promise<boolean> {
+            this.patchIslandNameError = "";
+            let result = false;
+            console.debug('PATCH', '/api/islands/' + this.island.id)
+            await axios.patch(
+                '/api/islands/' + this.island.id,
+                {
+                    name: name,
+                    owner_name: owner
+                }
+            ).then(res => {
+                result = true;
+                this.island.name = res.data.name;
+                this.island.owner_name = res.data.owner_name;
+                this.status.funds -= 1000;
+            }).catch(err => {
+                this.patchIslandNameError = err.response.data.code;
+            })
+            return result;
+        }
     }
 })

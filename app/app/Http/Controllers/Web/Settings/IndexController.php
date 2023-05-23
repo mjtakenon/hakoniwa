@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web\Settings;
 
+use App\Http\Controllers\Api\Islands\DetailController;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\Turn;
@@ -21,8 +22,7 @@ class IndexController extends Controller
 
         $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
 
-//        return view('pages.settings', [
-        return response()->json([
+        return view('pages.settings', [
             'island' => [
                 'id' => $island->id,
                 'name' => $island->name,
@@ -39,7 +39,8 @@ class IndexController extends Controller
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                 ],
-            ]
+            ],
+            'CHANGE_ISLAND_NAME_PRICE' => DetailController::CHANGE_ISLAND_NAME_PRICE
         ]);
     }
 }
