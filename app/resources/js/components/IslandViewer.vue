@@ -143,7 +143,7 @@ export default defineComponent({
             background-position: right;
 
             .right-padding-text {
-                @apply max-xs:hidden absolute left-1 w-full leading-none text-white text-xs md:text-sm overflow-hidden z-10
+                @apply max-xs:hidden absolute left-1 leading-none text-white text-xs md:text-sm overflow-hidden z-10
             }
         }
     }
