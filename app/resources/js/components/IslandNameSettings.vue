@@ -14,11 +14,16 @@
                 <span>島の名前（最大32文字）</span>
                 <span v-if="nameError !== ''" class="input-error">{{ nameError }}</span>
             </div>
-            <input type="text" name="island-name" maxlength="32" minlength="1"
-                   v-model="name" @blur="checkInputs"
-                   :disabled="isSubmitting || !isFundsEnough"
-                   class="input-form" :class="{'error': nameError !== ''}"
-            >
+            <div class="relative w-full mb-2">
+                <div class="icons">
+                    <span>島</span>
+                </div>
+                <input type="text" name="island-name" maxlength="32" minlength="1"
+                       v-model="name" @blur="checkInputs"
+                       :disabled="isSubmitting || !isFundsEnough"
+                       class="input-form" :class="{'error': nameError !== ''}"
+                >
+            </div>
         </div>
         <div class="input-wrapper">
             <div class="input-header">
@@ -169,6 +174,10 @@ export default defineComponent({
         @apply mt-8;
     }
 
+    .icons {
+        @apply absolute flex items-center justify-end w-full py-1 pr-3 z-10 pointer-events-none;
+    }
+
     .input-wrapper {
         @apply mt-2　text-on-surface-variant;
 
@@ -184,7 +193,7 @@ export default defineComponent({
             @apply w-full bg-background text-on-background p-1 outline-1 outline-primary rounded drop-shadow-md;
             @apply disabled:opacity-40;
             // sp
-            @apply w-full mb-2 px-2;
+            @apply w-full px-2;
             // desktop
             @apply md:px-4;
 
