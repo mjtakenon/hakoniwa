@@ -9,7 +9,7 @@
     <title>@yield('title')</title>
     @php
       $ts = "resources/js/app.ts";
-      if (\App::environment('local') && file_exists(public_path('hot'))) {
+      if (\App::environment('local') && \APP::hasDebugModeEnabled() && file_exists(public_path('hot'))) {
         $ts = 'resources/js/debug.ts';
       }
     @endphp
