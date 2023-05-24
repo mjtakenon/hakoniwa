@@ -43,6 +43,15 @@ class IndexController extends Controller
         $validated = $validator->safe()->collect();
 
         $island = \DB::transaction(function () use ($validated) {
+
+            if (Island::where('name', $validated->get('island_name'))->exists()) {
+                \Redirect::back()->withErrors(['message' => '島名は既に使われています。'])->withInput()->throwResponse();
+            }
+
+            if (Island::where('owner_name', $validated->get('owner_name'))->exists()) {
+                \Redirect::back()->withErrors(['message' => 'オーナー名は既に使われています。'])->withInput()->throwResponse();
+            }
+
             $island = new Island();
             $island->user_id = \Auth::user()->getAuthIdentifier();
             $island->name = $validated->get('island_name');

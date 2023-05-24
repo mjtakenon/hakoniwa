@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            @error('')
+            @error('message')
                 <div class="text-error text-center mb-4 font-bold">{{$message}}</div>
             @enderror
 
