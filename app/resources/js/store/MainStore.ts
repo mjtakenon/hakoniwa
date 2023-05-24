@@ -40,6 +40,7 @@ export interface PiniaState {
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
     patchIslandNameError: string,
+    user: Island,
 }
 
 export const useMainStore = defineStore('main', {
@@ -82,6 +83,7 @@ export const useMainStore = defineStore('main', {
             isOpenPopup: false,
             isLoadingTerrain: false,
             patchIslandNameError: "",
+            user: {id: 0, name: "", owner_name: ""}
         }
     },
     getters: {
@@ -192,8 +194,8 @@ export const useMainStore = defineStore('main', {
                 }
             ).then(res => {
                 result = true;
-                this.island.name = res.data.name;
-                this.island.owner_name = res.data.owner_name;
+                this.user.name = res.data.island.name;
+                this.user.owner_name = res.data.island.owner_name;
                 this.status.funds -= 1000;
             }).catch(err => {
                 this.patchIslandNameError = err.response.data.code;
