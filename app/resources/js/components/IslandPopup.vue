@@ -3,11 +3,9 @@
         <div class="popup-background" @click="closePopup"></div>
         <div class="popup-window">
             <div class="popup-window-header">
-                <div>
-                    <span class="popup-title-target">target:</span>
-                    <span class="popup-island-name" :class="titleStyle">
+                <div class="popup-title-target">target:</div>
+                <div class="popup-island-name" :class="titleStyle">
                         {{ targetIslandName }}島
-                    </span>
                 </div>
                 <button class="close-button" @click="closePopup">
                     ×
@@ -340,7 +338,7 @@ export default defineComponent({
     // general
     @apply w-fit pb-2 bg-background text-on-background rounded-xl;
     // desktop
-    @apply md:px-2;
+    @apply md:px-2 md:max-w-[calc(498px+1rem)];
 
     .popup-window-header {
         @apply w-full flex justify-between items-center px-4 py-1;
@@ -355,8 +353,7 @@ export default defineComponent({
         }
 
         .popup-island-name {
-            // general
-            @apply font-bold;
+            @apply text-left font-bold grow min-w-0 max-w-[80%] leading-none py-1;
         }
 
         .close-button {
@@ -365,10 +362,10 @@ export default defineComponent({
     }
 
     .comment-box {
-        @apply w-full max-w-[498px] text-left px-2 leading-none;
+        @apply w-full max-w-[clamp(0px,95vw,498px)] mt-2 text-left mx-auto px-2 leading-none;
 
         .comment-title {
-            @apply text-xs md:text-sm text-on-surface-variant ;
+            @apply text-xs md:text-sm text-on-surface-variant;
         }
 
         .comment-text {
@@ -392,7 +389,7 @@ export default defineComponent({
 
 #popup-island {
     // sp
-    @apply w-[100vw] h-[100vw];
+    @apply w-[clamp(0px,100vw,498px)] mx-auto;
     // desktop
     @apply max-w-[498px] max-h-[498px];
 
@@ -432,7 +429,7 @@ export default defineComponent({
             background-position: right;
 
             .right-padding-text {
-                @apply max-xs:hidden absolute left-1 w-full leading-none text-white text-xs md:text-sm overflow-hidden z-10
+                @apply max-xs:hidden absolute left-1 leading-none text-white text-xs md:text-sm overflow-hidden z-10
             }
         }
     }

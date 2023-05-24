@@ -31,18 +31,19 @@ Route::prefix('/islands')->middleware(array_merge($baseMiddleware))->group( func
 });
 
 Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
-
     Route::middleware(['auth:sanctum'])->group(function() {
         Route::get('{island_id}/plans', [\App\Http\Controllers\Web\Islands\PlansController::class, 'get'])
             ->where('island_id', '[0-9]+');
     });
-//    Route::get('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'get']);
-//    Route::post('{island_id}/bbs', [\App\Http\Controllers\Islands\BbsController::class, 'post']);
 });
 
 Route::prefix('/register')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
-    Route::get('', [\App\Http\Controllers\Web\Register\IndexController::class, 'get']);
+    Route::get('', [\App\Http\Controllers\Web\Register\IndexController::class, 'get'])->name('register');
     Route::post('', [\App\Http\Controllers\Web\Register\IndexController::class, 'post']);
+});
+
+Route::prefix('/settings')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
+    Route::get('', [\App\Http\Controllers\Web\Settings\IndexController::class, 'get']);
 });
 
 Route::prefix('/logout')->middleware(array_merge($baseMiddleware))->group( function() {

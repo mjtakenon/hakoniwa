@@ -1,4 +1,5 @@
 import _ from 'lodash';
+
 window._ = _;
 
 /**
@@ -8,34 +9,37 @@ window._ = _;
  */
 
 import axios from 'axios';
+
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+// @ts-ignore
 window.axios = axios;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-import { createApp } from "vue/dist/vue.esm-bundler";
-import { createPinia } from "pinia";
+import {App} from "vue";
+import {createApp} from "vue/dist/vue.esm-bundler";
+import {createPinia} from "pinia";
 import SightseeingPage from "./pages/SightseeingPage.vue";
 import PlanPage from "./pages/PlanPage.vue";
 import VueHeader from "./components/VueHeader.vue";
 import TurnViewer from "./components/TurnViewer.vue";
 import RankingViewer from "./components/RankingViewer.vue";
 import LogViewer from "./components/LogViewer.vue";
+import SettingsPage from "./pages/SettingsPage.vue";
 
-const app = createApp({
-    components:{
+export const app: App = createApp({
+    components: {
         SightseeingPage,
         PlanPage,
         VueHeader,
         TurnViewer,
         RankingViewer,
         LogViewer,
+        SettingsPage,
     }
 });
 
 const pinia = createPinia();
 app.use(pinia);
-
-app.mount("#app");
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

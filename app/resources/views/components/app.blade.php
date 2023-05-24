@@ -7,7 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <title>@yield('title')</title>
-    @vite(['resources/js/app.ts', 'resources/css/app.scss'])
+    @php
+      $ts = "resources/js/app.ts";
+      if (\App::environment('local') && \APP::hasDebugModeEnabled() && file_exists(public_path('hot'))) {
+        $ts = 'resources/js/debug.ts';
+      }
+    @endphp
+    @vite([$ts, 'resources/css/app.scss'])
 </head>
 <body>
     <div>

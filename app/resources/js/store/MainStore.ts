@@ -9,8 +9,7 @@ import {Plan} from "./Entity/Plan";
 import axios from "axios";
 import {Point} from "./Entity/Point";
 import {Turn} from "./Entity/Turn";
-import {Theme} from "./Entity/Theme";
-import {UpdateStatus} from "./Entity/Network";
+import {defaultTheme, Theme} from "./Entity/Theme";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -40,6 +39,8 @@ export interface PiniaState {
     theme: Theme,
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
+    patchIslandNameError: string,
+    user: Island,
 }
 
 export const useMainStore = defineStore('main', {
@@ -78,13 +79,11 @@ export const useMainStore = defineStore('main', {
                 turn: 0,
                 next_time: new Date('1970/1/1 00:00:00')
             },
-            theme: {
-                name: "light",
-                themeClass: "theme-light",
-                type: "light"
-            },
+            theme: defaultTheme,
             isOpenPopup: false,
             isLoadingTerrain: false,
+            patchIslandNameError: "",
+            user: {id: 0, name: "", owner_name: ""}
         }
     },
     getters: {
@@ -183,5 +182,33 @@ export const useMainStore = defineStore('main', {
             })
             return result;
         },
+        async patchIslandName(name: string, owner: string): Promise<boolean> {
+            this.patchIslandNameError = "";
+            let result = false;
+            console.debug('PATCH', '/api/islands/' + this.island.id)
+            await axios.patch(
+                '/api/islands/' + this.island.id,
+                {
+                    name: name,
+                    owner_name: owner
+                }
+            ).then(res => {
+                result = true;
+                this.user.name = res.data.island.name;
+                this.user.owner_name = res.data.island.owner_name;
+                this.status.funds -= 1000;
+            }).catch(err => {
+                this.patchIslandNameError = err.response.data.code;
+            })
+            return result;
+        },
+        changeTheme(theme: Theme) {
+            const app = document.getElementById("app");
+            this.theme = theme;
+            app.classList.remove(...app.classList);
+            app.classList.add(theme.themeClass);
+            app.classList.add(theme.type.toString());
+            localStorage.setItem("theme", JSON.stringify(theme));
+        }
     }
 })

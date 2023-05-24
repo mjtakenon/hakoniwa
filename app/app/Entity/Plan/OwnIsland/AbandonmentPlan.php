@@ -31,7 +31,8 @@ class AbandonmentPlan extends Plan
     {
         $island->deleted_at = now();
 
-        IslandHistory::createFromIsland($island);
+        $islandHistory = IslandHistory::createFromIsland($island);
+        $islandHistory->save();
         $logs = Logs::create();
         $logs->add(new ExecuteLog($island, $this));
         $logs->add(new AbandonmentLog($island));

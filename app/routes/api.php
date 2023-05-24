@@ -31,6 +31,9 @@ Route::prefix('/islands/{island_id}')->middleware($baseMiddleware)->group( funct
     Route::get('/', [\App\Http\Controllers\Api\Islands\DetailController::class, 'get'])
         ->where('island_id', '[0-9]+');
 
+    Route::patch('/', [\App\Http\Controllers\Api\Islands\DetailController::class, 'patch'])
+        ->where('island_id', '[0-9]+');
+
     Route::put('/plans', [\App\Http\Controllers\Api\Islands\PlansController::class, 'put'])
         ->where('island_id', '[0-9]+');
 

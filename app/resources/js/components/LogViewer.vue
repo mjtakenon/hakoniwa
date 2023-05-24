@@ -19,7 +19,7 @@
                     class="log"
                 >
                     <div class="mr-1">・</div>
-                    <div>
+                    <div class="message">
                         <template
                             v-for="(context, conIndex) of line"
                             :key="'text-' + logIndex + '-' + lineIndex + '-' + conIndex"
@@ -197,6 +197,10 @@ export default defineComponent({
 
             .log {
                 @apply pl-2 flex;
+
+                .message {
+                    @apply grow min-w-0;
+                }
             }
 
             .log:last-child {
