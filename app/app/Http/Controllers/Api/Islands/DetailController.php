@@ -53,27 +53,40 @@ class DetailController extends Controller
             return $this->forbidden();
         }
 
-        $island = Island::find($islandId);
-
-        if (is_null($island) || !is_null($island->deleted_at)) {
-            return $this->notFound();
-        }
-
-        $turn = Turn::latest()->firstOrFail();
         $validated = $validator->safe()->collect();
-        $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
 
-        return \DB::transaction(function () use ($island, $islandStatus, $validated) {
+        return \DB::transaction(function () use ($islandId, $validated) {
 
+            $island = Island::find($islandId);
+
+            if (is_null($island) || !is_null($island->deleted_at)) {
+                return $this->notFound();
+            }
+
+            $turn = Turn::latest()->firstOrFail();
+            $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
             $status = $islandStatus->toEntity();
+
+            $name  = $validated->get('name');
+            $ownerName  = $validated->get('owner_name');
+
+            if (Island::where('name', $name)->where('id', '!=', $island->id)->exists()) {
+                return $this->badRequest([
+                    'code' => 'island_name_duplicated'
+                ]);
+            }
+
+            if (Island::where('owner_name', $ownerName)->where('id', '!=', $island->id)->exists()) {
+                return $this->badRequest([
+                    'code' => 'owner_name_duplicated'
+                ]);
+            }
+
             if ($status->getFunds() < self::CHANGE_ISLAND_NAME_PRICE) {
                 return $this->badRequest([
                     'code' => 'lack_of_funds'
                 ]);
             }
-
-            $name  = $validated->get('name');
-            $ownerName  = $validated->get('owner_name');
             $updated = false;
             $islandHistory = IslandHistory::createFromIsland($island);
 

@@ -12,7 +12,18 @@
                         <span>🏝</span>
                         <span>島</span>
                     </div>
-                    <input id="island-name-input" class="input-with-icon" type="text" name="island_name" placeholder="島名を入力してください" maxlength="32" minlength="1" required pattern=".*\S+.*">
+                    <input
+                        id="island-name-input"
+                        class="input-with-icon"
+                        type="text"
+                        name="island_name"
+                        placeholder="島名を入力してください"
+                        maxlength="32"
+                        minlength="1"
+                        required
+                        pattern=".*\S+.*"
+                        value="{{old('island_name')}}"
+                    >
 
                 </div>
 {{--                <p class="help is-success">この島名は利用可能です！</p>--}}
@@ -22,10 +33,25 @@
             <div class="field">
                 <label class="label">あなたのお名前は?（最大32文字）</label>
                 <div class="control has-icons-left has-icons-right">
-                    <input id="owner-name-input" class="input" type="text" name="owner_name" placeholder="お名前を入力してください" maxlength="32" minlength="1" required pattern=".*\S+.*">
+                    <input
+                        id="owner-name-input"
+                        class="input"
+                        type="text"
+                        name="owner_name"
+                        placeholder="お名前を入力してください"
+                        maxlength="32"
+                        minlength="1"
+                        required
+                        pattern=".*\S+.*"
+                        value="{{old('owner_name')}}"
+                    >
                     <span class="icon is-small is-left"></span>
                 </div>
             </div>
+
+            @error('message')
+                <div class="text-error text-center mb-4 font-bold">{{$message}}</div>
+            @enderror
 
             <div class="field">
                 <div class="control">
