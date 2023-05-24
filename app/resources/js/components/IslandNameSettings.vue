@@ -36,7 +36,7 @@
         <button
             class="submit button-primary"
             @click="submitNameChange"
-            :disabled="isSubmitting || !isFundsEnough"
+            :disabled="isSubmitting || !isFundsEnough || hasError"
         >
             <span v-if="!isSubmitting">送信</span>
             <span v-else class="button-circle">
@@ -81,11 +81,15 @@ export default defineComponent({
         },
         isSubmitting() {
             return this.submitStatus === UpdateStatus.Updating;
+        },
+        hasError() {
+            return this.nameError !== "" || this.ownerError !== "" || this.otherError !== "";
         }
     },
     methods: {
         async submitNameChange() {
-            if (!this.checkOnSubmit()) return;
+            this.checkInputs();
+            if (this.hasError) return;
             if (this.isSubmitting) return;
             this.submitStatus = UpdateStatus.Updating;
             const result = await this.store.patchIslandName(this.name, this.owner);
@@ -104,6 +108,8 @@ export default defineComponent({
             }
         },
         checkInputs() {
+            this.name = this.name.trim();
+            this.owner = this.owner.trim();
             this.nameError = "";
             this.ownerError = "";
             this.otherError = "";
@@ -114,16 +120,12 @@ export default defineComponent({
             if (this.owner === "") {
                 this.ownerError = "オーナー名が入力されていません";
             }
-        },
-        checkOnSubmit() {
-            this.checkInputs();
+
             if (stringEquals(this.name, this.store.island.name) && stringEquals(this.owner, this.store.island.owner_name)) {
                 this.otherError = "島名・オーナー名ともに変更されていません。更新する場合はどちらかの名称を変更してください。"
                 this.nameError = " ";
                 this.ownerError = " ";
             }
-
-            return (this.nameError === "" && this.ownerError === "" && this.otherError === "")
         }
     },
     props: {
@@ -199,7 +201,7 @@ export default defineComponent({
 
     .submit {
         @apply block mt-5 mx-auto;
-        @apply disabled:hover:bg-primary disabled:text-on-primary;
+        @apply disabled:bg-on-surface-variant disabled:text-surface-variant;
         // sp
         @apply w-1/2;
         // desktop
