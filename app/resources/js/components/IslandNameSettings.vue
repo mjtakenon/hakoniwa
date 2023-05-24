@@ -100,10 +100,13 @@ export default defineComponent({
                 if (this.store.patchIslandNameError === "lack_of_funds") {
                     this.otherError = "資金が不足しているため、更新に失敗しました。"
                 }
-                if (this.store.patchIslandNameError === "not_changed") {
+                else if (this.store.patchIslandNameError === "not_changed") {
                     this.otherError = "名称の変更がなかったため、更新を中止しました。"
                     this.nameError = " ";
                     this.ownerError = " ";
+                }
+                else {
+                    this.otherError = "不明なエラーが発生しました。"
                 }
             }
         },
