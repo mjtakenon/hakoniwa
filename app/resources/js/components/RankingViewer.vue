@@ -169,19 +169,19 @@ export default defineComponent({
     @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface overflow-hidden;
 
     .ranking-index {
-        @apply px-3 inline-flex items-center;
-        @apply max-md:w-full max-md:py-2;
+        @apply flex items-center;
+        @apply max-md:w-full max-md:py-2 min-w-full max-w-full;
         @apply max-md:border-b-2 md:border-r-2 md:min-w-[25%] md:max-w-[25%];
 
         .ranking-index-num {
-            @apply font-black text-2xl mr-3;
+            @apply w-fit font-black text-2xl px-3;
         }
 
         .ranking-index-info {
-            @apply w-full text-center;
+            @apply grow min-w-0 text-center;
 
             .ranking-index-name {
-                @apply grow font-black text-center text-on-link;
+                @apply font-black text-center text-on-link;
             }
 
             .ranking-index-owner {
@@ -191,7 +191,7 @@ export default defineComponent({
     }
 
     .ranking-data {
-        @apply grow pt-1 md:max-w-[75%];
+        @apply grow min-w-0 pt-1 md:max-w-[75%];
 
         .ranking-summary {
             @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
@@ -226,7 +226,7 @@ export default defineComponent({
 
         .island-comment-box {
             // general
-            @apply w-full border-t border-dashed px-2;
+            @apply w-full max-w-full border-t border-dashed px-2;
             // sp
             @apply max-md:my-2 pt-3;
             // desktop
@@ -237,7 +237,7 @@ export default defineComponent({
             }
 
             .comment-text {
-                @apply text-sm leading-none text-on-surface;
+                @apply w-full text-sm leading-none text-on-surface;
             }
         }
     }

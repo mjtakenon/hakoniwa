@@ -13,7 +13,7 @@
         </button>
 
         <div class="hamburger-elements"
-             :class="[isOpenHamburgerMenu ? 'max-md:max-h-48' : 'max-md:max-h-0']">
+             :class="[isOpenHamburgerMenu ? 'max-md:max-h-52' : 'max-md:max-h-0']">
             <div v-if="isLoggedIn" class="navbar-menu">
                 <div v-if="isIslandRegistered" class="navbar-item navbar-username">
                     {{ ownedIsland.name }}島
@@ -103,10 +103,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 .navbar {
-    @apply min-w-full mb-3 pt-2 pb-2 md:px-5 flex flex-wrap bg-surface text-on-surface drop-shadow-md items-center;
+    @apply min-w-full mb-3 pt-2 pb-2 md:px-5 flex max-md:flex-wrap bg-surface text-on-surface drop-shadow-md items-center;
 
     .navbar-left {
-        @apply inline-flex mx-3 items-center;
+        @apply w-fit inline-flex mx-3 items-center;
 
         .navbar-brand {
             @apply inline-block mr-5 h-full dark:filter dark:invert;
@@ -130,7 +130,11 @@ export default defineComponent({
     }
 
     .navbar-menu {
-        @apply block h-full max-md:mt-3 max-md:w-full md:flex md:items-center md:ml-auto;
+        @apply block h-full;
+        // sp
+        @apply max-md:mt-3 max-md:w-full;
+        // desktop
+        @apply md:flex md:items-center md:ml-auto;
 
         .navbar-register {
             @apply text-center;
@@ -141,11 +145,11 @@ export default defineComponent({
         }
 
         .navbar-username {
-            @apply text-center;
+            @apply text-center leading-none;
             // sp
             @apply max-md:mb-2 max-md:pb-1 max-md:border-b-2 max-md:font-bold;
             // desktop
-            @apply md:mr-2 md:pr-2 md:border-r-2;
+            @apply md:max-w-xs md:mr-2 md:pr-2 md:border-r-2;
         }
 
         .menu-item {
@@ -153,7 +157,7 @@ export default defineComponent({
             // sp
             @apply flex items-center px-8 py-2 max-md:mb-1;
             // desktop
-            @apply md:mr-2 md:p-1.5 md:rounded-full bg-surface-variant;
+            @apply md:mx-1 md:p-1.5 md:rounded-full bg-surface-variant;
 
             &.primary {
                 @apply bg-primary hover:bg-primary-container;
