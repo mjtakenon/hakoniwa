@@ -104,10 +104,14 @@ export default defineComponent({
                     this.otherError = "名称の変更がなかったため、更新を中止しました。"
                     this.nameError = " ";
                     this.ownerError = " ";
-                }
-                else {
+                } else if (this.store.patchIslandNameError === "island_name_duplicated") {
+                    this.nameError = "島名が既に利用されているため、変更できません。"
+                } else if (this.store.patchIslandNameError === "owner_name_duplicated") {
+                    this.ownerError = "オーナー名が既に利用されているため、変更できません。"
+                } else {
                     this.otherError = "不明なエラーが発生しました。"
                 }
+                console.log(this.store.patchIslandNameError)
             }
         },
         checkInputs() {
