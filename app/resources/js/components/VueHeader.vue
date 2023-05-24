@@ -82,7 +82,7 @@ export default defineComponent({
     setup(props) {
         const store = useMainStore();
         const theme = localStorage.getItem('theme');
-        if (theme !== undefined) {
+        if (theme !== null && theme !== undefined) {
             store.theme = JSON.parse(theme);
         }
         if(props.ownedIsland !== null && props.ownedIsland !== undefined) {
