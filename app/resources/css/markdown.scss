@@ -1,0 +1,52 @@
+.markdown {
+    @apply w-full;
+
+    // head
+    h1,h2,h3 {
+        @apply font-bold;
+    }
+    h1 {
+        @apply text-xl pb-2 my-6 border-b;
+    }
+
+    h2 {
+        @apply text-lg my-4 pl-3 border-l-4;
+    }
+
+    h3 {
+        @apply text-base my-4;
+    }
+
+    // general padding
+    p,ul,ol{
+        @apply px-1 md:px-2;
+    }
+
+    // paragraph
+    p {
+        @apply text-base my-3;
+    }
+
+
+    // list
+    ul,ol {
+        @apply pl-6 md:pl-10 text-base;
+
+        ul,ol {
+            @apply pl-5
+        }
+    }
+
+    ul {
+        @apply list-disc;
+    }
+
+    ol {
+        @apply list-decimal;
+    }
+
+    // texts
+    b {
+        @apply font-bold;
+    }
+}

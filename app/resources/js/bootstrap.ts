@@ -25,6 +25,7 @@ import TurnViewer from "./components/TurnViewer.vue";
 import RankingViewer from "./components/RankingViewer.vue";
 import LogViewer from "./components/LogViewer.vue";
 import SettingsPage from "./pages/SettingsPage.vue";
+import ReleaseNotes from "./components/ReleaseNotes.vue";
 
 export const app: App = createApp({
     components: {
@@ -32,6 +33,7 @@ export const app: App = createApp({
         PlanPage,
         VueHeader,
         TurnViewer,
+        ReleaseNotes,
         RankingViewer,
         LogViewer,
         SettingsPage,
