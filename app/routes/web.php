@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +23,7 @@ $baseMiddleware = [
 ];
 
 Route::prefix('/')->middleware(array_merge($baseMiddleware))->group( function() {
-    Route::get('', [\App\Http\Controllers\IndexController::class, 'get'])->name('home');
+    Route::get('', [\App\Http\Controllers\IndexController::class, 'get'])->name(RouteServiceProvider::ROUTE_HOME);
 });
 
 Route::prefix('/islands')->middleware(array_merge($baseMiddleware))->group( function() {
@@ -38,7 +39,7 @@ Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
 });
 
 Route::prefix('/register')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
-    Route::get('', [\App\Http\Controllers\Web\Register\IndexController::class, 'get'])->name('register');
+    Route::get('', [\App\Http\Controllers\Web\Register\IndexController::class, 'get'])->name(RouteServiceProvider::ROUTE_REGISTER);
     Route::post('', [\App\Http\Controllers\Web\Register\IndexController::class, 'post']);
 });
 
@@ -63,7 +64,7 @@ Route::prefix('/help')->middleware(array_merge($baseMiddleware))->group( functio
 });
 
 Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->group( function() {
-    Route::get('redirect', [\App\Http\Controllers\Web\Auth\Google\RedirectController::class, 'get'])->name('login');
+    Route::get('redirect', [\App\Http\Controllers\Web\Auth\Google\RedirectController::class, 'get'])->name(RouteServiceProvider::ROUTE_LOGIN);
     Route::get('callback', [\App\Http\Controllers\Web\Auth\Google\CallbackController::class, 'get']);
 });
 

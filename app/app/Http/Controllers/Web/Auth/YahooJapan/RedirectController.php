@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Auth\YahooJapan;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Str;
 
 class RedirectController extends Controller
@@ -10,7 +11,7 @@ class RedirectController extends Controller
     public function get()
     {
         if (\Auth::check()) {
-            return redirect(route('home'));
+            return redirect(route(RouteServiceProvider::ROUTE_HOME));
         }
 
         $state = Str::random(40);

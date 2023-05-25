@@ -13,13 +13,14 @@ use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
+use App\Providers\RouteServiceProvider;
 
 class IndexController extends Controller
 {
     public function get()
     {
         if (\HakoniwaService::isIslandRegistered()) {
-            return redirect()->route('home');
+            return redirect()->route(RouteServiceProvider::ROUTE_HOME);
         }
 
         return view('pages.register');
@@ -37,7 +38,7 @@ class IndexController extends Controller
         }
 
         if (\HakoniwaService::isIslandRegistered()) {
-            return redirect()->route('home');
+            return redirect()->route(RouteServiceProvider::ROUTE_HOME);
         }
 
         $validated = $validator->safe()->collect();
