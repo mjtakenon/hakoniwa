@@ -1,3 +1,3 @@
 export enum UpdateStatus {
-    None, Updating, Success, Failed
+    None, Updating, Success, Failed, FailedTooManyRequests
 }

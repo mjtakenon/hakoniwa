@@ -20,22 +20,21 @@ $baseMiddleware = [
     \Illuminate\Session\Middleware\StartSession::class,
     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     \Illuminate\Http\Middleware\FrameGuard::class,
+    'throttle:web',
 ];
 
-Route::prefix('/')->middleware(array_merge($baseMiddleware))->group( function() {
+Route::prefix('/')->middleware($baseMiddleware)->group( function() {
     Route::get('', [\App\Http\Controllers\IndexController::class, 'get'])->name(RouteServiceProvider::ROUTE_HOME);
 });
 
-Route::prefix('/islands')->middleware(array_merge($baseMiddleware))->group( function() {
+Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
     Route::get('{island_id}', [\App\Http\Controllers\Web\Islands\DetailController::class, 'get'])
         ->where('island_id', '[0-9]+');
 });
 
-Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
-    Route::middleware(['auth:sanctum'])->group(function() {
-        Route::get('{island_id}/plans', [\App\Http\Controllers\Web\Islands\PlansController::class, 'get'])
-            ->where('island_id', '[0-9]+');
-    });
+Route::prefix('/islands')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
+    Route::get('{island_id}/plans', [\App\Http\Controllers\Web\Islands\PlansController::class, 'get'])
+        ->where('island_id', '[0-9]+');
 });
 
 Route::prefix('/register')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
@@ -47,23 +46,23 @@ Route::prefix('/settings')->middleware(array_merge($baseMiddleware, ['auth:sanct
     Route::get('', [\App\Http\Controllers\Web\Settings\IndexController::class, 'get']);
 });
 
-Route::prefix('/logout')->middleware(array_merge($baseMiddleware))->group( function() {
+Route::prefix('/logout')->middleware($baseMiddleware)->group( function() {
     Route::post('', [\App\Http\Controllers\Web\Logout\IndexController::class, 'post']);
 });
 
-Route::prefix('/releases')->middleware(array_merge($baseMiddleware))->group( function() {
+Route::prefix('/releases')->middleware($baseMiddleware)->group( function() {
     Route::get('', [\App\Http\Controllers\Web\Releases\IndexController::class, 'get']);
 });
 
-Route::prefix('/privacy')->middleware(array_merge($baseMiddleware))->group( function() {
+Route::prefix('/privacy')->middleware($baseMiddleware)->group( function() {
     Route::get('', [\App\Http\Controllers\Web\Privacy\IndexController::class, 'get']);
 });
 
-Route::prefix('/help')->middleware(array_merge($baseMiddleware))->group( function() {
+Route::prefix('/help')->middleware($baseMiddleware)->group( function() {
     Route::get('', [\App\Http\Controllers\Web\Help\IndexController::class, 'get']);
 });
 
-Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->group( function() {
+Route::prefix('/auth/google/')->middleware($baseMiddleware)->group( function() {
     Route::get('redirect', [\App\Http\Controllers\Web\Auth\Google\RedirectController::class, 'get'])->name(RouteServiceProvider::ROUTE_LOGIN);
     Route::get('callback', [\App\Http\Controllers\Web\Auth\Google\CallbackController::class, 'get']);
 });

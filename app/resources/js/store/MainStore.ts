@@ -6,7 +6,7 @@ import {Island} from "./Entity/Island";
 import {Terrain} from "./Entity/Terrain";
 import {Log} from "./Entity/Log";
 import {Plan} from "./Entity/Plan";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {Point} from "./Entity/Point";
 import {Turn} from "./Entity/Turn";
 import {defaultTheme, Theme} from "./Entity/Theme";
@@ -166,21 +166,21 @@ export const useMainStore = defineStore('main', {
                     throw new Error("島の地形取得時にエラーが発生しました")
                 })
         },
-        async postComment(comment: string): Promise<boolean> {
-            let result = false;
+        async postComment(comment: string): Promise<AxiosResponse> {
             console.debug('POST', '/api/islands/' + this.island.id + '/comments');
-            await axios.post(
+            return await axios.post(
                 '/api/islands/' + this.island.id + '/comments',
                 {
                     comment: comment
                 }
             ).then(res => {
-                result = true;
                 this.island.comment = res.data.comment;
+                console.debug(res);
+                return res;
             }).catch(err => {
                 console.debug(err);
+                return err.response;
             })
-            return result;
         },
         async patchIslandName(name: string, owner: string): Promise<boolean> {
             this.patchIslandNameError = "";

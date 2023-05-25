@@ -15,6 +15,11 @@
         >
             <span class="success animate-fadeout-3s">更新完了</span>
         </div>
+        <div v-else-if="updateStatus === UpdateStatus.FailedTooManyRequests"
+             class="comment-update"
+        >
+            <span class="failed">更新失敗 時間を開けてお試しください</span>
+        </div>
         <div v-else-if="updateStatus === UpdateStatus.Failed"
              class="comment-update"
         >
@@ -65,8 +70,10 @@ export default defineComponent({
             this.updateStatus = UpdateStatus.Updating;
             const result = await this.store.postComment(this.comment);
 
-            if (result) {
+            if (result.status >= 200 && result.status < 300) {
                 this.updateStatus = UpdateStatus.Success;
+            } else if (result.status === 429) {
+                this.updateStatus = UpdateStatus.FailedTooManyRequests;
             } else {
                 this.updateStatus = UpdateStatus.Failed;
             }
