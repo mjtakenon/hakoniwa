@@ -25,7 +25,7 @@ class ExecuteLog extends LogRow
         return json_encode([
             $this->visibility === LogConst::VISIBILITY_PRIVATE ? ['text' => '(極秘) '] : ['text' => ''],
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => LogConst::BOLD ],
-            is_null($this->plan::USE_POINT) ? ['text' => ' (' . $this->plan->getPoint()->x . ',' . $this->plan->getPoint()->y . ') にて'] : ['text' => 'にて'],
+            $this->plan::USE_POINT ? ['text' => ' (' . $this->plan->getPoint()->x . ',' . $this->plan->getPoint()->y . ') にて'] : ['text' => 'にて'],
             ['text' => $this->plan->getName(), 'style' => LogConst::BOLD ],
             ['text' => 'が行われました。'],
         ]);

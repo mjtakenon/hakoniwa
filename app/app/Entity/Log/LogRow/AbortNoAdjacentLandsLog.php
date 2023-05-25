@@ -22,7 +22,7 @@ class AbortNoAdjacentLandsLog extends LogRow
     {
         return json_encode([
             ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => LogConst::BOLD],
-            is_null($this->plan::USE_POINT) ? ['text' => ' (' . $this->plan->getPoint()->x . ',' . $this->plan->getPoint()->y . ') '] : ['text' => ''],
+            $this->plan::USE_POINT ? ['text' => ' (' . $this->plan->getPoint()->x . ',' . $this->plan->getPoint()->y . ') '] : ['text' => ''],
             ['text' => $this->plan->getName(), 'style' => LogConst::BOLD],
             ['text' => 'は、予定地の周囲に陸地がなかったため'],
             ['text' => '中止', 'style' => LogConst::BOLD . LogConst::COLOR_DANGER],
