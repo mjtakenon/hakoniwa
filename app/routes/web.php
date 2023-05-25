@@ -50,6 +50,18 @@ Route::prefix('/logout')->middleware(array_merge($baseMiddleware))->group( funct
     Route::post('', [\App\Http\Controllers\Web\Logout\IndexController::class, 'post']);
 });
 
+Route::prefix('/releases')->middleware(array_merge($baseMiddleware))->group( function() {
+    Route::get('', [\App\Http\Controllers\Web\Releases\IndexController::class, 'get']);
+});
+
+Route::prefix('/privacy')->middleware(array_merge($baseMiddleware))->group( function() {
+    Route::get('', [\App\Http\Controllers\Web\Privacy\IndexController::class, 'get']);
+});
+
+Route::prefix('/help')->middleware(array_merge($baseMiddleware))->group( function() {
+    Route::get('', [\App\Http\Controllers\Web\Help\IndexController::class, 'get']);
+});
+
 Route::prefix('/auth/google/')->middleware(array_merge($baseMiddleware, []))->group( function() {
     Route::get('redirect', [\App\Http\Controllers\Web\Auth\Google\RedirectController::class, 'get'])->name('login');
     Route::get('callback', [\App\Http\Controllers\Web\Auth\Google\CallbackController::class, 'get']);
