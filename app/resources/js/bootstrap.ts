@@ -26,12 +26,15 @@ import RankingViewer from "./components/RankingViewer.vue";
 import LogViewer from "./components/LogViewer.vue";
 import SettingsPage from "./pages/SettingsPage.vue";
 import ReleaseNotes from "./components/ReleaseNotes.vue";
+import VueFooter from "./components/VueFooter.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 export const app: App = createApp({
     components: {
         SightseeingPage,
         PlanPage,
         VueHeader,
+        VueFooter,
         TurnViewer,
         ReleaseNotes,
         RankingViewer,
@@ -42,7 +45,7 @@ export const app: App = createApp({
 
 const pinia = createPinia();
 app.use(pinia);
-
+app.component('font-awesome-icon', FontAwesomeIcon)
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
