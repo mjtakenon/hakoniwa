@@ -7,5 +7,6 @@
             :hakoniwa="@js($hakoniwa)"
             :island="@js($island)"
         ></sightseeing-page>
+        @include('components.footer')
     </div>
 @endsection

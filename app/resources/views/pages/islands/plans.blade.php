@@ -10,5 +10,6 @@
             :target-islands="@js($targetIslands)"
             :turn="@js($turn)"
         ></plan-page>
+        @include('components.footer')
     </div>
 @endsection

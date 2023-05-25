@@ -9,6 +9,11 @@
         "sass": "^1.60.0"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.4.0",
+        "@fortawesome/free-brands-svg-icons": "^6.4.0",
+        "@fortawesome/free-regular-svg-icons": "^6.4.0",
+        "@fortawesome/free-solid-svg-icons": "^6.4.0",
+        "@fortawesome/vue-fontawesome": "^3.0.3",
         "@types/lodash": "^4.14.192",
         "@types/markdown-it": "^12.2.3",
         "@types/node": "^20.2.3",
