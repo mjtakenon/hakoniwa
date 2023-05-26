@@ -24,8 +24,8 @@ class DetailController extends Controller
         }
 
         $turn = Turn::latest()->firstOrFail();
-        $islandComment = $island->islandComments->first();
-        $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
+        $islandComment = $island->islandComments()->first();
+        $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
 
         return $this->ok([
             'island' => [
@@ -64,7 +64,7 @@ class DetailController extends Controller
             }
 
             $turn = Turn::latest()->firstOrFail();
-            $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
+            $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
             $status = $islandStatus->toEntity();
 
             $name  = $validated->get('name');

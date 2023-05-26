@@ -29,10 +29,10 @@ class PlansController extends Controller
         $turn = Turn::latest()->firstOrFail();
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
-        $islandPlans = $island->islandPlans->where('turn_id', $turn->id)->firstOrFail();
-        $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
-        $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
-        $islandComment = $island->islandComments->first();
+        $islandPlans = $island->islandPlans()->where('turn_id', $turn->id)->firstOrFail();
+        $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
+        $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
+        $islandComment = $island->islandComments()->first();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - $getLogRecentTurns)->get('id'))
             ->with(['turn'])

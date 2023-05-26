@@ -43,7 +43,7 @@ class PlansController extends Controller
 
         $plans = Plans::fromJson($plan);
 
-        $islandPlan = $island->islandPlans->where('turn_id', $turn->id)->first();
+        $islandPlan = $island->islandPlans()->where('turn_id', $turn->id)->first();
 
         $islandPlan->plan = $plans->toJson();
         $islandPlan->save();

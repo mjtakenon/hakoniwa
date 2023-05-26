@@ -46,7 +46,7 @@ class IndexController extends Controller
                 /** @var Island | IslandStatus $status */
 
                 $island = $status->island;
-                $comment = $status->island->islandComments->first();
+                $comment = $status->island->islandComments()->first();
 
                 return [
                     'id' => $island->id,

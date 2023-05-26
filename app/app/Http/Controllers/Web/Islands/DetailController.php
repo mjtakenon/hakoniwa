@@ -24,9 +24,9 @@ class DetailController extends Controller
         $turn = Turn::latest()->firstOrFail();
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
-        $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
-        $islandTerrain = $island->islandTerrains->where('turn_id', $turn->id)->firstOrFail();
-        $islandComment = $island->islandComments->first();
+        $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
+        $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
+        $islandComment = $island->islandComments()->first();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
             ->whereIn('visibility', [LogConst::VISIBILITY_GLOBAL, LogConst::VISIBILITY_PUBLIC])

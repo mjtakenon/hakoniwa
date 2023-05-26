@@ -41,7 +41,7 @@ class CommentsController
         return \DB::transaction(function () use ($island, $comment) {
 
             /** @var IslandComment $islandComment */
-            $islandComment = $island->islandComments->first();
+            $islandComment = $island->islandComments()->first();
             if (!is_null($islandComment)) {
 
                 if ($islandComment->comment === $comment) {

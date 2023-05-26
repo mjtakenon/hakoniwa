@@ -21,7 +21,7 @@ class IndexController extends Controller
 
         $turn = Turn::latest()->firstOrFail();
 
-        $islandStatus = $island->islandStatuses->where('turn_id', $turn->id)->firstOrFail();
+        $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
 
         return view('pages.settings', [
             'island' => [
