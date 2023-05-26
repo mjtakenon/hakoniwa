@@ -1,5 +1,5 @@
 export enum RequestStatus {
-    None, Updating, Success, Failed, FailedTooManyRequests
+    None, Updating, Success, Failed
 }
 
 export enum ErrorType {
