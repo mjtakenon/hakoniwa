@@ -13,7 +13,7 @@
                 <div
                     class="stats-box-num-wrapper"
                     :style="{maxWidth: status.maxWidth + 'px'}"
-                    ref="dataNumRef"
+                    :id="'refnum_' + index"
                 >
                     <div
                         class="stats-box-data-num"
@@ -22,7 +22,7 @@
                         {{ status.numText }}
                     </div>
                 </div>
-                <div class="stat-box-data-unit" ref="dataUnitRef">
+                <div class="stat-box-data-unit" :id="'refunit_' + index">
                     {{ status.unit }}
                 </div>
             </div>
@@ -144,8 +144,8 @@ export default defineComponent({
     methods: {
         updateFontSize() {
             this.statuses.forEach((status, index) => {
-                const parentWidth = this.$refs.dataNumRef[index].parentNode.clientWidth;
-                const unitWidth = this.$refs.dataUnitRef[index].offsetWidth;
+                const parentWidth = (document.getElementById("refnum_" + index).parentNode as HTMLElement).clientWidth;
+                const unitWidth = document.getElementById("refunit_" + index).offsetWidth;
                 const maxWidth = Math.floor(this.isMobile ? parentWidth : parentWidth - unitWidth);
                 status.maxWidth = maxWidth;
                 status.fontSize = this.calcFontSize(status.numText, maxWidth);
