@@ -12,7 +12,6 @@
             <div class="stats-box-data">
                 <div
                     class="stats-box-num-wrapper"
-                    :style="{maxWidth: status.maxWidth + 'px'}"
                 >
                     <div
                         class="stats-box-data-num"
@@ -52,10 +51,7 @@ export default defineComponent({
                 title: string,
                 numText: string,
                 unit: string,
-                fontSize?: number
-                maxWidth?: number
             }[],
-            numMaxFontsize: 18, // px = 1.125rem = text-lg
             isMobile: (document.documentElement.clientWidth < 1024),
             screenWidth: document.documentElement.clientWidth
         }
