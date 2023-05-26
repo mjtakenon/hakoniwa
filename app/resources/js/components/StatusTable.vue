@@ -13,16 +13,18 @@
                 <div
                     class="stats-box-num-wrapper"
                     :style="{maxWidth: status.maxWidth + 'px'}"
-                    :id="'refnum_' + index"
                 >
                     <div
                         class="stats-box-data-num"
-                        :style="{fontSize: status.fontSize + 'px'}"
+                        :style="this.isMobile ?
+                            {fontSize: 'clamp(1px, calc(100cqi/' + (status.numText.length*0.5) +'), 1.05rem)'} :
+                            {fontSize: 'clamp(1px, calc(100cqi/' + (status.numText.length*0.5) +'), 1.2rem)'}
+                        "
                     >
                         {{ status.numText }}
                     </div>
                 </div>
-                <div class="stat-box-data-unit" :id="'refunit_' + index">
+                <div class="stat-box-data-unit">
                     {{ status.unit }}
                 </div>
             </div>
@@ -116,15 +118,6 @@ export default defineComponent({
                 unit: "人規模"
             },
         ]
-        // フォントサイズのデフォルト値設定
-        this.statuses.forEach(status => {
-            status.fontSize = 1;
-            status.maxWidth = 0;
-        });
-
-        this.$nextTick(() => {
-            this.updateFontSize();
-        });
     },
     unmounted() {
         window.removeEventListener("resize", this.onWindowSizeChanged);
@@ -142,41 +135,10 @@ export default defineComponent({
         }
     },
     methods: {
-        updateFontSize() {
-            this.statuses.forEach((status, index) => {
-                const parentWidth = (document.getElementById("refnum_" + index).parentNode as HTMLElement).clientWidth;
-                const unitWidth = document.getElementById("refunit_" + index).offsetWidth;
-                const maxWidth = Math.floor(this.isMobile ? parentWidth : parentWidth - unitWidth);
-                status.maxWidth = maxWidth;
-                status.fontSize = this.calcFontSize(status.numText, maxWidth);
-            })
-        },
-        calcFontSize(text: string, maxWidth: number) {
-            const span = document.createElement("span");
-            span.style.width = "0px";
-            span.style.maxWidth = maxWidth + "px";
-            span.style.fontSize = "10px";
-            span.textContent = text;
-            document.body.appendChild(span);
-
-            let size = 1;
-            span.style.fontSize = size + "px";
-
-            while (span.offsetWidth <= maxWidth && size < maxWidth && size <= this.numMaxFontsize) {
-                size++;
-                span.style.fontSize = size + "px";
-            }
-            size--;
-
-            if (size < 1) size = 1;
-            span.parentNode.removeChild(span);
-            return size;
-        },
         onWindowSizeChanged() {
             const newScreenWidth = document.documentElement.clientWidth;
             if (this.screenWidth != newScreenWidth) {
                 this.isMobile = (document.documentElement.clientWidth < 1024);
-                this.updateFontSize();
             }
         },
     }
@@ -198,11 +160,12 @@ export default defineComponent({
             @apply flex items-end flex-wrap h-8;
 
             .stats-box-num-wrapper {
-                @apply grow text-right;
+                container-type: inline-size;
+                @apply max-lg:w-full lg:grow min-w-0 text-right;
             }
 
             .stats-box-data-num {
-                @apply font-bold w-full inline ;
+                @apply font-bold w-full inline;
             }
 
             .stat-box-data-unit {
