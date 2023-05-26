@@ -102,7 +102,7 @@ export default defineComponent({
         @apply mx-auto max-w-[1000px];
 
         .footer-main {
-            @apply w-full flex items-center border-b my-2;
+            @apply w-full flex items-center border-b border-on-surface-variant my-2;
 
             .footer-head {
                 @apply w-1/2 flex pl-10 items-center max-md:hidden;
