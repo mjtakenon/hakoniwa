@@ -3,10 +3,7 @@
 @section('contents')
     <div id="app">
         @include('components.header')
-        <sightseeing-page
-            :hakoniwa="@js($hakoniwa)"
-            :island="@js($island)"
-        ></sightseeing-page>
+        工事中です。👷🏗
         @include('components.footer')
     </div>
 @endsection

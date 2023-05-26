@@ -4,21 +4,26 @@
         <div class="comment-header-title">
             コメント入力
         </div>
-        <div v-if="updateStatus === UpdateStatus.Updating"
+        <div v-if="request.status === RequestStatus.Updating"
              class="comment-update"
         >
             <span class="updating-spin"></span>
             <span class="updating">更新中...</span>
         </div>
-        <div v-else-if="updateStatus === UpdateStatus.Success"
+        <div v-else-if="request.status === RequestStatus.Success"
              class="comment-update"
         >
             <span class="success animate-fadeout-3s">更新完了</span>
         </div>
-        <div v-else-if="updateStatus === UpdateStatus.Failed"
+        <div v-else-if="request.status === RequestStatus.Failed"
              class="comment-update"
         >
-            <span class="failed">更新失敗</span>
+            <span v-if="request.error === ErrorType.TooManyRequests" class="failed">
+                更新失敗 時間を開けてお試しください
+            </span>
+            <span v-else class="failed">
+                更新失敗
+            </span>
         </div>
     </div>
     <div class="comment-body">
@@ -35,19 +40,25 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
-import {UpdateStatus} from "../store/Entity/Network";
+import {AjaxResult, ErrorType, RequestStatus} from "../store/Entity/Network";
 import {stringEquals} from "../Utils";
 
 export default defineComponent({
     computed: {
+        ErrorType() {
+            return ErrorType
+        },
+        RequestStatus() {
+            return RequestStatus
+        },
         UpdateStatus() {
-            return UpdateStatus
+            return RequestStatus
         }
     },
     data() {
         return {
             comment: "",
-            updateStatus: UpdateStatus.None as UpdateStatus,
+            request: { status: RequestStatus.None } as AjaxResult,
         }
     },
     setup() {
@@ -61,15 +72,10 @@ export default defineComponent({
         async submitComment() {
             (this.$refs.input as HTMLElement).blur();
             if(stringEquals(this.comment, this.store.island.comment)) return;
+            if(this.request.status === RequestStatus.Updating) return;
 
-            this.updateStatus = UpdateStatus.Updating;
-            const result = await this.store.postComment(this.comment);
-
-            if (result) {
-                this.updateStatus = UpdateStatus.Success;
-            } else {
-                this.updateStatus = UpdateStatus.Failed;
-            }
+            this.request.status = RequestStatus.Updating;
+            this.request = await this.store.postComment(this.comment);
         }
     }
 });

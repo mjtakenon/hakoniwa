@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Auth\Google;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserAuthentication;
+use App\Providers\RouteServiceProvider;
 
 
 class CallbackController extends Controller
@@ -12,13 +13,13 @@ class CallbackController extends Controller
     public function get()
     {
         if (\Auth::check()) {
-            return redirect(route('home'));
+            return redirect(route(RouteServiceProvider::ROUTE_HOME));
         }
 
         try {
             $googleUser = \Socialite::driver('google')->user();
         } catch (\Laravel\Socialite\Two\InvalidStateException $e) {
-            return redirect(route('home'));
+            return redirect(route(RouteServiceProvider::ROUTE_HOME));
         }
         $userAuth = UserAuthentication::where('identifier', $googleUser->id)->where('provider', UserAuthentication::PROVIDER_GOOGLE)->first();
 
@@ -50,7 +51,7 @@ class CallbackController extends Controller
         if (\HakoniwaService::isIslandRegistered()) {
             return redirect(config('app.url') . '/islands/' . \Auth::user()->island->id . '/plans');
         } else {
-            return redirect(route('home'));
+            return redirect(route(RouteServiceProvider::ROUTE_HOME));
         }
     }
 }

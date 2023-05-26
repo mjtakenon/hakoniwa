@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Traits\WebApi;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -22,7 +23,7 @@ class Authenticate extends Middleware
         }
 
         if (! $request->expectsJson()) {
-            return route('login',[],false);
+            return route(RouteServiceProvider::ROUTE_LOGIN,[],false);
         }
     }
 }
