@@ -44,5 +44,6 @@
                 :unparsed-logs="@js($logs)"
             ></log-viewer>
         </div>
+        @include('components.footer')
     </div>
 @endsection

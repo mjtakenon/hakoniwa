@@ -24,10 +24,10 @@ $baseMiddleware = [
     \Illuminate\Session\Middleware\StartSession::class,
     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     \Illuminate\Http\Middleware\FrameGuard::class,
-    'auth:sanctum',
+    'throttle:api',
 ];
 
-Route::prefix('/islands/{island_id}')->middleware($baseMiddleware)->group( function() {
+Route::prefix('/islands/{island_id}')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
     Route::get('/', [\App\Http\Controllers\Api\Islands\DetailController::class, 'get'])
         ->where('island_id', '[0-9]+');
 
@@ -38,5 +38,6 @@ Route::prefix('/islands/{island_id}')->middleware($baseMiddleware)->group( funct
         ->where('island_id', '[0-9]+');
 
     Route::post('/comments', [\App\Http\Controllers\Api\Islands\CommentsController::class, 'post'])
+        ->middleware('throttle:update_comments')
         ->where('island_id', '[0-9]+');
 });

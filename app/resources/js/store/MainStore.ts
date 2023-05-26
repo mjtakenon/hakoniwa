@@ -10,6 +10,7 @@ import axios from "axios";
 import {Point} from "./Entity/Point";
 import {Turn} from "./Entity/Turn";
 import {defaultTheme, Theme} from "./Entity/Theme";
+import {AjaxResult, ErrorType, RequestStatus} from "./Entity/Network";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -39,7 +40,6 @@ export interface PiniaState {
     theme: Theme,
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
-    patchIslandNameError: string,
     user: Island,
 }
 
@@ -82,7 +82,6 @@ export const useMainStore = defineStore('main', {
             theme: defaultTheme,
             isOpenPopup: false,
             isLoadingTerrain: false,
-            patchIslandNameError: "",
             user: {id: 0, name: "", owner_name: ""}
         }
     },
@@ -166,25 +165,27 @@ export const useMainStore = defineStore('main', {
                     throw new Error("島の地形取得時にエラーが発生しました")
                 })
         },
-        async postComment(comment: string): Promise<boolean> {
-            let result = false;
+        async postComment(comment: string): Promise<AjaxResult> {
             console.debug('POST', '/api/islands/' + this.island.id + '/comments');
+            let result = {} as AjaxResult
+
             await axios.post(
                 '/api/islands/' + this.island.id + '/comments',
                 {
                     comment: comment
                 }
             ).then(res => {
-                result = true;
                 this.island.comment = res.data.comment;
+                result.status = RequestStatus.Success;
             }).catch(err => {
                 console.debug(err);
+                result.status = RequestStatus.Failed;
+                result.error = err.response.status;
             })
             return result;
         },
-        async patchIslandName(name: string, owner: string): Promise<boolean> {
-            this.patchIslandNameError = "";
-            let result = false;
+        async patchIslandName(name: string, owner: string): Promise<AjaxResult> {
+            let result = {} as AjaxResult;
             console.debug('PATCH', '/api/islands/' + this.island.id)
             await axios.patch(
                 '/api/islands/' + this.island.id,
@@ -193,12 +194,24 @@ export const useMainStore = defineStore('main', {
                     owner_name: owner
                 }
             ).then(res => {
-                result = true;
+                result.status = RequestStatus.Success;
                 this.user.name = res.data.island.name;
                 this.user.owner_name = res.data.island.owner_name;
                 this.status.funds -= 1000;
             }).catch(err => {
-                this.patchIslandNameError = err.response.data.code;
+                console.debug(err);
+                const code = err.response.data.code;
+                if (code === "lack_of_funds") {
+                    result.error = ErrorType.LackOfFunds;
+                } else if (code === "not_changed") {
+                    result.error = ErrorType.NotChanged;
+                } else if (code === "island_name_duplicated") {
+                    result.error = ErrorType.DuplicatedIslandName;
+                } else if (code === "owner_name_duplicated") {
+                    result.error = ErrorType.DuplicatedOwnerName;
+                } else {
+                    result.error = ErrorType.Unknown;
+                }
             })
             return result;
         },

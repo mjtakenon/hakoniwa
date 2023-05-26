@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Auth\YahooJapan;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserAuthentication;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Str;
 
 class CallbackController extends Controller
@@ -13,7 +14,7 @@ class CallbackController extends Controller
     {
         // ログインチェック
         if (\Auth::check()) {
-            return redirect(route('home'));
+            return redirect(route(RouteServiceProvider::ROUTE_HOME));
         }
 
         $client = \YConnectClientBuilderService::build();
@@ -63,7 +64,7 @@ class CallbackController extends Controller
         if (\HakoniwaService::isIslandRegistered()) {
             return redirect(config('app.url') . '/islands/' . \Auth::user()->island->id . '/plans');
         } else {
-            return redirect(route('home'));
+            return redirect(route(RouteServiceProvider::ROUTE_HOME));
         }
     }
 }

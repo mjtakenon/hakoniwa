@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Islands\DetailController;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\Turn;
+use App\Providers\RouteServiceProvider;
 
 class IndexController extends Controller
 {
@@ -13,7 +14,7 @@ class IndexController extends Controller
     {
         // ログインしているが島を保有していない場合は、島登録ページに飛ばす
         if (!\HakoniwaService::isIslandRegistered()) {
-            return redirect()->route('register');
+            return redirect()->route(RouteServiceProvider::ROUTE_REGISTER);
         }
 
         $island = Island::find(\Auth::user()->island->id);
