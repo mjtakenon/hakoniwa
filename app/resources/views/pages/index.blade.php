@@ -29,10 +29,6 @@
             <p>不具合・不明点はツイッターからご連絡ください。 </p>
             <p class="box-error">重複登録は禁止です。1人1島でお願いします。</p>
 
-            <h2 class="subtitle">更新情報</h2>
-            <hr/>
-            <release-notes></release-notes>
-
             <h2 class="subtitle mt-20">現在のランキング</h2>
             <hr/>
 

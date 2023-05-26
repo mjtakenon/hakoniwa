@@ -19,18 +19,18 @@
 
     // general padding
     p,ul,ol{
-        @apply px-1 md:px-2;
+        @apply max-md:text-sm px-1 md:px-2;
     }
 
     // paragraph
     p {
-        @apply text-base my-3;
+        @apply my-3;
     }
 
 
     // list
     ul,ol {
-        @apply pl-6 md:pl-10 text-base;
+        @apply pl-6 md:pl-10;
 
         ul,ol {
             @apply pl-5
@@ -43,6 +43,10 @@
 
     ol {
         @apply list-decimal;
+    }
+
+    li {
+        @apply max-md:mb-2;
     }
 
     // texts
