@@ -37,7 +37,7 @@
             >
         </div>
         <div v-if="otherError !== ''" class="other-error">{{ otherError }}</div>
-        <div v-if="submitStatus === UpdateStatus.Success" class="success">更新に成功しました。</div>
+        <div v-if="isSuccess" class="success">更新に成功しました。</div>
         <button
             class="submit button-primary"
             @click="submitNameChange"
@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {UpdateStatus} from "../store/Entity/Network";
+import {AjaxResult, ErrorType, RequestStatus} from "../store/Entity/Network";
 import {useMainStore} from "../store/MainStore";
 import {stringEquals} from "../Utils";
 
@@ -65,7 +65,7 @@ export default defineComponent({
             owner: "",
             ownerError: "",
             otherError: "",
-            submitStatus: UpdateStatus.None as UpdateStatus,
+            submitStatus: {status: RequestStatus.None} as AjaxResult,
         }
     },
     setup() {
@@ -77,15 +77,15 @@ export default defineComponent({
         this.owner = this.store.island.owner_name;
     },
     computed: {
-        UpdateStatus() {
-            return UpdateStatus
-        },
         isFundsEnough() {
             return this.store.status.funds >= this.change_island_name_price
-                || this.store.patchIslandNameError === "lack_of_funds";
+                || this.submitStatus.error === ErrorType.LackOfFunds;
+        },
+        isSuccess() {
+            return this.submitStatus.status === RequestStatus.Success;
         },
         isSubmitting() {
-            return this.submitStatus === UpdateStatus.Updating;
+            return this.submitStatus.status === RequestStatus.Updating;
         },
         hasError() {
             return this.nameError !== "" || this.ownerError !== "" || this.otherError !== "";
@@ -96,27 +96,24 @@ export default defineComponent({
             this.checkInputs();
             if (this.hasError) return;
             if (this.isSubmitting) return;
-            this.submitStatus = UpdateStatus.Updating;
-            const result = await this.store.patchIslandName(this.name, this.owner);
-            if (result) {
-                this.submitStatus = UpdateStatus.Success;
+            this.submitStatus.status = RequestStatus.Updating;
+            this.submitStatus = await this.store.patchIslandName(this.name, this.owner);
+
+            if (this.submitStatus.status === RequestStatus.Success) return;
+
+            if (this.submitStatus.error === ErrorType.LackOfFunds) {
+                this.otherError = "資金が不足しているため、更新に失敗しました。"
+            }
+            else if (this.submitStatus.error === ErrorType.NotChanged) {
+                this.otherError = "名称の変更がなかったため、更新を中止しました。"
+                this.nameError = " ";
+                this.ownerError = " ";
+            } else if (this.submitStatus.error === ErrorType.DuplicatedIslandName) {
+                this.nameError = "島名が既に利用されているため、変更できません。"
+            } else if (this.submitStatus.error === ErrorType.DuplicatedOwnerName) {
+                this.ownerError = "オーナー名が既に利用されているため、変更できません。"
             } else {
-                this.submitStatus = UpdateStatus.Failed;
-                if (this.store.patchIslandNameError === "lack_of_funds") {
-                    this.otherError = "資金が不足しているため、更新に失敗しました。"
-                }
-                else if (this.store.patchIslandNameError === "not_changed") {
-                    this.otherError = "名称の変更がなかったため、更新を中止しました。"
-                    this.nameError = " ";
-                    this.ownerError = " ";
-                } else if (this.store.patchIslandNameError === "island_name_duplicated") {
-                    this.nameError = "島名が既に利用されているため、変更できません。"
-                } else if (this.store.patchIslandNameError === "owner_name_duplicated") {
-                    this.ownerError = "オーナー名が既に利用されているため、変更できません。"
-                } else {
-                    this.otherError = "不明なエラーが発生しました。"
-                }
-                console.log(this.store.patchIslandNameError)
+                this.otherError = "不明なエラーが発生しました。"
             }
         },
         checkInputs() {
