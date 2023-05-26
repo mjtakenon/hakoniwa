@@ -28,6 +28,22 @@
                     <font-awesome-icon class="icon" icon="fa-brands fa-discord" size="xl" />
                 </a>
             </div>
+            <div class="footer-credits">
+                <div class="font-bold text-sm text-on-surface-variant">クレジット</div>
+                <div class="px-2">
+                    <span class="max-md:block">箱庭諸島スクリプト配布元 :</span>
+                    <a class="max-md:block max-md:my-0 mx-[15px]" href="http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html">http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html</a>
+                </div>
+                <div class="px-2">
+                    <span class="max-md:block">Hakoniwa R.A.スクリプト配布元 :</span>
+                    <a class="max-md:block max-md:my-0 mx-[15px]" href="http://www5b.biglobe.ne.jp/~k-e-i/">http://www5b.biglobe.ne.jp/~k-e-i/</a>
+                </div>
+                <div class="px-2">
+                    <span class="max-md:block">Yahoo Login :</span>
+                    <!-- Begin Yahoo! JAPAN Web Services Attribution Snippet -->
+                    <span style="margin:15px 15px 15px 15px"><a href="https://developer.yahoo.co.jp/sitemap/">Webサービス by Yahoo! JAPAN</a></span>
+                    <!-- End Yahoo! JAPAN Web Services Attribution Snippet -->
+                </div>            </div>
         </div>
     </div>
 </template>
@@ -58,14 +74,14 @@ export default defineComponent({
                         { name: "トップページ", href: "/" },
                         { name: "更新情報", href: "/releases" },
                         { name: "プライバシーポリシー", href: "/privacy" },
-                        { name: "ヘルプ", href: "/help" },
                     ]
                 },
                 {
-                    title: "配布元",
+                    title: "マニュアル",
                     links: [
-                        { name: "箱庭諸島", href: "http://www.bekkoame.ne.jp/~tokuoka/hakoniwa.html" },
-                        { name: "Hakoniwa R.A.", href: "http://www5b.biglobe.ne.jp/~k-e-i/" },
+                        { name: "遊び方", href: "/help" },
+                        { name: "コマンド一覧", href: "/help" },
+                        { name: "地形一覧", href: "/help" },
                     ]
                 },
             ] as LinkGroup[]
@@ -131,6 +147,10 @@ export default defineComponent({
             .icon-link:last-of-type {
                 @apply mr-1;
             }
+        }
+
+        .footer-credits {
+            @apply w-full mx-auto my-2 px-4 mt-8;
         }
     }
 }
