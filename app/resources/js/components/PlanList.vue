@@ -78,7 +78,13 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 #plan-list {
-    @apply rounded-xl mx-1 lg:ml-3 mb-3 p-2 w-[45%] max-w-[200px] lg:max-w-[230px] md:max-h-[496px] text-left overflow-x-visible overflow-y-scroll drop-shadow-md;
+    @apply rounded-xl mx-1 lg:ml-3 mb-3 p-2 max-w-[200px] lg:max-w-[230px] md:max-h-[496px] text-left overflow-x-visible overflow-y-hidden drop-shadow-md;
+    // 2-column
+    &.order-2 {
+        @apply w-[45%] max-w-full max-h-[65vh];
+    }
+
+    // 3-column
 
     .send-status {
         @apply w-full text-center text-white mb-2;
@@ -89,7 +95,7 @@ export default defineComponent({
     }
 
     .plans {
-        @apply text-sm w-full;
+        @apply text-sm w-full h-[90%] overflow-y-scroll;
 
         .plan {
             @apply w-full flex ;

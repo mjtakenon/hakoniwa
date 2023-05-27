@@ -226,7 +226,7 @@ export default defineComponent({
         },
         onWindowSizeChanged() {
             const newScreenWidth = document.documentElement.clientWidth;
-            if (this.screenWidth != newScreenWidth) {
+            if (this.screenWidth !== newScreenWidth) {
                 this.screenWidth = newScreenWidth;
                 this.showHoverWindow = false;
                 this.showPlanWindow = false;
