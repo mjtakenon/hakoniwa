@@ -13,12 +13,12 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--theme-background);
+            background: var(--theme-scroll-track);
             border-radius: 7px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--theme-on-background);
+            background: var(--theme-scroll-thumb);
             border-radius: 7px;
         }
     }
