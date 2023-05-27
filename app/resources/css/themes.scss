@@ -57,7 +57,11 @@
     --theme-surface: #ffffff;
     --theme-on-surface: #1a1c1e;
 
-    // Texts
+    // Scroll bar
+    --theme-scroll-thumb: #969696;
+    --theme-scroll-track: #232E3380;
+
+    // Others
     --theme-on-link: #485fc7;
     --theme-outline: #72777f;
     --theme-surface-variant: #dee3eb;
@@ -100,6 +104,10 @@
     --theme-on-background: #e2e2e5;
     --theme-surface: #34373b;
     --theme-on-surface: #e2e2e5;
+
+    // Scroll bar
+    --theme-scroll-thumb: #969696;
+    --theme-scroll-track: #232E3380;
 
     // Others
     --theme-on-link: #acb7e7;

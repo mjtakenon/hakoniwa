@@ -7,6 +7,20 @@
 @layer base {
     body {
         @apply bg-background text-on-background break-words;
+
+        ::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--theme-background);
+            border-radius: 7px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--theme-on-background);
+            border-radius: 7px;
+        }
     }
 
     p {
