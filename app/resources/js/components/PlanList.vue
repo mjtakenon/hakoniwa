@@ -78,7 +78,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 #plan-list {
-    @apply rounded-xl mx-1 lg:ml-3 mb-3 p-2 w-[45%] max-w-[230px] lg:max-h-[496px] text-left overflow-x-visible overflow-y-scroll drop-shadow-md;
+    @apply rounded-xl mx-1 lg:ml-3 mb-3 p-2 w-[45%] max-w-[200px] lg:max-w-[230px] md:max-h-[496px] text-left overflow-x-visible overflow-y-scroll drop-shadow-md;
 
     .send-status {
         @apply w-full text-center text-white mb-2;
@@ -92,7 +92,7 @@ export default defineComponent({
         @apply text-sm w-full;
 
         .plan {
-            @apply w-full flex;
+            @apply w-full flex ;
 
             .plan-index {
                 @apply min-w-[1rem] mr-0.5;

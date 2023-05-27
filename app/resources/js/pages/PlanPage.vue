@@ -4,11 +4,11 @@
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <div class="flex flex-wrap items-stretch mx-auto justify-center">
-            <plan-controller class="max-lg:order-2 grow"></plan-controller>
-            <div class="max-lg:order-1 max-lg:w-full z-30">
+            <plan-controller class="max-md:order-2 grow min-w-0"></plan-controller>
+            <div class="max-md:order-1 max-md:w-full z-30">
                 <island-editor></island-editor>
             </div>
-            <plan-list class="max-lg:order-2 grow"></plan-list>
+            <plan-list class="max-md:order-2 grow min-w-0"></plan-list>
         </div>
         <comment-form></comment-form>
         <log-viewer
