@@ -13,9 +13,11 @@ use App\Entity\Log\LogRow\DisappearMonsterLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
+use App\Entity\Util\Rand;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 use function DeepCopy\deep_copy;
 
 class Levinoth extends Monster
@@ -24,10 +26,11 @@ class Levinoth extends Monster
     public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/levinoth_sea.png';
     public const TYPE = 'levinoth';
     public const NAME = '神獣リヴァイノス';
-    public const DEFAULT_HIT_POINTS = 19;
+    public const DEFAULT_HIT_POINTS = 10;
     public const DEFAULT_MOVE_TIMES = 1;
     public const EXPERIENCE = 50;
     public const CORPSE_PRICE = 20000;
+    private const LAUNCH_EGG_PROBABILITY = 0.3;
 
     protected string $imagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
@@ -99,7 +102,7 @@ class Levinoth extends Monster
             '体力 ' . $this->getHitPoints();
     }
 
-    protected function move(Terrain $terrain, Cell $beforeCell, Cell $afterCell): Terrain
+    private function move(Terrain $terrain, Cell $beforeCell, Cell $afterCell): Terrain
     {
         /** @var Ship $beforeCellCopy */
         $beforeCellCopy = deep_copy($beforeCell);
@@ -114,6 +117,27 @@ class Levinoth extends Monster
         }
 
         return $terrain;
+    }
+
+    private function launchEgg($terrain, $status, $logs): PassTurnResult
+    {
+        // 卵を飛ばす
+        if (self::LAUNCH_EGG_PROBABILITY <= Rand::mt_rand_float()) {
+            return new PassTurnResult($terrain, $status, $logs);
+        }
+
+        /** @var Cell $cell */
+        $cell = $terrain->getCells()->flatten()->random();
+
+        if ($cell->getElevation() === CellConst::ELEVATION_MOUNTAIN) {
+            // 山吹き飛び
+        } else if ($cell->getElevation() === CellConst::ELEVATION_PLAIN) {
+            // 建造物があれば崩壊
+        } else {
+            // 落下
+        }
+
+        return new PassTurnResult($terrain, $status, $logs);
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
@@ -131,11 +155,6 @@ class Levinoth extends Monster
 
         $this->remainMoveTimes -= 1;
 
-        // TODO: 卵を飛ばす
-//        if () {
-//
-//        }
-
         $logs = Logs::create();
 
         $seaCells = $terrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
@@ -147,6 +166,6 @@ class Levinoth extends Monster
         /** @var Cell $cell */
         $terrain = $this->move($terrain, $this, $seaCells->random());
 
-        return new PassTurnResult($terrain, $status, $logs);
+        return $this->launchEgg($terrain, $status, $logs);
     }
 }

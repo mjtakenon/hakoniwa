@@ -17,7 +17,7 @@ use App\Models\Turn;
 
 class AppearanceLevinoth implements IDisaster
 {
-    const OCCUR_PROBABILITY = 1;
+    const OCCUR_PROBABILITY = 0.002;
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
