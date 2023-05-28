@@ -3,11 +3,11 @@
 namespace App\Entity\Log\LogRow;
 
 use App\Entity\Cell\Ship\Ship;
-use App\Entity\Log\LogRow;
 use App\Entity\Log\LogConst;
+use App\Entity\Log\LogRow;
 use App\Models\Island;
 
-class DisappearPirateLog extends LogRow
+class DisappearEnemyShipLog extends LogRow
 {
     private Island $island;
     private Ship $ship;
@@ -21,11 +21,11 @@ class DisappearPirateLog extends LogRow
     public function generate(): string
     {
         return json_encode([
-            ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => LogConst::BOLD ],
+            ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => LogConst::BOLD],
             ['text' => ' (' . $this->ship->getPoint()->x . ',' . $this->ship->getPoint()->y . ') の'],
-            ['text' => $this->ship::NAME, 'style' => LogConst::BOLD.LogConst::COLOR_DANGER ],
+            ['text' => $this->ship::NAME, 'style' => LogConst::BOLD . LogConst::COLOR_DANGER],
             ['text' => 'は、'],
-            ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => LogConst::BOLD ],
+            ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => LogConst::BOLD],
             ['text' => 'に興味を失い帰っていきました...'],
         ]);
     }

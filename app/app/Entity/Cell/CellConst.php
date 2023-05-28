@@ -13,6 +13,7 @@ use App\Entity\Cell\HasPopulation\Village;
 use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Cell\MissileFireable\SeabedBase;
+use App\Entity\Cell\Monster\Levinoth;
 use App\Entity\Cell\Monster\DarkInora;
 use App\Entity\Cell\Monster\GhostInora;
 use App\Entity\Cell\Monster\Hamunemu;
@@ -40,6 +41,8 @@ use App\Entity\Cell\Park\Park;
 use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Cell\ResourcesProduction\Oilfield;
 use App\Entity\Cell\Ship\Battleship;
+use App\Entity\Cell\Ship\LevinothBattleship;
+use App\Entity\Cell\Ship\LevinothSubmarine;
 use App\Entity\Cell\Ship\Pirate;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Cell\Ship\TransportShip;
@@ -84,10 +87,13 @@ class CellConst
         GhostInora::TYPE => GhostInora::class,
         Slime::TYPE => Slime::class,
         SlimeLegend::TYPE => SlimeLegend::class,
+        Levinoth::TYPE => Levinoth::class,
         TransportShip::TYPE => TransportShip::class,
         Battleship::TYPE => Battleship::class,
         Submarine::TYPE => Submarine::class,
         Pirate::TYPE => Pirate::class,
+        LevinothBattleship::TYPE => LevinothBattleship::class,
+        LevinothSubmarine::TYPE => LevinothSubmarine::class,
     ];
 
     const IS_LAND = 'is_land';

@@ -20,14 +20,14 @@ use App\Models\Turn;
 use Illuminate\Support\Collection;
 use function DeepCopy\deep_copy;
 
-class Pirate extends CombatantShip
+class LevinothBattleship extends CombatantShip
 {
-    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/pirate_sea.png';
-    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/pirate_shallow.png';
-    public const TYPE = 'pirate';
-    public const NAME = '海賊';
+    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/levinoth_battleship_sea.png';
+    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/levinoth_battleship_shallow.png';
+    public const TYPE = 'levinoth_battleship';
+    public const NAME = 'リヴァイノス艦隊戦艦';
     public const AFFILIATION_ENEMY = -1;
-    public const DEFAULT_RETURN_TURN = 5;
+    public const DEFAULT_RETURN_TURN = 20;
     protected ?int $affiliationId = self::AFFILIATION_ENEMY;
 
     protected string $shallowImagePath = self::SHALLOW_IMAGE_PATH;
