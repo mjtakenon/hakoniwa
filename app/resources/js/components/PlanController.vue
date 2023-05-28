@@ -299,7 +299,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 #plan-controller {
-    @apply w-[45%] bg-surface-variant text-on-surface-variant rounded-xl mx-1 lg:mr-2 mb-3 p-1 max-lg:h-fit lg:p-2 max-w-[230px] drop-shadow-md;
+    @apply bg-surface-variant text-on-surface-variant rounded-xl mx-1 lg:mr-2 mb-3 p-1 max-lg:h-fit lg:p-2 md:max-w-[200px] lg:max-w-[230px] drop-shadow-md;
+
+    &.order-2 {
+        @apply w-[45%] max-w-full;
+    }
 
     .section-header {
         @apply w-full text-left pl-2 text-on-surface-variant border-on-surface-variant border-b mb-2 text-sm;

@@ -4,11 +4,20 @@
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <div class="flex flex-wrap items-stretch mx-auto justify-center">
-            <plan-controller class="max-lg:order-2 grow"></plan-controller>
-            <div class="max-lg:order-1 max-lg:w-full z-30">
+            <plan-controller
+                class="grow"
+                :class="{'order-2' : !canSideBySide}"
+            ></plan-controller>
+            <div
+                class="z-30"
+                :class="{'w-full order-1': !canSideBySide}"
+            >
                 <island-editor></island-editor>
             </div>
-            <plan-list class="max-lg:order-2 grow"></plan-list>
+            <plan-list
+                class="grow"
+                :class="{'order-2' : !canSideBySide}"
+            ></plan-list>
         </div>
         <comment-form></comment-form>
         <log-viewer
@@ -58,6 +67,7 @@ export default defineComponent({
             },
             hoverWindowTop: 170,
             hoverWindowLeft: 0,
+            screenWidth: document.documentElement.clientWidth,
         }
     },
     setup(props) {
@@ -96,6 +106,25 @@ export default defineComponent({
             turn: turn
         });
         return {store}
+    },
+    computed: {
+        canSideBySide() {
+            return this.screenWidth > 912;
+        }
+    },
+    mounted() {
+        window.addEventListener("resize", this.onWindowSizeChanged);
+    },
+    unmounted() {
+        window.removeEventListener("resize", this.onWindowSizeChanged);
+    },
+    methods: {
+        onWindowSizeChanged() {
+            const newScreenWidth = document.documentElement.clientWidth;
+            if (this.screenWidth !== newScreenWidth) {
+                this.screenWidth = newScreenWidth;
+            }
+        },
     },
     props: {
         hakoniwa: {
