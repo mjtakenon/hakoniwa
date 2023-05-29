@@ -31,9 +31,7 @@ class CallbackController extends Controller
             // 初回Googleログイン時
             \DB::transaction(function () use ($googleUser) {
                 // ユーザー情報登録
-                $user = User::create([
-                    'name' => $googleUser->name,
-                ]);
+                $user = User::create();
 
                 // 認証情報登録
                 UserAuthentication::create(

@@ -22,6 +22,7 @@ class Disaster implements IDisaster
         LandSubsidence::class,
         AppearanceMonster::class,
         PirateInvasion::class,
+        AppearanceLevinoth::class,
     ];
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult

@@ -21,8 +21,9 @@ class PirateInvasion implements IDisaster
 
     private static function getInitialExperience(int $population): int
     {
-        return (int)(($population/80000) * 5);
+        return (int)(($population / 80000) * 5);
     }
+
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
         $logs = Logs::create();
@@ -47,12 +48,12 @@ class PirateInvasion implements IDisaster
 
         /** @var Cell|Collection $pirateSpawnCells */
         $pirateSpawnCells = $seaCells->random($maxPiratesCount);
-        foreach($pirateSpawnCells as $pirateSpawnCell) {
+        foreach ($pirateSpawnCells as $pirateSpawnCell) {
             $terrain->setCell($pirateSpawnCell->getPoint(), new Pirate(
                 point: $pirateSpawnCell->getPoint(),
                 elevation: $pirateSpawnCell->getElevation(),
                 experience: random_int(0, self::getInitialExperience($status->getPopulation())),
-                affiliation_id: Pirate::AFFILIATION_PIRATE,
+                affiliation_id: Pirate::AFFILIATION_ENEMY,
                 return_turn: $turn->turn + Pirate::DEFAULT_RETURN_TURN,
             ));
         }

@@ -72,8 +72,7 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
     {
         $logs = Logs::create();
 
-        // TODO: 海賊以外が追加されたら増やす
-        $enemyShips = $terrain->findByTypes([Pirate::TYPE]);
+        $enemyShips = $terrain->findByTypes([Pirate::TYPE, LevinothBattleship::TYPE, LevinothSubmarine::TYPE]);
 
         if ($enemyShips->count() <= 0) {
             // ダメージを受けていて、戦闘していない場合は回復する
