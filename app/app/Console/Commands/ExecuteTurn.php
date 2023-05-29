@@ -283,7 +283,7 @@ class ExecuteTurn extends Command
                     $newIslandTerrain = new IslandTerrain();
                     $newIslandTerrain->island_id = $island->id;
                     $newIslandTerrain->turn_id = $newTurn->id;
-                    $newIslandTerrain->terrain = $terrain->toJson(true, false);
+                    $newIslandTerrain->terrain = $terrain->toJson(true);
                     $newIslandTerrain->save();
 
                     /** @var LogRow $log */

@@ -57,9 +57,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
 
         $combatantShip->setPoint($seaCell->getPoint());
         $combatantShip->setElevation($seaCell->getElevation());
-        // 帰還ターンは変数に切り出す
         $combatantShip->setReturnTurn(null);
-
         // 途中で島名が変わったときのことを考慮し、艦隊名を更新
         $combatantShip->setAffiliationName($toIsland->name);
 
