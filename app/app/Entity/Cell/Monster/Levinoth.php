@@ -9,6 +9,8 @@ use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
+use App\Entity\Cell\Ship\LevinothBattleship;
+use App\Entity\Cell\Ship\LevinothSubmarine;
 use App\Entity\Cell\Ship\Ship;
 use App\Entity\Log\LogRow\DestructionByEggLog;
 use App\Entity\Log\LogRow\DisappearMonsterLog;
@@ -151,13 +153,10 @@ class Levinoth extends Monster
         }
 
         if ($cell::ELEVATION === CellConst::ELEVATION_PLAIN) {
-            if ($cell::TYPE !== Wasteland::TYPE) {
-                if (self::SPAWN_EGG_PROBABILITY <= Rand::mt_rand_float()) {
-                    $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
-                } else {
-                    $terrain->setCell($cell->getPoint(), new Egg(point: $cell->getPoint()));
-                }
-                return new PassTurnResult($terrain, $status, $logs);
+            if (self::SPAWN_EGG_PROBABILITY <= Rand::mt_rand_float()) {
+                $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
+            } else {
+                $terrain->setCell($cell->getPoint(), new Egg(point: $cell->getPoint()));
             }
         }
 
@@ -170,10 +169,15 @@ class Levinoth extends Monster
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
-        if ($this->getDisappearancePopulation() > $status->getPopulation()) {
+        // 人口が一定以下になるか、戦艦と潜水艦をすべて倒したら帰る
+        if ($this->getDisappearancePopulation() > $status->getPopulation() || $terrain->findByTypes([LevinothBattleship::TYPE, LevinothSubmarine::TYPE])->isEmpty()) {
             $logs = Logs::create();
             $logs->add(new DisappearMonsterLog($island, $this));
-            $terrain->setCell($this->point, new Wasteland(point: $this->point));
+            if ($this->getElevation() === CellConst::ELEVATION_SHALLOW) {
+                $terrain->setCell($this->point, new Shallow(point: $this->point));
+            } else {
+                $terrain->setCell($this->point, new Sea(point: $this->point));
+            }
             return new PassTurnResult($terrain, $status, $logs);
         }
 
