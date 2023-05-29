@@ -13,17 +13,19 @@ use App\Entity\Cell\HasPopulation\Village;
 use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Cell\MissileFireable\SeabedBase;
-use App\Entity\Cell\Monster\Levinoth;
+use App\Entity\Cell\Monster\Begenoth;
 use App\Entity\Cell\Monster\DarkInora;
 use App\Entity\Cell\Monster\GhostInora;
 use App\Entity\Cell\Monster\Hamunemu;
 use App\Entity\Cell\Monster\Inora;
 use App\Entity\Cell\Monster\KingInora;
 use App\Entity\Cell\Monster\Kujira;
+use App\Entity\Cell\Monster\Levinoth;
 use App\Entity\Cell\Monster\RedInora;
 use App\Entity\Cell\Monster\Sanjira;
 use App\Entity\Cell\Monster\Slime;
 use App\Entity\Cell\Monster\SlimeLegend;
+use App\Entity\Cell\Others\Egg;
 use App\Entity\Cell\Others\Lake;
 use App\Entity\Cell\Others\Mountain;
 use App\Entity\Cell\Others\Plain;
@@ -88,6 +90,8 @@ class CellConst
         Slime::TYPE => Slime::class,
         SlimeLegend::TYPE => SlimeLegend::class,
         Levinoth::TYPE => Levinoth::class,
+        Begenoth::TYPE => Begenoth::class,
+        Egg::TYPE => Egg::class,
         TransportShip::TYPE => TransportShip::class,
         Battleship::TYPE => Battleship::class,
         Submarine::TYPE => Submarine::class,

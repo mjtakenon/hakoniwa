@@ -4,11 +4,13 @@ namespace App\Entity\Cell\Monster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Egg;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\Ship\Ship;
+use App\Entity\Log\LogRow\DestructionByEggLog;
 use App\Entity\Log\LogRow\DisappearMonsterLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -31,6 +33,7 @@ class Levinoth extends Monster
     public const EXPERIENCE = 50;
     public const CORPSE_PRICE = 20000;
     private const LAUNCH_EGG_PROBABILITY = 0.3;
+    private const SPAWN_EGG_PROBABILITY = 0.3;
 
     protected string $imagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
@@ -119,7 +122,7 @@ class Levinoth extends Monster
         return $terrain;
     }
 
-    private function launchEgg($terrain, $status, $logs): PassTurnResult
+    private function launchEgg(Island $island, Terrain $terrain, Status $status, Logs $logs): PassTurnResult
     {
         // 卵を飛ばす
         if (self::LAUNCH_EGG_PROBABILITY <= Rand::mt_rand_float()) {
@@ -129,12 +132,33 @@ class Levinoth extends Monster
         /** @var Cell $cell */
         $cell = $terrain->getCells()->flatten()->random();
 
-        if ($cell->getElevation() === CellConst::ELEVATION_MOUNTAIN) {
-            // 山吹き飛び
-        } else if ($cell->getElevation() === CellConst::ELEVATION_PLAIN) {
-            // 建造物があれば崩壊
-        } else {
-            // 落下
+        $logs->add(new DestructionByEggLog($island, $this, $cell));
+
+        if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
+            if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
+                $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
+            } else {
+                $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
+            }
+            return new PassTurnResult($terrain, $status, $logs);
+        }
+
+        if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
+            /** @var Monster $cell */
+            $cell->setHitPoints($cell->getHitPoints() + 1);
+            $terrain->setCell($cell->getPoint(), $cell);
+            return new PassTurnResult($terrain, $status, $logs);
+        }
+
+        if ($cell::ELEVATION === CellConst::ELEVATION_PLAIN) {
+            if ($cell::TYPE !== Wasteland::TYPE) {
+                if (self::SPAWN_EGG_PROBABILITY <= Rand::mt_rand_float()) {
+                    $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
+                } else {
+                    $terrain->setCell($cell->getPoint(), new Egg(point: $cell->getPoint()));
+                }
+                return new PassTurnResult($terrain, $status, $logs);
+            }
         }
 
         return new PassTurnResult($terrain, $status, $logs);
@@ -166,6 +190,14 @@ class Levinoth extends Monster
         /** @var Cell $cell */
         $terrain = $this->move($terrain, $this, $seaCells->random());
 
-        return $this->launchEgg($terrain, $status, $logs);
+        $launchEggCount = random_int(0, 5);
+        for ($n = 0; $n < $launchEggCount; $n++) {
+            $passTurnResult = $this->launchEgg($island, $terrain, $status, $logs);
+            $terrain = $passTurnResult->getTerrain();
+            $status = $passTurnResult->getStatus();
+            $logs = $passTurnResult->getLogs();
+        }
+
+        return new PassTurnResult($terrain, $status, $logs);
     }
 }
