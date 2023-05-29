@@ -6,6 +6,7 @@ use App\Models\Island;
 use App\Models\IslandComment;
 use App\Models\IslandHistory;
 use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
 use App\Models\Turn;
 use App\Models\User;
 use Tests\TestCase;
@@ -18,6 +19,7 @@ class DetailControllerTest extends TestCase
         $turn = Turn::latest()->first();
         $island = Island::factory()->setUser($user)->create();
         $islandStatus = IslandStatus::factory()->setTurn($turn)->setIsland($island)->setFunds(10000)->create();
+        $islandTerrain = IslandTerrain::factory()->setTurn($turn)->setIsland($island)->create();
 
         $response = $this->actingAs($user)
             ->patch('/api/islands/' . $island->id, [
@@ -51,6 +53,7 @@ class DetailControllerTest extends TestCase
         $turn = Turn::latest()->first();
         $island = Island::factory()->setUser($user)->create();
         $islandStatus = IslandStatus::factory()->setTurn($turn)->setIsland($island)->setFunds(10000)->create();
+        $islandTerrain = IslandTerrain::factory()->setTurn($turn)->setIsland($island)->create();
 
         $response = $this->actingAs($user)
             ->patch('/api/islands/' . $island->id, [
@@ -66,6 +69,7 @@ class DetailControllerTest extends TestCase
         $turn = Turn::latest()->first();
         $island = Island::factory()->setUser($user)->create();
         $islandStatus = IslandStatus::factory()->setTurn($turn)->setIsland($island)->setFunds(10000)->create();
+        $islandTerrain = IslandTerrain::factory()->setTurn($turn)->setIsland($island)->create();
 
         $response = $this->actingAs($user)
             ->patch('/api/islands/' . $island->id, [
@@ -82,6 +86,7 @@ class DetailControllerTest extends TestCase
         $turn = Turn::latest()->first();
         $island = Island::factory()->setUser($user)->create();
         $islandStatus = IslandStatus::factory()->setTurn($turn)->setIsland($island)->setFunds(500)->create();
+        $islandTerrain = IslandTerrain::factory()->setTurn($turn)->setIsland($island)->create();
 
         $response = $this->actingAs($user)
             ->patch('/api/islands/' . $island->id, [
