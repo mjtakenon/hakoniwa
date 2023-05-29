@@ -17,6 +17,16 @@ class IslandPlan extends Model
         'plan',
     ];
 
+    public function turn(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Turn::class);
+    }
+
+    public function island(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Island::class);
+    }
+
     public function toEntity(): Plans
     {
         return Plans::fromJson($this->plan);

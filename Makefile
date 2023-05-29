@@ -40,6 +40,8 @@ seeding-testing:
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
 	docker compose exec --user debian app sudo php artisan ide-helper:model --write-mixin
+er-diagram-generate:
+	docker compose exec --user www-data app php artisan generate:erd er_diagram.png
 create-log-file:
 	docker compose exec --user debian app sudo chown www-data:www-data /app/storage/ -R
 	docker compose exec --user debian app sudo chmod 777 /app/storage/ -R

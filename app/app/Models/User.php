@@ -50,7 +50,13 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function island() {
+    public function island(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
         return $this->hasOne(Island::class);
+    }
+
+    public function userAuthentications(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserAuthentication::class);
     }
 }

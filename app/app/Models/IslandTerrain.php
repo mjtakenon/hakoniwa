@@ -22,4 +22,14 @@ class IslandTerrain extends Model
     {
         return Terrain::fromJson($this->terrain);
     }
+
+    public function turn(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Turn::class);
+    }
+
+    public function island(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Island::class);
+    }
 }
