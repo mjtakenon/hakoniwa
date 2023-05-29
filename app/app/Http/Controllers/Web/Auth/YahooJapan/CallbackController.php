@@ -43,10 +43,7 @@ class CallbackController extends Controller
             // 初回YahooJapanログイン時
             \DB::transaction(function () use ($identifier) {
                 // ユーザー情報登録
-                $user = User::create([
-                    // TODO: Yahooではusernameを取得できないので適当な値を入れておく
-                    'name' => Str::random(10),
-                ]);
+                $user = User::create();
 
                 // 認証情報登録
                 UserAuthentication::create(
