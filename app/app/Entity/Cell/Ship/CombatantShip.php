@@ -116,6 +116,11 @@ abstract class CombatantShip extends Ship implements ICombatantShip
         return $this->affiliationName;
     }
 
+    public function setAffiliationName(string $affiliationName): void
+    {
+        $this->affiliationName = $affiliationName;
+    }
+
     public function getReturnTurn(): ?int
     {
         return $this->returnTurn;
