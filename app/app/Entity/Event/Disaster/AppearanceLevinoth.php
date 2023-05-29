@@ -8,7 +8,6 @@ use App\Entity\Cell\Monster\MonsterConst;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Log\LogRow\AppearLevinothLog;
-use App\Entity\Log\LogRow\AppearMonsterLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -18,7 +17,8 @@ use App\Models\Turn;
 
 class AppearanceLevinoth implements IDisaster
 {
-    const OCCUR_PROBABILITY = 0.002;
+    // TODO: 実装時0.002くらいに修正
+    const OCCUR_PROBABILITY = 0;
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
