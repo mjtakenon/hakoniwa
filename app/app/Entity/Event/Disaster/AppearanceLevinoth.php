@@ -18,7 +18,7 @@ use App\Models\Turn;
 
 class AppearanceLevinoth implements IDisaster
 {
-    const OCCUR_PROBABILITY = 1;
+    const OCCUR_PROBABILITY = 0.002;
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult
     {
@@ -48,7 +48,7 @@ class AppearanceLevinoth implements IDisaster
         $cell = $candidates->random();
 
         $level = max(($status->getDevelopmentPoints() / 500000), 20);
-        $hitPoints = Levinoth::DEFAULT_HIT_POINTS + $level;
+        $hitPoints = Levinoth::DEFAULT_HIT_POINTS + $level / 2;
         $levinoth = new Levinoth(point: $cell->getPoint(), remain_move_times: 0, level: $level, hit_points: $hitPoints, elevation: $cell->getElevation());
         $logs->add(new AppearLevinothLog($island, $levinoth));
 
