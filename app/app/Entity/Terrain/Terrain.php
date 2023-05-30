@@ -22,6 +22,9 @@ use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\ResourcesProduction\IResourcesProduction;
+use App\Entity\Cell\Ship\Battleship;
+use App\Entity\Cell\Ship\CombatantShip;
+use App\Entity\Cell\Ship\Submarine;
 use App\Entity\JsonCodable;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -405,5 +408,21 @@ class Terrain implements JsonCodable
 
         $targetCell = $this->cells->flatten(1)->random();
         $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
+    }
+
+    public function changeIslandName(Island $island): static
+    {
+        // TODO: 調査船ができたら追加
+        $ships = $this->findByTypes([Battleship::TYPE, Submarine::TYPE]);
+
+        /** @var CombatantShip $ship */
+        foreach ($ships as $ship) {
+            if ($ship->getAffiliationId() === $island->id) {
+                $ship->setAffiliationName($island->name);
+                $this->setCell($ship->getPoint(), $ship);
+            }
+        }
+
+        return $this;
     }
 }

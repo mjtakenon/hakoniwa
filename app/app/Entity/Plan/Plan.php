@@ -13,6 +13,7 @@ use App\Entity\Cell\HasPopulation\Village;
 use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Cell\MissileFireable\SeabedBase;
+use App\Entity\Cell\Others\Egg;
 use App\Entity\Cell\Others\Plain;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\Park\MonumentOfAgriculture;
@@ -86,6 +87,7 @@ abstract class Plan
         MonumentOfPeace::TYPE,
         MonumentOfWar::TYPE,
         MonumentOfWinner::TYPE,
+        Egg::TYPE,
     ];
 
     public const REMOVABLE_CELLS = [

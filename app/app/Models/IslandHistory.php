@@ -24,4 +24,14 @@ class IslandHistory extends Model
         $islandHistory->deleted_at = $island->deleted_at;
         return $islandHistory;
     }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function island(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Island::class);
+    }
 }

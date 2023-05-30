@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Api\Islands;
 
+use App\Entity\Cell\Ship\Battleship;
+use App\Entity\Cell\Ship\Submarine;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\WebApi;
 use App\Models\Island;
 use App\Models\IslandHistory;
+use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
 use App\Models\Turn;
 
 class DetailController extends Controller
@@ -64,8 +68,13 @@ class DetailController extends Controller
             }
 
             $turn = Turn::latest()->firstOrFail();
+            /** @var IslandStatus $islandStatus */
             $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
+            /** @var IslandTerrain $islandTerrain */
+            $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
+
             $status = $islandStatus->toEntity();
+            $terrain = $islandTerrain->toEntity();
 
             $name  = $validated->get('name');
             $ownerName  = $validated->get('owner_name');
@@ -103,9 +112,13 @@ class DetailController extends Controller
             if ($updated) {
                 $islandHistory->save();
                 $island->save();
+
                 $status->setFunds($status->getFunds() - self::CHANGE_ISLAND_NAME_PRICE);
                 $islandStatus->funds = $status->getFunds();
                 $islandStatus->save();
+
+                $islandTerrain->terrain = $terrain->changeIslandName($island)->toJson(true);
+                $islandTerrain->save();
 
                 return $this->ok([
                     'island' => [

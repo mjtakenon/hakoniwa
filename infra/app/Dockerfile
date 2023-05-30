@@ -13,6 +13,7 @@ RUN \
     nginx \
     supervisor \
     iputils-ping net-tools \
+    graphviz \
     htop \
     vim \
     emacs \

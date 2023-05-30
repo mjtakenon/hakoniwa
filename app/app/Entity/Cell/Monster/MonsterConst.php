@@ -10,6 +10,7 @@ class MonsterConst
     public const APPEARANCE_POPULATION_LV2 = 240000;
     public const APPEARANCE_POPULATION_LV3 = 360000;
     public const APPEARANCE_POPULATION_LV4 = 480000;
+    public const APPEARANCE_POPULATION_LV5 = 600000;
 
     public const MONSTERS_LIST_LV1 = [
         Inora::class,

@@ -7,6 +7,20 @@
 @layer base {
     body {
         @apply bg-background text-on-background break-words;
+
+        ::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--theme-scroll-track);
+            border-radius: 7px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--theme-scroll-thumb);
+            border-radius: 7px;
+        }
     }
 
     p {
@@ -106,7 +120,7 @@
 }
 
 #app {
-    @apply bg-background text-on-background pb-10;
+    @apply bg-background text-on-background pb-0;
 }
 
 #index {

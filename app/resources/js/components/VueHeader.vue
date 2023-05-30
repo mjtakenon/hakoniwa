@@ -12,6 +12,8 @@
             <img class="hamburger-icon" src="/img/hakoniwa/ui/hamburger.svg">
         </button>
 
+
+
         <div class="hamburger-elements"
              :class="[isOpenHamburgerMenu ? 'max-md:max-h-52' : 'max-md:max-h-0']">
             <div v-if="isLoggedIn" class="navbar-menu">
@@ -20,32 +22,29 @@
                 </div>
                 <a v-if="isIslandRegistered" class="menu-item primary group" :href="'/islands/'+store.user.id+'/plans'"
                    title="開発画面に行く">
-                    <svg class="menu-icon fill-on-primary group-hover:fill-primary" xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 96 960 960">
-                        <path
-                            d="M180 976q-24 0-42-18t-18-42V296q0-24 18-42t42-18h65v-60h65v60h340v-60h65v60h65q24 0 42 18t18 42v301h-60V486H180v430h319v60H180Zm709-219-71-71 29-29q8-8 21-8t21 8l29 29q8 8 8 21t-8 21l-29 29Zm-330 259v-71l216-216 71 71-216 216h-71Z"/>
-                    </svg>
-                    <span class="menu-title text-on-primary group-hover:text-primary">開発画面に行く</span>
+                    <font-awesome-icon
+                        icon="fa-solid fa-pen-to-square"
+                        class="menu-icon text-on-primary group-hover:text-primary"
+                    ></font-awesome-icon>
+                    <span class="menu-title plan-title text-on-primary group-hover:text-primary">島を開発</span>
                 </a>
                 <a v-if="isIslandRegistered" class="menu-item group" href="/settings" title="設定">
-                    <svg class="menu-icon fill-on-surface-variant group-hover:fill-surface-variant"
-                         xmlns="http://www.w3.org/2000/svg" viewBox="0 96 960 960">
-                        <path
-                            d="m388 976-20-126q-19-7-40-19t-37-25l-118 54-93-164 108-79q-2-9-2.5-20.5T185 576q0-9 .5-20.5T188 535L80 456l93-164 118 54q16-13 37-25t40-18l20-127h184l20 126q19 7 40.5 18.5T669 346l118-54 93 164-108 77q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l108 78-93 164-118-54q-16 13-36.5 25.5T592 850l-20 126H388Zm92-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Z"/>
-                    </svg>
+                    <font-awesome-icon
+                        icon="fa-solid fa-gear"
+                        class="menu-icon text-on-surface-variant group-hover:text-surface-variant"
+                    ></font-awesome-icon>
                     <span class="menu-title text-on-surface-variant group-hover:text-surface-variant">設定</span>
                 </a>
                 <a v-if="!isIslandRegistered" class=" button-primary navbar-register" href="/register">
                     島を探しに行く（新規登録）
                 </a>
-                <form class="menu-item group" method="POST" name="logout" action="/logout">
+                <form method="POST" name="logout" action="/logout">
                     <input type="hidden" name="_token" :value="csrfToken">
-                    <a href="javascript:logout.submit()" title="ログアウト">
-                        <svg class="menu-icon fill-on-surface-variant group-hover:fill-surface-variant"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                            <path
-                                d="M180-120q-24 0-42-18t-18-42v-600q0-24 18-42t42-18h291v60H180v600h291v60H180Zm486-185-43-43 102-102H375v-60h348L621-612l43-43 176 176-174 174Z"/>
-                        </svg>
+                    <a href="javascript:logout.submit()"  class="menu-item group" title="ログアウト">
+                        <font-awesome-icon
+                            icon="fa-solid fa-arrow-right-from-bracket"
+                            class="menu-icon text-on-surface-variant group-hover:text-surface-variant"
+                        ></font-awesome-icon>
                         <span class="menu-title text-on-surface-variant group-hover:text-surface-variant">ログアウト</span>
                     </a>
                 </form>
@@ -71,6 +70,10 @@
 import {defineComponent} from "vue";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
 import {useMainStore} from "../store/MainStore";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
+import {faGear} from "@fortawesome/free-solid-svg-icons";
+import {faArrowRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 
 export default defineComponent({
     components: {ThemeSwitcher},
@@ -80,6 +83,8 @@ export default defineComponent({
         }
     },
     setup(props) {
+        library.add(faPenToSquare, faGear, faArrowRightFromBracket);
+
         const store = useMainStore();
         const theme = localStorage.getItem('theme');
         if (theme !== null && theme !== undefined) {
@@ -164,14 +169,14 @@ export default defineComponent({
             // sp
             @apply flex items-center px-8 py-2 max-md:mb-1;
             // desktop
-            @apply md:mx-1 md:p-1.5 md:rounded-full bg-surface-variant;
+            @apply md:mx-1 md:p-2 md:rounded-full bg-surface-variant;
 
             &.primary {
                 @apply bg-primary hover:bg-primary-container;
             }
 
             .menu-icon {
-                @apply inline w-6 h-6;
+                @apply inline w-5 h-5 max-w-[1.25rem] max-h-[1.25rem];
                 // sp
                 @apply max-md:mr-5;
             }
@@ -181,6 +186,10 @@ export default defineComponent({
                 @apply font-bold;
                 // desktop
                 @apply md:hidden;
+
+                &.plan-title {
+                    @apply md:ml-2 md:mr-1 md:inline;
+                }
             }
         }
 
