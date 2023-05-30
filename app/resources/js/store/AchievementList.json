@@ -1,0 +1,74 @@
+[
+    {
+        "type": "turn",
+        "title": "ターン賞",
+        "category": "turn",
+        "grade": 0,
+        "icon": "fa-solid fa-medal",
+        "color": "normal"
+    },
+    {
+        "type": "prosperity",
+        "title": "繁栄賞",
+        "category": "prosperity",
+        "grade": 0,
+        "icon": "fa-solid fa-mountain-city",
+        "color": "bronze"
+    },
+    {
+        "type": "prosperity_super",
+        "title": "超繁栄賞",
+        "category": "prosperity",
+        "grade": 1,
+        "icon": "fa-solid fa-mountain-city",
+        "color": "silver"
+    },
+    {
+        "type": "prosperity_ultra",
+        "title": "究極繁栄賞",
+        "category": "prosperity",
+        "grade": 2,
+        "icon": "fa-solid fa-mountain-city",
+        "color": "gold"
+    },
+    {
+        "type": "calamity",
+        "title": "災難賞",
+        "category": "calamity",
+        "grade": 0,
+        "icon": "fa-solid fa-skull",
+        "color": "bronze"
+    },
+    {
+        "type": "calamity_super",
+        "title": "超災難賞",
+        "category": "calamity",
+        "grade": 1,
+        "icon": "fa-solid fa-skull",
+        "color": "silver"
+    },
+    {
+        "type": "calamity_ultra",
+        "title": "究極災難賞",
+        "category": "calamity",
+        "grade": 2,
+        "icon": "fa-solid fa-skull",
+        "color": "gold"
+    },
+    {
+        "type": "levinoth",
+        "title": "リヴァイノスハンター",
+        "category": "levinoth",
+        "grade": 0,
+        "icon": "fa-solid fa-dragon",
+        "color": "normal"
+    },
+    {
+        "type": "treasure",
+        "title": "トレジャーハンター",
+        "category": "treasure",
+        "grade": 0,
+        "icon": "fa-solid fa-gem",
+        "color": "normal"
+    }
+]

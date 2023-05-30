@@ -62,6 +62,12 @@
     --theme-outline: #72777f;
     --theme-surface-variant: #dee3eb;
     --theme-on-surface-variant: #42474e;
+
+    // Achievements
+    --theme-achievement-normal: #1a1c1e;
+    --theme-achievement-bronze: #a25a43;
+    --theme-achievement-silver: #a1aeb6;
+    --theme-achievement-gold: #e7bb8b;
 }
 
 .theme-dark {
@@ -106,4 +112,10 @@
     --theme-outline: #8c9198;
     --theme-surface-variant: #42474e;
     --theme-on-surface-variant: #c2c7cf;
+
+    // Achievements
+    --theme-achievement-normal: #e2e2e5;
+    --theme-achievement-bronze: #a25a43;
+    --theme-achievement-silver: #a1aeb6;
+    --theme-achievement-gold: #e7bb8b;
 }
