@@ -1,5 +1,5 @@
 <template>
-    <div class="achievements">
+    <div class="achievements" :class="gridColumns">
         <div
             v-for="achievement of achievements"
             :key="achievement.type"
@@ -16,9 +16,12 @@
                 {{ achievement.extra_text }}
             </span>
         </div>
-        <div v-show="hoverWindow.show" class="hover-box" :style="{ bottom: hoverWindow.bottom+'px', left: hoverWindow.left+'px'}">
+        <div v-show="hoverWindow.show" class="hover-box"
+             :style="{ bottom: hoverWindow.bottom+'px', left: hoverWindow.left+'px'}">
             <div class="hover-title">{{ hoverWindow.title }}</div>
-            <div v-show="hoverWindow.text !== undefined && hoverWindow.text !== ''" class="hover-text">{{ hoverWindow.text }}</div>
+            <div v-show="hoverWindow.text !== undefined && hoverWindow.text !== ''" class="hover-text">
+                {{ hoverWindow.text }}
+            </div>
         </div>
     </div>
 
@@ -52,47 +55,22 @@ export default defineComponent({
     setup(props) {
         library.add(faMedal, faMountainCity, faSkull, faDragon, faGem, faQuestionCircle);
 
-        // ----- DEBUG -----
-        const test = [
-            {
-                type: "turn",
-                hover_text: "turn:100,200,300",
-                extra_text: "x3",
-            },
-            {
-                type: "prosperity",
-            },
-            {
-                type: "prosperity_super",
-            },
-            {
-                type: "prosperity_ultra",
-            },
-            {
-                type: "calamity",
-            },
-            {
-                type: "calamity_super",
-            },
-            {
-                type: "levinoth",
-                extra_text: "Lv.33"
-            },
-            {
-                type: "treasure",
-                extra_text: "Lv.4"
-            }
-        ] as AchievementProp[]
+        let achievements: Achievement[];
+        if (props.achievement_data === undefined) {
+            achievements = filterDuplicatedAchievementType(getAchievementsList(props.achievement_props));
+        } else {
+            achievements = filterDuplicatedAchievementType(props.achievement_data);
+        }
 
+        let cols = props.max_cols;
+        if (achievements.length < cols)  cols = achievements.length;
 
-        const achievements = filterDuplicatedAchievementType(getAchievementsList(test));
-        // console.debug(this.achievements);
-        return {achievements}
-        // ----- DEBUG END -----
-
-        // TODO: 本番はこっちに差し替え　たぶん動くはず
-        // const achievements = filterDuplicatedAchievementType(getAchievementsList(props.achievement_props));
-        // return achievements;
+        return {achievements, cols};
+    },
+    computed: {
+        gridColumns() {
+            return "grid-cols-" + this.cols;
+        }
     },
     methods: {
         onHover(event: MouseEvent, title: string, text: string) {
@@ -102,7 +80,7 @@ export default defineComponent({
             this.hoverWindow.title = title;
             this.hoverWindow.text = text;
 
-            this.hoverWindow.left = target.offsetLeft + (target.offsetWidth/2);
+            this.hoverWindow.left = target.offsetLeft + (target.offsetWidth / 2);
             this.hoverWindow.bottom = this.BOTTOM_OFFSET;
         },
         onLeaved() {
@@ -110,9 +88,18 @@ export default defineComponent({
         }
     },
     props: {
+        achievement_data: {
+            require: false,
+            type: Array as PropType<Achievement[]>
+        },
         achievement_props: {
-            require: true,
+            require: false,
             type: Array as PropType<AchievementProp[]>
+        },
+        max_cols: {
+            require: false,
+            type: Number,
+            default: 5
         }
     }
 })
@@ -120,7 +107,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .achievements {
-    @apply relative w-full grid grid-cols-5;
+    @apply relative w-full grid;
 
     .achievement {
         @apply flex flex-wrap justify-center leading-none my-1;
@@ -131,12 +118,15 @@ export default defineComponent({
             &.normal {
                 @apply text-achievement-normal;
             }
+
             &.bronze {
                 @apply text-achievement-bronze;
             }
+
             &.silver {
                 @apply text-achievement-silver;
             }
+
             &.gold {
                 @apply text-achievement-gold;
             }
