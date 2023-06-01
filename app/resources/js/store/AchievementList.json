@@ -1,72 +1,72 @@
 [
     {
-        "type": "turn",
+        "type": "turn_prize",
         "title": "ターン賞",
-        "category": "turn",
+        "category": "turn_prize",
         "grade": 0,
         "icon": "fa-solid fa-medal",
         "color": "normal"
     },
     {
-        "type": "prosperity",
+        "type": "prosperity_prize",
         "title": "繁栄賞",
-        "category": "prosperity",
+        "category": "prosperity_prize",
         "grade": 0,
         "icon": "fa-solid fa-mountain-city",
         "color": "bronze"
     },
     {
-        "type": "prosperity_super",
+        "type": "high_prosperity_prize",
         "title": "超繁栄賞",
-        "category": "prosperity",
+        "category": "prosperity_prize",
         "grade": 1,
         "icon": "fa-solid fa-mountain-city",
         "color": "silver"
     },
     {
-        "type": "prosperity_ultra",
+        "type": "super_prosperity_prize",
         "title": "究極繁栄賞",
-        "category": "prosperity",
+        "category": "prosperity_prize",
         "grade": 2,
         "icon": "fa-solid fa-mountain-city",
         "color": "gold"
     },
     {
-        "type": "calamity",
+        "type": "calamity_prize",
         "title": "災難賞",
-        "category": "calamity",
+        "category": "calamity_prize",
         "grade": 0,
         "icon": "fa-solid fa-skull",
         "color": "bronze"
     },
     {
-        "type": "calamity_super",
+        "type": "high_calamity_prize",
         "title": "超災難賞",
-        "category": "calamity",
+        "category": "calamity_prize",
         "grade": 1,
         "icon": "fa-solid fa-skull",
         "color": "silver"
     },
     {
-        "type": "calamity_ultra",
+        "type": "super_calamity_prize",
         "title": "究極災難賞",
-        "category": "calamity",
+        "category": "calamity_prize",
         "grade": 2,
         "icon": "fa-solid fa-skull",
         "color": "gold"
     },
     {
-        "type": "levinoth",
+        "type": "levinoth_hunter",
         "title": "リヴァイノスハンター",
-        "category": "levinoth",
+        "category": "levinoth_hunter",
         "grade": 0,
         "icon": "fa-solid fa-dragon",
         "color": "normal"
     },
     {
-        "type": "treasure",
+        "type": "treasure_hunter",
         "title": "トレジャーハンター",
-        "category": "treasure",
+        "category": "treasure_hunter",
         "grade": 0,
         "icon": "fa-solid fa-gem",
         "color": "normal"

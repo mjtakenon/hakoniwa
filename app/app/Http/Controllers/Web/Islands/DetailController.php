@@ -51,6 +51,38 @@ class DetailController extends Controller
             ->orderByDesc('id')
             ->get();
 
+        // TODO: テスト用のachivements配列
+        $testAchievements = [
+            [
+                "type" => "turn_prize",
+                "hover_text" => "100,200,300",
+                "extra_text" => "x3"
+            ],
+            [
+                "type" => "prosperity_prize"
+            ],
+            [
+                "type" => "high_prosperity_prize"
+            ],
+            [
+                "type" => "super_prosperity_prize"
+            ],
+            [
+                "type" => "calamity_prize"
+            ],
+            [
+                "type" => "high_calamity_prize"
+            ],
+            [
+                "type" => "levinoth_hunter",
+                "extra_text" => "Lv.33"
+            ],
+            [
+                "type" => "treasure_hunter",
+                "extra_text" => "Lv.4"
+            ]
+        ];
+
         return view('pages.islands.detail', [
             'hakoniwa' => [
                 'width' => \HakoniwaService::getMaxWidth(),
@@ -93,6 +125,7 @@ class DetailController extends Controller
                         return null;
                     }
                 })->filter(function ($status) { return !is_null($status); }),
+                'achievements' => $testAchievements,
             ]
         ]);
     }

@@ -47,6 +47,7 @@ import {Turn} from "../store/Entity/Turn";
 import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 import IslandPopup from "../components/IslandPopup.vue";
 import CommentForm from "../components/CommentForm.vue";
+import {AchievementProp, getAchievementsList} from "../store/Entity/Achievement";
 
 export default defineComponent({
     components: {
@@ -90,6 +91,9 @@ export default defineComponent({
         const parser = new LogParser();
         const logs = parser.parse(props.island.logs, props.island.summary);
 
+        // Achievementの変換
+        const achievements = getAchievementsList(props.island.achievements);
+
         // Pinia
         const store = useMainStore();
         store.$patch({
@@ -103,7 +107,8 @@ export default defineComponent({
             planCandidate: candidates,
             targetIslands: props.targetIslands,
             selectedTargetIsland: props.island.id,
-            turn: turn
+            turn: turn,
+            achievements: achievements
         });
         return {store}
     },
@@ -144,6 +149,7 @@ export default defineComponent({
                 logs: LogProps[],
                 summary: SummaryProps[]
                 comment?: string,
+                achievements: AchievementProp[]
             }>
         },
         planCandidate: {

@@ -28,6 +28,12 @@
                 </div>
             </div>
         </div>
+        <div class="stats-box achievements-box">
+            <div class="stats-box-title">
+                実績
+            </div>
+            <achievement-icons class="achievement-icons" :achievement_data="store.achievements"></achievement-icons>
+        </div>
         <div class="stats-box comment-box">
             <div class="stats-box-title">
                 コメント
@@ -42,9 +48,12 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
-import {has} from "lodash";
+import AchievementIcons from "./AchievementIcons.vue";
 
 export default defineComponent({
+    components: {
+        AchievementIcons
+    },
     data() {
         return {
             statuses: [] as {
@@ -170,8 +179,16 @@ export default defineComponent({
         }
     }
 
+    .achievements-box {
+        @apply col-span-3 md:col-span-2 z-10;
+
+        .achievement-icons {
+            @apply w-fit max-w-full mx-auto;
+        }
+    }
+
     .comment-box {
-        @apply col-span-3 md:col-span-5;
+        @apply col-span-3;
 
         .island-comment {
             @apply px-2 md:px-4 text-left leading-none;

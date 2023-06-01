@@ -23,6 +23,7 @@ import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
 import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 import CommentForm from "../components/CommentForm.vue";
+import {AchievementProp, getAchievementsList} from "../store/Entity/Achievement";
 
 export default defineComponent({
     components: {
@@ -47,12 +48,15 @@ export default defineComponent({
         const parser = new LogParser();
         const logs = parser.parse(props.island.logs, props.island.summary);
 
+        const achievements = getAchievementsList(props.island.achievements);
+
         store.$patch({
             hakoniwa: props.hakoniwa,
             island: props.island,
             status: props.island.status,
             terrains: props.island.terrains,
-            logs: logs
+            logs: logs,
+            achievements: achievements
         })
         return { store }
     },
@@ -78,6 +82,7 @@ export default defineComponent({
                 logs: LogProps[]
                 comment?: string,
                 summary: SummaryProps[],
+                achievements: AchievementProp[]
             }>
         },
     },

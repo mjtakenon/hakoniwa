@@ -5,6 +5,11 @@ module.exports = {
         "./resources/**/*.ts",
         "./resources/**/*.vue"
     ],
+    safelist: [
+        {
+            pattern: /grid-cols-([1-9]?[1-9])/
+        }
+    ],
     darkMode: "class",
     theme: {
         extend: {
