@@ -90,7 +90,7 @@ class ExecuteTurn extends Command
                     $islandPlan = $island->islandPlans->firstOrFail();
                     $islandTerrain = $island->islandTerrains->firstOrFail();
                     $islandStatus = $island->islandStatuses->firstOrFail();
-                    $islandAchievements = $island->islandAchievements;
+                    $islandAchievements = $island->islandAchievements()->with(['island', 'turn'])->get();
 
                     $planList->put($island->id, $islandPlan->toEntity());
                     $terrainList->put($island->id, $islandTerrain->toEntity());

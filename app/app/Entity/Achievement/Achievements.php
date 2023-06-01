@@ -2,6 +2,14 @@
 
 namespace App\Entity\Achievement;
 
+use App\Entity\Achievement\Prize\CalamityPrize;
+use App\Entity\Achievement\Prize\HighCalamityPrize;
+use App\Entity\Achievement\Prize\HighProsperityPrize;
+use App\Entity\Achievement\Prize\ProsperityPrize;
+use App\Entity\Achievement\Prize\SuperCalamityPrize;
+use App\Entity\Achievement\Prize\SuperProsperityPrize;
+use App\Entity\Achievement\Prize\TurnPrize;
+use App\Entity\Achievement\AchievementGroup\TurnPrizeGroup;
 use App\Entity\Status\Status;
 use App\Models\Island;
 use App\Models\IslandAchievement;
@@ -15,7 +23,15 @@ class Achievements
     public const ACHIEVEMENTS = [
         TurnPrize::TYPE => TurnPrize::class,
         CalamityPrize::TYPE => CalamityPrize::class,
+        HighCalamityPrize::TYPE => HighCalamityPrize::class,
+        SuperCalamityPrize::TYPE => SuperCalamityPrize::class,
         ProsperityPrize::TYPE => ProsperityPrize::class,
+        HighProsperityPrize::TYPE => HighProsperityPrize::class,
+        SuperProsperityPrize::TYPE => SuperProsperityPrize::class,
+    ];
+
+    public const ACHIEVEMENT_GROUP = [
+        TurnPrize::TYPE => TurnPrizeGroup::class,
     ];
 
     public static function create(): static
@@ -94,5 +110,43 @@ class Achievements
     public function receiveTurnPrize(Island $island, Turn $turn): void
     {
         $this->add(new TurnPrize($island, $turn, ['turn' => $turn->turn], false));
+    }
+
+    public function toArray(): array
+    {
+        $result = [];
+        $achievementGroups = $this->achievements->groupBy(function ($achievement) {
+            /** @var Achievement $achievement */
+            return $achievement->getType();
+        });
+        foreach($achievementGroups as $achievementGroup) {
+            $result[] = $this->achievementGroupToArray($achievementGroup);
+        }
+        return $result;
+    }
+
+    /**
+     * @param Collection<Achievement> $achievements
+     * @return array
+     */
+    private function achievementGroupToArray(Collection $achievements): array
+    {
+        /** @var Achievement $achievement */
+        $achievement = $achievements->first();
+        if (array_key_exists($achievement->getType(), self::ACHIEVEMENT_GROUP)) {
+            /** @var AchievementGroup $achievementGroup */
+            $achievementGroup = new (self::ACHIEVEMENT_GROUP[$achievement->getType()])($achievements);
+            return [
+                'type' => $achievementGroup->getType(),
+                'hover_text' => $achievementGroup->getHoverText(),
+                'extra_text' => $achievementGroup->getExtraText(),
+            ];
+        } else {
+            return [
+                'type' => $achievement->getType(),
+                'hover_text' => $achievement->getHoverText(),
+                'extra_text' => $achievement->getExtraText(),
+            ];
+        }
     }
 }

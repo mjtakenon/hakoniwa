@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Entity\Achievement;
+namespace App\Entity\Achievement\Prize;
 
+use App\Entity\Achievement\Achievement;
 use App\Entity\Status\Status;
 
 class HighCalamityPrize extends Achievement

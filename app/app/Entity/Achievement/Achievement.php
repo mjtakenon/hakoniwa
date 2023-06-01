@@ -37,6 +37,17 @@ abstract class Achievement
     }
 
     abstract public function getType(): string;
+
+    public function getHoverText(): ?string
+    {
+        return null;
+    }
+
+    public function getExtraText(): ?string
+    {
+        return null;
+    }
+
     public function getExtra(): ?array
     {
         return $this->extra;

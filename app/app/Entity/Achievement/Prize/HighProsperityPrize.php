@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Entity\Achievement;
+namespace App\Entity\Achievement\Prize;
 
+use App\Entity\Achievement\Achievement;
 use App\Entity\Status\Status;
 
-class ProsperityPrize extends Achievement
+class HighProsperityPrize extends Achievement
 {
-    public const TYPE = 'prosperity_prize';
-    public const RECEIVABLE_POPULATION = 300000;
+    public const TYPE = 'high_prosperity_prize';
+    public const RECEIVABLE_POPULATION = 500000;
 
     public function getType(): string
     {

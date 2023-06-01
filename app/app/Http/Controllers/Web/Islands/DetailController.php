@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Web\Islands;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Log\LogConst;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandComment;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
@@ -24,9 +27,13 @@ class DetailController extends Controller
         $turn = Turn::latest()->firstOrFail();
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
+        /** @var IslandStatus $islandStatus */
         $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
+        /** @var IslandTerrain $islandTerrain */
         $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
+        /** @var IslandComment $islandComment */
         $islandComment = $island->islandComments()->first();
+        $islandAchievements = $island->islandAchievements()->with(['island', 'turn'])->get();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
             ->whereIn('visibility', [LogConst::VISIBILITY_GLOBAL, LogConst::VISIBILITY_PUBLIC])
@@ -50,38 +57,6 @@ class DetailController extends Controller
             ->with(['turn'])
             ->orderByDesc('id')
             ->get();
-
-        // TODO: テスト用のachivements配列
-        $testAchievements = [
-            [
-                "type" => "turn_prize",
-                "hover_text" => "100,200,300",
-                "extra_text" => "x3"
-            ],
-            [
-                "type" => "prosperity_prize"
-            ],
-            [
-                "type" => "high_prosperity_prize"
-            ],
-            [
-                "type" => "super_prosperity_prize"
-            ],
-            [
-                "type" => "calamity_prize"
-            ],
-            [
-                "type" => "high_calamity_prize"
-            ],
-            [
-                "type" => "levinoth_hunter",
-                "extra_text" => "Lv.33"
-            ],
-            [
-                "type" => "treasure_hunter",
-                "extra_text" => "Lv.4"
-            ]
-        ];
 
         return view('pages.islands.detail', [
             'hakoniwa' => [
@@ -125,7 +100,7 @@ class DetailController extends Controller
                         return null;
                     }
                 })->filter(function ($status) { return !is_null($status); }),
-                'achievements' => $testAchievements,
+                'achievements' => Achievements::create()->fromModel($islandAchievements)->toArray(),
             ]
         ]);
     }
