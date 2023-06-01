@@ -70,8 +70,24 @@ class Achievements
             $this->add(new ProsperityPrize($island, $turn, null, false));
         }
 
+        if (HighProsperityPrize::isReceivable($status)) {
+            $this->add(new HighProsperityPrize($island, $turn, null, false));
+        }
+
+        if (SuperProsperityPrize::isReceivable($status)) {
+            $this->add(new SuperProsperityPrize($island, $turn, null, false));
+        }
+
         if (CalamityPrize::isReceivable($status, $prevStatus)) {
             $this->add(new CalamityPrize($island, $turn, null, false));
+        }
+
+        if (HighCalamityPrize::isReceivable($status, $prevStatus)) {
+            $this->add(new HighCalamityPrize($island, $turn, null, false));
+        }
+
+        if (SuperCalamityPrize::isReceivable($status, $prevStatus)) {
+            $this->add(new SuperCalamityPrize($island, $turn, null, false));
         }
     }
 
