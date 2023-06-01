@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\MissileFireable\SeabedBase;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Log\LogConst;
@@ -10,6 +11,7 @@ use App\Entity\Log\LogRow\AbortLackOfFundsLog;
 use App\Entity\Log\LogRow\AbortNoDevelopmentPointsLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
@@ -35,23 +37,23 @@ class ConstructSeabedBasePlan extends Plan
     protected int $price = self::PRICE;
     protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $cell = $terrain->getCell($this->point);
         $logs = Logs::create();
         if ($status->getFunds() < self::PRICE) {
             $logs->add(new AbortLackOfFundsLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
             $logs->add(new AbortNoDevelopmentPointsLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         if ($cell::TYPE !== Sea::TYPE) {
             $logs->add(new AbortInvalidCellLog($island, $this, $cell));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $terrain->setCell($this->point, new SeabedBase(point: $this->point));
@@ -60,6 +62,6 @@ class ConstructSeabedBasePlan extends Plan
         $seabedBase = deep_copy($this);
         $seabedBase->point = new Point('?', '?');
         $logs->add(new ExecuteLog($island, $seabedBase));
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
     }
 }

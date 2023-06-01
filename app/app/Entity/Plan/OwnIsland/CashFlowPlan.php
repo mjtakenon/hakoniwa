@@ -2,8 +2,10 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -25,10 +27,10 @@ class CashFlowPlan extends Plan
     protected int $price = self::PRICE;
     protected bool $usePoint = self::USE_POINT;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
     }
 }

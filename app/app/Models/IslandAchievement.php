@@ -13,8 +13,6 @@ class IslandAchievement extends Model
 {
     use HasFactory;
 
-    const UPDATED_AT = null;
-
     public function island(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Island::class);

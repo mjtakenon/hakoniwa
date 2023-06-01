@@ -2,6 +2,8 @@
 
 namespace App\Entity\Plan\ForeignIsland;
 
+use App\Entity\Achievement\Achievements;
+use App\Entity\Plan\ExecutePlanToForeignIslandResult;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -21,7 +23,7 @@ abstract class TargetedToForeignIslandPlan
         $this->plan = $plan;
     }
 
-    public abstract function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult;
+    public abstract function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Achievements $fromAchievements, Achievements $toAchievements, Turn $turn): ExecutePlanToForeignIslandResult;
 
     public function getFromIsland(): int
     {

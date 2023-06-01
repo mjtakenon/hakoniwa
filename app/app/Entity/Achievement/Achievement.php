@@ -10,10 +10,10 @@ abstract class Achievement
 {
     protected Island $island;
     protected Turn $turn;
-    protected ?string $extra;
+    protected ?array $extra;
     protected bool $isSaved;
 
-    public function __construct(Island $island, Turn $turn, ?string $extra = null, bool $isSaved = true)
+    public function __construct(Island $island, Turn $turn, ?array $extra = null, bool $isSaved = true)
     {
         $this->island = $island;
         $this->turn = $turn;
@@ -23,21 +23,21 @@ abstract class Achievement
 
     public static function fromModel(IslandAchievement $islandAchievement): static
     {
-        return new static($islandAchievement->island, $islandAchievement->turn, $islandAchievement->extra, true);
+        return new static($islandAchievement->island, $islandAchievement->turn, json_decode($islandAchievement->extra, true), true);
     }
 
-    public function toModel(): IslandAchievement
+    public function getModel(): IslandAchievement
     {
         $islandAchievement = new IslandAchievement();
         $islandAchievement->island_id = $this->island->id;
         $islandAchievement->turn_id = $this->turn->id;
         $islandAchievement->type = $this->getType();
-        $islandAchievement->extra = $this->extra;
+        $islandAchievement->extra = json_encode($this->extra);
         return $islandAchievement;
     }
 
     abstract public function getType(): string;
-    public function getExtra(): ?string
+    public function getExtra(): ?array
     {
         return $this->extra;
     }
@@ -49,7 +49,6 @@ abstract class Achievement
 
     public function isDuplicate(Achievement $achievement): bool
     {
-        return $this->getType() === $achievement->getType() &&
-            $this->getExtra() === $achievement->getExtra();
+        return $this->getType() === $achievement->getType() && $this->getExtra() === $achievement->getExtra();
     }
 }

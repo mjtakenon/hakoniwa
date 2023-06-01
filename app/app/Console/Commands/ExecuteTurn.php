@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Entity\Achievement\Achievement;
+use App\Entity\Achievement\Achievements;
 use App\Entity\Event\Disaster\Disaster;
 use App\Entity\Event\ForeignIsland\ForeignIslandEvent;
 use App\Entity\Log\LogRow;
@@ -71,12 +73,15 @@ class ExecuteTurn extends Command
                     'islandPlans' => function ($query) use ($turn) {
                         $query->where('turn_id', $turn->id);
                     },
+                    'islandAchievements',
                 ])->whereNull('deleted_at')->get();
 
                 $planList = new Collection();
                 $terrainList = new Collection();
                 $statusList = new Collection();
+                $prevStatusList = new Collection();
                 $logsList = new Collection();
+                $achievementsList = new Collection();
                 $foreignIslandTargetedPlans = new Collection();
                 $foreignIslandEvents = new Collection();
 
@@ -85,11 +90,14 @@ class ExecuteTurn extends Command
                     $islandPlan = $island->islandPlans->firstOrFail();
                     $islandTerrain = $island->islandTerrains->firstOrFail();
                     $islandStatus = $island->islandStatuses->firstOrFail();
+                    $islandAchievements = $island->islandAchievements;
 
                     $planList->put($island->id, $islandPlan->toEntity());
                     $terrainList->put($island->id, $islandTerrain->toEntity());
                     $statusList->put($island->id, $islandStatus->toEntity());
+                    $prevStatusList->put($island->id, $islandStatus->toEntity());
                     $logsList->put($island->id, Logs::create());
+                    $achievementsList->put($island->id, Achievements::create()->fromModel($islandAchievements));
                 }
 
                 foreach ($islands as $island) {
@@ -101,20 +109,24 @@ class ExecuteTurn extends Command
                     $status = $statusList->get($island->id);
                     /** @var Logs $logs */
                     $logs = $logsList->get($island->id);
+                    /** @var Achievements $achievements */
+                    $achievements = $achievementsList->get($island->id);
 
                     // 生産・消費処理
                     $status->executeTurn($terrain, $island);
 
                     // コマンド実行
-                    $executePlanResult = $plans->execute($island, $terrain, $status, $turn, $foreignIslandTargetedPlans);
+                    $executePlanResult = $plans->execute($island, $terrain, $status, $achievements, $turn, $foreignIslandTargetedPlans);
                     $terrain = $executePlanResult->getTerrain();
                     $status = $executePlanResult->getStatus();
                     $logs->merge($executePlanResult->getLogs());
+                    $achievements = $executePlanResult->getAchievements();
 
                     $planList->put($island->id, $plans);
                     $terrainList->put($island->id, $terrain);
                     $statusList->put($island->id, $status);
                     $logsList->put($island->id, $logs);
+                    $achievementsList->put($island->id, $achievements);
                 }
 
                 // 他の島を目標にした計画の実行
@@ -136,6 +148,10 @@ class ExecuteTurn extends Command
                     $fromLogs = $logsList->get($plan->getFromIsland());
                     /** @var Logs $toLogs */
                     $toLogs = $logsList->get($plan->getToIsland());
+                    /** @var Achievements $fromAchievements */
+                    $fromAchievements = $achievementsList->get($plan->getFromIsland());
+                    /** @var Achievements $toAchievements */
+                    $toAchievements = $achievementsList->get($plan->getToIsland());
 
                     if (is_null($toIsland)) {
                         $fromLogs->add(new AbortInvalidIslandLog($island, $plan->getPlan()));
@@ -143,7 +159,7 @@ class ExecuteTurn extends Command
                         continue;
                     }
 
-                    $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
+                    $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromAchievements, $toAchievements, $turn);
 
                     $fromLogs->merge($executePlanResult->getFromLogs());
                     $toLogs->merge($executePlanResult->getToLogs());
@@ -154,6 +170,8 @@ class ExecuteTurn extends Command
                     $statusList->put($plan->getToIsland(), $executePlanResult->getToStatus());
                     $logsList->put($plan->getFromIsland(), $fromLogs);
                     $logsList->put($plan->getToIsland(), $toLogs);
+                    $achievementsList->put($plan->getFromIsland(), $executePlanResult->getFromAchievements());
+                    $achievementsList->put($plan->getToIsland(), $executePlanResult->getToAchievements());
                 }
 
                 // 災害判定、各セルターン処理
@@ -224,20 +242,38 @@ class ExecuteTurn extends Command
                     /** @var Logs $toLogs */
                     $toLogs = $logsList->get($plan->getToIsland());
 
-                    $executePlanResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
+                    $foreignIslandEventResult = $plan->execute($fromIsland, $toIsland, $fromTerrain, $toTerrain, $fromStatus, $toStatus, $turn);
 
-                    $fromLogs->merge($executePlanResult->getFromLogs());
-                    $terrainList->put($plan->getFromIsland(), $executePlanResult->getFromTerrain());
-                    $statusList->put($plan->getFromIsland(), $executePlanResult->getFromStatus());
+                    $fromLogs->merge($foreignIslandEventResult->getFromLogs());
+                    $terrainList->put($plan->getFromIsland(), $foreignIslandEventResult->getFromTerrain());
+                    $statusList->put($plan->getFromIsland(), $foreignIslandEventResult->getFromStatus());
                     $logsList->put($plan->getFromIsland(), $fromLogs);
 
                     if (!is_null($toLogs)) {
-                        $toLogs->merge($executePlanResult->getToLogs());
+                        $toLogs->merge($foreignIslandEventResult->getToLogs());
                     }
 
-                    $terrainList->put($plan->getToIsland(), $executePlanResult->getToTerrain());
-                    $statusList->put($plan->getToIsland(), $executePlanResult->getToStatus());
+                    $terrainList->put($plan->getToIsland(), $foreignIslandEventResult->getToTerrain());
+                    $statusList->put($plan->getToIsland(), $foreignIslandEventResult->getToStatus());
                     $logsList->put($plan->getToIsland(), $toLogs);
+                }
+
+                // ターン賞
+                if ($turn->turn % 100 === 0) {
+                    /** @var IslandStatus $islandStatus */
+                    $islandStatus = IslandStatus::where('turn_id', $turn->id)
+                        ->orderByDesc('development_points')
+                        ->first();
+
+                    if (!is_null($islandStatus)) {
+                        /** @var Achievements $achievements */
+                        $island = $islands->where('id', $islandStatus->island_id)->firstOrFail();
+                        $achievements = $achievementsList->get($island->id);
+
+                        $achievements->receiveTurnPrize($island, $turn);
+
+                        $achievementsList->put($islandStatus->island_id, $achievements);
+                    }
                 }
 
                 // 集計、保存
@@ -248,10 +284,17 @@ class ExecuteTurn extends Command
                     $terrain = $terrainList->get($island->id);
                     /** @var Status $status */
                     $status = $statusList->get($island->id);
+                    /** @var Status $prevStatus */
+                    $prevStatus = $prevStatusList->get($island->id);
+                    /** @var Achievements $achievements */
+                    $achievements = $achievementsList->get($island->id);
+
                     /** @var Logs $logs */
                     $logs = $logsList->get($island->id);
 
                     $status->truncateOverflows();
+
+                    $achievements->receiveStatusPrize($island, $status, $prevStatus, $turn);
 
                     // 結果保存
                     $newIslandStatus = new IslandStatus();
@@ -290,6 +333,12 @@ class ExecuteTurn extends Command
                         $newLog->log = $log->generate();
                         $newLog->visibility = $log->getVisibility();
                         $newLog->save();
+                    }
+
+                    /** @var Achievement $achievement */
+                    foreach ($achievements->getUnsavedAchievements() as $achievement) {
+                        $islandAchievement = $achievement->getModel();
+                        $islandAchievement->save();
                     }
                 }
 

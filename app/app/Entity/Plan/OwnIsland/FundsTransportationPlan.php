@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
@@ -10,6 +11,7 @@ use App\Entity\Log\LogRow\AbortLackOfFundsLog;
 use App\Entity\Log\LogRow\AbortNoShipLog;
 use App\Entity\Log\LogRow\AbortTargetSelfIslandLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\ForeignIsland\FundsTransportToForeignIslandPlan;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
@@ -43,7 +45,7 @@ class FundsTransportationPlan extends Plan
     protected bool $usePoint = self::USE_POINT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
 
@@ -56,20 +58,20 @@ class FundsTransportationPlan extends Plan
         if ($transportShips->isEmpty()) {
             $logs->add(new AbortNoShipLog($island, $this, new TransportShip(point: new Point(0,0))));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         if ($status->getFunds() < self::UNIT * $this->amount) {
             $logs->add(new AbortLackOfFundsLog($island, $this));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         // 対象が自島でない場合、後で処理する
         if ($this->getTargetIsland() === $island->id) {
             $logs->add(new AbortTargetSelfIslandLog($island, $this));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $foreignIslandTargetedPlans->add(new FundsTransportToForeignIslandPlan(
@@ -89,6 +91,6 @@ class FundsTransportationPlan extends Plan
         $status->setFunds($status->getFunds() - (self::UNIT * $this->amount));
 
         $this->amount = 0;
-        return new ExecutePlanResult($terrain, $status, $logs, false);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
     }
 }

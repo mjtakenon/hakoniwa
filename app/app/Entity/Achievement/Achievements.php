@@ -2,7 +2,10 @@
 
 namespace App\Entity\Achievement;
 
+use App\Entity\Status\Status;
+use App\Models\Island;
 use App\Models\IslandAchievement;
+use App\Models\Turn;
 use Illuminate\Support\Collection;
 
 class Achievements
@@ -15,13 +18,24 @@ class Achievements
         ProsperityPrize::TYPE => ProsperityPrize::class,
     ];
 
+    public static function create(): static
+    {
+        return new static();
+    }
+
+    /**
+     * @param Collection<IslandAchievement> $islandAchievements
+     * @return $this
+     */
     public function fromModel(Collection $islandAchievements): static
     {
         $this->achievements = new Collection();
 
         /** @var IslandAchievement $islandAchievement */
         foreach ($islandAchievements as $islandAchievement) {
-            $this->achievements->add((new self::ACHIEVEMENTS[$islandAchievement->type])::fromModel($islandAchievement));
+            /** @var Achievement $class */
+            $class = self::ACHIEVEMENTS[$islandAchievement->type];
+            $this->achievements->add($class::fromModel($islandAchievement));
         }
 
         return $this;
@@ -35,13 +49,34 @@ class Achievements
         });
     }
 
-    public function add(Achievement $achievement): void
+    public function add(Achievement $achievement): static
     {
-        $this->achievements->filter(function ($existAchievement) use ($achievement){
+        $duplicateAchievements = $this->achievements->filter(function ($existAchievement) use ($achievement){
             /** @var Achievement $existAchievement */
-            return !$existAchievement->isDuplicate($achievement);
+            return $existAchievement->isDuplicate($achievement);
         });
 
+        if ($duplicateAchievements->isNotEmpty()) {
+            return $this;
+        }
+
         $this->achievements->add($achievement);
+        return $this;
+    }
+
+    public function receiveStatusPrize(Island $island, Status $status, Status $prevStatus, Turn $turn): void
+    {
+        if (ProsperityPrize::isReceivable($status)) {
+            $this->add(new ProsperityPrize($island, $turn, null, false));
+        }
+
+        if (CalamityPrize::isReceivable($status, $prevStatus)) {
+            $this->add(new CalamityPrize($island, $turn, null, false));
+        }
+    }
+
+    public function receiveTurnPrize(Island $island, Turn $turn): void
+    {
+        $this->add(new TurnPrize($island, $turn, ['turn' => $turn->turn], false));
     }
 }

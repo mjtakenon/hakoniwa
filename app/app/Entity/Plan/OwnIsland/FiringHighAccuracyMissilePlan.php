@@ -2,6 +2,8 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
@@ -32,7 +34,7 @@ class FiringHighAccuracyMissilePlan extends FiringMissilePlan
         return self::ACCURACY;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         return parent::execute($island, $terrain, $status, $turn, $foreignIslandTargetedPlans);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\MissileFireable\IMissileFireable;
@@ -18,6 +19,7 @@ use App\Entity\Log\LogRow\MissileOutOfRegionLog;
 use App\Entity\Log\LogRow\MissileSelfDestructLog;
 use App\Entity\Log\LogRow\SoldMonsterCorpseLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\ForeignIsland\FiringMissileToForeignIslandPlan;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
@@ -55,7 +57,7 @@ class FiringMissilePlan extends Plan
         return self::ACCURACY;
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
 
@@ -74,13 +76,13 @@ class FiringMissilePlan extends Plan
         if ($missileBases->isEmpty()) {
             $logs->add(new AbortNoMissileBaseLog($island, $this));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         if ($status->getFunds() < self::PRICE) {
             $logs->add(new AbortLackOfFundsLog($island, $this));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         // 対象が自島でない場合、後で処理する
@@ -91,7 +93,7 @@ class FiringMissilePlan extends Plan
                 deep_copy($this),
             ));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, true);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
         }
 
         $firingCount = 0;
@@ -104,7 +106,7 @@ class FiringMissilePlan extends Plan
                         $logs->add(new MissileFiringLog($island, $this, $firingCount));
                     }
                     $this->amount = 0;
-                    return new ExecutePlanResult($terrain, $status, $logs, true);
+                    return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
                 }
 
                 if ($status->getFunds() < self::PRICE) {
@@ -113,7 +115,7 @@ class FiringMissilePlan extends Plan
                     }
                     $logs->add(new AbortLackOfFundsLog($island, $this));
                     $this->amount = 0;
-                    return new ExecutePlanResult($terrain, $status, $logs, true);
+                    return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
                 }
                 $status->setFunds($status->getFunds() - self::PRICE);
 
@@ -159,6 +161,6 @@ class FiringMissilePlan extends Plan
             $logs->unshift(new MissileFiringLog($island, $this, $firingCount));
         }
         $this->amount = 0;
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
     }
 }

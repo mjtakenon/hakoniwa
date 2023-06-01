@@ -2,12 +2,14 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Log\LogRow\AbortInvalidCellLog;
 use App\Entity\Log\LogRow\AbortLackOfFundsLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -27,22 +29,22 @@ class ConstructMinePlan extends Plan
     protected string $name = self::NAME;
     protected int $price = self::PRICE;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $cell = $terrain->getCell($this->point);
         if ($status->getFunds() < self::PRICE) {
             $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         if (!in_array($cell::TYPE, [Volcano::TYPE], true)) {
             $logs = Logs::create()->add(new AbortInvalidCellLog($island, $this, $cell));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $terrain->setCell($this->point, new Mine(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
     }
 }

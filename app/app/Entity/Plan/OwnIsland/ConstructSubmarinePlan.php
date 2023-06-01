@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
@@ -11,6 +12,7 @@ use App\Entity\Log\LogRow\AbortLackOfFundsLog;
 use App\Entity\Log\LogRow\AbortNoDevelopmentPointsLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\DevelopmentPointsConst;
 use App\Entity\Status\Status;
@@ -40,19 +42,19 @@ class ConstructSubmarinePlan extends Plan
     protected string $amountString = self::AMOUNT_STRING;
     protected string $defaultAmountString = self::DEFAULT_AMOUNT_STRING;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
         if ($status->getFunds() < self::PRICE) {
             $this->amount = 0;
             $logs->add(new AbortLackOfFundsLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         if ($status->getDevelopmentPoints() < self::EXECUTABLE_DEVELOPMENT_POINT) {
             $this->amount = 0;
             $logs->add(new AbortNoDevelopmentPointsLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $seaCells = $terrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
@@ -60,7 +62,7 @@ class ConstructSubmarinePlan extends Plan
         if ($seaCells->count() <= 0) {
             $this->amount = 0;
             $logs->add(new AbortInvalidTerrainLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $this->amount -= 1;
@@ -77,6 +79,6 @@ class ConstructSubmarinePlan extends Plan
 
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs->add(new ExecuteLog($island, $this));
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
     }
 }

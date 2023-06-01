@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
@@ -10,6 +11,7 @@ use App\Entity\Log\LogRow\AbortInvalidTerrainLog;
 use App\Entity\Log\LogRow\AbortLackOfFundsLog;
 use App\Entity\Log\LogRow\ExecuteLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -37,12 +39,12 @@ class ConstructBattleshipPlan extends Plan
     protected string $amountString = self::AMOUNT_STRING;
     protected string $defaultAmountString = self::DEFAULT_AMOUNT_STRING;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         if ($status->getFunds() < self::PRICE) {
             $this->amount = 0;
             $logs = Logs::create()->add(new AbortLackOfFundsLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $seaCells = $terrain->findByTypes([Sea::TYPE, Shallow::TYPE]);
@@ -50,7 +52,7 @@ class ConstructBattleshipPlan extends Plan
         if ($seaCells->count() <= 0) {
             $this->amount = 0;
             $logs = Logs::create()->add(new AbortInvalidTerrainLog($island, $this));
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $this->amount -= 1;
@@ -66,6 +68,6 @@ class ConstructBattleshipPlan extends Plan
         ));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
     }
 }

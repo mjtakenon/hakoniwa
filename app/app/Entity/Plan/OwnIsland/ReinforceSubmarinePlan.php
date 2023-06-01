@@ -2,11 +2,13 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Log\LogRow\AbortInvalidIslandLog;
 use App\Entity\Log\LogRow\AbortNoShipLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\ForeignIsland\ReinforceSubmarineToForeignIslandPlan;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\DevelopmentPointsConst;
@@ -41,7 +43,7 @@ class ReinforceSubmarinePlan extends Plan
     protected bool $usePoint = self::USE_POINT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
     protected int $executableDevelopmentPoint = self::EXECUTABLE_DEVELOPMENT_POINT;
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
 
@@ -57,14 +59,14 @@ class ReinforceSubmarinePlan extends Plan
         if ($submarines->isEmpty()) {
             $logs->add(new AbortNoShipLog($island, $this, new Submarine(point: new Point(0, 0))));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         // 対象が自島の場合は中止とする
         if ($this->getTargetIsland() === $island->id) {
             $logs->add(new AbortInvalidIslandLog($island, $this));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $this->amount = min($submarines->count(), $this->amount);
@@ -76,6 +78,6 @@ class ReinforceSubmarinePlan extends Plan
         ));
 
         $this->amount = 0;
-        return new ExecutePlanResult($terrain, $status, $logs, false);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
     }
 }
