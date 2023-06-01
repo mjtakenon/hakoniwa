@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Log\LogConst;
 use App\Models\Island;
-use App\Models\IslandComment;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\Turn;
-use Hamcrest\Core\Is;
 use Illuminate\Support\Collection;
 
 class IndexController extends Controller
 {
     const DEFAULT_SHOW_LOG_TURNS = 5;
+
     public function get()
     {
+        \DB::enableQueryLog();
         $turn = Turn::latest()->firstOrFail();
 
         $islandStatuses = IslandStatus::where('turn_id', $turn->id)
             ->orderByDesc('development_points')
             ->join('islands', 'island_id', '=', 'islands.id')
-            ->with(['island.islandComments'])
+            ->with(['island.islandComments', 'island.islandAchievements', 'island.islandAchievements.island', 'island.islandAchievements.turn'])
             ->get();
 
         $logs = IslandLog::whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
@@ -46,39 +47,7 @@ class IndexController extends Controller
                 /** @var Island | IslandStatus $status */
 
                 $island = $status->island;
-                $comment = $status->island->islandComments()->first();
-
-                // TODO: テスト用のachivements配列
-                $testAchievements = [
-                    [
-                        "type" => "turn_prize",
-                        "hover_text" => "100,200,300",
-                        "extra_text" => "x3"
-                    ],
-                    [
-                        "type" => "prosperity_prize"
-                    ],
-                    [
-                        "type" => "high_prosperity_prize"
-                    ],
-                    [
-                        "type" => "super_prosperity_prize"
-                    ],
-                    [
-                        "type" => "calamity_prize"
-                    ],
-                    [
-                        "type" => "high_calamity_prize"
-                    ],
-                    [
-                        "type" => "levinoth_hunter",
-                        "extra_text" => "Lv.33"
-                    ],
-                    [
-                        "type" => "treasure_hunter",
-                        "extra_text" => "Lv.4"
-                    ]
-                ];
+                $comment = $status->island->islandComments->first();
 
                 return [
                     'id' => $island->id,
@@ -96,7 +65,7 @@ class IndexController extends Controller
                     'environment' => $status->environment,
                     'area' => $status->area,
                     'abandoned_turn' => $status->abandoned_turn,
-                    'achievements' => $testAchievements,
+                    'achievements' => Achievements::create()->fromModel($island->islandAchievements)->toArray(),
                 ];
             }),
             'turn' => $turn,
