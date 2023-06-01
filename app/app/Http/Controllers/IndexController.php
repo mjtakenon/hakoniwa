@@ -16,7 +16,6 @@ class IndexController extends Controller
 
     public function get()
     {
-        \DB::enableQueryLog();
         $turn = Turn::latest()->firstOrFail();
 
         $islandStatuses = IslandStatus::where('turn_id', $turn->id)
