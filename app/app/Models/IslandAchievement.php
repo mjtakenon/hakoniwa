@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @mixin IdeHelperIslandComment
+ * @mixin IdeHelperIslandAchievement
  */
-class IslandComment extends Model
+class IslandAchievement extends Model
 {
-    use SoftDeletes;
     use HasFactory;
 
     const UPDATED_AT = null;
@@ -19,5 +18,10 @@ class IslandComment extends Model
     public function island(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Island::class);
+    }
+
+    public function turn(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Turn::class);
     }
 }

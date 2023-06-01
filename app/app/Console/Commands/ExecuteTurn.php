@@ -76,7 +76,6 @@ class ExecuteTurn extends Command
                 $planList = new Collection();
                 $terrainList = new Collection();
                 $statusList = new Collection();
-                $prevStatusList = new Collection();
                 $logsList = new Collection();
                 $foreignIslandTargetedPlans = new Collection();
                 $foreignIslandEvents = new Collection();
@@ -90,7 +89,6 @@ class ExecuteTurn extends Command
                     $planList->put($island->id, $islandPlan->toEntity());
                     $terrainList->put($island->id, $islandTerrain->toEntity());
                     $statusList->put($island->id, $islandStatus->toEntity());
-                    $prevStatusList->put($island->id, $islandStatus->toEntity());
                     $logsList->put($island->id, Logs::create());
                 }
 
@@ -250,8 +248,6 @@ class ExecuteTurn extends Command
                     $terrain = $terrainList->get($island->id);
                     /** @var Status $status */
                     $status = $statusList->get($island->id);
-                    /** @var Status $prevStatus */
-                    $prevStatus = $prevStatusList->get($island->id);
                     /** @var Logs $logs */
                     $logs = $logsList->get($island->id);
 
