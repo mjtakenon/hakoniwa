@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Entity\Plan\ForeignIsland;
+namespace App\Entity\Plan;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -14,8 +15,10 @@ class ExecutePlanToForeignIslandResult
     private Status $toStatus;
     private Logs $fromLogs;
     private Logs $toLogs;
+    private Achievements $fromAchievements;
+    private Achievements $toAchievements;
 
-    public function __construct(Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Logs $fromLogs, Logs $toLogs)
+    public function __construct(Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Logs $fromLogs, Logs $toLogs, Achievements $fromAchievements, Achievements $toAchievements)
     {
         $this->fromTerrain = $fromTerrain;
         $this->toTerrain = $toTerrain;
@@ -23,6 +26,8 @@ class ExecutePlanToForeignIslandResult
         $this->toStatus = $toStatus;
         $this->fromLogs = $fromLogs;
         $this->toLogs = $toLogs;
+        $this->fromAchievements = $fromAchievements;
+        $this->toAchievements = $toAchievements;
     }
 
     public function getFromStatus(): Status
@@ -53,5 +58,15 @@ class ExecutePlanToForeignIslandResult
     public function getToLogs(): Logs
     {
         return $this->toLogs;
+    }
+
+    public function getFromAchievements(): Achievements
+    {
+        return $this->fromAchievements;
+    }
+
+    public function getToAchievements(): Achievements
+    {
+        return $this->toAchievements;
     }
 }

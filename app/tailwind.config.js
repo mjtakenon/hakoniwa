@@ -5,6 +5,11 @@ module.exports = {
         "./resources/**/*.ts",
         "./resources/**/*.vue"
     ],
+    safelist: [
+        {
+            pattern: /grid-cols-([1-9]?[1-9])/
+        }
+    ],
     darkMode: "class",
     theme: {
         extend: {
@@ -39,7 +44,11 @@ module.exports = {
                 "on-link": "var(--theme-on-link)",
                 "outline-color": "var(--theme-outline)",
                 "surface-variant": "var(--theme-surface-variant)",
-                "on-surface-variant": "var(--theme-on-surface-variant)"
+                "on-surface-variant": "var(--theme-on-surface-variant)",
+                "achievement-normal": "var(--theme-achievement-normal)",
+                "achievement-bronze": "var(--theme-achievement-bronze)",
+                "achievement-silver": "var(--theme-achievement-silver)",
+                "achievement-gold": "var(--theme-achievement-gold)"
             },
             outlineColor: "outline-color",
             animation: {

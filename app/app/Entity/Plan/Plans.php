@@ -2,10 +2,10 @@
 
 namespace App\Entity\Plan;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\JsonCodable;
 use App\Entity\Log\Logs;
 use App\Entity\Plan\OwnIsland\CashFlowPlan;
-use App\Entity\Plan\OwnIsland\ExecutePlanResult;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;
@@ -81,16 +81,17 @@ class Plans implements JsonCodable
         return $this->plans->shift();
     }
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
         while (true) {
             /** @var Plan $plan */
             $plan = $this->shift();
-            $executePlanResult = $plan->execute($island, $terrain, $status, $turn, $foreignIslandTargetedPlans);
+            $executePlanResult = $plan->execute($island, $terrain, $status, $achievements, $turn, $foreignIslandTargetedPlans);
 
             $terrain = $executePlanResult->getTerrain();
             $status = $executePlanResult->getStatus();
+            $achievements = $executePlanResult->getAchievements();
             $logs->merge($executePlanResult->getLogs());
 
             if ($plan->getKey() === CashFlowPlan::KEY) {
@@ -109,6 +110,6 @@ class Plans implements JsonCodable
                 break;
             }
         }
-        return new ExecutePlanResult($terrain, $status, $logs, true);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
     }
 }

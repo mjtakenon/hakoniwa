@@ -2,11 +2,13 @@
 
 namespace App\Entity\Plan\OwnIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Log\LogRow\AbortInvalidIslandLog;
 use App\Entity\Log\LogRow\AbortNoShipLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanResult;
 use App\Entity\Plan\ForeignIsland\ReinforceBattleshipToForeignIslandPlan;
 use App\Entity\Plan\Plan;
 use App\Entity\Status\Status;
@@ -39,7 +41,7 @@ class ReinforceBattleshipPlan extends Plan
     protected bool $useAmount = self::USE_AMOUNT;
     protected bool $useTargetIsland = self::USE_TARGET_ISLAND;
 
-    public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
+    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
     {
         $logs = Logs::create();
 
@@ -55,7 +57,7 @@ class ReinforceBattleshipPlan extends Plan
         if ($battleships->isEmpty()) {
             $logs->add(new AbortNoShipLog($island, $this, new Battleship(point: new Point(0,0))));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $this->amount = min($battleships->count(), $this->amount);
@@ -64,7 +66,7 @@ class ReinforceBattleshipPlan extends Plan
         if ($this->getTargetIsland() === $island->id) {
             $logs->add(new AbortInvalidIslandLog($island, $this));
             $this->amount = 0;
-            return new ExecutePlanResult($terrain, $status, $logs, false);
+            return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
         $foreignIslandTargetedPlans->add(new ReinforceBattleshipToForeignIslandPlan(
@@ -74,6 +76,6 @@ class ReinforceBattleshipPlan extends Plan
         ));
 
         $this->amount = 0;
-        return new ExecutePlanResult($terrain, $status, $logs, false);
+        return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
     }
 }

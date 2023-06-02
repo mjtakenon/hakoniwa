@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Web\Islands;
 
+use App\Entity\Achievement\Achievements;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
+use App\Models\IslandTerrain;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
@@ -30,9 +32,12 @@ class PlansController extends Controller
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
         $islandPlans = $island->islandPlans()->where('turn_id', $turn->id)->firstOrFail();
+        /** @var IslandStatus $islandStatus */
         $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
+        /** @var IslandTerrain $islandTerrain */
         $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
         $islandComment = $island->islandComments()->first();
+        $islandAchievements = $island->islandAchievements()->with(['island', 'turn'])->get();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - $getLogRecentTurns)->get('id'))
             ->with(['turn'])
@@ -103,6 +108,7 @@ class PlansController extends Controller
                         return null;
                     }
                 })->filter(function ($status) { return !is_null($status); }),
+                'achievements' => Achievements::create()->fromModel($islandAchievements)->toArray(),
             ],
             'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),
             'targetIslands' => $targetIslands->map(function ($targetIsland) {

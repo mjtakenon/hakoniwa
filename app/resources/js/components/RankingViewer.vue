@@ -1,14 +1,12 @@
 <template>
-    <a
-        :href="'/islands/' + $props.island.id"
-        :id="'ranking-' + $props.island.id"
-        class="block"
-        :class="[isAppeared ? 'animate-slide-in-left' : '']"
-    >
-        <div class="ranking">
+        <div
+            class="ranking"
+            :id="'ranking-' + $props.island.id"
+            :class="[isAppeared ? 'animate-slide-in-left' : '']"
+        >
             <div class="ranking-index">
                 <div class="ranking-index-num">{{ $props.index }}</div>
-                <div class="ranking-index-info">
+                <a class="block ranking-index-info" :href="'/islands/' + $props.island.id" >
                     <div v-if="$props.island.abandoned_turn >= 1"
                          class="ranking-index-name"
                          :class="islandNameSize"
@@ -24,8 +22,7 @@
                     <div class="ranking-index-owner">
                         {{ $props.island.owner_name }}
                     </div>
-                </div>
-
+                </a>
             </div>
             <div class="ranking-data">
                 <div class="ranking-summary">
@@ -75,20 +72,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="island-comment-box" :class="{'text-on-surface-variant': hasComment}">
-                    <div class="comment-index">comment:</div>
-                    <div class="comment-text">{{islandComment}}</div>
+                <div class="flex max-md:flex-wrap w-full border-t border-dashed">
+                    <div class="achievements-box">
+                        <achievement-icons
+                            :achievement_props="$props.island.achievements"
+                        ></achievement-icons>
+                    </div>
+                    <div class="island-comment-box" :class="{'text-on-surface-variant': hasComment}">
+                        <div class="comment-index">comment:</div>
+                        <div class="comment-text">{{islandComment}}</div>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </a>
 </template>
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
+import AchievementIcons from "./AchievementIcons.vue";
+import {AchievementProp} from "../store/Entity/Achievement";
 
 export default defineComponent({
+    components: {AchievementIcons},
     data() {
         return {
             observer: null as IntersectionObserver,
@@ -157,7 +162,8 @@ export default defineComponent({
                 environment: string,
                 area: number
                 abandoned_turn: number,
-                comment: string
+                comment: string,
+                achievements: AchievementProp[]
             }>
         },
     }
@@ -166,7 +172,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .ranking {
-    @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface overflow-hidden;
+    @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface;
 
     .ranking-index {
         @apply flex items-center;
@@ -224,13 +230,19 @@ export default defineComponent({
             }
         }
 
+        .achievements-box {
+            @apply py-1 my-auto h-fit leading-none;
+            @apply w-1/2 max-md:mx-auto;
+            @apply md:w-1/5 md:border-r;
+        }
+
         .island-comment-box {
             // general
-            @apply w-full max-w-full border-t border-dashed px-2;
+            @apply w-full max-w-full px-2;
             // sp
-            @apply max-md:my-2 pt-3;
+            @apply max-md:my-2;
             // desktop
-            @apply md:py-1 md:mt-1;
+            @apply md:py-1 md:mt-1 md:w-4/5;
 
             .comment-index {
                 @apply text-xs text-on-surface-variant leading-none;

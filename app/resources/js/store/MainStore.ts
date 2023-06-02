@@ -11,6 +11,7 @@ import {Point} from "./Entity/Point";
 import {Turn} from "./Entity/Turn";
 import {defaultTheme, Theme} from "./Entity/Theme";
 import {AjaxResult, ErrorType, RequestStatus} from "./Entity/Network";
+import {Achievement} from "./Entity/Achievement";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -41,6 +42,7 @@ export interface PiniaState {
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
     user: Island,
+    achievements: Achievement[]
 }
 
 export const useMainStore = defineStore('main', {
@@ -82,7 +84,8 @@ export const useMainStore = defineStore('main', {
             theme: defaultTheme,
             isOpenPopup: false,
             isLoadingTerrain: false,
-            user: {id: 0, name: "", owner_name: ""}
+            user: {id: 0, name: "", owner_name: ""},
+            achievements: []
         }
     },
     getters: {

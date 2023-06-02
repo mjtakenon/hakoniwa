@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\FoodsProduction\Farm;
 use App\Entity\Cell\FoodsProduction\FarmDome;
 use App\Entity\Cell\FundsProduction\Factory;
@@ -28,7 +29,6 @@ use App\Entity\Cell\ResourcesProduction\Oilfield;
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Cell\Ship\TransportShip;
-use App\Entity\Plan\OwnIsland\ExecutePlanResult;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Entity\Util\Point;
@@ -242,5 +242,5 @@ abstract class Plan
         return new static($point, $amount, $targetIsland);
     }
 
-    abstract public function execute(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult;
+    abstract public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult;
 }

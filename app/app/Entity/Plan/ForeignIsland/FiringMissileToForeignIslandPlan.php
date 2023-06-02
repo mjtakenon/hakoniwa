@@ -2,6 +2,7 @@
 
 namespace App\Entity\Plan\ForeignIsland;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\MissileFireable\IMissileFireable;
@@ -17,6 +18,7 @@ use App\Entity\Log\LogRow\MissileOutOfRegionLog;
 use App\Entity\Log\LogRow\MissileSelfDestructLog;
 use App\Entity\Log\LogRow\SoldMonsterCorpseLog;
 use App\Entity\Log\Logs;
+use App\Entity\Plan\ExecutePlanToForeignIslandResult;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
@@ -25,7 +27,7 @@ use function DeepCopy\deep_copy;
 
 class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
 {
-    public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Turn $turn): ExecutePlanToForeignIslandResult
+    public function execute(Island $fromIsland, Island $toIsland, Terrain $fromTerrain, Terrain $toTerrain, Status $fromStatus, Status $toStatus, Achievements $fromAchievements, Achievements $toAchievements, Turn $turn): ExecutePlanToForeignIslandResult
     {
         $fromLogs = Logs::create();
         $toLogs = Logs::create();
@@ -48,7 +50,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
                     if ($firingCount >= 1) {
                         $fromLogs->add(new MissileFiringLog($toIsland, $this->plan, $firingCount));
                     }
-                    return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+                    return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs, $fromAchievements, $toAchievements);
                 }
 
                 if ($fromStatus->getFunds() < $this->plan->getPrice()) {
@@ -56,7 +58,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
                         $fromLogs->add(new MissileFiringLog($toIsland, $this->plan, $firingCount));
                     }
                     $fromLogs->add(new AbortLackOfFundsLog($fromIsland, $this->plan));
-                    return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+                    return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs, $fromAchievements, $toAchievements);
                 }
                 $fromStatus->setFunds($fromStatus->getFunds() - $this->plan->getPrice());
 
@@ -102,7 +104,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
             $fromLogs->add(new MissileFiringLog($toIsland, $this->plan, $firingCount));
         }
 
-        return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
+        return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs, $fromAchievements, $toAchievements);
     }
 
     private function deep_copy(Monster|Cell $targetCell)

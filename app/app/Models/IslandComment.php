@@ -16,10 +16,8 @@ class IslandComment extends Model
 
     const UPDATED_AT = null;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function island() {
+    public function island(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Island::class);
     }
 }

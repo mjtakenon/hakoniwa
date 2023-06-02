@@ -52,4 +52,9 @@ class Island extends Model
     {
         return $this->hasMany(IslandHistory::class);
     }
+
+    public function islandAchievements(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(IslandAchievement::class);
+    }
 }
