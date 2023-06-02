@@ -11,7 +11,7 @@ use App\Entity\Achievement\Prize\SuperCalamityPrize;
 use App\Entity\Achievement\Prize\SuperProsperityPrize;
 use App\Entity\Achievement\Prize\TurnPrize;
 
-abstract class AchievementConst
+class AchievementConst
 {
     public const ACHIEVEMENTS = [
         TurnPrize::TYPE => TurnPrize::class,
@@ -26,4 +26,9 @@ abstract class AchievementConst
     public const ACHIEVEMENT_GROUP = [
         TurnPrize::TYPE => TurnPrizeGroup::class,
     ];
+
+    public static function getClassByType(string $type): string
+    {
+        return self::ACHIEVEMENTS[$type];
+    }
 }

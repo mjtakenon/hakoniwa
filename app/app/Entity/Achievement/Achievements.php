@@ -35,7 +35,7 @@ class Achievements
         /** @var IslandAchievement $islandAchievement */
         foreach ($islandAchievements as $islandAchievement) {
             /** @var Achievement $class */
-            $class = AchievementConst::ACHIEVEMENTS[$islandAchievement->type];
+            $class = AchievementConst::getClassByType($islandAchievement->type);
             $this->achievements->add($class::fromModel($islandAchievement));
         }
 
@@ -118,19 +118,21 @@ class Achievements
     {
         /** @var Achievement $achievement */
         $achievement = $achievements->first();
-        if (array_key_exists($achievement->getType(), AchievementConst::ACHIEVEMENT_GROUP)) {
-            /** @var AchievementGroup $achievementGroup */
-            $achievementGroup = new (AchievementConst::ACHIEVEMENT_GROUP[$achievement->getType()])($achievements);
-            return [
-                'type' => $achievementGroup->getType(),
-                'hover_text' => $achievementGroup->getHoverText(),
-                'extra_text' => $achievementGroup->getExtraText(),
-            ];
-        } else {
+        $achievementGroupClass = AchievementGroupConst::getClassByType($achievement->getType());
+
+        if (is_null($achievementGroupClass)) {
             return [
                 'type' => $achievement->getType(),
                 'hover_text' => $achievement->getHoverText(),
                 'extra_text' => $achievement->getExtraText(),
+            ];
+        } else {
+            /** @var AchievementGroup $achievementGroup */
+            $achievementGroup = new $achievementGroupClass($achievements);
+            return [
+                'type' => $achievementGroup->getType(),
+                'hover_text' => $achievementGroup->getHoverText(),
+                'extra_text' => $achievementGroup->getExtraText(),
             ];
         }
     }
