@@ -9,7 +9,6 @@ use App\Entity\Achievement\Prize\ProsperityPrize;
 use App\Entity\Achievement\Prize\SuperCalamityPrize;
 use App\Entity\Achievement\Prize\SuperProsperityPrize;
 use App\Entity\Achievement\Prize\TurnPrize;
-use App\Entity\Achievement\AchievementGroup\TurnPrizeGroup;
 use App\Entity\Status\Status;
 use App\Models\Island;
 use App\Models\IslandAchievement;
@@ -19,20 +18,6 @@ use Illuminate\Support\Collection;
 class Achievements
 {
     protected Collection $achievements;
-
-    public const ACHIEVEMENTS = [
-        TurnPrize::TYPE => TurnPrize::class,
-        CalamityPrize::TYPE => CalamityPrize::class,
-        HighCalamityPrize::TYPE => HighCalamityPrize::class,
-        SuperCalamityPrize::TYPE => SuperCalamityPrize::class,
-        ProsperityPrize::TYPE => ProsperityPrize::class,
-        HighProsperityPrize::TYPE => HighProsperityPrize::class,
-        SuperProsperityPrize::TYPE => SuperProsperityPrize::class,
-    ];
-
-    public const ACHIEVEMENT_GROUP = [
-        TurnPrize::TYPE => TurnPrizeGroup::class,
-    ];
 
     public static function create(): static
     {
@@ -50,7 +35,7 @@ class Achievements
         /** @var IslandAchievement $islandAchievement */
         foreach ($islandAchievements as $islandAchievement) {
             /** @var Achievement $class */
-            $class = self::ACHIEVEMENTS[$islandAchievement->type];
+            $class = AchievementConst::ACHIEVEMENTS[$islandAchievement->type];
             $this->achievements->add($class::fromModel($islandAchievement));
         }
 
@@ -133,9 +118,9 @@ class Achievements
     {
         /** @var Achievement $achievement */
         $achievement = $achievements->first();
-        if (array_key_exists($achievement->getType(), self::ACHIEVEMENT_GROUP)) {
+        if (array_key_exists($achievement->getType(), AchievementConst::ACHIEVEMENT_GROUP)) {
             /** @var AchievementGroup $achievementGroup */
-            $achievementGroup = new (self::ACHIEVEMENT_GROUP[$achievement->getType()])($achievements);
+            $achievementGroup = new (AchievementConst::ACHIEVEMENT_GROUP[$achievement->getType()])($achievements);
             return [
                 'type' => $achievementGroup->getType(),
                 'hover_text' => $achievementGroup->getHoverText(),
