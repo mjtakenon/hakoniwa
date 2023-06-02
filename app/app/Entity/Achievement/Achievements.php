@@ -3,6 +3,7 @@
 namespace App\Entity\Achievement;
 
 use App\Entity\Achievement\Prize\CalamityPrize;
+use App\Entity\Achievement\Prize\ConquestSign;
 use App\Entity\Achievement\Prize\HighCalamityPrize;
 use App\Entity\Achievement\Prize\HighProsperityPrize;
 use App\Entity\Achievement\Prize\ProsperityPrize;
@@ -67,6 +68,10 @@ class Achievements
 
     public function receiveStatusPrize(Island $island, Status $status, Status $prevStatus, Turn $turn): void
     {
+        if (ConquestSign::isReceivable($status)) {
+            $this->add(new ConquestSign($island, $turn, null, false));
+        }
+
         if (ProsperityPrize::isReceivable($status)) {
             $this->add(new ProsperityPrize($island, $turn, null, false));
         }

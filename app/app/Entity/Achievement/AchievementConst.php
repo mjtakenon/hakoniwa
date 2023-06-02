@@ -4,6 +4,7 @@ namespace App\Entity\Achievement;
 
 use App\Entity\Achievement\AchievementGroup\TurnPrizeGroup;
 use App\Entity\Achievement\Prize\CalamityPrize;
+use App\Entity\Achievement\Prize\ConquestSign;
 use App\Entity\Achievement\Prize\HighCalamityPrize;
 use App\Entity\Achievement\Prize\HighProsperityPrize;
 use App\Entity\Achievement\Prize\ProsperityPrize;
@@ -15,6 +16,7 @@ class AchievementConst
 {
     public const ACHIEVEMENTS = [
         TurnPrize::TYPE => TurnPrize::class,
+        ConquestSign::TYPE => ConquestSign::class,
         CalamityPrize::TYPE => CalamityPrize::class,
         HighCalamityPrize::TYPE => HighCalamityPrize::class,
         SuperCalamityPrize::TYPE => SuperCalamityPrize::class,
