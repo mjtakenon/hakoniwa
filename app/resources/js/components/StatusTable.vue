@@ -191,7 +191,7 @@ export default defineComponent({
         @apply col-span-3;
 
         .island-comment {
-            @apply px-2 md:px-4 text-left leading-none;
+            @apply px-2 md:px-4 my-1 text-left leading-none;
         }
     }
 }

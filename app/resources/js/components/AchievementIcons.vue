@@ -1,27 +1,32 @@
 <template>
     <div class="achievements" :class="gridColumns">
-        <div
-            v-for="achievement of achievements"
-            :key="achievement.type"
-            class="achievement"
-            @mouseover.self="onHover($event, achievement.title, achievement.hover_text)"
-            @mouseout.self="onLeaved()"
-        >
-            <font-awesome-icon
-                class="achievement-icon"
-                :class="achievement.color"
-                :icon="achievement.icon"
-            ></font-awesome-icon>
-            <span v-if="achievement.extra_text !== undefined" class="extra-text">
-                {{ achievement.extra_text }}
-            </span>
-        </div>
-        <div v-show="hoverWindow.show" class="hover-box"
-             :style="{ bottom: hoverWindow.bottom+'px', left: hoverWindow.left+'px'}">
-            <div class="hover-title">{{ hoverWindow.title }}</div>
-            <div v-show="hoverWindow.text !== undefined && hoverWindow.text !== ''" class="hover-text">
-                {{ hoverWindow.text }}
+        <template v-if="hasAchievement">
+            <div
+                v-for="achievement of achievements"
+                :key="achievement.type"
+                class="achievement"
+                @mouseover.self="onHover($event, achievement.title, achievement.hover_text)"
+                @mouseout.self="onLeaved()"
+            >
+                <font-awesome-icon
+                    class="achievement-icon"
+                    :class="achievement.color"
+                    :icon="achievement.icon"
+                ></font-awesome-icon>
+                <span v-if="achievement.extra_text !== undefined" class="extra-text">
+                    {{ achievement.extra_text }}
+                </span>
             </div>
+            <div v-show="hoverWindow.show" class="hover-box"
+                 :style="{ bottom: hoverWindow.bottom+'px', left: hoverWindow.left+'px'}">
+                <div class="hover-title">{{ hoverWindow.title }}</div>
+                <div v-show="hoverWindow.text !== undefined && hoverWindow.text !== ''" class="hover-text">
+                    {{ hoverWindow.text }}
+                </div>
+            </div>
+        </template>
+        <div v-else class="no-achievement">
+            実績なし
         </div>
     </div>
 
@@ -36,7 +41,7 @@ import {
     Achievement,
     AchievementProp,
     filterDuplicatedAchievementType,
-    getAchievementsList
+    getAchievementsList, sortAchievements
 } from "../store/Entity/Achievement";
 
 export default defineComponent({
@@ -62,6 +67,8 @@ export default defineComponent({
             achievements = filterDuplicatedAchievementType(props.achievement_data);
         }
 
+        sortAchievements(achievements);
+
         let cols = props.max_cols;
         if (achievements.length < cols)  cols = achievements.length;
 
@@ -70,6 +77,9 @@ export default defineComponent({
     computed: {
         gridColumns() {
             return "grid-cols-" + this.cols;
+        },
+        hasAchievement() {
+            return this.achievements !== null && this.achievements !== undefined && this.achievements.length > 0;
         }
     },
     methods: {
@@ -162,5 +172,9 @@ export default defineComponent({
             @apply text-xs leading-none mt-1 border-t border-on-surface-variant
         }
     }
+}
+
+.no-achievement {
+    @apply w-full text-center text-sm text-on-surface-variant;
 }
 </style>

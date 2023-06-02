@@ -231,7 +231,7 @@ export default defineComponent({
         }
 
         .achievements-box {
-            @apply my-1 h-fit leading-none;
+            @apply py-1 my-auto h-fit leading-none;
             @apply w-1/2 max-md:mx-auto;
             @apply md:w-1/5 md:border-r;
         }

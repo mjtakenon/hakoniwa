@@ -8,6 +8,9 @@ export interface Achievement {
     /// 実績のタイプ
     category: string,
 
+    /// ソートする時の番号
+    index: number,
+
     /// 同系統の実績がある場合、実績のグレード（多いほど高級な実績）
     grade: number,
 
@@ -50,6 +53,7 @@ export const getAchievement = (data: AchievementProp): Achievement => {
         type: data.type,
         title: data.type,
         category: data.type,
+        index: 0,
         grade: 0,
         icon: "fa-solid fa-circle-question",
         color: "text-achievement-normal",
@@ -94,4 +98,12 @@ export const filterDuplicatedAchievementType = (achievements: Achievement[]): Ac
     }
 
     return result;
+}
+
+export const sortAchievements = (achievements: Achievement[]) => {
+    achievements.sort((a, b) => {
+        if (a.index < b.index) return -1;
+        else if(a.index > b.index) return 1;
+        else return 0;
+    })
 }
