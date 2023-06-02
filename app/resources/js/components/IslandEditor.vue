@@ -110,11 +110,22 @@ export default defineComponent({
             planWindowY: 0,
             planWindowX: 0,
             isMobile: (document.documentElement.clientWidth < 1024),
+            terrains: [],
         }
     },
     setup() {
         const store = useMainStore();
         return { store };
+    },
+    beforeMount() {
+        this.terrains = new Array(this.store.hakoniwa.height);
+        for (let y = 0; y < this.terrains.length; y++) {
+            this.terrains[y] = new Array(this.store.hakoniwa.width);
+        }
+
+        for(let terrain of this.store.terrains) {
+            this.terrains[terrain.data.point.y][terrain.data.point.x] = terrain;
+        }
     },
     mounted() {
         window.addEventListener("resize", this.onWindowSizeChanged);
@@ -124,9 +135,7 @@ export default defineComponent({
     },
     methods: {
         getIslandTerrain(x, y): Terrain {
-            return this.store.terrains.filter(function (item, idx) {
-                if (item.data.point.x === x && item.data.point.y === y) return true;
-            }).pop();
+            return this.terrains[y][x];
         },
         onMouseOverCell(x, y, event: MouseEvent) {
             const offsetY = 25;
