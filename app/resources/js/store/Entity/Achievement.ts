@@ -40,20 +40,23 @@ import AchievementLists from "../AchievementList.json";
  * @param data
  */
 export const getAchievement = (data: AchievementProp): Achievement => {
+    let index = 0;
     for(const achieve of AchievementLists) {
         if(data.type === achieve.type) {
-            let result: Achievement = achieve;
+            let result = achieve as Achievement;
+            result.index = index;
             result.hover_text = data.hover_text ?? undefined;
             result.extra_text = data.extra_text ?? undefined;
             return result;
         }
+        index++;
     }
 
     return {
         type: data.type,
         title: data.type,
         category: data.type,
-        index: 0,
+        index: 10000,
         grade: 0,
         icon: "fa-solid fa-circle-question",
         color: "text-achievement-normal",
@@ -75,9 +78,7 @@ export const getAchievementsList = (data: AchievementProp[]): Achievement[] => {
 export const filterDuplicatedAchievementType = (achievements: Achievement[]): Achievement[] => {
     // 配列を追加したり削除したりすると遅くなるので、先にtype一覧を取得
     const categories: Set<string> = new Set();
-    achievements.forEach(a => {
-        categories.add(a.category);
-    })
+    achievements.forEach(a => categories.add(a.category));
 
     const result: Achievement[] = [];
 

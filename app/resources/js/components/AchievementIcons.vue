@@ -35,7 +35,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
 import {library} from "@fortawesome/fontawesome-svg-core";
-import {faDragon, faGem, faMedal, faQuestionCircle, faSkull} from "@fortawesome/free-solid-svg-icons";
+import {faCrown, faDragon, faGem, faMedal, faQuestionCircle, faSkull} from "@fortawesome/free-solid-svg-icons";
 import {faMountainCity} from "@fortawesome/free-solid-svg-icons";
 import {
     Achievement,
@@ -58,7 +58,7 @@ export default defineComponent({
         }
     },
     setup(props) {
-        library.add(faMedal, faMountainCity, faSkull, faDragon, faGem, faQuestionCircle);
+        library.add(faMedal, faMountainCity, faSkull, faDragon, faGem, faQuestionCircle, faCrown);
 
         let achievements: Achievement[];
         if (props.achievement_data === undefined) {

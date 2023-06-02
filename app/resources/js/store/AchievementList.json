@@ -3,16 +3,22 @@
         "type": "turn_prize",
         "title": "ターン賞",
         "category": "turn_prize",
-        "index": 0,
         "grade": 0,
         "icon": "fa-solid fa-medal",
         "color": "normal"
     },
     {
+        "type": "conquest_sign",
+        "title": "制覇の証",
+        "category": "conquest_sign",
+        "grade": 0,
+        "icon": "fa-solid fa-crown",
+        "color": "gold"
+    },
+    {
         "type": "prosperity_prize",
         "title": "繁栄賞",
         "category": "prosperity_prize",
-        "index": 1,
         "grade": 0,
         "icon": "fa-solid fa-mountain-city",
         "color": "bronze"
@@ -21,7 +27,6 @@
         "type": "high_prosperity_prize",
         "title": "超繁栄賞",
         "category": "prosperity_prize",
-        "index": 2,
         "grade": 1,
         "icon": "fa-solid fa-mountain-city",
         "color": "silver"
@@ -30,7 +35,6 @@
         "type": "super_prosperity_prize",
         "title": "究極繁栄賞",
         "category": "prosperity_prize",
-        "index": 3,
         "grade": 2,
         "icon": "fa-solid fa-mountain-city",
         "color": "gold"
@@ -39,7 +43,6 @@
         "type": "calamity_prize",
         "title": "災難賞",
         "category": "calamity_prize",
-        "index": 4,
         "grade": 0,
         "icon": "fa-solid fa-skull",
         "color": "bronze"
@@ -48,7 +51,6 @@
         "type": "high_calamity_prize",
         "title": "超災難賞",
         "category": "calamity_prize",
-        "index": 5,
         "grade": 1,
         "icon": "fa-solid fa-skull",
         "color": "silver"
@@ -57,7 +59,6 @@
         "type": "super_calamity_prize",
         "title": "究極災難賞",
         "category": "calamity_prize",
-        "index": 6,
         "grade": 2,
         "icon": "fa-solid fa-skull",
         "color": "gold"
@@ -66,7 +67,6 @@
         "type": "levinoth_hunter",
         "title": "リヴァイノスハンター",
         "category": "levinoth_hunter",
-        "index": 7,
         "grade": 0,
         "icon": "fa-solid fa-dragon",
         "color": "normal"
@@ -75,7 +75,6 @@
         "type": "treasure_hunter",
         "title": "トレジャーハンター",
         "category": "treasure_hunter",
-        "index": 8,
         "grade": 0,
         "icon": "fa-solid fa-gem",
         "color": "normal"
