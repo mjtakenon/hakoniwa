@@ -41,7 +41,7 @@ import {
     Achievement,
     AchievementProp,
     filterDuplicatedAchievementType,
-    getAchievementsList
+    getAchievementsList, sortAchievements
 } from "../store/Entity/Achievement";
 
 export default defineComponent({
@@ -66,6 +66,8 @@ export default defineComponent({
         } else {
             achievements = filterDuplicatedAchievementType(props.achievement_data);
         }
+
+        sortAchievements(achievements);
 
         let cols = props.max_cols;
         if (achievements.length < cols)  cols = achievements.length;
