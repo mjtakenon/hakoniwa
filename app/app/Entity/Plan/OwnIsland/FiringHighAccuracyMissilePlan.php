@@ -33,9 +33,4 @@ class FiringHighAccuracyMissilePlan extends FiringMissilePlan
     {
         return self::ACCURACY;
     }
-
-    public function execute(Island $island, Terrain $terrain, Status $status, Achievements $achievements, Turn $turn, Collection $foreignIslandTargetedPlans): ExecutePlanResult
-    {
-        return parent::execute($island, $terrain, $status, $turn, $foreignIslandTargetedPlans);
-    }
 }
