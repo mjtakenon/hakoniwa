@@ -130,8 +130,7 @@ export default defineComponent({
             },
             {
                 title: "資源生産",
-                numText: (9007199254740991).toLocaleString(),
-                //numText: this.store.status.resources_production_capacity.toLocaleString(),
+                numText: this.store.status.resources_production_capacity.toLocaleString(),
                 unit: "人規模",
                 fontSize: 1
             },
@@ -160,11 +159,13 @@ export default defineComponent({
         calcNumFontSizes() {
             this.statuses.forEach((stat, index) => {
                 const w = document.getElementById("data-num-" + index).clientWidth;
-                console.debug(document.getElementById("data-num-" + index));
+                console.debug(w);
                 if(this.screenWidth < 768) { // Tailwind md:
                     stat.fontSize = w / (stat.numText.length*0.7);
-                } else {
+                } else if(this.screenWidth < 1024) {
                     stat.fontSize = w / (stat.numText.length*0.5);
+                } else {
+                    stat.fontSize = 124 / (stat.numText.length*0.5);
                 }
             })
         },
