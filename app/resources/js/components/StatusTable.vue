@@ -12,12 +12,13 @@
             <div class="stats-box-data">
                 <div
                     class="stats-box-num-wrapper"
+                    :id="'data-num-' + index"
                 >
                     <div
                         class="stats-box-data-num"
                         :style="this.isMobile ?
-                            {fontSize: 'clamp(1px, calc(100cqi/' + (status.numText.length*0.5) +'), 1.05rem)'} :
-                            {fontSize: 'clamp(1px, calc(100cqi/' + (status.numText.length*0.5) +'), 1.2rem)'}
+                            {fontSize: 'clamp(1px,'+ status.fontSize +'px,1.05rem)'} :
+                            {fontSize: 'clamp(1px,'+ status.fontSize +'px,1.2rem)'}
                         "
                     >
                         {{ status.numText }}
@@ -60,6 +61,7 @@ export default defineComponent({
                 title: string,
                 numText: string,
                 unit: string,
+                fontSize: number,
             }[],
             isMobile: (document.documentElement.clientWidth < 1024),
             screenWidth: document.documentElement.clientWidth
@@ -76,53 +78,67 @@ export default defineComponent({
                 title: "発展ポイント",
                 numText: this.store.status.development_points.toLocaleString(),
                 unit: "pts",
+                fontSize: 1
             },
             {
                 title: "人口",
                 numText: this.store.status.population.toLocaleString(),
-                unit: "人"
+                unit: "人",
+                fontSize: 1
             },
             {
                 title: "資金",
                 numText: this.store.status.funds.toLocaleString(),
-                unit: "億円"
+                unit: "億円",
+                fontSize: 1
             },
             {
                 title: "食料",
                 numText: this.store.status.foods.toLocaleString(),
-                unit: "㌧"
+                unit: "㌧",
+                fontSize: 1
             },
             {
                 title: "資源",
                 numText: this.store.status.resources.toLocaleString(),
-                unit: "㌧"
+                unit: "㌧",
+                fontSize: 1
             },
             {
                 title: "環境",
                 numText: this.store.getEnvironmentString,
-                unit: ""
+                unit: "",
+                fontSize: 1
             },
             {
                 title: "面積",
                 numText: this.store.status.area.toLocaleString(),
-                unit: "万坪"
+                unit: "万坪",
+                fontSize: 1
             },
             {
                 title: "農業",
                 numText: this.store.status.foods_production_capacity.toLocaleString(),
-                unit: "人規模"
+                unit: "人規模",
+                fontSize: 1
             },
             {
                 title: "工業",
                 numText: this.store.status.funds_production_capacity.toLocaleString(),
-                unit: "人規模"
+                unit: "人規模",
+                fontSize: 1
             },
             {
                 title: "資源生産",
                 numText: this.store.status.resources_production_capacity.toLocaleString(),
-                unit: "人規模"
+                unit: "人規模",
+                fontSize: 1
             },
         ]
+
+        this.$nextTick(() => {
+            this.calcNumFontSizes();
+        })
     },
     unmounted() {
         window.removeEventListener("resize", this.onWindowSizeChanged);
@@ -137,13 +153,27 @@ export default defineComponent({
             } else {
                 return this.store.island.comment;
             }
-        }
+        },
     },
     methods: {
+        calcNumFontSizes() {
+            this.statuses.forEach((stat, index) => {
+                const w = document.getElementById("data-num-" + index).clientWidth;
+                console.debug(w);
+                if(this.screenWidth < 768) { // Tailwind md:
+                    stat.fontSize = w / (stat.numText.length*0.7);
+                } else if(this.screenWidth < 1024) {
+                    stat.fontSize = w / (stat.numText.length*0.5);
+                } else {
+                    stat.fontSize = 124 / (stat.numText.length*0.5);
+                }
+            })
+        },
         onWindowSizeChanged() {
             const newScreenWidth = document.documentElement.clientWidth;
             if (this.screenWidth != newScreenWidth) {
                 this.isMobile = (document.documentElement.clientWidth < 1024);
+                this.calcNumFontSizes()
             }
         },
     }
@@ -165,7 +195,6 @@ export default defineComponent({
             @apply flex items-end flex-wrap h-8;
 
             .stats-box-num-wrapper {
-                container-type: inline-size;
                 @apply max-lg:w-full lg:grow min-w-0 text-right;
             }
 
