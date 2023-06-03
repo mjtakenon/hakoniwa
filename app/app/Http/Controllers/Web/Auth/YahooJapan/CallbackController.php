@@ -46,13 +46,11 @@ class CallbackController extends Controller
                 $user = User::create();
 
                 // 認証情報登録
-                UserAuthentication::create(
-                    [
-                        'provider' => UserAuthentication::PROVIDER_YAHOO,
-                        'identifier' => $identifier,
-                        'user_id' => $user->getAuthIdentifier()
-                    ]
-                );
+                UserAuthentication::create([
+                    'provider' => UserAuthentication::PROVIDER_YAHOO,
+                    'identifier' => $identifier,
+                    'user_id' => $user->getAuthIdentifier()
+                ]);
 
                 \Auth::login($user);
             });
