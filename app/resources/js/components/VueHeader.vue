@@ -35,7 +35,7 @@
                     ></font-awesome-icon>
                     <span class="menu-title text-on-surface-variant group-hover:text-surface-variant">設定</span>
                 </a>
-                <a v-if="!isIslandRegistered" class=" button-primary navbar-register" href="/register">
+                <a v-if="!isIslandRegistered" class="button-primary navbar-register" href="/register">
                     島を探しに行く（新規登録）
                 </a>
                 <form method="POST" name="logout" action="/logout">
@@ -50,6 +50,11 @@
                 </form>
             </div>
             <div v-else class="navbar-menu">
+                <a v-if="debugLoginUsingId >= 1" class="button-primary navbar-register" href="/auth/debug/login">
+                    <div>
+                        ログイン
+                    </div>
+                </a>
                 <a class="block max-md:mb-2 md:mr-2" href="/auth/google/redirect">
                     <img class="mx-auto" src="/img/btn_google_signin_light_normal_web.png">
                 </a>
@@ -106,6 +111,7 @@ export default defineComponent({
         'csrfToken',
         'isLoggedIn',
         'user',
+        'debugLoginUsingId',
         'isIslandRegistered',
         'ownedIsland',
     ]

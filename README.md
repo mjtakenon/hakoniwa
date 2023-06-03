@@ -15,22 +15,39 @@
 cp app/.env.local app/.env
 ```
 
-- `GOOGLE_CLIENT_SECRET`の値をシークレットマネージャから取得しセット
+- （Googleログインを利用する場合）`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`の値をGCPコンソールから取得し`.env`にセット
+  - https://console.cloud.google.com/apis/credentials
+- （Yahoo!ログインを利用する場合）`YAHOO_CLIENT_ID`, `YAHOO_CLIENT_SECRET`の値をYahoo!デベロッパーコンソールから取得し`.env`にセット
+  - https://e.developer.yahoo.co.jp/dashboard
+
+#### hostsの設定
+
+- hostsファイルにローカル環境のドメインを追記してください（管理者権限が必要です）
+  - Windows：`C:\Windows\System32\drivers\etc\hosts`
+  - Mac：`/etc/hosts`
+
+```
+127.0.0.1 local-yamanity.net
+::1 local-yamanity.net
+```
 
 #### コンテナのビルド, モジュールのインストールと起動
 
-```makefile
+```sh
 $ make setup
 ```
 
+- vite開発サーバーが立ち上がったら、以下URLにブラウザからアクセスすることで、ページが表示できます
+  - http://local-yamanity.net:54380
+
 ### 2回目以降の起動
 
-```makefile
+```sh
 $ make start
 ```
 
 ### 終了
 
-```makefile
+```sh
 $ make down
 ```
