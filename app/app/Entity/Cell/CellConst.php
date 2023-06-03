@@ -38,7 +38,7 @@ use App\Entity\Cell\Park\MonumentOfMaster;
 use App\Entity\Cell\Park\MonumentOfMining;
 use App\Entity\Cell\Park\MonumentOfPeace;
 use App\Entity\Cell\Park\MonumentOfWar;
-use App\Entity\Cell\Park\MonumentOfWinner;
+use App\Entity\Cell\Park\MonumentOfConquest;
 use App\Entity\Cell\Park\Park;
 use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Cell\ResourcesProduction\Oilfield;
@@ -78,7 +78,7 @@ class CellConst
         MonumentOfMaster::TYPE => MonumentOfMaster::class,
         MonumentOfPeace::TYPE => MonumentOfPeace::class,
         MonumentOfWar::TYPE => MonumentOfWar::class,
-        MonumentOfWinner::TYPE => MonumentOfWinner::class,
+        MonumentOfConquest::TYPE => MonumentOfConquest::class,
         Inora::TYPE => Inora::class,
         RedInora::TYPE => RedInora::class,
         DarkInora::TYPE => DarkInora::class,
