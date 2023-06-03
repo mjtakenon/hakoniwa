@@ -2,6 +2,7 @@
 
 namespace App\Entity\Cell\Park;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -22,7 +23,7 @@ class MonumentOfAgriculture extends Park
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public static function canBuild(Terrain $terrain, Status $status): bool
+    public static function canBuild(Terrain $terrain, Status $status, Achievements $achievements): bool
     {
         if ($status->getProducedFoods() <= self::CONSTRUCTABLE_FOODS_THRESHOLD) {
             return false;

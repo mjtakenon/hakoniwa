@@ -2,6 +2,7 @@
 
 namespace App\Entity\Cell\Park;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\MissileFireable\MissileBase;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
@@ -23,7 +24,7 @@ class MonumentOfWar extends Park
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
-    public static function canBuild(Terrain $terrain, Status $status): bool
+    public static function canBuild(Terrain $terrain, Status $status, Achievements $achievements): bool
     {
         if ($terrain->findByTypes([self::TYPE])->count() >= 1) {
             return false;

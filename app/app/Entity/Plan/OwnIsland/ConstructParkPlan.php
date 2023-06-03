@@ -8,7 +8,7 @@ use App\Entity\Cell\Park\MonumentOfMaster;
 use App\Entity\Cell\Park\MonumentOfMining;
 use App\Entity\Cell\Park\MonumentOfPeace;
 use App\Entity\Cell\Park\MonumentOfWar;
-use App\Entity\Cell\Park\MonumentOfWinner;
+use App\Entity\Cell\Park\MonumentOfConquest;
 use App\Entity\Cell\Park\Park;
 use App\Entity\Log\LogRow\AbortInvalidCellLog;
 use App\Entity\Log\LogRow\AbortLackOfFundsLog;
@@ -36,7 +36,7 @@ class ConstructParkPlan extends Plan
         MonumentOfMaster::class,
         MonumentOfPeace::class,
         MonumentOfWar::class,
-        MonumentOfWinner::class,
+        MonumentOfConquest::class,
         Park::class,
     ];
 
@@ -61,7 +61,7 @@ class ConstructParkPlan extends Plan
 
         /** @var Park $park */
         foreach (self::PARKS as $park) {
-            if ($park::canBuild($terrain, $status)) {
+            if ($park::canBuild($terrain, $status, $achievements)) {
                 $terrain->setCell($this->point, new $park(point: $this->point));
                 break;
             }

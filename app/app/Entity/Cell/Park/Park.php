@@ -2,6 +2,7 @@
 
 namespace App\Entity\Cell\Park;
 
+use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\PassTurnResult;
@@ -42,7 +43,7 @@ class Park extends Cell implements IPark
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    public static function canBuild(Terrain $terrain, Status $status): bool
+    public static function canBuild(Terrain $terrain, Status $status, Achievements $achievements): bool
     {
         return true;
     }

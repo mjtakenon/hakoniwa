@@ -141,4 +141,12 @@ class Achievements
             ];
         }
     }
+
+    public function findByTypes(array $achievementTypes): Collection
+    {
+        return $this->achievements->filter(function ($achievement) use ($achievementTypes) {
+            /** @var Achievement $achievement */
+            return in_array($achievement->getType(), $achievementTypes, true);
+        });
+    }
 }

@@ -22,7 +22,7 @@ use App\Entity\Cell\Park\MonumentOfMaster;
 use App\Entity\Cell\Park\MonumentOfMining;
 use App\Entity\Cell\Park\MonumentOfPeace;
 use App\Entity\Cell\Park\MonumentOfWar;
-use App\Entity\Cell\Park\MonumentOfWinner;
+use App\Entity\Cell\Park\MonumentOfConquest;
 use App\Entity\Cell\Park\Park;
 use App\Entity\Cell\ResourcesProduction\Mine;
 use App\Entity\Cell\ResourcesProduction\Oilfield;
@@ -86,7 +86,7 @@ abstract class Plan
         MonumentOfMaster::TYPE,
         MonumentOfPeace::TYPE,
         MonumentOfWar::TYPE,
-        MonumentOfWinner::TYPE,
+        MonumentOfConquest::TYPE,
         Egg::TYPE,
     ];
 
@@ -105,7 +105,7 @@ abstract class Plan
         MonumentOfMaster::TYPE,
         MonumentOfPeace::TYPE,
         MonumentOfWar::TYPE,
-        MonumentOfWinner::TYPE,
+        MonumentOfConquest::TYPE,
         TransportShip::TYPE,
         Battleship::TYPE,
         Submarine::TYPE,
