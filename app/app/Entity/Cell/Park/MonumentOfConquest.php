@@ -25,6 +25,9 @@ class MonumentOfConquest extends Park
 
     public static function canBuild(Terrain $terrain, Status $status, Achievements $achievements): bool
     {
+        if ($terrain->findByTypes([self::TYPE])->count() >= 1) {
+            return false;
+        }
         if ($achievements->findByTypes([ConquestSign::TYPE])->isEmpty()) {
             return false;
         }
