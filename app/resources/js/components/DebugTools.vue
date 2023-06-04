@@ -4,6 +4,11 @@
     <div class="text-xs mr-5">DEBUG TOOLS:</div>
     <div class="text-xs">theme:</div>
     <theme-switcher></theme-switcher>
+    <a v-if="debugLoginUsingId >= 1" class="button-primary login" href="/auth/debug/login">
+        <div>
+            ログイン
+        </div>
+    </a>
     <div class="ml-auto text-xs text-right">close: PAUSE key</div>
 </div>
 </template>
@@ -31,9 +36,19 @@ export default defineComponent({
                 this.visible = !this.visible;
             }
         }
+    },
+    props: {
+        debugLoginUsingId: {
+            require: false,
+            type: Number,
+            default: 0
+        }
     }
 })
 </script>
 
 <style scoped lang="scss">
+.login {
+    @apply text-sm ml-1 p-1;
+}
 </style>

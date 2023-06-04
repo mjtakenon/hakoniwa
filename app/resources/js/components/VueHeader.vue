@@ -50,11 +50,6 @@
                 </form>
             </div>
             <div v-else class="navbar-menu">
-                <a v-if="debugLoginUsingId >= 1" class="button-primary navbar-register" href="/auth/debug/login">
-                    <div>
-                        ログイン
-                    </div>
-                </a>
                 <a class="block max-md:mb-2 md:mr-2" href="/auth/google/redirect">
                     <img class="mx-auto" src="/img/btn_google_signin_light_normal_web.png">
                 </a>
@@ -111,7 +106,6 @@ export default defineComponent({
         'csrfToken',
         'isLoggedIn',
         'user',
-        'debugLoginUsingId',
         'isIslandRegistered',
         'ownedIsland',
     ]

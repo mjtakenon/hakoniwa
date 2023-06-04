@@ -9,11 +9,10 @@
         @if (\Auth::check() && \HakoniwaService::isIslandRegistered())
             :owned-island="{{ \HakoniwaService::getOwnedIsland() }}"
         @endif
-        @if(\App::environment('local') && \APP::hasDebugModeEnabled())
-            debug-login-using-id="{{ config('app.hakoniwa.debug.login_using_id') }}"
-        @endif
     ></vue-header>
     @if(\App::environment('local') && \APP::hasDebugModeEnabled() && file_exists(public_path('hot')))
-        <debug-tools></debug-tools>
+        <debug-tools
+            debug-login-using-id="{{ config('app.hakoniwa.debug.login_using_id') }}"
+        ></debug-tools>
     @endif
 </header>
