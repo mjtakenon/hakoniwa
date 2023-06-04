@@ -8,5 +8,6 @@
             <div>サーバーエラーが発生しました。しばらく経っても改善しない場合、管理者にお問い合わせください。</div>
             <a href="/">HOMEへ戻る</a>
         </div>
+        @include('components.footer')
     </div>
 @endsection
