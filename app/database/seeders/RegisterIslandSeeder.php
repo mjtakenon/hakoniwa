@@ -30,8 +30,8 @@ class RegisterIslandSeeder extends Seeder
 
         $island = Island::create([
             'user_id' => $user->id,
-            'name' => 'デバッグ用',
-            'owner_name' => '開発者',
+            'name' => fake()->name,
+            'owner_name' => fake()->name,
         ]);
 
         $turn = Turn::latest()->firstOrFail();
