@@ -8,5 +8,6 @@
             <div>お探しのページは存在しません。</div>
             <a href="/">HOMEへ戻る</a>
         </div>
+        @include('components.footer')
     </div>
 @endsection

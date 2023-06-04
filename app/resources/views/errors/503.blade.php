@@ -7,5 +7,6 @@
             <div class="subtitle">メンテナンス中</div>
             <div>現在メンテナンス中です。</div>
         </div>
+        @include('components.footer')
     </div>
 @endsection

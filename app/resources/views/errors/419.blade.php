@@ -8,5 +8,6 @@
             <div>セッションの有効期限が切れました。再度お試しください。</div>
             <a href="/">HOMEへ戻る</a>
         </div>
+        @include('components.footer')
     </div>
 @endsection
