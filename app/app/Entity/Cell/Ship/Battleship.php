@@ -10,6 +10,8 @@ use App\Entity\Cell\PassTurnResult;
 use App\Entity\Event\ForeignIsland\ReturnShipToAffiliationIsland;
 use App\Entity\Log\LogRow\AttackAndDefeatLog;
 use App\Entity\Log\LogRow\AttackLog;
+use App\Entity\Log\LogRow\FindBuriedTreasureLog;
+use App\Entity\Log\LogRow\ReceiveBountyLog;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -110,6 +112,14 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
             $enemyShip->damage = 100;
 
             $logs->add(new AttackAndDefeatLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
+
+            // 海賊の場合懸賞金を受け取る
+            if ($enemyShip::TYPE === Pirate::TYPE) {
+                $amount = random_int(100, 1000);
+                $status->setFunds($status->getFunds() + $amount);
+                $logs->add(new ReceiveBountyLog(deep_copy($enemyShip), $amount));
+            }
+
             if ($enemyShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
                 $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
             } else {
