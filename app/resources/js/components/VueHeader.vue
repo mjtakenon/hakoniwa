@@ -35,7 +35,7 @@
                     ></font-awesome-icon>
                     <span class="menu-title text-on-surface-variant group-hover:text-surface-variant">設定</span>
                 </a>
-                <a v-if="!isIslandRegistered" class=" button-primary navbar-register" href="/register">
+                <a v-if="!isIslandRegistered" class="button-primary navbar-register" href="/register">
                     島を探しに行く（新規登録）
                 </a>
                 <form method="POST" name="logout" action="/logout">

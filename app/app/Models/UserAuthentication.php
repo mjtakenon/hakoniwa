@@ -14,6 +14,7 @@ class UserAuthentication extends Model
 
     const PROVIDER_GOOGLE = 'google';
     const PROVIDER_YAHOO = 'yahoo';
+    const PROVIDER_DEBUG = 'debug';
 
     protected $fillable = [
         'identifier',

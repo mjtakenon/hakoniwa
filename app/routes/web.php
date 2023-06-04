@@ -67,7 +67,11 @@ Route::prefix('/auth/google/')->middleware($baseMiddleware)->group( function() {
     Route::get('callback', [\App\Http\Controllers\Web\Auth\Google\CallbackController::class, 'get']);
 });
 
-Route::prefix('/auth/yahoo/')->middleware(array_merge($baseMiddleware, []))->group( function () {
+Route::prefix('/auth/yahoo/')->middleware($baseMiddleware)->group( function () {
     Route::get('redirect', [\App\Http\Controllers\Web\Auth\YahooJapan\RedirectController::class, 'get']);
     Route::get('callback', [\App\Http\Controllers\Web\Auth\YahooJapan\CallbackController::class, 'get']);
+});
+
+Route::prefix('/auth/debug/')->middleware(array_merge($baseMiddleware, [\App\Http\Middleware\OnlyDebugMode::class]))->group( function () {
+    Route::get('login', [\App\Http\Controllers\Web\Auth\Debug\LoginController::class, 'get']);
 });
