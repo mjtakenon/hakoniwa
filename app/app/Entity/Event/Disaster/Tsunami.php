@@ -4,6 +4,7 @@ namespace App\Entity\Event\Disaster;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Log\LogRow\DestructionByTsunamiLog;
 use App\Entity\Log\LogRow\OccurTsunamiLog;
@@ -50,7 +51,11 @@ class Tsunami implements IDisaster
                 continue;
             }
 
-            $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
+            if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
+                $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
+            } else {
+                $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
+            }
             $logs->add(new DestructionByTsunamiLog($island, $cell));
         }
 
