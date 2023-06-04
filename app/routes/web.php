@@ -39,7 +39,7 @@ Route::prefix('/islands')->middleware(array_merge($baseMiddleware, ['auth:sanctu
 
 Route::prefix('/register')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
     Route::get('', [\App\Http\Controllers\Web\Register\IndexController::class, 'get'])->name(RouteServiceProvider::ROUTE_REGISTER);
-    Route::post('', [\App\Http\Controllers\Web\Register\IndexController::class, 'post']);
+    Route::post('', [\App\Http\Controllers\Web\Register\IndexController::class, 'post'])->middleware(['throttle:register_islands']);
 });
 
 Route::prefix('/settings')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {

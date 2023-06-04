@@ -13,6 +13,7 @@ use App\Models\IslandPlan;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
 use App\Models\Turn;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 
 class IndexController extends Controller
@@ -44,6 +45,15 @@ class IndexController extends Controller
         $validated = $validator->safe()->collect();
 
         $island = \DB::transaction(function () use ($validated) {
+
+            // 同時送信による超過登録防止の為、テーブルロックを行っている
+            $islandCount = Island::lockForUpdate()->count();
+
+            $maxIslands = config('app.hakoniwa.max_islands');
+
+            if (!is_null($maxIslands) && $islandCount >= $maxIslands) {
+                \Redirect::back()->withErrors(['message' => '現在最大登録数を超えているため、登録できません。'])->withInput()->throwResponse();
+            }
 
             if (Island::where('name', $validated->get('island_name'))->exists()) {
                 \Redirect::back()->withErrors(['message' => '島名は既に使われています。'])->withInput()->throwResponse();

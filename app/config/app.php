@@ -224,6 +224,7 @@ return [
 
     'hakoniwa' => [
         'turn_update_minutes' => env('TURN_UPDATE_MINUTES'),
+        'max_islands' => env('MAX_ISLANDS'),
         'monster_action_probably' => env('MONSTER_ACTION_PROBABLY', 1),
         'island_abandon_turn' => env('ISLAND_ABANDONED_TURN'),
         'debug' => [
