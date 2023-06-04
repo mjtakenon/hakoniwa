@@ -11,6 +11,9 @@ use App\Models\Turn;
 class Disaster implements IDisaster
 {
     public const DISASTERS = [
+        AppearanceMonster::class,
+        PirateInvasion::class,
+        AppearanceLevinoth::class,
         Fire::class,
         Earthquake::class,
         Tsunami::class,
@@ -20,9 +23,6 @@ class Disaster implements IDisaster
         HugeMeteorite::class,
         Riot::class,
         LandSubsidence::class,
-        AppearanceMonster::class,
-        PirateInvasion::class,
-        AppearanceLevinoth::class,
     ];
 
     public static function occur(Island $island, Terrain $terrain, Status $status, Turn $turn): DisasterResult

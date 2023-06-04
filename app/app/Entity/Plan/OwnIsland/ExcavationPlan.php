@@ -64,6 +64,8 @@ class ExcavationPlan extends Plan
             $terrain->setCell($this->point, new Shallow(point: $this->point));
         }
 
+        $terrain->replaceShallowToLake();
+
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);
