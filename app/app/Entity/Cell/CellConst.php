@@ -48,6 +48,7 @@ use App\Entity\Cell\Ship\LevinothSubmarine;
 use App\Entity\Cell\Ship\Pirate;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Cell\Ship\TransportShip;
+use App\Entity\Util\Point;
 
 class CellConst
 {
@@ -124,5 +125,15 @@ class CellConst
     static public function getClassByType(string $type): string
     {
         return self::CELLS[$type];
+    }
+
+    static public function getDefaultCell(Point $point, int $elevation): Cell
+    {
+        return match(true) {
+            $elevation >= self::ELEVATION_MOUNTAIN => new Mountain(point: $point),
+            $elevation === self::ELEVATION_PLAIN => new Wasteland(point: $point),
+            $elevation === self::ELEVATION_SHALLOW => new Shallow(point: $point),
+            $elevation <= self::ELEVATION_SEA => new Sea(point: $point),
+        };
     }
 }

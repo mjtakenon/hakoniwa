@@ -51,11 +51,7 @@ class Tsunami implements IDisaster
                 continue;
             }
 
-            if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-            } else {
-                $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
-            }
+            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
             $logs->add(new DestructionByTsunamiLog($island, $cell));
         }
 

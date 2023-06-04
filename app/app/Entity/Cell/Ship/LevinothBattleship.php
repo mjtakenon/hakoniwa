@@ -52,11 +52,7 @@ class LevinothBattleship extends CombatantShip
         // 他の島のもので規定ターンを過ぎていたら返す
         if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
             $logs->add(new DisappearEnemyShipLog($island, deep_copy($this)));
-            if ($this->elevation === CellConst::ELEVATION_SHALLOW) {
-                $terrain->setCell($this->getPoint(), new Shallow(point: $this->getPoint()));
-            } else {
-                $terrain->setCell($this->getPoint(), new Sea(point: $this->getPoint()));
-            }
+            $terrain->setCell($this->getPoint(), CellConst::getDefaultCell($this->getPoint(), $this->getElevation()));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -83,11 +79,7 @@ class LevinothBattleship extends CombatantShip
                 $attackDamage -= $enemyShip->damage - 100;
                 $enemyShip->damage = 100;
                 $logs->add(new AttackAndDefeatLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-                if ($enemyShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                    $terrain->setCell($enemyShip->getPoint(), new Shallow(point: $enemyShip->getPoint()));
-                } else {
-                    $terrain->setCell($enemyShip->getPoint(), new Sea(point: $enemyShip->getPoint()));
-                }
+                $terrain->setCell($enemyShip->getPoint(), CellConst::getDefaultCell($enemyShip->getPoint(), $enemyShip->getElevation()));
             } else {
                 $logs->add(new AttackLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
                 $terrain->setCell($enemyShip->getPoint(), $enemyShip);

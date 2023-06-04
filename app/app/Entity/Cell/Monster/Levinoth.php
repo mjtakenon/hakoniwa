@@ -115,11 +115,7 @@ class Levinoth extends Monster
         $beforeCell->elevation = $afterCell->getElevation();
         $terrain->setCell($beforeCell->point, $beforeCell);
 
-        if ($beforeCellCopy->getElevation() === CellConst::ELEVATION_SHALLOW) {
-            $terrain->setCell($beforeCellCopy->getPoint(), new Shallow(point: $beforeCellCopy->getPoint()));
-        } else {
-            $terrain->setCell($beforeCellCopy->getPoint(), new Sea(point: $beforeCellCopy->getPoint()));
-        }
+        $terrain->setCell($beforeCellCopy->getPoint(), CellConst::getDefaultCell($beforeCellCopy->getPoint(), $beforeCellCopy->getElevation()));
 
         return $terrain;
     }
@@ -137,11 +133,7 @@ class Levinoth extends Monster
         $logs->add(new DestructionByEggLog($island, $this, $cell));
 
         if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
-            if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-            } else {
-                $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
-            }
+            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -173,11 +165,7 @@ class Levinoth extends Monster
         if ($this->getDisappearancePopulation() > $status->getPopulation() || $terrain->findByTypes([LevinothBattleship::TYPE, LevinothSubmarine::TYPE])->isEmpty()) {
             $logs = Logs::create();
             $logs->add(new DisappearMonsterLog($island, $this));
-            if ($this->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                $terrain->setCell($this->point, new Shallow(point: $this->point));
-            } else {
-                $terrain->setCell($this->point, new Sea(point: $this->point));
-            }
+            $terrain->setCell($this->getPoint(), CellConst::getDefaultCell($this->getPoint(), $this->getElevation()));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
