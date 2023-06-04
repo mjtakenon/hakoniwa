@@ -3,7 +3,6 @@
 namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Achievement\Achievements;
-use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\Lake;
 use App\Entity\Cell\Others\Sea;
@@ -72,9 +71,13 @@ class LandfillPlan extends Plan
 
             // 周囲が3セル以上陸地だった場合、周囲の海は浅瀬になる
             $cells = $terrain->getAroundCells($this->point);
-            $aroundGroundCount = $cells->filter(function ($cell) { return $cell::ATTRIBUTE[CellConst::IS_LAND];})->count();
+            $aroundGroundCount = $cells->filter(function ($cell) {
+                return $cell::ATTRIBUTE[CellConst::IS_LAND];
+            })->count();
             if ($aroundGroundCount >= 3) {
-                foreach ($cells->filter(function ($cell) { return $cell::TYPE === Sea::TYPE; }) as $c) {
+                foreach ($cells->filter(function ($cell) {
+                    return $cell::TYPE === Sea::TYPE;
+                }) as $c) {
                     $terrain->setCell($c->getPoint(), new Shallow(point: $c->getPoint()));
                 }
             }
