@@ -17,9 +17,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineAsyncComponent, defineComponent} from 'vue'
 import axios from "axios";
-import Markdown from "../components/Markdown.vue";
 import {formatDate} from "../Utils";
 
 interface Release {
@@ -30,7 +29,9 @@ interface Release {
 
 export default defineComponent({
     components: {
-        Markdown,
+        Markdown: defineAsyncComponent(() =>
+            import("../components/Markdown.vue")
+        )
     },
     data() {
         return {

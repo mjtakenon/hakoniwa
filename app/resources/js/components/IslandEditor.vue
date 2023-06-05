@@ -269,7 +269,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 
 #island {
     margin: 0 auto;

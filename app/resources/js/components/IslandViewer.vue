@@ -110,7 +110,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 #island {
     margin: 0 auto;
     @apply w-full md:min-w-[496px] max-w-[496px] mb-4;

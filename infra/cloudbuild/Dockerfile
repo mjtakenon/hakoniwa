@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY ./app ./
 
-RUN NODE_ENV=production yarn install && \
-    yarn build
+RUN yarn install && yarn build
 
 
 FROM php:8.2.4-fpm AS deploy_stage
