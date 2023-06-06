@@ -5,6 +5,8 @@
             <span>{{ store.island.name }}島の掲示板</span>
         </div>
         <div class="viewer">
+            <div class="viewer-title">投稿一覧</div>
+            <div v-show="posts.length === 0" class="no-post">投稿はありません</div>
             <template v-for="post of posts">
                 <div v-if="post.comment !== null && post.comment !== undefined" class="post"
                      :class="[post.visibility === 'public' ? 'border-primary-container' : 'border-secondary-container']">
@@ -120,8 +122,16 @@ export default defineComponent({
         @apply px-4;
         @apply md:px-8;
 
+        .viewer-title {
+            @apply w-fit px-2 py-1 text-sm rounded-lg text-left mb-2 font-bold bg-surface-variant text-on-surface-variant;
+        }
+
+        .no-post {
+            @apply my-5 text-on-surface-variant;
+        }
+
         .post {
-            @apply border rounded-lg overflow-hidden my-6;
+            @apply border rounded-lg overflow-hidden mb-6;
 
             .post-header {
                 @apply flex flex-wrap px-4 py-1 w-full;
@@ -189,11 +199,11 @@ export default defineComponent({
         }
 
         .post-deleted {
-            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg bg-error-container text-error my-3;
+            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg bg-error-container text-error mb-3;
         }
 
         .post-private-hidden {
-            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg bg-alert-container text-alert my-3;
+            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg bg-alert-container text-alert mb-3;
         }
     }
 }
