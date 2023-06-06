@@ -39,4 +39,37 @@ class IslandBbs extends Model
     {
         return $this->belongsTo(Turn::class);
     }
+
+    public function toViewArray(?User $user): array
+    {
+        $data = [
+            'id' => $this->id,
+            'user_id' => $this->commenterUser->id,
+            'visibility' => $this->visibility,
+            'deleted' => !is_null($this->deleted_at),
+        ];
+
+        if (!is_null($this->deleted_at)) {
+            return $data;
+        }
+
+        if ($this->visibility === IslandBbs::VISIBILITY_PRIVATE) {
+            if ($this->island_id !== $user?->id && $this->commenterIsland->id !== $user?->id) {
+                return $data;
+            }
+        }
+
+        $data['turn'] = $this->turn->turn;
+        $data['comment'] = $this->comment;
+
+        if (!is_null($this->commenterIsland)) {
+            $data['island'] = [
+                'id' => $this->commenterIsland->id,
+                'name' => $this->commenterIsland->name,
+                'owner_name' => $this->commenterIsland->owner_name,
+            ];
+        }
+
+        return $data;
+    }
 }

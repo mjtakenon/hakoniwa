@@ -58,6 +58,7 @@ class IndexController extends Controller
 
             if ($visibility === IslandBbs::VISIBILITY_PRIVATE) {
                 if ($commenterIslandStatus->funds >= self::PRIVATE_POST_PRICE) {
+                    $commenterIslandStatus->funds -= self::PRIVATE_POST_PRICE;
                     $commenterIslandStatus->save();
                 } else {
                     return $this->badRequest([
@@ -82,39 +83,11 @@ class IndexController extends Controller
                 ->with(['island', 'commenterUser', 'commenterIsland', 'turn'])
                 ->get();
 
-            return response()->json(
-                $islandBbses->map(function ($islandBbs) use ($commenterUser) {
+            return response()->json([
+                'bbs' => $islandBbses->map(function ($islandBbs) use ($commenterUser) {
                     /** @var IslandBbs $islandBbs */
-                    $row = [
-                        'id' => $islandBbs->id,
-                        'user_id' => $islandBbs->commenterUser->id,
-                        'visibility' => $islandBbs->visibility,
-                        'deleted' => !is_null($islandBbs->deleted_at),
-                    ];
-
-                    if (!is_null($islandBbs->deleted_at)) {
-                        return $row;
-                    }
-
-                    if ($islandBbs->visibility === IslandBbs::VISIBILITY_PRIVATE) {
-                        if ($islandBbs->island_id !== $commenterUser->id && $islandBbs->commenterIsland->id !== $commenterUser->id) {
-                            return $row;
-                        }
-                    }
-
-                    $row['turn'] = $islandBbs->turn->turn;
-                    $row['comment'] = $islandBbs->comment;
-
-                    if (!is_null($islandBbs->commenterIsland)) {
-                        $row['island'] = [
-                            'id' => $islandBbs->commenterIsland->id,
-                            'name' => $islandBbs->commenterIsland->name,
-                            'owner_name' => $islandBbs->commenterIsland->owner_name,
-                        ];
-                    }
-
-                    return $row;
-                })
+                    return $islandBbs->toViewArray($commenterUser);
+                })]
             );
         });
     }

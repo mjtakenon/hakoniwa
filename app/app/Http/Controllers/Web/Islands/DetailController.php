@@ -6,6 +6,7 @@ use App\Entity\Achievement\Achievements;
 use App\Entity\Log\LogConst;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandBbs;
 use App\Models\IslandComment;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
@@ -17,6 +18,7 @@ class DetailController extends Controller
 {
     // TODO Consider to reduce count of recent turns log after making log detail page.
     const DEFAULT_SHOW_LOG_TURNS = 20;
+    const DEFAULT_SHOW_BBS_COMMENTS = 10;
     public function get($islandId) {
         $island = Island::find($islandId);
 
@@ -25,6 +27,7 @@ class DetailController extends Controller
         }
 
         $turn = Turn::latest()->firstOrFail();
+        $user = \Auth::user();
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
         /** @var IslandStatus $islandStatus */
@@ -51,6 +54,13 @@ class DetailController extends Controller
                     'turn' => $turn,
                 ];
             });
+
+        $islandBbses = IslandBbs::where('island_id', $islandId)
+            ->withTrashed()
+            ->orderByDesc('id')
+            ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
+            ->with(['island', 'commenterUser', 'commenterIsland', 'turn'])
+            ->get();
 
         $summary = $island->islandStatuses()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - ($getLogRecentTurns + 1))->get('id'))
@@ -101,6 +111,10 @@ class DetailController extends Controller
                     }
                 })->filter(function ($status) { return !is_null($status); }),
                 'achievements' => Achievements::create()->fromModel($islandAchievements)->toArray(),
+                'bbs' => $islandBbses->map(function ($islandBbs) use ($user) {
+                    /** @var IslandBbs $islandBbs */
+                    return $islandBbs->toViewArray($user);
+                }),
             ]
         ]);
     }

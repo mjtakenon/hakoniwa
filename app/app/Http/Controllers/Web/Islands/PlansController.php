@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Islands;
 use App\Entity\Achievement\Achievements;
 use App\Http\Controllers\Controller;
 use App\Models\Island;
+use App\Models\IslandBbs;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
 use App\Models\IslandTerrain;
@@ -15,6 +16,7 @@ class PlansController extends Controller
 {
     // TODO Consider to reduce count of recent turns log after making log detail page.
     const DEFAULT_SHOW_LOG_TURNS = 20;
+    const DEFAULT_SHOW_BBS_COMMENTS = 10;
 
     public function get(int $islandId)
     {
@@ -29,6 +31,7 @@ class PlansController extends Controller
         }
 
         $turn = Turn::latest()->firstOrFail();
+        $user = \Auth::user();
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
         $islandPlans = $island->islandPlans()->where('turn_id', $turn->id)->firstOrFail();
@@ -54,6 +57,13 @@ class PlansController extends Controller
                     'turn' => $turn,
                 ];
             });
+
+        $islandBbses = IslandBbs::where('island_id', $islandId)
+            ->withTrashed()
+            ->orderByDesc('id')
+            ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
+            ->with(['island', 'commenterUser', 'commenterIsland', 'turn'])
+            ->get();
 
         $summary = $island->islandStatuses()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - ($getLogRecentTurns + 1))->get('id'))
@@ -109,6 +119,10 @@ class PlansController extends Controller
                     }
                 })->filter(function ($status) { return !is_null($status); }),
                 'achievements' => Achievements::create()->fromModel($islandAchievements)->toArray(),
+                'bbs' => $islandBbses->map(function ($islandBbs) use ($user) {
+                    /** @var IslandBbs $islandBbs */
+                    return $islandBbs->toViewArray($user);
+                }),
             ],
             'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),
             'targetIslands' => $targetIslands->map(function ($targetIsland) {

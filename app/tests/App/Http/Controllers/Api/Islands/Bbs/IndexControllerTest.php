@@ -62,8 +62,6 @@ class IndexControllerTest extends TestCase
                 'comment' => 'hoge',
                 'visibility' => 'private',
             ]);
-
-        dd($response->content());
     }
 
 }
