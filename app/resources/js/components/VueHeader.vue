@@ -18,9 +18,9 @@
              :class="[isOpenHamburgerMenu ? 'max-md:max-h-52' : 'max-md:max-h-0']">
             <div v-if="isLoggedIn" class="navbar-menu">
                 <div v-if="isIslandRegistered" class="navbar-item navbar-username">
-                    {{ store.user.name }}島
+                    {{ store.user.island.name }}島
                 </div>
-                <a v-if="isIslandRegistered" class="menu-item primary group" :href="'/islands/'+store.user.id+'/plans'"
+                <a v-if="isIslandRegistered" class="menu-item primary group" :href="'/islands/'+store.user.island.id+'/plans'"
                    title="開発画面に行く">
                     <font-awesome-icon
                         icon="fa-solid fa-pen-to-square"
@@ -92,9 +92,12 @@ export default defineComponent({
         }
         if(props.ownedIsland !== null && props.ownedIsland !== undefined) {
             store.user = {
-                id: props.ownedIsland.id,
-                name: props.ownedIsland.name,
-                owner_name: props.ownedIsland.owner_name,
+                user_id: props.user.id,
+                island: {
+                    id: props.ownedIsland.id,
+                    name: props.ownedIsland.name,
+                    owner_name: props.ownedIsland.owner_name,
+                }
             }
         }
         return {store};

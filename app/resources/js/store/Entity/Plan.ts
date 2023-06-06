@@ -1,3 +1,5 @@
+import {Point} from "./Point";
+
 export interface Plan {
     key: string,
     data: {

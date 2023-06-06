@@ -41,7 +41,10 @@ export interface PiniaState {
     theme: Theme,
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
-    user: Island,
+    user: {
+        user_id: number,
+        island: Island
+    },
     achievements: Achievement[]
 }
 
@@ -84,7 +87,10 @@ export const useMainStore = defineStore('main', {
             theme: defaultTheme,
             isOpenPopup: false,
             isLoadingTerrain: false,
-            user: {id: 0, name: "", owner_name: ""},
+            user: {
+                user_id: 0,
+                island: {id: 0, name: "", owner_name: ""}
+            },
             achievements: []
         }
     },
@@ -198,8 +204,8 @@ export const useMainStore = defineStore('main', {
                 }
             ).then(res => {
                 result.status = RequestStatus.Success;
-                this.user.name = res.data.island.name;
-                this.user.owner_name = res.data.island.owner_name;
+                this.user.island.name = res.data.island.name;
+                this.user.island.owner_name = res.data.island.owner_name;
                 this.status.funds -= 1000;
             }).catch(err => {
                 console.debug(err);
