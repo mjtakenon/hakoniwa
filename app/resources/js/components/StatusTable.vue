@@ -159,7 +159,6 @@ export default defineComponent({
         calcNumFontSizes() {
             this.statuses.forEach((stat, index) => {
                 const w = document.getElementById("data-num-" + index).clientWidth;
-                console.debug(w);
                 if(this.screenWidth < 768) { // Tailwind md:
                     stat.fontSize = w / (stat.numText.length*0.7);
                 } else if(this.screenWidth < 1024) {

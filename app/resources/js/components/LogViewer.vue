@@ -143,12 +143,12 @@ export default defineComponent({
     @apply md:rounded-md;
 
     .subtitle {
-        @apply mt-0 py-3 px-3 mb-3 w-full bg-primary text-on-primary font-bold;
+        @apply mt-0 py-3 px-3 mb-3 w-full bg-primary md:rounded-t-md text-on-primary font-bold;
     }
 
     .turn-log {
         // general
-        @apply flex items-start;
+        @apply flex items-start pb-3;
         // sp
         @apply text-sm mb-1 max-md:mt-4 max-md:pb-6 max-md:flex-wrap;
         // desktop
