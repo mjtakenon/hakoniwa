@@ -28,11 +28,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
 
         // 帰還先の島がない場合、当該セルを消すだけとする
         if (is_null($toIsland)) {
-            if ($combatantShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                $fromTerrain->setCell($combatantShip->getPoint(), new Shallow(point: $combatantShip->getPoint()));
-            } else {
-                $fromTerrain->setCell($combatantShip->getPoint(), new Sea(point: $combatantShip->getPoint()));
-            }
+            $fromTerrain->setCell($combatantShip->getPoint(), CellConst::getDefaultCell($combatantShip->getPoint(), $combatantShip->getElevation()));
             $fromLogs->add(new AbortReturnNotFoundLog($combatantShip));
 
             return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
@@ -45,12 +41,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
             $fromLogs->add(new AbortReturnLog($fromIsland, $combatantShip));
             return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
-
-        if ($combatantShip->getElevation() === CellConst::ELEVATION_SHALLOW) {
-            $fromTerrain->setCell($combatantShip->getPoint(), new Shallow(point: $combatantShip->getPoint()));
-        } else {
-            $fromTerrain->setCell($combatantShip->getPoint(), new Sea(point: $combatantShip->getPoint()));
-        }
+        $fromTerrain->setCell($combatantShip->getPoint(), CellConst::getDefaultCell($combatantShip->getPoint(), $combatantShip->getElevation()));
 
         /** @var Cell $seaCell */
         $seaCell = $seaCells->random();

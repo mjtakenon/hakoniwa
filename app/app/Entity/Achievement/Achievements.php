@@ -35,9 +35,8 @@ class Achievements
 
         /** @var IslandAchievement $islandAchievement */
         foreach ($islandAchievements as $islandAchievement) {
-            /** @var Achievement $class */
-            $class = AchievementConst::getClassByType($islandAchievement->type);
-            $this->achievements->add($class::fromModel($islandAchievement));
+            $achievement = AchievementConst::getClassByIslandAchievement($islandAchievement);
+            $this->achievements->add($achievement);
         }
 
         return $this;
@@ -123,17 +122,15 @@ class Achievements
     {
         /** @var Achievement $achievement */
         $achievement = $achievements->first();
-        $achievementGroupClass = AchievementGroupConst::getClassByType($achievement->getType());
+        $achievementGroup = AchievementGroupConst::getClassByType($achievement->getType(), $achievements);
 
-        if (is_null($achievementGroupClass)) {
+        if (is_null($achievementGroup)) {
             return [
                 'type' => $achievement->getType(),
                 'hover_text' => $achievement->getHoverText(),
                 'extra_text' => $achievement->getExtraText(),
             ];
         } else {
-            /** @var AchievementGroup $achievementGroup */
-            $achievementGroup = new $achievementGroupClass($achievements);
             return [
                 'type' => $achievementGroup->getType(),
                 'hover_text' => $achievementGroup->getHoverText(),

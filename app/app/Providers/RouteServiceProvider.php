@@ -64,5 +64,9 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('register_islands', function (Request $request) {
             return Limit::perHour(60)->by($request->user()?->id ?: $request->ip());
         });
+
+        RateLimiter::for('post_bbs', function (Request $request) {
+            return Limit::perHour(60)->by($request->user()?->id ?: $request->ip());
+        });
     }
 }

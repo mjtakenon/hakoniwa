@@ -56,11 +56,7 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
         foreach ($battleships as $battleship) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            if ($battleship->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                $fromTerrain->setCell($battleship->getPoint(), new Shallow(point: $battleship->getPoint()));
-            } else {
-                $fromTerrain->setCell($battleship->getPoint(), new Sea(point: $battleship->getPoint()));
-            }
+            $fromTerrain->setCell($battleship->getPoint(), CellConst::getDefaultCell($battleship->getPoint(), $battleship->getElevation()));
 
             $battleship->setPoint($seaCell->getPoint());
             $battleship->setElevation($seaCell->getElevation());

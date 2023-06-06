@@ -54,34 +54,24 @@ class HugeMeteorite implements IDisaster
                 $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 1));
             }
 
-            if ($cell::ELEVATION <= CellConst::ELEVATION_SHALLOW) {
-                $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
-            } else if ($cell::ELEVATION === CellConst::ELEVATION_MOUNTAIN) {
-                $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
-            } else {
-                $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-            }
+            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()-1));
         }
 
         // 周囲2hex
         foreach ($around2HexCells as $cell) {
-            if ($cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX]) {
-                if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
-                    $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $cell));
-                } else if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
-                    $logs->add(new DestructionShipLog($island, $cell));
-                } else {
-                    $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 2));
-                }
-
-                if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                    $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
-                } else if ($cell->getElevation() <= CellConst::ELEVATION_SEA) {
-                    $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
-                } else {
-                    $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
-                }
+            if (!$cell::ATTRIBUTE[CellConst::DESTRUCTIBLE_BY_WIDE_AREA_DAMAGE_2HEX]) {
+                continue;
             }
+
+            if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
+                $logs->add(new ScatterAwayByHugeMeteoriteLog($island, $cell));
+            } else if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
+                $logs->add(new DestructionShipLog($island, $cell));
+            } else {
+                $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 2));
+            }
+
+            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
         }
 
         return new DisasterResult($terrain, $status, $logs);

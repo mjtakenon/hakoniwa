@@ -115,7 +115,7 @@ abstract class Cell
 
     static public function fromJson(string $type, $data): Cell
     {
-        return new (CellConst::getClassByType($type))(...get_object_vars($data));
+        return CellConst::getClassByType($type, $data);
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
