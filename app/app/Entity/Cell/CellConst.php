@@ -52,55 +52,6 @@ use App\Entity\Util\Point;
 
 class CellConst
 {
-    const CELLS = [
-        City::TYPE => City::class,
-        Factory::TYPE => Factory::class,
-        Farm::TYPE => Farm::class,
-        FarmDome::TYPE => FarmDome::class,
-        Forest::TYPE => Forest::class,
-        Metropolis::TYPE => Metropolis::class,
-        Mountain::TYPE => Mountain::class,
-        Volcano::TYPE => Volcano::class,
-        Mine::TYPE => Mine::class,
-        Oilfield::TYPE => Oilfield::class,
-        Plain::TYPE => Plain::class,
-        Sea::TYPE => Sea::class,
-        Shallow::TYPE => Shallow::class,
-        Lake::TYPE => Lake::class,
-        LargeFactory::TYPE => LargeFactory::class,
-        Town::TYPE => Town::class,
-        Village::TYPE => Village::class,
-        Wasteland::TYPE => Wasteland::class,
-        MissileBase::TYPE => MissileBase::class,
-        SeabedBase::TYPE => SeabedBase::class,
-        Park::TYPE => Park::class,
-        MonumentOfAgriculture::TYPE => MonumentOfAgriculture::class,
-        MonumentOfMining::TYPE => MonumentOfMining::class,
-        MonumentOfMaster::TYPE => MonumentOfMaster::class,
-        MonumentOfPeace::TYPE => MonumentOfPeace::class,
-        MonumentOfWar::TYPE => MonumentOfWar::class,
-        MonumentOfConquest::TYPE => MonumentOfConquest::class,
-        Inora::TYPE => Inora::class,
-        RedInora::TYPE => RedInora::class,
-        DarkInora::TYPE => DarkInora::class,
-        KingInora::TYPE => KingInora::class,
-        Sanjira::TYPE => Sanjira::class,
-        Kujira::TYPE => Kujira::class,
-        Hamunemu::TYPE => Hamunemu::class,
-        GhostInora::TYPE => GhostInora::class,
-        Slime::TYPE => Slime::class,
-        SlimeLegend::TYPE => SlimeLegend::class,
-        Levinoth::TYPE => Levinoth::class,
-        Begenoth::TYPE => Begenoth::class,
-        Egg::TYPE => Egg::class,
-        TransportShip::TYPE => TransportShip::class,
-        Battleship::TYPE => Battleship::class,
-        Submarine::TYPE => Submarine::class,
-        Pirate::TYPE => Pirate::class,
-        LevinothBattleship::TYPE => LevinothBattleship::class,
-        LevinothSubmarine::TYPE => LevinothSubmarine::class,
-    ];
-
     const IS_LAND = 'is_land';
     const IS_MONSTER = 'is_monster';
     const IS_SHIP = 'is_ship';
@@ -122,9 +73,56 @@ class CellConst
     const ELEVATION_SHALLOW = -1;
     const ELEVATION_SEA = -2;
 
-    static public function getClassByType(string $type): string
+    static public function getClassByType(string $type, object $data): Cell
     {
-        return self::CELLS[$type];
+        return match($type) {
+            City::TYPE => new City(...get_object_vars($data)),
+            Factory::TYPE => new Factory(...get_object_vars($data)),
+            Farm::TYPE => new Farm(...get_object_vars($data)),
+            FarmDome::TYPE => new FarmDome(...get_object_vars($data)),
+            Forest::TYPE => new Forest(...get_object_vars($data)),
+            Metropolis::TYPE => new Metropolis(...get_object_vars($data)),
+            Mountain::TYPE => new Mountain(...get_object_vars($data)),
+            Volcano::TYPE => new Volcano(...get_object_vars($data)),
+            Mine::TYPE => new Mine(...get_object_vars($data)),
+            Oilfield::TYPE => new Oilfield(...get_object_vars($data)),
+            Plain::TYPE => new Plain(...get_object_vars($data)),
+            Sea::TYPE => new Sea(...get_object_vars($data)),
+            Shallow::TYPE => new Shallow(...get_object_vars($data)),
+            Lake::TYPE => new Lake(...get_object_vars($data)),
+            LargeFactory::TYPE => new LargeFactory(...get_object_vars($data)),
+            Town::TYPE => new Town(...get_object_vars($data)),
+            Village::TYPE => new Village(...get_object_vars($data)),
+            Wasteland::TYPE => new Wasteland(...get_object_vars($data)),
+            MissileBase::TYPE => new MissileBase(...get_object_vars($data)),
+            SeabedBase::TYPE => new SeabedBase(...get_object_vars($data)),
+            Park::TYPE => new Park(...get_object_vars($data)),
+            MonumentOfAgriculture::TYPE => new MonumentOfAgriculture(...get_object_vars($data)),
+            MonumentOfMining::TYPE => new MonumentOfMining(...get_object_vars($data)),
+            MonumentOfMaster::TYPE => new MonumentOfMaster(...get_object_vars($data)),
+            MonumentOfPeace::TYPE => new MonumentOfPeace(...get_object_vars($data)),
+            MonumentOfWar::TYPE => new MonumentOfWar(...get_object_vars($data)),
+            MonumentOfConquest::TYPE => new MonumentOfConquest(...get_object_vars($data)),
+            Inora::TYPE => new Inora(...get_object_vars($data)),
+            RedInora::TYPE => new RedInora(...get_object_vars($data)),
+            DarkInora::TYPE => new DarkInora(...get_object_vars($data)),
+            KingInora::TYPE => new KingInora(...get_object_vars($data)),
+            Sanjira::TYPE => new Sanjira(...get_object_vars($data)),
+            Kujira::TYPE => new Kujira(...get_object_vars($data)),
+            Hamunemu::TYPE => new Hamunemu(...get_object_vars($data)),
+            GhostInora::TYPE => new GhostInora(...get_object_vars($data)),
+            Slime::TYPE => new Slime(...get_object_vars($data)),
+            SlimeLegend::TYPE => new SlimeLegend(...get_object_vars($data)),
+            Levinoth::TYPE => new Levinoth(...get_object_vars($data)),
+            Begenoth::TYPE => new Begenoth(...get_object_vars($data)),
+            Egg::TYPE => new Egg(...get_object_vars($data)),
+            TransportShip::TYPE => new TransportShip(...get_object_vars($data)),
+            Battleship::TYPE => new Battleship(...get_object_vars($data)),
+            Submarine::TYPE => new Submarine(...get_object_vars($data)),
+            Pirate::TYPE => new Pirate(...get_object_vars($data)),
+            LevinothBattleship::TYPE => new LevinothBattleship(...get_object_vars($data)),
+            LevinothSubmarine::TYPE => new LevinothSubmarine(...get_object_vars($data)),
+        };
     }
 
     static public function getDefaultCell(Point $point, int $elevation): Cell
