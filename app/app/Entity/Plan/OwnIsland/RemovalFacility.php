@@ -40,14 +40,10 @@ class RemovalFacility extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        if ($cell->getElevation() === CellConst::ELEVATION_MOUNTAIN) {
-            $terrain->setCell($this->point, new Volcano(point: $this->point));
-        } else if ($cell->getElevation() === CellConst::ELEVATION_PLAIN) {
+        if ($cell->getElevation() === CellConst::ELEVATION_PLAIN) {
             $terrain->setCell($this->point, new Plain(point: $this->point));
-        } else if ($cell->getElevation() === CellConst::ELEVATION_SHALLOW) {
-            $terrain->setCell($this->point, new Shallow(point: $this->point));
         } else {
-            $terrain->setCell($this->point, new Sea(point: $this->point));
+            $terrain->setCell($this->point, CellConst::getDefaultCell($this->point, $cell->getElevation()));
         }
 
         $logs = Logs::create()->add(new ExecuteLog($island, $this));

@@ -11,26 +11,23 @@ use App\Entity\Achievement\Prize\ProsperityPrize;
 use App\Entity\Achievement\Prize\SuperCalamityPrize;
 use App\Entity\Achievement\Prize\SuperProsperityPrize;
 use App\Entity\Achievement\Prize\TurnPrize;
+use App\Models\Island;
+use App\Models\IslandAchievement;
+use App\Models\Turn;
 
 class AchievementConst
 {
-    public const ACHIEVEMENTS = [
-        TurnPrize::TYPE => TurnPrize::class,
-        ConquestSign::TYPE => ConquestSign::class,
-        CalamityPrize::TYPE => CalamityPrize::class,
-        HighCalamityPrize::TYPE => HighCalamityPrize::class,
-        SuperCalamityPrize::TYPE => SuperCalamityPrize::class,
-        ProsperityPrize::TYPE => ProsperityPrize::class,
-        HighProsperityPrize::TYPE => HighProsperityPrize::class,
-        SuperProsperityPrize::TYPE => SuperProsperityPrize::class,
-    ];
-
-    public const ACHIEVEMENT_GROUP = [
-        TurnPrize::TYPE => TurnPrizeGroup::class,
-    ];
-
-    public static function getClassByType(string $type): string
+    public static function getClassByIslandAchievement(IslandAchievement $islandAchievement): Achievement
     {
-        return self::ACHIEVEMENTS[$type];
+        return match ($islandAchievement->type) {
+            TurnPrize::TYPE => TurnPrize::fromModel($islandAchievement),
+            ConquestSign::TYPE => ConquestSign::fromModel($islandAchievement),
+            CalamityPrize::TYPE => CalamityPrize::fromModel($islandAchievement),
+            HighCalamityPrize::TYPE => HighCalamityPrize::fromModel($islandAchievement),
+            SuperCalamityPrize::TYPE => SuperCalamityPrize::fromModel($islandAchievement),
+            ProsperityPrize::TYPE => ProsperityPrize::fromModel($islandAchievement),
+            HighProsperityPrize::TYPE => HighProsperityPrize::fromModel($islandAchievement),
+            SuperProsperityPrize::TYPE => SuperProsperityPrize::fromModel($islandAchievement),
+        };
     }
 }

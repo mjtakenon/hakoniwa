@@ -57,11 +57,7 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
         foreach ($submarines as $submarine) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            if ($submarine->getElevation() === CellConst::ELEVATION_SHALLOW) {
-                $fromTerrain->setCell($submarine->getPoint(), new Shallow(point: $submarine->getPoint()));
-            } else {
-                $fromTerrain->setCell($submarine->getPoint(), new Sea(point: $submarine->getPoint()));
-            }
+            $fromTerrain->setCell($submarine->getPoint(), CellConst::getDefaultCell($submarine->getPoint(), $submarine->getElevation()));
 
             $submarine->setPoint($seaCell->getPoint());
             $submarine->setElevation($seaCell->getElevation());
