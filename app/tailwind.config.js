@@ -54,7 +54,7 @@ module.exports = {
             animation: {
                 "fadein": "fadein 0.3s",
                 "fadeout-3s": "fadeout-3s 5.0s forwards",
-                "slide-in-left": "slide-in-left 1.2s"
+                "slide-from-left": "2s ease-in-out 0s 1 normal both running slide-from-left"
             },
             keyframes: {
                 "fadein": {
@@ -70,16 +70,16 @@ module.exports = {
                     "70%": {opacity: 1},
                     "100%": {opacity: 0}
                 },
-                "slide-in-left": {
+                "slide-from-left": {
                     "0%": {
-                        transform: "translateX(-20%)",
                         opacity: 0,
+                        transform: "translateX(-120%) translateZ(0)"
                     },
                     "100%": {
-                        transform: "translateX(0%)",
-                        opacity: 1
+                        opacity: 1,
+                        transform: "translateX(0) translateZ(0)"
                     }
-                },
+                }
             }
         },
     },

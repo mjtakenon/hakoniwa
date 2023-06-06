@@ -20,10 +20,12 @@
             ></plan-list>
         </div>
         <comment-form></comment-form>
-        <log-viewer
-            :title="store.island.name + '島の近況'"
-            :parsed-logs="store.logs"
-        ></log-viewer>
+        <div class="md:max-lg:px-3">
+            <log-viewer
+                :title="store.island.name + '島の近況'"
+                :parsed-logs="store.logs"
+            ></log-viewer>
+        </div>
         <island-popup></island-popup>
     </div>
 </template>
@@ -174,7 +176,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 #plan-page {
-    @apply text-center mx-auto max-w-[1000px] max-md:overflow-x-scroll min-h-[1200px]
+    @apply text-center mx-auto max-w-[1000px] min-h-[1200px];
 }
 
 </style>

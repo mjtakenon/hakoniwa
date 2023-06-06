@@ -92,7 +92,9 @@ export default defineComponent({
         @apply flex justify-between;
 
         .comment-header-title {
-            @apply inline-block text-left bg-surface-variant text-on-surface-variant pt-1 px-4 rounded-t-2xl text-sm;
+            @apply inline-block text-left bg-surface-variant text-on-surface-variant pt-1 px-4 text-sm;
+            @apply rounded-tr-2xl;
+            @apply md:rounded-t-2xl;
         }
 
         .comment-update {
@@ -117,7 +119,8 @@ export default defineComponent({
     }
 
     .comment-body {
-        @apply bg-surface-variant -mt-0.5 p-2 rounded-tr-xl rounded-bl-xl rounded-br-xl;
+        @apply bg-surface-variant -mt-0.5 p-2;
+        @apply md:rounded-tr-xl md:rounded-bl-xl md:rounded-br-xl;
 
         #comment-input {
             @apply w-full bg-surface-variant text-on-surface-variant p-1 border border-background focus:outline-none rounded;

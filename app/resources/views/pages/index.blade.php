@@ -32,17 +32,27 @@
             <h2 class="subtitle mt-20">現在のランキング</h2>
             <hr/>
 
+            @if(count($islands) === 0)
+                <p>島が登録されていません</p>
+            @endif
+
             @foreach($islands as $index => $island)
                 <ranking-viewer
+                    class="index-ranking-viewer rounded-md"
                     :index="@js($index+1)"
                     :island="@js($island)"
                 ></ranking-viewer>
             @endforeach
 
-            <log-viewer
-                :title="'最近の出来事'"
-                :unparsed-logs="@js($logs)"
-            ></log-viewer>
+
+            @if(count($logs) > 0)
+                <log-viewer
+                    class="index-ranking-viewer"
+                    :title="'最近の出来事'"
+                    :unparsed-logs="@js($logs)"
+                ></log-viewer>
+            @endif
+
         </div>
         @include('components.footer')
     </div>

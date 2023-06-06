@@ -2,7 +2,7 @@
         <div
             class="ranking"
             :id="'ranking-' + $props.island.id"
-            :class="[isAppeared ? 'animate-slide-in-left' : '']"
+            :class="[isAppeared ? 'active' : '']"
         >
             <div class="ranking-index">
                 <div class="ranking-index-num">{{ $props.index }}</div>
@@ -137,6 +137,15 @@ export default defineComponent({
         onAppeared() {
             this.isAppeared = true;
             this.observer.disconnect();
+
+            // const target = document.getElementById("ranking-" + this.$props.island.id);
+            // target.animate({
+            //     transform: ["translateX(-120%) translateZ(0)", "translateX(0) translateZ(0)"]
+            // }, {
+            //     duration: 800,
+            //     easing: 'ease-in-out',
+            //     fill: "both",
+            // })
         }
     },
     props: {
@@ -173,6 +182,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .ranking {
     @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface;
+
+    &.active {
+        @apply animate-slide-from-left;
+    }
 
     .ranking-index {
         @apply flex items-center;
@@ -214,18 +227,21 @@ export default defineComponent({
                 @apply md:max-lg:border-none;
             }
             .ranking-summary-wrapper:nth-of-type(5) {
-                @apply md:border-none;
+                @apply lg:border-none;
             }
 
             .ranking-summary-data {
                 @apply flex items-end;
 
                 .ranking-summary-data-num {
-                    @apply grow text-base md:text-sm lg:text-lg inline-block text-right font-bold mr-2;
+                    @apply grow text-base inline-block text-right font-bold mr-2;
+                    @apply md:text-sm;
+                    @apply lg:text-lg lg:pb-1;
                 }
 
                 .ranking-summary-data-unit {
                     @apply text-xs w-1/6 text-right;
+                    @apply lg:text-[0.6rem]
                 }
             }
         }
@@ -254,7 +270,5 @@ export default defineComponent({
         }
     }
 }
-
-
 
 </style>
