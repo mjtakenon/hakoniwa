@@ -176,7 +176,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 #plan-page {
-    @apply text-center mx-auto max-w-[1000px] max-md:overflow-x-scroll min-h-[1200px]
+    @apply text-center mx-auto max-w-[1000px] min-h-[1200px];
 }
 
 </style>
