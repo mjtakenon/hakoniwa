@@ -139,7 +139,7 @@ export default defineComponent({
 
 #logs {
     // general
-    @apply text-left w-full mt-10 bg-surface pb-4 drop-shadow-md overflow-hidden;
+    @apply text-left w-full mt-10 bg-surface drop-shadow-md;
     @apply md:rounded-md;
 
     .subtitle {

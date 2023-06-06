@@ -54,7 +54,6 @@ module.exports = {
             animation: {
                 "fadein": "fadein 0.3s",
                 "fadeout-3s": "fadeout-3s 5.0s forwards",
-                "slide-in-left": "slide-in-left 1.2s"
             },
             keyframes: {
                 "fadein": {
@@ -69,16 +68,6 @@ module.exports = {
                     "0%": {opacity: 1},
                     "70%": {opacity: 1},
                     "100%": {opacity: 0}
-                },
-                "slide-in-left": {
-                    "0%": {
-                        transform: "translateX(-20%)",
-                        opacity: 0,
-                    },
-                    "100%": {
-                        transform: "translateX(0%)",
-                        opacity: 1
-                    }
                 },
             }
         },

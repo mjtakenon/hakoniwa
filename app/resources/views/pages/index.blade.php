@@ -38,6 +38,7 @@
 
             @foreach($islands as $index => $island)
                 <ranking-viewer
+                    class="index-ranking-viewer rounded-md"
                     :index="@js($index+1)"
                     :island="@js($island)"
                 ></ranking-viewer>
@@ -46,7 +47,7 @@
 
             @if(count($logs) > 0)
                 <log-viewer
-                    class="rounded-md"
+                    class="index-ranking-viewer"
                     :title="'最近の出来事'"
                     :unparsed-logs="@js($logs)"
                 ></log-viewer>

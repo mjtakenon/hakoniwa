@@ -2,7 +2,7 @@
         <div
             class="ranking"
             :id="'ranking-' + $props.island.id"
-            :class="[isAppeared ? 'animate-slide-in-left' : '']"
+            :class="[isAppeared ? 'active' : '']"
         >
             <div class="ranking-index">
                 <div class="ranking-index-num">{{ $props.index }}</div>
@@ -137,6 +137,15 @@ export default defineComponent({
         onAppeared() {
             this.isAppeared = true;
             this.observer.disconnect();
+
+            const target = document.getElementById("ranking-" + this.$props.island.id);
+            target.animate({
+                transform: ["translateX(-120%)", "translateX(0)"]
+            }, {
+                duration: 800,
+                easing: 'ease-in-out',
+                fill: "both",
+            })
         }
     },
     props: {
@@ -173,6 +182,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .ranking {
     @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface;
+    transform: translateZ(0);
 
     .ranking-index {
         @apply flex items-center;
@@ -257,7 +267,5 @@ export default defineComponent({
         }
     }
 }
-
-
 
 </style>
