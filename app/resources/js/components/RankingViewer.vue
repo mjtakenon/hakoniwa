@@ -214,18 +214,21 @@ export default defineComponent({
                 @apply md:max-lg:border-none;
             }
             .ranking-summary-wrapper:nth-of-type(5) {
-                @apply md:border-none;
+                @apply lg:border-none;
             }
 
             .ranking-summary-data {
                 @apply flex items-end;
 
                 .ranking-summary-data-num {
-                    @apply grow text-base md:text-sm lg:text-lg inline-block text-right font-bold mr-2;
+                    @apply grow text-base inline-block text-right font-bold mr-2;
+                    @apply md:text-sm;
+                    @apply lg:text-lg lg:pb-1;
                 }
 
                 .ranking-summary-data-unit {
                     @apply text-xs w-1/6 text-right;
+                    @apply lg:text-[0.6rem]
                 }
             }
         }
