@@ -46,6 +46,7 @@
 
             @if(count($logs) > 0)
                 <log-viewer
+                    class="rounded-md"
                     :title="'最近の出来事'"
                     :unparsed-logs="@js($logs)"
                 ></log-viewer>

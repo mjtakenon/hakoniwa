@@ -20,10 +20,12 @@
             ></plan-list>
         </div>
         <comment-form></comment-form>
-        <log-viewer
-            :title="store.island.name + '島の近況'"
-            :parsed-logs="store.logs"
-        ></log-viewer>
+        <div class="md:max-lg:px-3">
+            <log-viewer
+                :title="store.island.name + '島の近況'"
+                :parsed-logs="store.logs"
+            ></log-viewer>
+        </div>
         <island-popup></island-popup>
     </div>
 </template>

@@ -4,10 +4,12 @@
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <island-viewer></island-viewer>
-        <log-viewer
-            :title="store.island.name + '島の近況'"
-            :parsed-logs="store.logs"
-        ></log-viewer>
+        <div class="md:max-lg:px-3">
+            <log-viewer
+                :title="store.island.name + '島の近況'"
+                :parsed-logs="store.logs"
+            ></log-viewer>
+        </div>
     </div>
 </template>
 

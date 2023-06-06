@@ -140,8 +140,7 @@ export default defineComponent({
 #logs {
     // general
     @apply text-left w-full mt-10 bg-surface pb-4 drop-shadow-md overflow-hidden;
-    // desktop
-    @apply lg:rounded-2xl;
+    @apply md:rounded-md;
 
     .subtitle {
         @apply mt-0 py-3 px-3 mb-3 w-full bg-primary text-on-primary font-bold;
