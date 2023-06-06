@@ -138,14 +138,14 @@ export default defineComponent({
             this.isAppeared = true;
             this.observer.disconnect();
 
-            const target = document.getElementById("ranking-" + this.$props.island.id);
-            target.animate({
-                transform: ["translateX(-120%)", "translateX(0)"]
-            }, {
-                duration: 800,
-                easing: 'ease-in-out',
-                fill: "both",
-            })
+            // const target = document.getElementById("ranking-" + this.$props.island.id);
+            // target.animate({
+            //     transform: ["translateX(-120%) translateZ(0)", "translateX(0) translateZ(0)"]
+            // }, {
+            //     duration: 800,
+            //     easing: 'ease-in-out',
+            //     fill: "both",
+            // })
         }
     },
     props: {
@@ -182,7 +182,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .ranking {
     @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface;
-    transform: translateZ(0);
+
+    &.active {
+        @apply animate-slide-from-left;
+    }
 
     .ranking-index {
         @apply flex items-center;
