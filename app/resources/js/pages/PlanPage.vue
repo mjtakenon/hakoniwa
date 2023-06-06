@@ -20,6 +20,7 @@
                 :class="{'order-2' : !canSideBySide}"
             ></plan-list>
         </div>
+        <island-bbs></island-bbs>
         <div class="md:max-lg:px-3">
             <log-viewer
                 :title="store.island.name + '島の近況'"
@@ -50,9 +51,11 @@ import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 import IslandPopup from "../components/IslandPopup.vue";
 import CommentForm from "../components/CommentForm.vue";
 import {AchievementProp, getAchievementsList} from "../store/Entity/Achievement";
+import IslandBbs from "../components/IslandBbs.vue";
 
 export default defineComponent({
     components: {
+        IslandBbs,
         CommentForm,
         IslandEditor,
         IslandPopup,
