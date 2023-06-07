@@ -278,7 +278,7 @@ export default defineComponent({
                 .post-turn {
                     @apply text-left;
                     @apply max-md:mr-auto;
-                    @apply md:w-1/12 md:pr-3 md:mr-3 md:my-auto;
+                    @apply md:pr-3 md:mr-3 md:my-auto;
 
                     .turn-title {
                         @apply text-xs;
