@@ -34,6 +34,8 @@ class DetailController extends Controller
             }
 
             $user = \Auth::user();
+            /** @var Island $commenterIsland */
+            $userIsland = $user->island;
 
             if ($islandBbs->commenter_user_id !== $user->id) {
                 return $this->forbidden();
@@ -45,13 +47,13 @@ class DetailController extends Controller
                 ->withTrashed()
                 ->orderByDesc('id')
                 ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
-                ->with(['island', 'commenterUser', 'commenterIsland', 'turn'])
+                ->with(['commenterIsland', 'turn'])
                 ->get();
 
             return response()->json([
-                    'bbs' => $islandBbses->map(function ($islandBbs) use ($user) {
+                    'bbs' => $islandBbses->map(function ($islandBbs) use ($user, $userIsland) {
                         /** @var IslandBbs $islandBbs */
-                        return $islandBbs->toViewArray($user, $user->island);
+                        return $islandBbs->toViewArray($islandBbs->turn, $islandBbs->commenterIsland, $user, $userIsland);
                     })]
             );
         });

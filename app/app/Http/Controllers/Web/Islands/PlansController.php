@@ -63,7 +63,7 @@ class PlansController extends Controller
             ->withTrashed()
             ->orderByDesc('id')
             ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
-            ->with(['island', 'commenterUser', 'commenterIsland', 'turn'])
+            ->with(['commenterIsland', 'turn'])
             ->get();
 
         $summary = $island->islandStatuses()
@@ -122,7 +122,7 @@ class PlansController extends Controller
                 'achievements' => Achievements::create()->fromModel($islandAchievements)->toArray(),
                 'bbs' => $islandBbses->map(function ($islandBbs) use ($user, $userIsland) {
                     /** @var IslandBbs $islandBbs */
-                    return $islandBbs->toViewArray($user, $userIsland);
+                    return $islandBbs->toViewArray($islandBbs->turn, $islandBbs->commenterIsland, $user, $userIsland);
                 }),
             ],
             'executablePlans' => \PlanService::getExecutablePlans($islandStatus->development_points),

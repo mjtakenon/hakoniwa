@@ -80,13 +80,13 @@ class IndexController extends Controller
                 ->withTrashed()
                 ->orderByDesc('id')
                 ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
-                ->with(['island', 'commenterUser', 'commenterIsland', 'turn'])
+                ->with(['commenterIsland', 'turn'])
                 ->get();
 
             return response()->json([
                 'bbs' => $islandBbses->map(function ($islandBbs) use ($commenterUser, $commenterIsland) {
                     /** @var IslandBbs $islandBbs */
-                    return $islandBbs->toViewArray($commenterUser, $commenterIsland);
+                    return $islandBbs->toViewArray($islandBbs->turn, $islandBbs->commenterIsland, $commenterUser, $commenterIsland);
                 })]
             );
         });
