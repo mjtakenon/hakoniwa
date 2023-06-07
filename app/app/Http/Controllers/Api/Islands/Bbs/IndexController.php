@@ -57,6 +57,10 @@ class IndexController extends Controller
             $visibility = $validated->get('visibility');
 
             if ($visibility === IslandBbs::VISIBILITY_PRIVATE) {
+                if ($commenterIsland->id === $islandId) {
+                    return $this->badRequest();
+                }
+
                 if ($commenterIslandStatus->funds >= self::PRIVATE_POST_PRICE) {
                     $commenterIslandStatus->funds -= self::PRIVATE_POST_PRICE;
                     $commenterIslandStatus->save();
