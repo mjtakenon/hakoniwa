@@ -52,6 +52,7 @@ import IslandPopup from "../components/IslandPopup.vue";
 import CommentForm from "../components/CommentForm.vue";
 import {AchievementProp, getAchievementsList} from "../store/Entity/Achievement";
 import IslandBbs from "../components/IslandBbs.vue";
+import {BbsMessage} from "../store/Entity/Bbs";
 
 export default defineComponent({
     components: {
@@ -99,6 +100,8 @@ export default defineComponent({
         // Achievementの変換
         const achievements = getAchievementsList(props.island.achievements);
 
+        console.debug(props.island.bbs);
+
         // Pinia
         const store = useMainStore();
         store.$patch({
@@ -113,7 +116,8 @@ export default defineComponent({
             targetIslands: props.targetIslands,
             selectedTargetIsland: props.island.id,
             turn: turn,
-            achievements: achievements
+            achievements: achievements,
+            bbs: props.island.bbs,
         });
         return {store}
     },
@@ -154,7 +158,8 @@ export default defineComponent({
                 logs: LogProps[],
                 summary: SummaryProps[]
                 comment?: string,
-                achievements: AchievementProp[]
+                achievements: AchievementProp[],
+                bbs: BbsMessage[],
             }>
         },
         planCandidate: {

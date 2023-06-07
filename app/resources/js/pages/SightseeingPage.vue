@@ -26,6 +26,7 @@ import {Plan} from "../store/Entity/Plan";
 import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 import CommentForm from "../components/CommentForm.vue";
 import {AchievementProp, getAchievementsList} from "../store/Entity/Achievement";
+import {BbsMessage} from "../store/Entity/Bbs";
 
 export default defineComponent({
     components: {
@@ -58,7 +59,8 @@ export default defineComponent({
             status: props.island.status,
             terrains: props.island.terrains,
             logs: logs,
-            achievements: achievements
+            achievements: achievements,
+            bbs: props.island.bbs,
         })
         return { store }
     },
@@ -84,7 +86,8 @@ export default defineComponent({
                 logs: LogProps[]
                 comment?: string,
                 summary: SummaryProps[],
-                achievements: AchievementProp[]
+                achievements: AchievementProp[],
+                bbs: BbsMessage[],
             }>
         },
     },

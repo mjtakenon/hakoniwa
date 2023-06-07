@@ -41,8 +41,8 @@
         </div>
         <div class="viewer">
             <div class="viewer-title">投稿一覧</div>
-            <div v-show="posts.length === 0" class="no-post">投稿はありません</div>
-            <template v-for="post of posts">
+            <div v-show="this.store.bbs.length === 0" class="no-post">投稿はありません</div>
+            <template v-for="post of this.store.bbs">
                 <div v-if="post.comment !== null && post.comment !== undefined" class="post"
                      :class="[post.visibility === 'public' ? 'border-primary-container' : 'border-secondary-container']">
                     <div class="post-header"
@@ -53,7 +53,7 @@
                         </div>
                         <a class="post-profile" :href="'/islands/' + post.island.id">
                             <div class="post-island-owner">{{ post.island.owner_name }}</div>
-                            <div class="post-island-name">({{ post.island.name }})</div>
+                            <div class="post-island-name">({{ post.island.name }}島)</div>
                         </a>
                         <div v-show="post.island.id === store.island.id" class="post-badge owner">
                             <div class="badge-text">島のオーナー</div>
@@ -97,46 +97,6 @@ export default defineComponent({
             comment: "",
             formError: "",
             submitStatus: RequestStatus.None as RequestStatus,
-            posts: [
-                {
-                    id: 1,
-                    user_id: 1,
-                    turn: 1,
-                    island: {
-                        id: 1,
-                        name: "あいうえお島",
-                        owner_name: "かきくけこ",
-                    },
-                    comment: "これはメッセージです",
-                    visibility: "public",
-                    deleted: false
-                },
-                {
-                    id: 2,
-                    user_id: 3,
-                    turn: 2,
-                    island: {
-                        id: 2,
-                        name: "あ島",
-                        owner_name: "まみむめも",
-                    },
-                    comment: "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
-                    visibility: "private",
-                    deleted: false
-                },
-                {
-                    id: 3,
-                    user_id: 1,
-                    visibility: "private",
-                    deleted: true
-                },
-                {
-                    id: 3,
-                    user_id: 1,
-                    visibility: "private",
-                    deleted: false
-                },
-            ] as BbsMessage[]
         }
     },
     setup() {
@@ -293,6 +253,7 @@ export default defineComponent({
 
                 .post-turn {
                     @apply text-left;
+                    @apply max-md:mr-auto;
                     @apply md:w-1/12 md:pr-3 md:mr-3 md:my-auto;
 
                     .turn-title {
@@ -318,8 +279,7 @@ export default defineComponent({
                 }
 
                 .post-badge {
-                    @apply inline-flex items-center rounded-full px-2 text-xs font-bold leading-none;
-                    @apply max-md:ml-auto max-md:mr-2;
+                    @apply inline-flex items-center rounded-full px-2 text-xs font-bold leading-none mr-2;
 
                     &.owner {
                         @apply bg-primary text-on-primary;
