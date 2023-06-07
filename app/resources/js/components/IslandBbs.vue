@@ -4,7 +4,7 @@
             <font-awesome-icon class="mr-6" :icon="['fas', 'chalkboard-user']" size="xl"/>
             <span>{{ store.island.name }}島の掲示板</span>
         </div>
-        <div class="bbs-form">
+        <div v-if="store.user.island !== null" class="bbs-form">
             <div class="bbs-form-inner">
                 <div class="bbs-form-title">掲示板送信</div>
                 <div class="bbs-input-box">
@@ -342,7 +342,7 @@ export default defineComponent({
         }
 
         .post-deleted, .post-private-hidden{
-            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg mb-6;
+            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg mb-3;
         }
 
         .post-deleted {

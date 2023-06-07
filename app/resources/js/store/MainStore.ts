@@ -91,7 +91,7 @@ export const useMainStore = defineStore('main', {
             isLoadingTerrain: false,
             user: {
                 user_id: 0,
-                island: {id: 0, name: "", owner_name: ""}
+                island: null,
             },
             achievements: [],
             bbs: []

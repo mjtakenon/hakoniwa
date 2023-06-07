@@ -90,14 +90,11 @@ export default defineComponent({
         if (theme !== null && theme !== undefined) {
             store.theme = JSON.parse(theme);
         }
+
         if(props.ownedIsland !== null && props.ownedIsland !== undefined) {
             store.user = {
                 user_id: props.user.id,
-                island: {
-                    id: props.ownedIsland.id,
-                    name: props.ownedIsland.name,
-                    owner_name: props.ownedIsland.owner_name,
-                }
+                island: props.ownedIsland ?? null
             }
         }
         return {store};
