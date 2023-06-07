@@ -52,7 +52,7 @@
                             <span class="turn-title">ターン: </span>
                             <span class="turn-num">{{ post.turn }}</span>
                         </div>
-                        <a class="post-profile" :href="'/islands/' + post.island.id">
+                        <a class="post-profile" :href="getIslandUrl(post)">
                             <div class="post-island-owner">{{ post.island.owner_name }}</div>
                             <div class="post-island-name">({{ post.island.name }}島)</div>
                         </a>
@@ -159,6 +159,13 @@ export default defineComponent({
             this.formError = "";
             if(this.comment === "") {
                 this.formError = "入力されていません";
+            }
+        },
+        getIslandUrl(target: BbsMessage) {
+            if (target.island === null || target.island === undefined) {
+                return "";
+            } else {
+                return '/islands/' + target.island.id;
             }
         }
     }
