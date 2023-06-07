@@ -1,7 +1,7 @@
 <template>
     <div id="countdown-widget">
         <div class="countdown-box rounded-br-xl md:rounded-b-xl">
-            <span class="countdown-label mr-1">turn:</span>
+            <span class="countdown-label mr-1">ターン:</span>
             <span class="text-sm">{{ store.turn.turn }}</span>
         </div>
         <div

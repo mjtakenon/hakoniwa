@@ -20,14 +20,15 @@
                     :class="{'active': sendMode === 'public'}"
                     @click="changeSendMode('public')"
                 >
-                    通常
+                    全体
                 </button>
                 <button
+                    v-if="store.island.id !== store.user.island.id"
                     class="button-private"
                     :class="{'active': sendMode === 'private'}"
                     @click="changeSendMode('private')"
                 >
-                    秘密通信(1000億円)
+                    秘密(1000億円)
                 </button>
                 <button
                     class="bbs-submit"
@@ -48,7 +49,7 @@
                     <div class="post-header"
                          :class="[post.visibility === 'public' ? 'bg-primary-container' : 'bg-secondary-container']">
                         <div class="post-turn">
-                            <span class="turn-title">turn:</span>
+                            <span class="turn-title">ターン: </span>
                             <span class="turn-num">{{ post.turn }}</span>
                         </div>
                         <a class="post-profile" :href="'/islands/' + post.island.id">
@@ -260,7 +261,7 @@ export default defineComponent({
         }
 
         .post {
-            @apply border rounded-lg overflow-hidden mb-6;
+            @apply border rounded-lg overflow-hidden mb-2;
 
             .post-header {
                 @apply flex flex-wrap px-4 py-1 w-full;
