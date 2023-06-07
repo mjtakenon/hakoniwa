@@ -40,11 +40,11 @@ class IslandBbs extends Model
         return $this->belongsTo(Turn::class);
     }
 
-    public function toViewArray(?User $user, ?Island $island): array
+    public function toViewArray(Turn $turn, ?Island $commenterIsland, ?User $viewerUser, ?Island $viewerIsland): array
     {
         $data = [
             'id' => $this->id,
-            'user_id' => $this->commenterUser->id,
+            'user_id' => $this->commenter_user_id,
             'visibility' => $this->visibility,
             'deleted' => !is_null($this->deleted_at),
         ];
@@ -54,19 +54,19 @@ class IslandBbs extends Model
         }
 
         if ($this->visibility === IslandBbs::VISIBILITY_PRIVATE) {
-            if ($this->island_id !== $island?->id && $this->commenterUser->id !== $user?->id) {
+            if ($this->island_id !== $viewerIsland?->id && $this->commenter_user_id !== $viewerUser?->id) {
                 return $data;
             }
         }
 
-        $data['turn'] = $this->turn->turn;
+        $data['turn'] = $turn->turn;
         $data['comment'] = $this->comment;
 
-        if (!is_null($this->commenterIsland)) {
+        if (!is_null($commenterIsland)) {
             $data['island'] = [
-                'id' => $this->commenterIsland->id,
-                'name' => $this->commenterIsland->name,
-                'owner_name' => $this->commenterIsland->owner_name,
+                'id' => $commenterIsland->id,
+                'name' => $commenterIsland->name,
+                'owner_name' => $commenterIsland->owner_name,
             ];
         }
 
