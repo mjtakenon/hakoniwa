@@ -20,7 +20,7 @@ class TurnPrizeGroup extends AchievementGroup
             /** @var TurnPrize $achievement */
             return $achievement->getExtra()['turn'];
         })->sort()->toArray();
-        return 'turn: ' . implode(',', $turns);
+        return 'ターン: ' . implode(',', $turns);
     }
 
     public function getExtraText(): ?string

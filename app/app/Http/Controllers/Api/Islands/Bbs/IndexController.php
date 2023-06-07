@@ -48,7 +48,7 @@ class IndexController extends Controller
             $commenterUser = \Auth::user();
 
             /** @var Island $commenterIsland */
-            $commenterIsland = $commenterUser->island()->firstOrFail();
+            $commenterIsland = $commenterUser->island;
 
             /** @var IslandStatus $commenterIslandStatus */
             $commenterIslandStatus = $commenterIsland->islandStatuses->where('turn_id', $turn->id)->firstOrFail();

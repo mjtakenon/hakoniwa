@@ -5,33 +5,21 @@ namespace App\Http\Controllers\Api\Islands\Bbs;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\WebApi;
 use App\Models\Island;
-use App\Models\IslandHistory;
-use App\Models\IslandStatus;
-use App\Models\IslandTerrain;
-use App\Models\Turn;
+use App\Models\IslandBbs;
 
 class DetailController extends Controller
 {
     use WebApi;
 
+    const DEFAULT_SHOW_BBS_COMMENTS = 10;
+
     public function delete(int $islandId, int $bbsId): \Illuminate\Http\JsonResponse
     {
-        $validator = \Validator::make(\Request::all(), [
-            'name' => 'string|nullable|required_without:owner_name',
-            'owner_name' => 'string|nullable',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->badRequest();
-        }
-
-        if (!\HakoniwaService::isIslandRegistered() || \Auth::user()->island->id !== $islandId) {
+        if (!\HakoniwaService::isIslandRegistered()) {
             return $this->forbidden();
         }
 
-        $validated = $validator->safe()->collect();
-
-        return \DB::transaction(function () use ($islandId, $validated) {
+        return \DB::transaction(function () use ($islandId, $bbsId) {
 
             $island = Island::find($islandId);
 
@@ -39,71 +27,33 @@ class DetailController extends Controller
                 return $this->notFound();
             }
 
-            $turn = Turn::latest()->firstOrFail();
-            /** @var IslandStatus $islandStatus */
-            $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
-            /** @var IslandTerrain $islandTerrain */
-            $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
+            $islandBbs = IslandBbs::find($bbsId);
 
-            $status = $islandStatus->toEntity();
-            $terrain = $islandTerrain->toEntity();
-
-            $name  = $validated->get('name');
-            $ownerName  = $validated->get('owner_name');
-
-            if (Island::where('name', $name)->where('id', '!=', $island->id)->exists()) {
-                return $this->badRequest([
-                    'code' => 'island_name_duplicated'
-                ]);
+            if (is_null($islandBbs)) {
+                return $this->notFound();
             }
 
-            if (Island::where('owner_name', $ownerName)->where('id', '!=', $island->id)->exists()) {
-                return $this->badRequest([
-                    'code' => 'owner_name_duplicated'
-                ]);
+            $user = \Auth::user();
+
+            if ($islandBbs->commenter_user_id !== $user->id) {
+                return $this->forbidden();
             }
 
-            if ($status->getFunds() < self::CHANGE_ISLAND_NAME_PRICE) {
-                return $this->badRequest([
-                    'code' => 'lack_of_funds'
-                ]);
-            }
-            $updated = false;
-            $islandHistory = IslandHistory::createFromIsland($island);
+            $islandBbs->delete();
 
-            if (!is_null($name) && $island->name !== $name) {
-                $island->name = $name;
-                $updated = true;
-            }
+            $islandBbses = IslandBbs::where('island_id', $islandId)
+                ->withTrashed()
+                ->orderByDesc('id')
+                ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
+                ->with(['island', 'commenterUser', 'commenterIsland', 'turn'])
+                ->get();
 
-            if (!is_null($ownerName) && $island->owner_name !== $ownerName) {
-                $island->owner_name = $ownerName;
-                $updated = true;
-            }
-
-            if ($updated) {
-                $islandHistory->save();
-                $island->save();
-
-                $status->setFunds($status->getFunds() - self::CHANGE_ISLAND_NAME_PRICE);
-                $islandStatus->funds = $status->getFunds();
-                $islandStatus->save();
-
-                $islandTerrain->terrain = $terrain->changeIslandName($island)->toJson(true);
-                $islandTerrain->save();
-
-                return $this->ok([
-                    'island' => [
-                        'id' => $island->id,
-                        'name' => $island->name,
-                        'owner_name' => $island->owner_name,
-                    ]
-                ]);
-            } else {
-                return $this->badRequest([
-                    'code' => 'not_changed'
-                ]);
-            }
+            return response()->json([
+                    'bbs' => $islandBbses->map(function ($islandBbs) use ($user) {
+                        /** @var IslandBbs $islandBbs */
+                        return $islandBbs->toViewArray($user, $user->island);
+                    })]
+            );
         });
     }
 
