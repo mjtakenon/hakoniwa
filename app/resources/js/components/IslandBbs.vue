@@ -52,11 +52,17 @@
                             <span class="turn-title">ターン: </span>
                             <span class="turn-num">{{ post.turn }}</span>
                         </div>
-                        <a class="post-profile" :href="getIslandUrl(post)">
+                        <a v-if="post.island?.id !== undefined"
+                           class="post-profile"
+                           :href="'/islands/' + post.island.id"
+                        >
                             <div class="post-island-owner">{{ post.island.owner_name }}</div>
                             <div class="post-island-name">({{ post.island.name }}島)</div>
                         </a>
-                        <div v-show="post.island.id === store.island.id" class="post-badge owner">
+                        <div v-else class="post-profile">
+                            <div class="post-island-owner">削除された島</div>
+                        </div>
+                        <div v-show="post.island?.id === store.island.id" class="post-badge owner">
                             <div class="badge-text">島のオーナー</div>
                         </div>
                         <div v-show="post.visibility === 'private'" class="post-badge private">
@@ -161,12 +167,8 @@ export default defineComponent({
                 this.formError = "入力されていません";
             }
         },
-        getIslandUrl(target: BbsMessage) {
-            if (target.island === null || target.island === undefined) {
-                return "";
-            } else {
-                return '/islands/' + target.island.id;
-            }
+        hasIsland(target: BbsMessage) {
+            return target.island !== null && target.island !== undefined;
         }
     }
 })
