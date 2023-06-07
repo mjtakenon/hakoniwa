@@ -1,5 +1,6 @@
 <template>
     <div class="stats">
+        <!-- TODO: storeの値を直接参照するように、今後のことも考えてv-forもやめる-->
         <div
             v-for="(status, index) in statuses"
             class="stats-box"

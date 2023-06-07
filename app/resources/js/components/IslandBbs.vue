@@ -8,12 +8,12 @@
             <div class="bbs-form-inner">
                 <div class="bbs-form-title">掲示板送信</div>
                 <div class="bbs-input-box">
-                    <input id="bbs-input" type="text" name="bbs-input" maxlength="128" minlength="0" v-model="message" @blur="checkInput">
+                    <input id="bbs-input" type="text" name="bbs-input" maxlength="128" minlength="0" v-model="comment" @blur="checkInput">
                     <div v-if="isSubmitting" class="bbs-input-notify updating">
                         <div class="update-circle"><div class="update-circle-spin"></div></div>
                         <span>送信中...</span>
                     </div>
-                    <div v-if="formError !== ''" class="bbs-input-notify error">{{formError}}</div>
+                    <div v-else-if="formError !== ''" class="bbs-input-notify error">{{formError}}</div>
                 </div>
                 <button
                     class="button-public"
@@ -88,13 +88,13 @@ import {useMainStore} from "../store/MainStore";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faChalkboardUser, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import {BbsMessage, BbsVisibility} from "../store/Entity/Bbs";
-import {RequestStatus} from "../store/Entity/Network";
+import {ErrorType, RequestStatus} from "../store/Entity/Network";
 
 export default defineComponent({
     data() {
         return {
             sendMode: "public" as BbsVisibility,
-            message: "",
+            comment: "",
             formError: "",
             submitStatus: RequestStatus.None as RequestStatus,
             posts: [
@@ -156,14 +156,33 @@ export default defineComponent({
         changeSendMode(mode: BbsVisibility) {
             this.sendMode = mode;
         },
-        bbsSubmit() {
+        async bbsSubmit() {
             this.checkInput();
             if(this.hasError || this.isSubmitting) return;
+            this.submitStatus = RequestStatus.Updating;
+            const result = await this.store.postBbs(this.comment, this.sendMode);
+            this.submitStatus = result.status;
+
+            if(result.status === RequestStatus.Success) {
+                this.comment = "";
+            }
+
+            if(result.status === RequestStatus.Failed) {
+                if (result.error === ErrorType.LackOfFunds) {
+                    this.formError = "資金が不足しています";
+                } else if (result.error === ErrorType.NotFound) {
+                    this.formError = "島が見つかりません";
+                } else if (result.error === ErrorType.TooManyRequests) {
+                    this.formError = "時間をおいてから送信してください"
+                } else {
+                    this.formError = "不明なエラーです";
+                }
+            }
         },
         checkInput() {
-            this.message = this.message.trim();
+            this.comment = this.comment.trim();
             this.formError = "";
-            if(this.message === "") {
+            if(this.comment === "") {
                 this.formError = "入力されていません";
             }
         }
