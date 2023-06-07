@@ -28,6 +28,7 @@ class DetailController extends Controller
 
         $turn = Turn::latest()->firstOrFail();
         $user = \Auth::user();
+        $userIsland = $user?->island;
         $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
 
         /** @var IslandStatus $islandStatus */
@@ -111,9 +112,9 @@ class DetailController extends Controller
                     }
                 })->filter(function ($status) { return !is_null($status); }),
                 'achievements' => Achievements::create()->fromModel($islandAchievements)->toArray(),
-                'bbs' => $islandBbses->map(function ($islandBbs) use ($user) {
+                'bbs' => $islandBbses->map(function ($islandBbs) use ($user, $userIsland) {
                     /** @var IslandBbs $islandBbs */
-                    return $islandBbs->toViewArray($user);
+                    return $islandBbs->toViewArray($user, $userIsland);
                 }),
             ]
         ]);

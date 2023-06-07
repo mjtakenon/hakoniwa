@@ -40,7 +40,7 @@ class IslandBbs extends Model
         return $this->belongsTo(Turn::class);
     }
 
-    public function toViewArray(?User $user): array
+    public function toViewArray(?User $user, ?Island $island): array
     {
         $data = [
             'id' => $this->id,
@@ -54,7 +54,7 @@ class IslandBbs extends Model
         }
 
         if ($this->visibility === IslandBbs::VISIBILITY_PRIVATE) {
-            if ($this->island_id !== $user?->id && $this->commenterIsland->id !== $user?->id) {
+            if ($this->island_id !== $island?->id && $this->commenterUser->id !== $user?->id) {
                 return $data;
             }
         }

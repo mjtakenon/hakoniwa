@@ -84,9 +84,9 @@ class IndexController extends Controller
                 ->get();
 
             return response()->json([
-                'bbs' => $islandBbses->map(function ($islandBbs) use ($commenterUser) {
+                'bbs' => $islandBbses->map(function ($islandBbs) use ($commenterUser, $commenterIsland) {
                     /** @var IslandBbs $islandBbs */
-                    return $islandBbs->toViewArray($commenterUser);
+                    return $islandBbs->toViewArray($commenterUser, $commenterIsland);
                 })]
             );
         });
