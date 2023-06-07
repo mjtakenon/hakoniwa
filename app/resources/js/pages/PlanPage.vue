@@ -20,8 +20,8 @@
                 :class="{'order-2' : !canSideBySide}"
             ></plan-list>
         </div>
-        <island-bbs></island-bbs>
         <div class="md:max-lg:px-3">
+            <island-bbs></island-bbs>
             <log-viewer
                 :title="store.island.name + '島の近況'"
                 :parsed-logs="store.logs"
@@ -99,8 +99,6 @@ export default defineComponent({
 
         // Achievementの変換
         const achievements = getAchievementsList(props.island.achievements);
-
-        console.debug(props.island.bbs);
 
         // Pinia
         const store = useMainStore();

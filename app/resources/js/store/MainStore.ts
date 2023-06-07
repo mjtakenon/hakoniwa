@@ -259,6 +259,21 @@ export const useMainStore = defineStore('main', {
 
             return result;
         },
+        async deleteBbs(target: BbsMessage): Promise<AjaxResult> {
+            let result = {} as AjaxResult;
+            console.debug('DELETE', '/api/islands/' + this.island.id + '/bbs/' + target.id);
+
+            await axios.delete(
+                '/api/islands/' + this.island.id + '/bbs/' + target.id,
+            ).then(res => {
+                result.status = RequestStatus.Success;
+                this.bbs = res.data.bbs;
+            }).catch(err => {
+                console.debug(err);
+                result.status = RequestStatus.Failed;
+            })
+            return result;
+        },
         changeTheme(theme: Theme) {
             const app = document.getElementById("app");
             this.theme = theme;

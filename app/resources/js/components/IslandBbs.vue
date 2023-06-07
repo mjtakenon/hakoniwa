@@ -61,11 +61,14 @@
                         <div v-show="post.visibility === 'private'" class="post-badge private">
                             <div class="badge-text">秘密通信</div>
                         </div>
-                        <div v-show="post.user_id === store.user.user_id" class="delete-button">
-                            <font-awesome-icon class="icon" :icon="['fas', 'trash-can']"/>
+                        <div v-show="post.user_id === store.user.user_id" class="delete-button" @click="deleteComment(post)">
+                            <font-awesome-icon class="icon pointer-events-none" :icon="['fas', 'trash-can']"/>
                         </div>
                     </div>
                     <div class="post-contents">
+                        <div class="post-delete-error">
+                            {{ post.errorMessage }}
+                        </div>
                         <div class="post-comment">
                             {{ post.comment }}
                         </div>
@@ -97,6 +100,7 @@ export default defineComponent({
             comment: "",
             formError: "",
             submitStatus: RequestStatus.None as RequestStatus,
+            deleteStatus: RequestStatus.None as RequestStatus,
         }
     },
     setup() {
@@ -137,6 +141,16 @@ export default defineComponent({
                 } else {
                     this.formError = "不明なエラーです";
                 }
+            }
+        },
+        async deleteComment(target: BbsMessage) {
+            if (this.deleteStatus === RequestStatus.Updating) return;
+            this.deleteStatus = RequestStatus.Updating;
+            const result = await this.store.deleteBbs(target);
+            this.deleteStatus = result.status;
+
+            if(this.deleteStatus === RequestStatus.Failed) {
+                target.errorMessage = "コメント削除時にエラーが発生しました";
             }
         },
         checkInput() {
@@ -295,7 +309,7 @@ export default defineComponent({
                 }
 
                 .delete-button {
-                    @apply bg-error dark:bg-on-error px-1 rounded-md;
+                    @apply bg-error dark:bg-on-error px-1 rounded-md cursor-pointer;
                     @apply md:ml-auto;
 
                     .icon {
@@ -307,18 +321,26 @@ export default defineComponent({
             .post-contents {
                 @apply px-8 py-2 text-left;
 
+                .post-delete-error {
+                    @apply text-right text-xs text-error font-bold;
+                }
+
                 .post-comment {
                     @apply text-sm;
                 }
             }
         }
 
+        .post-deleted, .post-private-hidden{
+            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg mb-6;
+        }
+
         .post-deleted {
-            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg bg-error-container text-error mb-3;
+            @apply bg-error-container text-error;
         }
 
         .post-private-hidden {
-            @apply w-fit mx-auto px-3 py-1 text-center text-sm rounded-lg bg-alert-container text-alert mb-3;
+            @apply bg-alert-container text-alert;
         }
     }
 }
