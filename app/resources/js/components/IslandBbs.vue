@@ -4,6 +4,29 @@
             <font-awesome-icon class="mr-6" :icon="['fas', 'chalkboard-user']" size="xl"/>
             <span>{{ store.island.name }}島の掲示板</span>
         </div>
+        <div class="bbs-form">
+            <div class="bbs-form-inner">
+                <div class="bbs-form-title">掲示板送信</div>
+                <input id="bbs-input" type="text" name="bbs-input" maxlength="128" minlength="1">
+                <button
+                    class="button-public"
+                    :class="{'active': sendMode === 'public'}"
+                    @click="changeSendMode('public')"
+                >
+                    通常
+                </button>
+                <button
+                    class="button-private"
+                    :class="{'active': sendMode === 'private'}"
+                    @click="changeSendMode('private')"
+                >
+                    秘密通信(1000億円)
+                </button>
+                <button class="bbs-submit">
+                    送信
+                </button>
+            </div>
+        </div>
         <div class="viewer">
             <div class="viewer-title">投稿一覧</div>
             <div v-show="posts.length === 0" class="no-post">投稿はありません</div>
@@ -43,7 +66,6 @@
                     [秘密通信]
                 </div>
             </template>
-
         </div>
     </div>
 </template>
@@ -53,11 +75,12 @@ import {defineComponent} from 'vue'
 import {useMainStore} from "../store/MainStore";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faChalkboardUser, faTrashCan} from "@fortawesome/free-solid-svg-icons";
-import {BbsMessage} from "../store/Entity/Bbs";
+import {BbsMessage, BbsVisibility} from "../store/Entity/Bbs";
 
 export default defineComponent({
     data() {
         return {
+            sendMode: "public" as BbsVisibility,
             posts: [
                 {
                     id: 1,
@@ -105,7 +128,11 @@ export default defineComponent({
         const store = useMainStore();
         return {store};
     },
-    methods: {}
+    methods: {
+        changeSendMode(mode: BbsVisibility) {
+            this.sendMode = mode;
+        }
+    }
 })
 </script>
 
@@ -115,6 +142,48 @@ export default defineComponent({
 
     .header {
         @apply flex items-center justify-start px-4 font-bold text-left text-xl text-on-surface-variant;
+    }
+
+    .bbs-form {
+        @apply w-full my-4;
+        @apply px-1;
+        @apply md:px-8;
+
+        .bbs-form-inner {
+            @apply flex flex-wrap bg-surface-variant text-on-surface-variant py-2 rounded-md;
+            @apply px-2;
+            @apply md:px-4;
+
+            .bbs-form-title {
+                @apply w-full text-left text-sm font-bold mb-1;
+            }
+
+            #bbs-input {
+                @apply rounded-lg px-2;
+                @apply max-md:w-full max-md:mb-2;
+                @apply md:grow md:min-w-0;
+            }
+
+            .button-public, .button-private {
+                @apply py-0 px-2 text-sm border-none font-bold bg-surface text-on-surface drop-shadow-none rounded-full;
+                @apply max-md:mr-2;
+                @apply md:ml-2
+            }
+
+            .button-public.active {
+                @apply bg-primary text-on-primary;
+            }
+
+            .button-private.active {
+                @apply bg-secondary text-on-secondary;
+            }
+
+            .bbs-submit {
+                @apply py-0 px-2 text-sm font-bold border bg-background hover:bg-primary-container text-primary drop-shadow-none border-primary;
+                @apply max-md:ml-auto;
+                @apply md:ml-10;
+            }
+        }
     }
 
     .viewer {
