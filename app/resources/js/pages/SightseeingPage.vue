@@ -5,6 +5,7 @@
         <status-table></status-table>
         <island-viewer></island-viewer>
         <div class="md:max-lg:px-3">
+            <island-bbs></island-bbs>
             <log-viewer
                 :title="store.island.name + '島の近況'"
                 :parsed-logs="store.logs"
@@ -26,9 +27,12 @@ import {Plan} from "../store/Entity/Plan";
 import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 import CommentForm from "../components/CommentForm.vue";
 import {AchievementProp, getAchievementsList} from "../store/Entity/Achievement";
+import {BbsMessage} from "../store/Entity/Bbs";
+import IslandBbs from "../components/IslandBbs.vue";
 
 export default defineComponent({
     components: {
+        IslandBbs,
         CommentForm,
         IslandViewer,
         StatusTable,
@@ -58,7 +62,8 @@ export default defineComponent({
             status: props.island.status,
             terrains: props.island.terrains,
             logs: logs,
-            achievements: achievements
+            achievements: achievements,
+            bbs: props.island.bbs,
         })
         return { store }
     },
@@ -84,7 +89,8 @@ export default defineComponent({
                 logs: LogProps[]
                 comment?: string,
                 summary: SummaryProps[],
-                achievements: AchievementProp[]
+                achievements: AchievementProp[],
+                bbs: BbsMessage[],
             }>
         },
     },

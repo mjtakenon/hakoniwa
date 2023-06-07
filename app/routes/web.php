@@ -29,12 +29,12 @@ Route::prefix('/')->middleware($baseMiddleware)->group( function() {
 
 Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
     Route::get('{island_id}', [\App\Http\Controllers\Web\Islands\DetailController::class, 'get'])
-        ->where('island_id', '[0-9]+');
+        ->whereNumber('island_id');
 });
 
 Route::prefix('/islands')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {
     Route::get('{island_id}/plans', [\App\Http\Controllers\Web\Islands\PlansController::class, 'get'])
-        ->where('island_id', '[0-9]+');
+        ->whereNumber('island_id');
 });
 
 Route::prefix('/register')->middleware(array_merge($baseMiddleware, ['auth:sanctum']))->group( function() {

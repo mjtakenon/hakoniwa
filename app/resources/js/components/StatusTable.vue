@@ -50,6 +50,7 @@
 import {defineComponent} from "vue";
 import {useMainStore} from "../store/MainStore";
 import AchievementIcons from "./AchievementIcons.vue";
+import {storeToRefs} from "pinia";
 
 export default defineComponent({
     components: {
@@ -69,76 +70,20 @@ export default defineComponent({
     },
     setup() {
         const store = useMainStore();
-        return {store};
+        const {status: statusRef} = storeToRefs(store);
+        return {store, statusRef};
+    },
+    watch: {
+        statusRef: {
+            handler() {
+                this.updateStatus();
+            },
+            deep: true,
+        }
     },
     mounted() {
         window.addEventListener("resize", this.onWindowSizeChanged);
-        this.statuses = [
-            {
-                title: "発展ポイント",
-                numText: this.store.status.development_points.toLocaleString(),
-                unit: "pts",
-                fontSize: 1
-            },
-            {
-                title: "人口",
-                numText: this.store.status.population.toLocaleString(),
-                unit: "人",
-                fontSize: 1
-            },
-            {
-                title: "資金",
-                numText: this.store.status.funds.toLocaleString(),
-                unit: "億円",
-                fontSize: 1
-            },
-            {
-                title: "食料",
-                numText: this.store.status.foods.toLocaleString(),
-                unit: "㌧",
-                fontSize: 1
-            },
-            {
-                title: "資源",
-                numText: this.store.status.resources.toLocaleString(),
-                unit: "㌧",
-                fontSize: 1
-            },
-            {
-                title: "環境",
-                numText: this.store.getEnvironmentString,
-                unit: "",
-                fontSize: 1
-            },
-            {
-                title: "面積",
-                numText: this.store.status.area.toLocaleString(),
-                unit: "万坪",
-                fontSize: 1
-            },
-            {
-                title: "農業",
-                numText: this.store.status.foods_production_capacity.toLocaleString(),
-                unit: "人規模",
-                fontSize: 1
-            },
-            {
-                title: "工業",
-                numText: this.store.status.funds_production_capacity.toLocaleString(),
-                unit: "人規模",
-                fontSize: 1
-            },
-            {
-                title: "資源生産",
-                numText: this.store.status.resources_production_capacity.toLocaleString(),
-                unit: "人規模",
-                fontSize: 1
-            },
-        ]
-
-        this.$nextTick(() => {
-            this.calcNumFontSizes();
-        })
+        this.updateStatus();
     },
     unmounted() {
         window.removeEventListener("resize", this.onWindowSizeChanged);
@@ -175,6 +120,73 @@ export default defineComponent({
                 this.calcNumFontSizes()
             }
         },
+        updateStatus() {
+            this.statuses = [
+                {
+                    title: "発展ポイント",
+                    numText: this.store.status.development_points.toLocaleString(),
+                    unit: "pts",
+                    fontSize: 1
+                },
+                {
+                    title: "人口",
+                    numText: this.store.status.population.toLocaleString(),
+                    unit: "人",
+                    fontSize: 1
+                },
+                {
+                    title: "資金",
+                    numText: this.store.status.funds.toLocaleString(),
+                    unit: "億円",
+                    fontSize: 1
+                },
+                {
+                    title: "食料",
+                    numText: this.store.status.foods.toLocaleString(),
+                    unit: "㌧",
+                    fontSize: 1
+                },
+                {
+                    title: "資源",
+                    numText: this.store.status.resources.toLocaleString(),
+                    unit: "㌧",
+                    fontSize: 1
+                },
+                {
+                    title: "環境",
+                    numText: this.store.getEnvironmentString,
+                    unit: "",
+                    fontSize: 1
+                },
+                {
+                    title: "面積",
+                    numText: this.store.status.area.toLocaleString(),
+                    unit: "万坪",
+                    fontSize: 1
+                },
+                {
+                    title: "農業",
+                    numText: this.store.status.foods_production_capacity.toLocaleString(),
+                    unit: "人規模",
+                    fontSize: 1
+                },
+                {
+                    title: "工業",
+                    numText: this.store.status.funds_production_capacity.toLocaleString(),
+                    unit: "人規模",
+                    fontSize: 1
+                },
+                {
+                    title: "資源生産",
+                    numText: this.store.status.resources_production_capacity.toLocaleString(),
+                    unit: "人規模",
+                    fontSize: 1
+                },
+            ]
+            this.$nextTick(() => {
+                this.calcNumFontSizes();
+            })
+        }
     }
 });
 </script>

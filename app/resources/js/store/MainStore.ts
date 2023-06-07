@@ -12,6 +12,7 @@ import {Turn} from "./Entity/Turn";
 import {defaultTheme, Theme} from "./Entity/Theme";
 import {AjaxResult, ErrorType, RequestStatus} from "./Entity/Network";
 import {Achievement} from "./Entity/Achievement";
+import {BbsMessage, BbsVisibility} from "./Entity/Bbs";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -41,8 +42,12 @@ export interface PiniaState {
     theme: Theme,
     isOpenPopup: boolean,
     isLoadingTerrain: boolean,
-    user: Island,
-    achievements: Achievement[]
+    user: {
+        user_id: number,
+        island: Island
+    },
+    achievements: Achievement[],
+    bbs: BbsMessage[],
 }
 
 export const useMainStore = defineStore('main', {
@@ -84,8 +89,12 @@ export const useMainStore = defineStore('main', {
             theme: defaultTheme,
             isOpenPopup: false,
             isLoadingTerrain: false,
-            user: {id: 0, name: "", owner_name: ""},
-            achievements: []
+            user: {
+                user_id: 0,
+                island: null,
+            },
+            achievements: [],
+            bbs: []
         }
     },
     getters: {
@@ -198,8 +207,8 @@ export const useMainStore = defineStore('main', {
                 }
             ).then(res => {
                 result.status = RequestStatus.Success;
-                this.user.name = res.data.island.name;
-                this.user.owner_name = res.data.island.owner_name;
+                this.user.island.name = res.data.island.name;
+                this.user.island.owner_name = res.data.island.owner_name;
                 this.status.funds -= 1000;
             }).catch(err => {
                 console.debug(err);
@@ -215,6 +224,53 @@ export const useMainStore = defineStore('main', {
                 } else {
                     result.error = ErrorType.Unknown;
                 }
+            })
+            return result;
+        },
+        async postBbs(comment: string, visibility: BbsVisibility): Promise<AjaxResult> {
+            let result = {} as AjaxResult;
+            console.debug('POST', '/api/islands/' + this.island.id + '/bbs')
+            await axios.post(
+                '/api/islands/' + this.island.id + '/bbs',
+                {
+                    comment: comment,
+                    visibility: visibility
+                }
+            ).then(res => {
+                result.status = RequestStatus.Success;
+                if (visibility === "private" && this.user.island.id === this.island.id) {
+                    this.status.funds -= 1000;
+                }
+                this.bbs = res.data.bbs;
+            }).catch(err => {
+                console.debug(err);
+                result.status = RequestStatus.Failed;
+                const code = err.response.data.code;
+                if (code === 'lack_of_funds') {
+                    result.error = ErrorType.LackOfFunds;
+                } else if (err.response.status === ErrorType.TooManyRequests) { // TODO:enumに含まれているかでstatusを直で入れるようにしたい
+                    result.error = ErrorType.TooManyRequests;
+                } else if (err.response.status === ErrorType.NotFound) {
+                    result.error = ErrorType.NotFound;
+                } else {
+                    result.error = ErrorType.Unknown;
+                }
+            })
+
+            return result;
+        },
+        async deleteBbs(target: BbsMessage): Promise<AjaxResult> {
+            let result = {} as AjaxResult;
+            console.debug('DELETE', '/api/islands/' + this.island.id + '/bbs/' + target.id);
+
+            await axios.delete(
+                '/api/islands/' + this.island.id + '/bbs/' + target.id,
+            ).then(res => {
+                result.status = RequestStatus.Success;
+                this.bbs = res.data.bbs;
+            }).catch(err => {
+                console.debug(err);
+                result.status = RequestStatus.Failed;
             })
             return result;
         },

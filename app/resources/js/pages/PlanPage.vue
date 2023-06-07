@@ -3,7 +3,8 @@
         <div class="title mt-2">{{ store.island.name }}島開発計画</div>
         <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
-        <div class="flex flex-wrap items-stretch mx-auto justify-center">
+        <comment-form></comment-form>
+        <div class="flex flex-wrap items-stretch mx-auto justify-center mt-10">
             <plan-controller
                 class="grow"
                 :class="{'order-2' : !canSideBySide}"
@@ -19,8 +20,8 @@
                 :class="{'order-2' : !canSideBySide}"
             ></plan-list>
         </div>
-        <comment-form></comment-form>
         <div class="md:max-lg:px-3">
+            <island-bbs></island-bbs>
             <log-viewer
                 :title="store.island.name + '島の近況'"
                 :parsed-logs="store.logs"
@@ -50,9 +51,12 @@ import {LogParser, LogProps, SummaryProps} from "../store/Entity/Log";
 import IslandPopup from "../components/IslandPopup.vue";
 import CommentForm from "../components/CommentForm.vue";
 import {AchievementProp, getAchievementsList} from "../store/Entity/Achievement";
+import IslandBbs from "../components/IslandBbs.vue";
+import {BbsMessage} from "../store/Entity/Bbs";
 
 export default defineComponent({
     components: {
+        IslandBbs,
         CommentForm,
         IslandEditor,
         IslandPopup,
@@ -110,7 +114,8 @@ export default defineComponent({
             targetIslands: props.targetIslands,
             selectedTargetIsland: props.island.id,
             turn: turn,
-            achievements: achievements
+            achievements: achievements,
+            bbs: props.island.bbs,
         });
         return {store}
     },
@@ -151,7 +156,8 @@ export default defineComponent({
                 logs: LogProps[],
                 summary: SummaryProps[]
                 comment?: string,
-                achievements: AchievementProp[]
+                achievements: AchievementProp[],
+                bbs: BbsMessage[],
             }>
         },
         planCandidate: {
