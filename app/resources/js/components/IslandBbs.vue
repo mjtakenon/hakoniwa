@@ -193,7 +193,7 @@ export default defineComponent({
                 @apply md:grow md:min-w-0;
 
                 #bbs-input {
-                    @apply w-full rounded-lg px-2;
+                    @apply w-full rounded-lg px-2 bg-background;
                 }
 
                 .bbs-input-notify {
