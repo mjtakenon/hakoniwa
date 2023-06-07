@@ -7,7 +7,14 @@
         <div class="bbs-form">
             <div class="bbs-form-inner">
                 <div class="bbs-form-title">掲示板送信</div>
-                <input id="bbs-input" type="text" name="bbs-input" maxlength="128" minlength="1">
+                <div class="bbs-input-box">
+                    <input id="bbs-input" type="text" name="bbs-input" maxlength="128" minlength="0" v-model="message" @blur="checkInput">
+                    <div v-if="isSubmitting" class="bbs-input-notify updating">
+                        <div class="update-circle"><div class="update-circle-spin"></div></div>
+                        <span>送信中...</span>
+                    </div>
+                    <div v-if="formError !== ''" class="bbs-input-notify error">{{formError}}</div>
+                </div>
                 <button
                     class="button-public"
                     :class="{'active': sendMode === 'public'}"
@@ -22,7 +29,12 @@
                 >
                     秘密通信(1000億円)
                 </button>
-                <button class="bbs-submit">
+                <button
+                    class="bbs-submit"
+                    :class="[sendMode === 'public' ? 'public' : 'private']"
+                    @click="bbsSubmit"
+                    :disabled="isSubmitting || hasError"
+                >
                     送信
                 </button>
             </div>
@@ -76,11 +88,15 @@ import {useMainStore} from "../store/MainStore";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faChalkboardUser, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import {BbsMessage, BbsVisibility} from "../store/Entity/Bbs";
+import {RequestStatus} from "../store/Entity/Network";
 
 export default defineComponent({
     data() {
         return {
             sendMode: "public" as BbsVisibility,
+            message: "",
+            formError: "",
+            submitStatus: RequestStatus.None as RequestStatus,
             posts: [
                 {
                     id: 1,
@@ -128,9 +144,28 @@ export default defineComponent({
         const store = useMainStore();
         return {store};
     },
+    computed: {
+        isSubmitting() {
+            return this.submitStatus === RequestStatus.Updating;
+        },
+        hasError() {
+            return this.formError !== "";
+        }
+    },
     methods: {
         changeSendMode(mode: BbsVisibility) {
             this.sendMode = mode;
+        },
+        bbsSubmit() {
+            this.checkInput();
+            if(this.hasError || this.isSubmitting) return;
+        },
+        checkInput() {
+            this.message = this.message.trim();
+            this.formError = "";
+            if(this.message === "") {
+                this.formError = "入力されていません";
+            }
         }
     }
 })
@@ -147,7 +182,7 @@ export default defineComponent({
     .bbs-form {
         @apply w-full my-4;
         @apply px-1;
-        @apply md:px-8;
+        @apply md:px-8　md:mb-10;
 
         .bbs-form-inner {
             @apply flex flex-wrap bg-surface-variant text-on-surface-variant py-2 rounded-md;
@@ -158,10 +193,34 @@ export default defineComponent({
                 @apply w-full text-left text-sm font-bold mb-1;
             }
 
-            #bbs-input {
-                @apply rounded-lg px-2;
+            .bbs-input-box {
+                @apply relative;
                 @apply max-md:w-full max-md:mb-2;
                 @apply md:grow md:min-w-0;
+
+                #bbs-input {
+                    @apply w-full rounded-lg px-2;
+                }
+
+                .bbs-input-notify {
+                    @apply absolute w-fit top-0 right-0 text-right my-0.5 py-0.5 px-2 mr-2 text-xs rounded-md;
+
+                    &.error{
+                        @apply bg-error-container text-on-error-container;
+                    }
+
+                    &.updating {
+                        @apply bg-primary-container text-primary;
+
+                        .update-circle {
+                            @apply inline-flex justify-center;
+
+                            .update-circle-spin {
+                                @apply block animate-spin m-1 w-2 h-2 border border-primary rounded-full border-t-transparent;
+                            }
+                        }
+                    }
+                }
             }
 
             .button-public, .button-private {
@@ -179,9 +238,17 @@ export default defineComponent({
             }
 
             .bbs-submit {
-                @apply py-0 px-2 text-sm font-bold border bg-background hover:bg-primary-container text-primary drop-shadow-none border-primary;
+                @apply py-0 px-2 text-sm font-bold drop-shadow-none;
                 @apply max-md:ml-auto;
                 @apply md:ml-10;
+
+                &.public {
+                    @apply bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary border-on-primary-container;
+                }
+
+                &.private {
+                    @apply bg-secondary-container hover:bg-secondary text-on-secondary-container hover:text-on-secondary border-on-secondary-container;
+                }
             }
         }
     }
