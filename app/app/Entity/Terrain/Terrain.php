@@ -23,6 +23,7 @@ use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\Others\Wasteland;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Cell\ResourcesProduction\IResourcesProduction;
+use App\Entity\Cell\ResourcesProduction\Oilfield;
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Cell\Ship\Submarine;
@@ -203,7 +204,7 @@ class Terrain implements JsonCodable
     public function getEnvironment(): string
     {
         $hasFactory = $this->findByTypes([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
-        $hasOilField = $this->findByTypes([Factory::TYPE, LargeFactory::TYPE])->isNotEmpty();
+        $hasOilField = $this->findByTypes([Oilfield::TYPE])->isNotEmpty();
 
         if ($hasFactory && $hasOilField) {
             return Status::ENVIRONMENT_NORMAL;
