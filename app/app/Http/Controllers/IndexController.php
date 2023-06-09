@@ -61,6 +61,7 @@ class IndexController extends Controller
                     'funds_production_capacity' => $status->funds_production_capacity,
                     'foods_production_capacity' => $status->foods_production_capacity,
                     'resources_production_capacity' => $status->resources_production_capacity,
+                    'maintenance_number_of_people' => $status->maintenance_number_of_people,
                     'environment' => $status->environment,
                     'area' => $status->area,
                     'abandoned_turn' => $status->abandoned_turn,
