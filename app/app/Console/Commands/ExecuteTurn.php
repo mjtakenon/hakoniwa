@@ -82,6 +82,7 @@ class ExecuteTurn extends Command
                 $prevStatusList = new Collection();
                 $logsList = new Collection();
                 $achievementsList = new Collection();
+                $maintenanceNumberOfPeopleList = new Collection();
                 $foreignIslandTargetedPlans = new Collection();
                 $foreignIslandEvents = new Collection();
 
@@ -98,7 +99,15 @@ class ExecuteTurn extends Command
                     $prevStatusList->put($island->id, $islandStatus->toEntity());
                     $logsList->put($island->id, Logs::create());
                     $achievementsList->put($island->id, Achievements::create()->fromModel($islandAchievements));
+
+                    $maintenanceNumberOfPeopleList->put($island->id, 0);
                 }
+
+                $islands->each(function ($island) use ($terrainList, $maintenanceNumberOfPeopleList) {
+                    /** @var Terrain $terrain */
+                    $terrain = $terrainList->get($island->id);
+                    $terrain->aggregateMaintenanceNumberOfPeople($island, $maintenanceNumberOfPeopleList);
+                });
 
                 foreach ($islands as $island) {
                     /** @var Plans $plans */
@@ -111,9 +120,11 @@ class ExecuteTurn extends Command
                     $logs = $logsList->get($island->id);
                     /** @var Achievements $achievements */
                     $achievements = $achievementsList->get($island->id);
+                    /** @var int $maintenanceNumberOfPeople */
+                    $maintenanceNumberOfPeople = $maintenanceNumberOfPeopleList->get($island->id);
 
                     // 生産・消費処理
-                    $status->executeTurn($terrain, $island);
+                    $status->executeTurn($terrain, $maintenanceNumberOfPeople);
 
                     // コマンド実行
                     $executePlanResult = $plans->execute($island, $terrain, $status, $achievements, $turn, $foreignIslandTargetedPlans);
@@ -182,6 +193,8 @@ class ExecuteTurn extends Command
                     $status = $statusList->get($island->id);
                     /** @var Logs $logs */
                     $logs = $logsList->get($island->id);
+                    /** @var int $maintenanceNumberOfPeople */
+                    $maintenanceNumberOfPeople = $maintenanceNumberOfPeopleList->get($island->id);
 
                     // 災害
                     $disasterResult = Disaster::occur($island, $terrain, $status, $turn);
@@ -198,14 +211,14 @@ class ExecuteTurn extends Command
                     $terrain->replaceShallowToLake();
 
                     // 災害と湖判定による影響を考慮した再集計
-                    $status->aggregate($terrain);
+                    $status->aggregate($terrain, $maintenanceNumberOfPeople);
 
                     // 人口0の場合、発展ポイントを減らして村を生成
                     if ($status->getPopulation() === 0) {
                         $terrain->inviteNewImmigration($status);
                         $logs->add(new UnpopulatedIslandLog($island));
                         $logs->add(new InviteNewImmigrationLog());
-                        $status->aggregate($terrain);
+                        $status->aggregate($terrain, $maintenanceNumberOfPeople);
                     }
 
                     // 一定ターン以上資金繰りが続いた場合、放棄する
@@ -308,6 +321,7 @@ class ExecuteTurn extends Command
                     $newIslandStatus->funds_production_capacity = $status->getFundsProductionCapacity();
                     $newIslandStatus->foods_production_capacity = $status->getFoodsProductionCapacity();
                     $newIslandStatus->resources_production_capacity = $status->getResourcesProductionCapacity();
+                    $newIslandStatus->maintenance_number_of_people = $status->getMaintenanceNumberOfPeople();
                     $newIslandStatus->environment = $status->getEnvironment();
                     $newIslandStatus->area = $status->getArea();
                     $newIslandStatus->abandoned_turn = $status->getAbandonedTurn();

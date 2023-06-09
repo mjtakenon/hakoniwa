@@ -31,6 +31,8 @@ exec-app:
 	docker compose exec --user www-data app /bin/bash
 migrate:
 	docker compose exec --user www-data app php artisan migrate
+migrate-rollback:
+	docker compose exec --user www-data app php artisan migrate:rollback
 migrate-testing:
 	docker compose exec --user www-data app php artisan migrate --env=testing
 seeding:

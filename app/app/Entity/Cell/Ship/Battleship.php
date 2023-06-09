@@ -4,6 +4,7 @@ namespace App\Entity\Cell\Ship;
 
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
+use App\Entity\Cell\MaintenanceInfo;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\PassTurnResult;
@@ -61,13 +62,9 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
             ($this->damage > 0 ? PHP_EOL . '破損率 ' . $this->damage . '%' : '');
     }
 
-    public function getMaintenanceNumberOfPeople(Island $island): int
+    public function getMaintenanceNumberOfPeople(Island $island): MaintenanceInfo
     {
-        if ($island->id === $this->getAffiliationId()) {
-            return $this->maintenanceNumberOfPeople;
-        } else {
-            return 0;
-        }
+        return new MaintenanceInfo($this->getAffiliationId(), $this->maintenanceNumberOfPeople);
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult

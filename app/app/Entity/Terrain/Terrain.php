@@ -12,6 +12,7 @@ use App\Entity\Cell\HasPopulation\IHasPopulation;
 use App\Entity\Cell\HasPopulation\Village;
 use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
+use App\Entity\Cell\MaintenanceInfo;
 use App\Entity\Cell\Others\Lake;
 use App\Entity\Cell\Others\Mountain;
 use App\Entity\Cell\Others\OutOfRegion;
@@ -150,7 +151,7 @@ class Terrain implements JsonCodable
 
     public function aggregatePopulation(): int
     {
-        return $this->findByInterface(IHasPopulation::class)->sum(function($cell) {
+        return $this->findByInterface(IHasPopulation::class)->sum(function ($cell) {
             /** @var IHasPopulation $cell */
             return $cell->getPopulation();
         });
@@ -158,7 +159,7 @@ class Terrain implements JsonCodable
 
     public function aggregateFundsProductionCapacity(): int
     {
-        return $this->findByInterface(IFundsProduction::class)->sum(function($cell) {
+        return $this->findByInterface(IFundsProduction::class)->sum(function ($cell) {
             /** @var IFundsProduction $cell */
             return $cell->getFundsProductionCapacity();
         });
@@ -166,7 +167,7 @@ class Terrain implements JsonCodable
 
     public function aggregateFoodsProductionCapacity(): int
     {
-        return $this->findByInterface(IFoodsProduction::class)->sum(function($cell) {
+        return $this->findByInterface(IFoodsProduction::class)->sum(function ($cell) {
             /** @var IFoodsProduction $cell */
             return $cell->getFoodsProductionCapacity();
         });
@@ -174,17 +175,28 @@ class Terrain implements JsonCodable
 
     public function aggregateResourcesProductionCapacity(): int
     {
-        return $this->findByInterface(IResourcesProduction::class)->sum(function($cell) {
+        return $this->findByInterface(IResourcesProduction::class)->sum(function ($cell) {
             /** @var IResourcesProduction $cell */
             return $cell->getResourcesProductionCapacity();
         });
     }
 
-    public function aggregateMaintenanceNumberOfPeople(Island $island): int
+    public function aggregateMaintenanceNumberOfPeople(Island $island, Collection $maintenanceNumberOfPeoples): void
     {
-        return $this->findByInterface(IHasMaintenanceNumberOfPeople::class)->sum(function($cell) use ($island) {
+        $maintenanceInfos = $this->findByInterface(IHasMaintenanceNumberOfPeople::class)->map(function ($cell) use ($island) {
             /** @var IHasMaintenanceNumberOfPeople $cell */
             return $cell->getMaintenanceNumberOfPeople($island);
+        });
+
+        $maintenanceInfos->groupBy(function ($maintenanceInfo) {
+            /** @var MaintenanceInfo $maintenanceInfo */
+            return $maintenanceInfo->getAffiliationId();
+        })->each(function ($groupedMaintenanceInfo, $index) use ($maintenanceNumberOfPeoples) {
+            $sumMaintenanceNumberOfPeoples = $maintenanceNumberOfPeoples->get($index) + $groupedMaintenanceInfo->sum(function ($maintenanceInfo) {
+                /** @var MaintenanceInfo $maintenanceInfo */
+                return $maintenanceInfo->getMaintenanceNumberOfPeople();
+            });
+            $maintenanceNumberOfPeoples->put($index, $sumMaintenanceNumberOfPeoples);
         });
     }
 
