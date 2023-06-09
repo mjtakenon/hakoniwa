@@ -29,6 +29,7 @@ class IslandStatusFactory extends Factory
             'funds_production_capacity' => $this->faker->randomNumber(),
             'foods_production_capacity' => $this->faker->randomNumber(),
             'resources_production_capacity' => $this->faker->randomNumber(),
+            'maintenance_number_of_people' => $this->faker->randomNumber(),
             'environment' => 'best',
             'area' => $this->faker->randomNumber(),
             'abandoned_turn' => $this->faker->randomNumber(),

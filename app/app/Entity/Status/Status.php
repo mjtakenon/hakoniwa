@@ -5,6 +5,7 @@ namespace App\Entity\Status;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\FoodsProduction\Farm;
 use App\Entity\Cell\FoodsProduction\FarmDome;
+use App\Entity\Cell\FoodsProduction\IFoodsProduction;
 use App\Entity\Terrain\Terrain;
 use App\Models\Island;
 use App\Models\IslandStatus;
@@ -41,6 +42,7 @@ class Status
     private int $fundsProductionCapacity;
     private int $foodsProductionCapacity;
     private int $resourcesProductionCapacity;
+    private int $maintenanceNumberOfPeople;
     private string $environment;
     private int $area;
     private int $abandonedTurn = 0;
@@ -59,7 +61,7 @@ class Status
         $this->funds = self::INITIAL_FUNDS;
         $this->foods = self::INITIAL_FOODS;
         $this->resources = self::INITIAL_RESOURCES;
-        $this->aggregate($terrain);
+        $this->aggregate($terrain, 0);
 
         return $this;
     }
@@ -73,6 +75,7 @@ class Status
         $this->fundsProductionCapacity = $islandStatus->funds_production_capacity;
         $this->foodsProductionCapacity = $islandStatus->foods_production_capacity;
         $this->resourcesProductionCapacity = $islandStatus->resources_production_capacity;
+        $this->maintenanceNumberOfPeople = $islandStatus->maintenance_number_of_people;
         $this->environment = $islandStatus->environment;
         $this->area = $islandStatus->area;
         $this->abandonedTurn = $islandStatus->abandoned_turn;
@@ -80,16 +83,16 @@ class Status
         return $this;
     }
 
-    public function executeTurn(Terrain $terrain, Island $island): static
+    public function executeTurn(Terrain $terrain, int $maintenanceNumberOfPeople): static
     {
-        $this->aggregate($terrain);
+        $this->aggregate($terrain, $maintenanceNumberOfPeople);
 
         // 生産人口算出
         $realFundsProductionCapacity = 0;
         $realFoodsProductionCapacity = 0;
         $realResourcesProductionCapacity = 0;
 
-        $workablePeople = $this->population - $terrain->aggregateMaintenanceNumberOfPeople($island);
+        $workablePeople = $this->population - $maintenanceNumberOfPeople;
         if ($workablePeople < 0) {
             $workablePeople = 0;
         }
@@ -109,11 +112,11 @@ class Status
             // 食料生産
             $farmProductionCapacity = $terrain
                 ->findByTypes([Farm::TYPE])
-                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionCapacity(); });
+                ->sum(function ($cell) { /** @var IFoodsProduction $cell */ return $cell->getFoodsProductionCapacity(); });
 
             $farmDomeProductionCapacity = $terrain
                 ->findByTypes([FarmDome::TYPE])
-                ->sum(function ($cell) { /** @var Cell $cell */ return $cell->getFoodsProductionCapacity(); });
+                ->sum(function ($cell) { /** @var IFoodsProduction $cell */ return $cell->getFoodsProductionCapacity(); });
 
             $farmRatio = $farmProductionCapacity / ($farmProductionCapacity + $farmDomeProductionCapacity);
             $farmDomeRatio = $farmDomeProductionCapacity / ($farmProductionCapacity + $farmDomeProductionCapacity);
@@ -149,12 +152,13 @@ class Status
         return $this;
     }
 
-    public function aggregate(Terrain $terrain)
+    public function aggregate(Terrain $terrain, int $maintenanceNumberOfPeople): void
     {
         $this->population = $terrain->aggregatePopulation();
         $this->fundsProductionCapacity = $terrain->aggregateFundsProductionCapacity();
         $this->foodsProductionCapacity = $terrain->aggregateFoodsProductionCapacity();
         $this->resourcesProductionCapacity = $terrain->aggregateResourcesProductionCapacity();
+        $this->maintenanceNumberOfPeople = $maintenanceNumberOfPeople;
         $this->environment = $terrain->getEnvironment();
         $this->area = $terrain->aggregateArea();
     }
@@ -232,6 +236,11 @@ class Status
     public function getResourcesProductionCapacity(): int
     {
         return $this->resourcesProductionCapacity;
+    }
+
+    public function getMaintenanceNumberOfPeople(): int
+    {
+        return $this->maintenanceNumberOfPeople;
     }
 
     public function getEnvironment(): string

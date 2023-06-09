@@ -94,6 +94,7 @@ class PlansController extends Controller
                     'funds_production_capacity' => $islandStatus->funds_production_capacity,
                     'foods_production_capacity' => $islandStatus->foods_production_capacity,
                     'resources_production_capacity' => $islandStatus->resources_production_capacity,
+                    'maintenance_number_of_people' => $islandStatus->maintenance_number_of_people,
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                     'abandoned_turn' => $islandStatus->abandoned_turn,

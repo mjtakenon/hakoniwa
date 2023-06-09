@@ -6,6 +6,7 @@ use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
+use App\Entity\Cell\MaintenanceInfo;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -126,8 +127,8 @@ class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumbe
         return $this->experience;
     }
 
-    public function getMaintenanceNumberOfPeople(Island $island): int
+    public function getMaintenanceNumberOfPeople(Island $island): MaintenanceInfo
     {
-        return $this->maintenanceNumberOfPeople;
+        return new MaintenanceInfo($island->id, $this->maintenanceNumberOfPeople);
     }
 }

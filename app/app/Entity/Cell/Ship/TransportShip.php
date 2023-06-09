@@ -4,6 +4,7 @@ namespace App\Entity\Cell\Ship;
 
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\IHasMaintenanceNumberOfPeople;
+use App\Entity\Cell\MaintenanceInfo;
 use App\Models\Island;
 
 class TransportShip extends Ship implements IHasMaintenanceNumberOfPeople
@@ -58,8 +59,8 @@ class TransportShip extends Ship implements IHasMaintenanceNumberOfPeople
             '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL;
     }
 
-    public function getMaintenanceNumberOfPeople(Island $island): int
+    public function getMaintenanceNumberOfPeople(Island $island): MaintenanceInfo
     {
-        return $this->maintenanceNumberOfPeople;
+        return new MaintenanceInfo($island->id, $this->maintenanceNumberOfPeople);
     }
 }

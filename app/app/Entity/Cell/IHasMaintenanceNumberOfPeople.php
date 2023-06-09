@@ -6,5 +6,5 @@ use App\Models\Island;
 
 interface IHasMaintenanceNumberOfPeople
 {
-    public function getMaintenanceNumberOfPeople(Island $island): int;
+    public function getMaintenanceNumberOfPeople(Island $island): MaintenanceInfo;
 }
