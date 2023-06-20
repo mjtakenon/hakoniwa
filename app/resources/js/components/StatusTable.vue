@@ -35,11 +35,9 @@
                 </div>
                 <div class="data-environment stat-box-island border-b">
                     <div class="stat-box-title">環境</div>
-                    <div class="stat-inner">
+                    <div class="stat-inner environment">
                         <div class="stat-box-num">
                             {{store.getEnvironmentString}}
-                        </div>
-                        <div class="stat-box-unit">
                         </div>
                     </div>
                 </div>
@@ -47,23 +45,25 @@
             <div class="stats-info">
                 <div class="stats-summary">
                     <div class="stats-subtitle">島の情報</div>
-                    <div class="stat-box-info">
-                        <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon" />
-                        <div class="stat-box-title">資金</div>
-                        <div class="stat-box-num">{{store.status.funds.toLocaleString()}}</div>
-                        <div class="stat-box-unit">億円</div>
-                    </div>
-                    <div class="stat-box-info">
-                        <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon" />
-                        <div class="stat-box-title">食料</div>
-                        <div class="stat-box-num">{{store.status.foods.toLocaleString()}}</div>
-                        <div class="stat-box-unit">㌧</div>
-                    </div>
-                    <div class="stat-box-info">
-                        <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon" />
-                        <div class="stat-box-title">資源</div>
-                        <div class="stat-box-num">{{store.status.resources.toLocaleString()}}</div>
-                        <div class="stat-box-unit">㌧</div>
+                    <div class="stats-summary-inner">
+                        <div class="stat-box-info">
+                            <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon" />
+                            <div class="stat-box-title">資金</div>
+                            <div class="stat-box-num">{{store.status.funds.toLocaleString()}}</div>
+                            <div class="stat-box-unit">億円</div>
+                        </div>
+                        <div class="stat-box-info">
+                            <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon" />
+                            <div class="stat-box-title">食料</div>
+                            <div class="stat-box-num">{{store.status.foods.toLocaleString()}}</div>
+                            <div class="stat-box-unit">㌧</div>
+                        </div>
+                        <div class="stat-box-info">
+                            <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon" />
+                            <div class="stat-box-title">資源</div>
+                            <div class="stat-box-num">{{store.status.resources.toLocaleString()}}</div>
+                            <div class="stat-box-unit">㌧</div>
+                        </div>
                     </div>
                 </div>
                 <div class="stats-human">
@@ -94,25 +94,25 @@
                             </div>
                         </div>
                         <div class="stats-human-right">
-                            <div class="stat-box-info">
+                            <div class="stat-box-info human">
                                 <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon" />
                                 <div class="stat-box-title">農業</div>
                                 <div class="stat-box-num">{{store.status.foods_production_capacity.toLocaleString()}}</div>
                                 <div class="stat-box-unit">人</div>
                             </div>
-                            <div class="stat-box-info">
+                            <div class="stat-box-info human">
                                 <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon" />
                                 <div class="stat-box-title">工業</div>
                                 <div class="stat-box-num">{{store.status.funds_production_capacity.toLocaleString()}}</div>
                                 <div class="stat-box-unit">人</div>
                             </div>
-                            <div class="stat-box-info">
+                            <div class="stat-box-info human">
                                 <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon" />
                                 <div class="stat-box-title">資源生産</div>
                                 <div class="stat-box-num">{{store.status.resources_production_capacity.toLocaleString()}}</div>
                                 <div class="stat-box-unit">人</div>
                             </div>
-                            <div class="stat-box-info">
+                            <div class="stat-box-info human">
                                 <font-awesome-icon icon="fa-solid fa-shield" class="stat-box-icon"/>
                                 <div class="stat-box-title">軍事</div>
                                 <div class="stat-box-num">TODO</div>
@@ -281,10 +281,12 @@ export default defineComponent({
     @apply md:py-2 md:px-4;
 
     .stats-header {
-        @apply w-full flex py-3 mb-4 border-b-2 border-dashed;
+        @apply w-full py-3 mb-4 border-b-2 border-dashed;
+        @apply md:flex;
 
         .names {
             @apply grow flex items-end justify-center min-w-0;
+            @apply max-md:w-full;
 
             .island-name {
                 @apply font-bold text-2xl mr-2;
@@ -303,6 +305,7 @@ export default defineComponent({
 
     .stats-contents {
         @apply w-full;
+        @apply max-md:px-2;
 
         .stat-box-island {
             @apply py-1;
@@ -311,34 +314,54 @@ export default defineComponent({
                 @apply text-on-surface-variant text-sm text-left font-bold leading-none;
             }
             .stat-inner {
-                @apply flex items-end;
+                @apply flex flex-wrap text-right items-end mt-auto;
+
+                &.environment {
+                    @apply mt-2;
+                }
 
                 .stat-box-num {
-                    @apply grow min-w-0 text-on-surface text-right font-bold text-xl leading-none;
+                    @apply grow min-w-0 text-on-surface text-right font-bold;
+                    @apply max-md:w-full max-md:px-2 max-md:mt-auto text-lg leading-none;
+                    @apply md:text-xl md:leading-none;
                 }
                 .stat-box-unit {
                     @apply ml-2 text-on-surface-variant leading-none;
+                    @apply max-md:w-full max-md:text-xs max-md:leading-none;
                 }
             }
         }
 
         .stat-box-info {
-            @apply flex items-center gap-2 py-1 px-2 rounded-lg bg-surface-variant text-on-surface-variant mb-1.5;
+            @apply flex items-center py-1 px-2 rounded-lg bg-surface-variant text-on-surface-variant mb-1.5;
+            @apply max-md:w-1/3 max-md:flex-wrap;
+            @apply md:gap-2;
+
+            &.human {
+                @apply max-md:w-full;
+            }
 
             .stat-box-icon {
-                @apply text-xl;
+                @apply text-sm;
+                @apply md:text-xl;
             }
 
             .stat-box-title {
-                @apply text-sm font-bold;
+                @apply font-bold;
+                @apply text-xs;
+                @apply md:text-sm;
             }
 
             .stat-box-num {
-                @apply grow min-w-0 text-right font-bold text-xl;
+                @apply grow min-w-0 text-right font-bold;
+                @apply max-md:w-full max-md:px-1 text-lg leading-none;
+                @apply md:text-xl;
             }
 
             .stat-box-unit {
-                @apply mt-auto text-xs text-right w-[24px];
+                @apply mt-auto text-right;
+                @apply max-md:w-full text-[0.5rem] leading-none;
+                @apply md:text-xs md:w-[24px];
             }
         }
 
@@ -383,33 +406,51 @@ export default defineComponent({
         }
 
         .stats-island {
-            @apply flex mb-6;
-            @apply md:gap-8;
+            @apply flex;
+            @apply gap-3 mb-2;
+            @apply md:gap-8 md:mb-6;
 
             .data-point {
-                @apply w-1/2;
+                @apply w-2/5;
+                @apply md:w-1/2;
             }
-            .data-area,.data-environment {
-                @apply w-1/4;
+            .data-area {
+                @apply w-2/5;
+                @apply md:w-1/4;
+            }
+            .data-environment {
+                @apply w-1/5;
+                @apply md:w-1/4;
             }
         }
 
         .stats-info {
             @apply flex;
+            @apply max-md:flex-wrap;
             @apply md:gap-10;
 
             .stats-subtitle {
                 @apply text-left font-bold text-on-surface-variant text-sm;
+                @apply max-md:w-full;
             }
 
             .stats-summary {
-                @apply w-1/3;
+                @apply w-full;
+                @apply md:w-1/3;
+
+                .stats-summary-inner {
+                    @apply max-md:flex max-md:gap-1;
+                }
             }
+
             .stats-human {
-                @apply w-2/3;
+                @apply w-full;
+                @apply md:w-2/3;
 
                 .stats-human-inner {
-                    @apply flex gap-4 items-stretch;
+                    @apply flex items-stretch;
+                    @apply gap-2;
+                    @apply md:gap-4;
 
                     .stats-human-left {
                         @apply flex flex-wrap
