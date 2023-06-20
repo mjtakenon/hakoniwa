@@ -1,7 +1,5 @@
 <template>
     <div id="plan-page">
-        <div class="title mt-2">{{ store.island.name }}島開発計画</div>
-        <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <comment-form></comment-form>
         <div class="flex flex-wrap items-stretch mx-auto justify-center mt-10">

@@ -1,7 +1,5 @@
 <template>
     <div id="sightseeing-page" class="wrapper">
-        <div class="title mt-2">{{ store.island.name }}島へようこそ！</div>
-        <div class="link-text mb-5"><a href="/">トップへ戻る</a></div>
         <status-table></status-table>
         <island-viewer></island-viewer>
         <div class="md:max-lg:px-3">
