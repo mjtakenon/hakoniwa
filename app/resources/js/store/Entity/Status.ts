@@ -9,5 +9,6 @@ export interface Status {
     population: number,
     resources: number,
     resources_production_capacity: number,
+    maintenance_number_of_people: number,
     abandonment_turn: number,
 }
