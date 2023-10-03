@@ -26,7 +26,12 @@
             </div>
         </template>
         <div v-else class="no-achievement">
-            実績なし
+            <div class="h-full flex items-center justify-center">
+                <div>
+                    実績なし
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -71,6 +76,7 @@ export default defineComponent({
 
         let cols = props.max_cols;
         if (achievements.length < cols)  cols = achievements.length;
+        if (cols === 0) cols = 1;
 
         return {achievements, cols};
     },
@@ -117,7 +123,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .achievements {
-    @apply relative w-full grid;
+    @apply relative w-full grid min-h-full;
 
     .achievement {
         @apply flex flex-wrap justify-center leading-none my-1;

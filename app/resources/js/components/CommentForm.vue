@@ -86,7 +86,7 @@ export default defineComponent({
     // general
     @apply w-full my-4 text-left;
     // desktop
-    @apply md:px-10;
+    @apply md:px-4;
 
     .comment-header {
         @apply flex justify-between;
