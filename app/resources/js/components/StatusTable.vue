@@ -123,6 +123,9 @@
                 </div>
             </div>
         </div>
+        <div class="stats-comments">
+            <!-- TODO:やる -->
+        </div>
     </div>
 </template>
 
@@ -185,23 +188,10 @@ export default defineComponent({
         },
     },
     methods: {
-        calcNumFontSizes() {
-            this.statuses.forEach((stat, index) => {
-                const w = document.getElementById("data-num-" + index).clientWidth;
-                if(this.screenWidth < 768) { // Tailwind md:
-                    stat.fontSize = w / (stat.numText.length*0.7);
-                } else if(this.screenWidth < 1024) {
-                    stat.fontSize = w / (stat.numText.length*0.5);
-                } else {
-                    stat.fontSize = 124 / (stat.numText.length*0.5);
-                }
-            })
-        },
         onWindowSizeChanged() {
             const newScreenWidth = document.documentElement.clientWidth;
             if (this.screenWidth != newScreenWidth) {
                 this.isMobile = (document.documentElement.clientWidth < 1024);
-                this.calcNumFontSizes()
             }
         },
         updateStatus() {
@@ -267,9 +257,6 @@ export default defineComponent({
                     fontSize: 1
                 },
             ]
-            this.$nextTick(() => {
-                this.calcNumFontSizes();
-            })
         }
     }
 });
@@ -322,7 +309,8 @@ export default defineComponent({
 
                 .stat-box-num {
                     @apply grow min-w-0 text-on-surface text-right font-bold;
-                    @apply max-md:w-full max-md:px-2 max-md:mt-auto text-lg leading-none;
+                    @apply text-sm sm:text-lg;
+                    @apply max-md:w-full max-md:px-2 max-md:mt-auto leading-none;
                     @apply md:text-xl md:leading-none;
                 }
                 .stat-box-unit {
@@ -354,8 +342,8 @@ export default defineComponent({
 
             .stat-box-num {
                 @apply grow min-w-0 text-right font-bold;
-                @apply max-md:w-full max-md:px-1 text-lg leading-none;
-                @apply md:text-xl;
+                @apply max-md:w-full max-md:px-1;
+                @apply text-sm sm:text-lg sm:leading-none md:text-lg md:leading-none;
             }
 
             .stat-box-unit {
@@ -372,13 +360,16 @@ export default defineComponent({
                 @apply w-full text-on-surface-variant text-sm text-left font-bold leading-none;
             }
             .stat-inner {
-                @apply flex items-end w-full pb-2;
+                @apply flex flex-wrap gap-0 items-end w-full pb-2;
 
                 .stat-box-num {
                     @apply grow min-w-0 text-on-surface text-right font-bold text-xl leading-none;
+                    @apply max-md:w-full max-md:px-2 max-md:mt-auto text-lg leading-none;
+                    @apply text-lg md:text-xl;
                 }
                 .stat-box-unit {
-                    @apply ml-2 text-on-surface-variant leading-none;
+                    @apply ml-2 text-on-surface-variant leading-none text-right;
+                    @apply max-md:w-full max-md:text-xs max-md:leading-none;
                 }
             }
 
