@@ -133,8 +133,16 @@
                 </div>
             </div>
         </div>
-        <div class="stats-comments">
-            <!-- TODO:やる -->
+        <div class="stat-comment">
+            <div class="stat-comment-title">コメント</div>
+            <div v-if="store.island.comment === ''　|| store.island.comment === undefined || store.island.comment === null"
+                 class="stat-comment-empty"
+            >
+                コメントはありません
+            </div>
+            <div v-else class="stat-comment-main">
+                {{store.island.comment}}
+            </div>
         </div>
     </div>
 </template>
@@ -411,6 +419,22 @@ export default defineComponent({
                     }
                 }
             }
+        }
+    }
+
+    .stat-comment {
+        @apply mt-2 px-2 pb-2 border-t;
+
+        .stat-comment-title {
+            @apply text-left text-sm font-black;
+        }
+
+        .stat-comment-empty {
+            @apply text-sm text-on-secondary-container;
+        }
+
+        .stat-comment-main {
+            @apply px-2 text-left;
         }
     }
 }
