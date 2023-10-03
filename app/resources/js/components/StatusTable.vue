@@ -2,8 +2,8 @@
     <div class="stats">
         <div class="stats-header">
             <div class="names">
-                <h1 class="island-name">{{store.island.name}}島</h1>
-                <span class="owner-name">({{store.island.owner_name}})</span>
+                <h1 class="island-name">{{ store.island.name }}島</h1>
+                <span class="owner-name">({{ store.island.owner_name }})</span>
             </div>
             <div class="header-achievements">
                 <achievement-icons :achievement_data="store.achievements"></achievement-icons>
@@ -15,7 +15,7 @@
                     <div class="stat-box-title">発展ポイント</div>
                     <div class="stat-inner">
                         <div class="stat-box-num">
-                            {{store.status.development_points.toLocaleString()}}
+                            {{ store.status.development_points.toLocaleString() }}
                         </div>
                         <div class="stat-box-unit">
                             pts
@@ -26,7 +26,7 @@
                     <div class="stat-box-title">面積</div>
                     <div class="stat-inner">
                         <div class="stat-box-num">
-                            {{store.status.area.toLocaleString()}}
+                            {{ store.status.area.toLocaleString() }}
                         </div>
                         <div class="stat-box-unit">
                             万坪
@@ -37,7 +37,7 @@
                     <div class="stat-box-title">環境</div>
                     <div class="stat-inner environment">
                         <div class="stat-box-num">
-                            {{store.getEnvironmentString}}
+                            {{ store.getEnvironmentString }}
                         </div>
                     </div>
                 </div>
@@ -47,21 +47,21 @@
                     <div class="stats-subtitle">島の情報</div>
                     <div class="stats-summary-inner">
                         <div class="stat-box-info">
-                            <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon" />
+                            <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon"/>
                             <div class="stat-box-title">資金</div>
-                            <div class="stat-box-num">{{store.status.funds.toLocaleString()}}</div>
+                            <div class="stat-box-num">{{ store.status.funds.toLocaleString() }}</div>
                             <div class="stat-box-unit">億円</div>
                         </div>
                         <div class="stat-box-info">
-                            <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon" />
+                            <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon"/>
                             <div class="stat-box-title">食料</div>
-                            <div class="stat-box-num">{{store.status.foods.toLocaleString()}}</div>
+                            <div class="stat-box-num">{{ store.status.foods.toLocaleString() }}</div>
                             <div class="stat-box-unit">㌧</div>
                         </div>
                         <div class="stat-box-info">
-                            <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon" />
+                            <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon"/>
                             <div class="stat-box-title">資源</div>
-                            <div class="stat-box-num">{{store.status.resources.toLocaleString()}}</div>
+                            <div class="stat-box-num">{{ store.status.resources.toLocaleString() }}</div>
                             <div class="stat-box-unit">㌧</div>
                         </div>
                     </div>
@@ -74,18 +74,20 @@
                                 <div class="stat-box-title">総人口</div>
                                 <div class="stat-inner">
                                     <div class="stat-box-num">
-                                        {{store.status.development_points.toLocaleString()}}
+                                        {{ store.status.population.toLocaleString() }}
                                     </div>
                                     <div class="stat-box-unit">
                                         人
                                     </div>
                                 </div>
                             </div>
-                            <div class="stat-box-human-left unassigned">
+                            <div class="stat-box-human-left unassigned"
+                                :class="{'plus': calcUnassigned > 0}"
+                            >
                                 <div class="stat-box-title">未割当</div>
                                 <div class="stat-inner">
                                     <div class="stat-box-num">
-                                        TODO
+                                        {{calcUnassigned.toLocaleString()}}
                                     </div>
                                     <div class="stat-box-unit">
                                         人
@@ -95,27 +97,35 @@
                         </div>
                         <div class="stats-human-right">
                             <div class="stat-box-info human">
-                                <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon" />
+                                <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon"/>
                                 <div class="stat-box-title">農業</div>
-                                <div class="stat-box-num">{{store.status.foods_production_capacity.toLocaleString()}}</div>
+                                <div class="stat-box-num">
+                                    {{ store.status.foods_production_capacity.toLocaleString() }}
+                                </div>
                                 <div class="stat-box-unit">人</div>
                             </div>
                             <div class="stat-box-info human">
-                                <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon" />
+                                <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon"/>
                                 <div class="stat-box-title">工業</div>
-                                <div class="stat-box-num">{{store.status.funds_production_capacity.toLocaleString()}}</div>
+                                <div class="stat-box-num">
+                                    {{ store.status.funds_production_capacity.toLocaleString() }}
+                                </div>
                                 <div class="stat-box-unit">人</div>
                             </div>
                             <div class="stat-box-info human">
-                                <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon" />
+                                <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon"/>
                                 <div class="stat-box-title">資源生産</div>
-                                <div class="stat-box-num">{{store.status.resources_production_capacity.toLocaleString()}}</div>
+                                <div class="stat-box-num">
+                                    {{ store.status.resources_production_capacity.toLocaleString() }}
+                                </div>
                                 <div class="stat-box-unit">人</div>
                             </div>
                             <div class="stat-box-info human">
                                 <font-awesome-icon icon="fa-solid fa-shield" class="stat-box-icon"/>
                                 <div class="stat-box-title">軍事</div>
-                                <div class="stat-box-num">TODO</div>
+                                <div class="stat-box-num">
+                                    {{ store.status.maintenance_number_of_people.toLocaleString() }}
+                                </div>
                                 <div class="stat-box-unit">人</div>
                             </div>
                         </div>
@@ -146,38 +156,28 @@ export default defineComponent({
             statuses: [] as {
                 title: string,
                 numText: string,
-                unit: string,
-                fontSize: number,
+                unit: string
             }[],
             isMobile: (document.documentElement.clientWidth < 1024),
             screenWidth: document.documentElement.clientWidth
         }
     },
     setup() {
-        library.add(faSackDollar,faWheatAwn,faOilWell, faShield)
+        library.add(faSackDollar, faWheatAwn, faOilWell, faShield)
 
         const store = useMainStore();
         const {status: statusRef} = storeToRefs(store);
         return {store, statusRef};
     },
-    watch: {
-        statusRef: {
-            handler() {
-                this.updateStatus();
-            },
-            deep: true,
-        }
-    },
     mounted() {
         window.addEventListener("resize", this.onWindowSizeChanged);
-        this.updateStatus();
     },
     unmounted() {
         window.removeEventListener("resize", this.onWindowSizeChanged);
     },
     computed: {
         hasComment() {
-            return this.store.island.comment === null　|| this.store.island.comment === undefined || this.store.island.comment === "";
+            return this.store.island.comment === null || this.store.island.comment === undefined || this.store.island.comment === "";
         },
         islandComment() {
             if (this.hasComment) {
@@ -185,6 +185,13 @@ export default defineComponent({
             } else {
                 return this.store.island.comment;
             }
+        },
+        calcUnassigned() {
+            return this.store.status.population -
+                this.store.status.foods_production_capacity -
+                this.store.status.funds_production_capacity -
+                this.store.status.resources_production_capacity -
+                this.store.status.maintenance_number_of_people;
         },
     },
     methods: {
@@ -194,70 +201,6 @@ export default defineComponent({
                 this.isMobile = (document.documentElement.clientWidth < 1024);
             }
         },
-        updateStatus() {
-            this.statuses = [
-                {
-                    title: "発展ポイント",
-                    numText: this.store.status.development_points.toLocaleString(),
-                    unit: "pts",
-                    fontSize: 1
-                },
-                {
-                    title: "人口",
-                    numText: this.store.status.population.toLocaleString(),
-                    unit: "人",
-                    fontSize: 1
-                },
-                {
-                    title: "資金",
-                    numText: this.store.status.funds.toLocaleString(),
-                    unit: "億円",
-                    fontSize: 1
-                },
-                {
-                    title: "食料",
-                    numText: this.store.status.foods.toLocaleString(),
-                    unit: "㌧",
-                    fontSize: 1
-                },
-                {
-                    title: "資源",
-                    numText: this.store.status.resources.toLocaleString(),
-                    unit: "㌧",
-                    fontSize: 1
-                },
-                {
-                    title: "環境",
-                    numText: this.store.getEnvironmentString,
-                    unit: "",
-                    fontSize: 1
-                },
-                {
-                    title: "面積",
-                    numText: this.store.status.area.toLocaleString(),
-                    unit: "万坪",
-                    fontSize: 1
-                },
-                {
-                    title: "農業",
-                    numText: this.store.status.foods_production_capacity.toLocaleString(),
-                    unit: "人規模",
-                    fontSize: 1
-                },
-                {
-                    title: "工業",
-                    numText: this.store.status.funds_production_capacity.toLocaleString(),
-                    unit: "人規模",
-                    fontSize: 1
-                },
-                {
-                    title: "資源生産",
-                    numText: this.store.status.resources_production_capacity.toLocaleString(),
-                    unit: "人規模",
-                    fontSize: 1
-                },
-            ]
-        }
     }
 });
 </script>
@@ -300,6 +243,7 @@ export default defineComponent({
             .stat-box-title {
                 @apply text-on-surface-variant text-sm text-left font-bold leading-none;
             }
+
             .stat-inner {
                 @apply flex flex-wrap text-right items-end mt-auto;
 
@@ -313,6 +257,7 @@ export default defineComponent({
                     @apply max-md:w-full max-md:px-2 max-md:mt-auto leading-none;
                     @apply md:text-xl md:leading-none;
                 }
+
                 .stat-box-unit {
                     @apply ml-2 text-on-surface-variant leading-none;
                     @apply max-md:w-full max-md:text-xs max-md:leading-none;
@@ -359,6 +304,7 @@ export default defineComponent({
             .stat-box-title {
                 @apply w-full text-on-surface-variant text-sm text-left font-bold leading-none;
             }
+
             .stat-inner {
                 @apply flex flex-wrap gap-0 items-end w-full pb-2;
 
@@ -367,6 +313,7 @@ export default defineComponent({
                     @apply max-md:w-full max-md:px-2 max-md:mt-auto text-lg leading-none;
                     @apply text-lg md:text-xl;
                 }
+
                 .stat-box-unit {
                     @apply ml-2 text-on-surface-variant leading-none text-right;
                     @apply max-md:w-full max-md:text-xs max-md:leading-none;
@@ -376,9 +323,10 @@ export default defineComponent({
             &.population {
                 @apply bg-primary;
 
-                .stat-box-title,.stat-box-unit {
+                .stat-box-title, .stat-box-unit {
                     @apply text-on-primary;
                 }
+
                 .stat-box-num {
                     @apply text-surface;
                 }
@@ -387,11 +335,20 @@ export default defineComponent({
             &.unassigned {
                 @apply bg-primary-container;
 
-                .stat-box-title,.stat-box-unit {
+                .stat-box-title, .stat-box-unit {
                     @apply text-on-primary-container;
                 }
+
                 .stat-box-num {
                     @apply text-on-surface;
+                }
+
+                &.plus {
+                    @apply bg-minus dark:bg-on-minus text-on-minus dark:text-minus;
+
+                    .stat-box-title, .stat-box-unit, .stat-box-num {
+                        @apply text-on-minus dark:text-minus;
+                    }
                 }
             }
         }
@@ -405,10 +362,12 @@ export default defineComponent({
                 @apply w-2/5;
                 @apply md:w-1/2;
             }
+
             .data-area {
                 @apply w-2/5;
                 @apply md:w-1/4;
             }
+
             .data-environment {
                 @apply w-1/5;
                 @apply md:w-1/4;
@@ -439,15 +398,15 @@ export default defineComponent({
                 @apply md:w-2/3;
 
                 .stats-human-inner {
-                    @apply flex items-stretch;
+                    @apply flex;
                     @apply gap-2;
                     @apply md:gap-4;
 
                     .stats-human-left {
-                        @apply flex flex-wrap
+                        @apply md:flex md:flex-wrap
                     }
 
-                    .stats-human-left,.stats-human-right {
+                    .stats-human-left, .stats-human-right {
                         @apply w-1/2;
                     }
                 }
