@@ -2,6 +2,7 @@ import {defineConfig, loadEnv} from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import { templateCompilerOptions } from '@tresjs/core'
+import {resolve} from "url";
 
 export default ({mode}) => {
     const viteEnv = loadEnv(mode, process.cwd())

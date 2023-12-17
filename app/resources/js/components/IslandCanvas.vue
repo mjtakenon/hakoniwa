@@ -2,20 +2,16 @@
     <TresCanvas v-bind="gl" class="island-canvas">
         <TresPerspectiveCamera
             ref="camera"
-            :position="[3, 3, 3]"
+            :position="[50, 50, 50]"
         />
-<!--        <OrbitControls make-default />-->
+        <OrbitControls make-default />
         <CameraControls
             v-bind="controlsState"
             make-default
         />
-        <TresMesh
-            ref="boxRef"
-            :scale="1"
-        >
-            <TresBoxGeometry :args="[1, 1, 1]" />
-            <TresMeshNormalMaterial />
-        </TresMesh>
+
+        <primitive :object="scene" ref="boxRef"/>
+
         <TresAmbientLight :intensity="1" />
         <TresDirectionalLight
             :position="[0, 2, 4]"
@@ -26,12 +22,18 @@
 </template>
 
 <script setup lang="ts">
-import {TresCanvas, TresInstance, useRenderLoop} from '@tresjs/core'
-import {BasicShadowMap, NoToneMapping, SRGBColorSpace} from 'three'
+import {TresCanvas, TresInstance, useLoader, useRenderLoop} from '@tresjs/core'
+import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from 'three'
 import { CameraControls, Box } from '@tresjs/cientos'
 
-import {OrbitControls} from '@tresjs/cientos'
 import {ref, shallowReactive, shallowRef, ShallowRef, watchEffect} from 'vue'
+import { useGLTF, OrbitControls } from '@tresjs/cientos'
+
+const path = '/img/hakoniwa/gltf/land2.gltf'
+let { scene, nodes } = await useGLTF(path)
+
+
+const boxRef: ShallowRef<TresInstance | null> = shallowRef(null)
 
 const gl = {
     clearColor: '#82DBC5',
@@ -42,14 +44,14 @@ const gl = {
     toneMapping: NoToneMapping,
 }
 
-const boxRef: ShallowRef<TresInstance | null> = shallowRef(null)
-
 const { onLoop } = useRenderLoop()
 
 onLoop(({ delta, elapsed }) => {
     // if (boxRef.value) {
-    //     boxRef.value.rotation.y += delta
-    //     boxRef.value.rotation.z = elapsed * 0.2
+        // boxRef.value.position.x = 10;
+        // boxRef.value.position.y = 10;
+        // boxRef.value.rotation.y += delta
+        // boxRef.value.rotation.z = elapsed * 0.2
     // }
 })
 

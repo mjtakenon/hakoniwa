@@ -20,9 +20,11 @@
 <!--            </div>-->
 <!--            <div class="left-padding" v-if="y%2 === 0"></div>-->
 <!--        </div>-->
-        <IslandDrawer
-            style="width:500px; height:500px;"
-        ></IslandDrawer>
+        <Suspense>
+            <IslandCanvas
+                style="width:500px; height:500px;"
+            ></IslandCanvas>
+        </Suspense>
         <div v-show="showHoverWindow" class="hover-window" :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
             <div class="hover-window-header">
                 <img
@@ -41,11 +43,11 @@
 import { Terrain } from "../store/Entity/Terrain";
 import { defineComponent } from "vue";
 import { useMainStore } from "../store/MainStore";
-import IslandDrawer from "./IslandCanvas.vue";
+import IslandCanvas from "./IslandCanvas.vue";
 
 export default defineComponent({
     components: {
-        IslandDrawer,
+        IslandCanvas,
     },
     data() {
         return {
