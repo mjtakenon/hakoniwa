@@ -41,7 +41,7 @@
 import { Terrain } from "../store/Entity/Terrain";
 import { defineComponent } from "vue";
 import { useMainStore } from "../store/MainStore";
-import IslandDrawer from "./IslandDrawer.vue";
+import IslandDrawer from "./IslandCanvas.vue";
 
 export default defineComponent({
     components: {
