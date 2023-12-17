@@ -1,6 +1,7 @@
 import {defineConfig, loadEnv} from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import { templateCompilerOptions } from '@tresjs/core'
 
 export default ({mode}) => {
     const viteEnv = loadEnv(mode, process.cwd())
@@ -26,8 +27,12 @@ export default ({mode}) => {
                 template: {
                     transformAssetUrls: {
                         includeAbsolute: false,
+                    },
+                    compilerOptions: {
+                        isCustomElement: tag => tag.startsWith('Tres') && tag !== 'TresCanvas',
                     }
-                }
+                },
+                ...templateCompilerOptions
             })
         ],
         server: {

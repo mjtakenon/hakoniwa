@@ -18,6 +18,7 @@ window.axios = axios;
 import {App} from "vue";
 import {createApp} from "vue/dist/vue.esm-bundler";
 import {createPinia} from "pinia";
+import Tres from '@tresjs/core'
 import SightseeingPage from "./pages/SightseeingPage.vue";
 import PlanPage from "./pages/PlanPage.vue";
 import VueHeader from "./components/VueHeader.vue";
@@ -47,6 +48,7 @@ export const app: App = createApp({
 
 const pinia = createPinia();
 app.use(pinia);
+app.use(Tres);
 app.component('font-awesome-icon', FontAwesomeIcon)
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

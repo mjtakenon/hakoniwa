@@ -1,39 +1,18 @@
 <template>
     <div id="island">
-<!--        <div-->
-<!--            class="row"-->
-<!--            v-for="y of store.hakoniwa.height"-->
-<!--            :key="y"-->
-<!--        >-->
-<!--            <div class="right-padding" v-if="y%2 === 1">-->
-<!--                <span class="right-padding-text">{{ y-1 }}</span>-->
-<!--            </div>-->
-<!--            <div class="cell" v-for="x of store.hakoniwa.width" :key="x">-->
-<!--                <img-->
-<!--                    @mouseover="onMouseOverCell(x-1, y-1, $event)"-->
-<!--                    @mouseleave="onMouseLeaveCell"-->
-<!--                    @click="onMouseClick(x-1, y-1)"-->
-<!--                    :src="getIslandTerrain(x-1,y-1).data.image_path"-->
-<!--                    :alt="getIslandTerrain(x-1,y-1).data.info"-->
-<!--                    class="cell"-->
-<!--                >-->
-<!--            </div>-->
-<!--            <div class="left-padding" v-if="y%2 === 0"></div>-->
-<!--        </div>-->
-        <IslandDrawer
-            style="width:500px; height:500px;"
-        ></IslandDrawer>
-        <div v-show="showHoverWindow" class="hover-window" :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
-            <div class="hover-window-header">
-                <img
-                    class="hover-window-img"
-                    :src="getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.image_path"
-                >
-                <div class="grow items-center hover-window-info">
-                    {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
-                </div>
-            </div>
-        </div>
+        <TresCanvas
+            clear-color="#82DBC5"
+        >
+            <TresPerspectiveCamera
+                :position="[3, 3, 3]"
+                :look-at="[0, 0, 0]"
+            />
+            <TresMesh>
+                <TresTorusGeometry :args="[1, 0.5, 16, 32]" />
+                <TresMeshBasicMaterial color="orange" />
+            </TresMesh>
+            <TresAmbientLight :intensity="1" />
+        </TresCanvas>
     </div>
 </template>
 
@@ -41,12 +20,9 @@
 import { Terrain } from "../store/Entity/Terrain";
 import { defineComponent } from "vue";
 import { useMainStore } from "../store/MainStore";
-import IslandDrawer from "./IslandDrawer.vue";
+import { TresCanvas } from '@tresjs/core'
 
 export default defineComponent({
-    components: {
-        IslandDrawer,
-    },
     data() {
         return {
             showHoverWindow: false,
