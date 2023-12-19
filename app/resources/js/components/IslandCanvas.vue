@@ -21,10 +21,10 @@
             </template>
         </TresGroup>
 
-        <TresAmbientLight :intensity="1"/>
+        <TresAmbientLight :intensity="2"/>
         <TresDirectionalLight
             :position="[192, 192, 192] as Vector3"
-            :intensity="2"
+            :intensity="3"
         />
     </TresCanvas>
 </template>
