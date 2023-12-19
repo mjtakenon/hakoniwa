@@ -1,38 +1,20 @@
 <template>
     <div id="island">
-<!--        <div-->
-<!--            class="row"-->
-<!--            v-for="y of store.hakoniwa.height"-->
-<!--            :key="y"-->
-<!--        >-->
-<!--            <div class="right-padding" v-if="y%2 === 1">-->
-<!--                <span class="right-padding-text">{{ y-1 }}</span>-->
-<!--            </div>-->
-<!--            <div class="cell" v-for="x of store.hakoniwa.width" :key="x">-->
-<!--                <img-->
-<!--                    @mouseover="onMouseOverCell(x-1, y-1, $event)"-->
-<!--                    @mouseleave="onMouseLeaveCell"-->
-<!--                    @click="onMouseClick(x-1, y-1)"-->
-<!--                    :src="getIslandTerrain(x-1,y-1).data.image_path"-->
-<!--                    :alt="getIslandTerrain(x-1,y-1).data.info"-->
-<!--                    class="cell"-->
-<!--                >-->
-<!--            </div>-->
-<!--            <div class="left-padding" v-if="y%2 === 0"></div>-->
-<!--        </div>-->
         <Suspense>
-            <IslandCanvas
-                style="width:500px; height:500px;"
-            ></IslandCanvas>
+            <TresCanvas v-bind="gl" class="island-canvas">
+                <IslandCanvas
+                    style="width:500px; height:500px;"
+                ></IslandCanvas>
+            </TresCanvas>
         </Suspense>
-        <div v-show="showHoverWindow" class="hover-window" :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
+        <div v-if="store.showHoverWindow" class="hover-window" :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
             <div class="hover-window-header">
                 <img
                     class="hover-window-img"
-                    :src="getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.image_path"
+                    :src="getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.image_path"
                 >
                 <div class="grow items-center hover-window-info">
-                    {{ (getIslandTerrain(hoverCellPoint.x, hoverCellPoint.y).data.info) }}
+                    {{ (getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.info) }}
                 </div>
             </div>
         </div>
@@ -44,9 +26,12 @@ import { Terrain } from "../store/Entity/Terrain";
 import { defineComponent } from "vue";
 import { useMainStore } from "../store/MainStore";
 import IslandCanvas from "./IslandCanvas.vue";
+import {TresCanvas} from "@tresjs/core";
+import {BasicShadowMap, NoToneMapping, SRGBColorSpace} from "three";
 
 export default defineComponent({
     components: {
+        TresCanvas,
         IslandCanvas,
     },
     data() {
@@ -61,6 +46,15 @@ export default defineComponent({
             screenWidth: document.documentElement.clientWidth,
             isMobile: (document.documentElement.clientWidth < 1024),
             state: null,
+            gl: {
+                clearColor: '#888888',
+                shadows: true,
+                alpha: false,
+                shadowMapType: BasicShadowMap,
+                outputColorSpace: SRGBColorSpace,
+                toneMapping: NoToneMapping,
+            }
+
         }
     },
     setup() {
@@ -121,6 +115,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+.island-canvas {
+    @apply w-full min-h-[496px] min-h-[496px] mb-4;
+}
+
 #island {
     margin: 0 auto;
     @apply w-full md:min-w-[496px] max-w-[496px] mb-4;

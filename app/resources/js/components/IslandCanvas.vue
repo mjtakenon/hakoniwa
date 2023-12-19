@@ -1,5 +1,4 @@
 <template>
-    <TresCanvas v-bind="gl" class="island-canvas">
         <TresPerspectiveCamera
             ref="camera"
             :position="[64, 192, 192] as Vector3"
@@ -26,11 +25,18 @@
             :position="[192, 192, 192] as Vector3"
             :intensity="3"
         />
-    </TresCanvas>
 </template>
 
 <script setup lang="ts">
-import {TresCanvas, TresInstance, useLoader, useRenderLoop, useTres} from '@tresjs/core'
+import {
+    TresCanvas,
+    TresInstance,
+    useLoader,
+    useRenderLoop,
+    useTres,
+    useTresContext,
+    useTresContextProvider
+} from '@tresjs/core'
 import {BasicShadowMap, NoToneMapping, Raycaster, SRGBColorSpace, Vector2, Vector3} from 'three'
 import {CameraControls, Box} from '@tresjs/cientos'
 
@@ -44,15 +50,7 @@ import IslandCell from "./IslandCell.vue"
 const objectRef: ShallowRef<TresInstance | null> = shallowRef(null)
 const camera = ref(null)
 const group = ref(null)
-
-const gl = {
-    clearColor: '#82DBC5',
-    shadows: true,
-    alpha: false,
-    shadowMapType: BasicShadowMap,
-    outputColorSpace: SRGBColorSpace,
-    toneMapping: NoToneMapping,
-}
+const canvas = ref(null)
 
 const store = useMainStore()
 
@@ -60,42 +58,6 @@ const getIslandTerrain = (x, y): Terrain => {
     return store.terrains.filter(function (item, idx) {
         if (item.data.point.x === x && item.data.point.y === y) return true;
     }).pop();
-}
-
-const onMouseOverCell = (x, y, event: MouseEvent) => {
-    console.log("over")
-    // const offsetY = 25;
-    // this.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
-    // this.hoverWindowX = event.pageX;
-    //
-    // // Screen Overflow Check
-    // if(this.isMobile) {
-    //     const windowSize = 200;
-    //     const paddingOffset = 20;
-    //     const leftEdge = this.hoverWindowX - (windowSize/2);
-    //     const rightEdge = this.hoverWindowX + (windowSize/2);
-    //     if (leftEdge < paddingOffset) {
-    //         this.hoverWindowX += (-leftEdge) + paddingOffset;
-    //     }
-    //     else if (rightEdge > this.screenWidth) {
-    //         this.hoverWindowX -= (rightEdge-this.screenWidth) + paddingOffset;
-    //     }
-    // }
-    //
-    // this.showHoverWindow = true;
-    // this.hoverCellPoint.x = x;
-    // this.hoverCellPoint.y = y;
-}
-
-const onMouseLeaveCell = () => {
-    console.log("leave")
-    // this.showHoverWindow = false;
-}
-
-const onMouseClick = (x, y) => {
-    console.log("click")
-    // this.store.selectedPoint.x = x;
-    // this.store.selectedPoint.y = y;
 }
 
 </script>
