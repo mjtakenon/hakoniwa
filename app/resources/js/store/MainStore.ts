@@ -13,6 +13,7 @@ import {defaultTheme, Theme} from "./Entity/Theme";
 import {AjaxResult, ErrorType, RequestStatus} from "./Entity/Network";
 import {Achievement} from "./Entity/Achievement";
 import {BbsMessage, BbsVisibility} from "./Entity/Bbs";
+import {Vector3} from "three";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -142,6 +143,18 @@ export const useMainStore = defineStore('main', {
         selectedTargetIslandName(): string {
             const target = this.targetIslands.find(island => island.id === this.selectedTargetIsland);
             return target.name;
+        },
+        getCells() {
+            return {
+                sea: { "path": "/img/hakoniwa/gltf/land0.gltf",       "position": [32*0, 32*0, 32*0] as Vector3, "cameraPosition": [32*0+8, 32*0+12, 32*0+8] as Vector3},
+                shallow: { "path": "/img/hakoniwa/gltf/land14.gltf",  "position": [32*1, 32*1, 32*1] as Vector3, "cameraPosition": [32*1+8, 32*1+12, 32*1+8] as Vector3},
+                plain: { "path": "/img/hakoniwa/gltf/land2.gltf",     "position": [32*2, 32*2, 32*2] as Vector3, "cameraPosition": [32*2+8, 32*2+12, 32*2+8] as Vector3},
+                wasteland: { "path": "/img/hakoniwa/gltf/land1.gltf", "position": [32*3, 32*3, 32*3] as Vector3, "cameraPosition": [32*3+8, 32*3+12, 32*3+8] as Vector3},
+                forest: { "path": "/img/hakoniwa/gltf/land2.gltf",    "position": [32*4, 32*4, 32*4] as Vector3, "cameraPosition": [32*4+8, 32*4+12, 32*4+8] as Vector3},
+                village: { "path": "/img/hakoniwa/gltf/land3.gltf",   "position": [32*5, 32*5, 32*5] as Vector3, "cameraPosition": [32*5+8, 32*5+12, 32*5+8] as Vector3},
+                volcano: { "path": "/img/hakoniwa/gltf/volcano.gltf", "position": [32*6, 32*6, 32*6] as Vector3, "cameraPosition": [32*6+8, 32*6+12, 32*6+8] as Vector3},
+                lake: { "path": "/img/hakoniwa/gltf/land14.gltf",     "position": [32*7, 32*7, 32*7] as Vector3, "cameraPosition": [32*7+8, 32*7+12, 32*7+8] as Vector3},
+            }
         }
     },
     actions: {

@@ -3,7 +3,9 @@
         <div v-show="store.showHoverWindow" class="hover-window" :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
             <div class="hover-window-header">
                 <TresCanvas class="hover-window-img" :alpha="true">
-                    <CellCanvas/>
+                    <Suspense>
+                        <CellCanvas/>
+                    </Suspense>
                 </TresCanvas>
                 <div class="grow items-center hover-window-info">
                     {{ (getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.info) }}

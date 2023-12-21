@@ -1,30 +1,30 @@
 <template>
-        <TresPerspectiveCamera
-            ref="camera"
-            :position="[64, 192, 192] as Vector3"
-            :look-at="[0, 0, 0] as Vector3"
-        />
-        <CameraControls
-            make-default
-        />
-        <TresGroup :position="[-64, 0, -64] as Vector3">
-            <template v-for="y of store.hakoniwa.height">
-                <template v-for="x of store.hakoniwa.width">
-                    <Suspense>
-                        <IslandCell
-                            :position="[x*8+((y%2-1)*4), 0, y*8] as Vector3"
-                            :terrain="getIslandTerrain(x-1, y-1)"
-                        ></IslandCell>
-                    </Suspense>
-                </template>
+    <TresPerspectiveCamera
+        ref="camera"
+        :position="[64, 192, 192] as Vector3"
+        :look-at="[0, 0, 0] as Vector3"
+    />
+    <CameraControls
+        make-default
+    />
+    <TresGroup :position="[-64, 0, -64] as Vector3">
+        <template v-for="y of store.hakoniwa.height">
+            <template v-for="x of store.hakoniwa.width">
+                <Suspense>
+                    <IslandCell
+                        :position="[x*8+((y%2-1)*4), 0, y*8] as Vector3"
+                        :terrain="getIslandTerrain(x-1, y-1)"
+                    ></IslandCell>
+                </Suspense>
             </template>
-        </TresGroup>
+        </template>
+    </TresGroup>
 
-        <TresAmbientLight :intensity="2"/>
-        <TresDirectionalLight
-            :position="[192, 192, 192] as Vector3"
-            :intensity="3"
-        />
+    <TresAmbientLight :intensity="2"/>
+    <TresDirectionalLight
+        :position="[192, 192, 192] as Vector3"
+        :intensity="3"
+    />
 </template>
 
 <script setup lang="ts">
