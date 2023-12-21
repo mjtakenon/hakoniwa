@@ -160,11 +160,12 @@ export default defineComponent({
             @apply flex px-3 items-center;
 
             .hover-window-img {
-                //min-width: 32px;
+                min-width: 32px;
                 min-height: 32px;
-                //max-width: 32px;
+                max-width: 32px;
                 max-height: 32px;
-                margin-right: 10px;
+                object-fit: cover;
+                //margin-right: 10px;
             }
 
             .hover-window-info {

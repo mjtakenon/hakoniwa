@@ -45,8 +45,6 @@ export interface PiniaState {
     screenWidth: number,
     showHoverWindow: boolean,
     hoverCellPoint: Point,
-    hoverCellType: string,
-    hoverCellPath: string,
     turn: Turn,
     theme: Theme,
     isOpenPopup: boolean,
@@ -98,8 +96,6 @@ export const useMainStore = defineStore('main', {
             screenWidth: 0,
             showHoverWindow: false,
             hoverCellPoint: {x: 0, y: 0},
-            hoverCellType: "sea",
-            hoverCellPath: "/img/hakoniwa/gltf/land0.gltf",
             turn: {
                 turn: 0,
                 next_time: new Date('1970/1/1 00:00:00')
@@ -146,14 +142,14 @@ export const useMainStore = defineStore('main', {
         },
         getCells() {
             return {
-                sea: { "path": "/img/hakoniwa/gltf/land0.gltf",       "position": [32*0, 32*0, 32*0] as Vector3, "cameraPosition": [32*0+8, 32*0+12, 32*0+8] as Vector3},
-                shallow: { "path": "/img/hakoniwa/gltf/land14.gltf",  "position": [32*1, 32*1, 32*1] as Vector3, "cameraPosition": [32*1+8, 32*1+12, 32*1+8] as Vector3},
-                plain: { "path": "/img/hakoniwa/gltf/land2.gltf",     "position": [32*2, 32*2, 32*2] as Vector3, "cameraPosition": [32*2+8, 32*2+12, 32*2+8] as Vector3},
-                wasteland: { "path": "/img/hakoniwa/gltf/land1.gltf", "position": [32*3, 32*3, 32*3] as Vector3, "cameraPosition": [32*3+8, 32*3+12, 32*3+8] as Vector3},
-                forest: { "path": "/img/hakoniwa/gltf/land2.gltf",    "position": [32*4, 32*4, 32*4] as Vector3, "cameraPosition": [32*4+8, 32*4+12, 32*4+8] as Vector3},
-                village: { "path": "/img/hakoniwa/gltf/land3.gltf",   "position": [32*5, 32*5, 32*5] as Vector3, "cameraPosition": [32*5+8, 32*5+12, 32*5+8] as Vector3},
-                volcano: { "path": "/img/hakoniwa/gltf/volcano.gltf", "position": [32*6, 32*6, 32*6] as Vector3, "cameraPosition": [32*6+8, 32*6+12, 32*6+8] as Vector3},
-                lake: { "path": "/img/hakoniwa/gltf/land14.gltf",     "position": [32*7, 32*7, 32*7] as Vector3, "cameraPosition": [32*7+8, 32*7+12, 32*7+8] as Vector3},
+                sea: { "path": "/img/hakoniwa/gltf/sea.gltf",             "position": [32*0, 32*0, -32*0] as Vector3, "cameraPosition": [32*0+4, 32*0+16, -32*0+8] as Vector3},
+                shallow: { "path": "/img/hakoniwa/gltf/shallow.gltf",     "position": [32*1, 32*1, -32*1] as Vector3, "cameraPosition": [32*1+4, 32*1+16, -32*1+8] as Vector3},
+                plain: { "path": "/img/hakoniwa/gltf/plain.gltf",         "position": [32*2, 32*2, -32*2] as Vector3, "cameraPosition": [32*2+4, 32*2+16, -32*2+8] as Vector3},
+                wasteland: { "path": "/img/hakoniwa/gltf/wasteland.gltf", "position": [32*3, 32*3, -32*3] as Vector3, "cameraPosition": [32*3+4, 32*3+16, -32*3+8] as Vector3},
+                forest: { "path": "/img/hakoniwa/gltf/forest.gltf",       "position": [32*4, 32*4, -32*4] as Vector3, "cameraPosition": [32*4+4, 32*4+16, -32*4+8] as Vector3},
+                village: { "path": "/img/hakoniwa/gltf/village.gltf",     "position": [32*5, 32*5, -32*5] as Vector3, "cameraPosition": [32*5+4, 32*5+16, -32*5+8] as Vector3},
+                volcano: { "path": "/img/hakoniwa/gltf/volcano.gltf",     "position": [32*6, 32*6, -32*6] as Vector3, "cameraPosition": [32*6+4, 32*6+16, -32*6+8] as Vector3},
+                lake: { "path": "/img/hakoniwa/gltf/shallow.gltf",        "position": [32*7, 32*7, -32*7] as Vector3, "cameraPosition": [32*7+4, 32*7+16, -32*7+8] as Vector3},
             }
         }
     },

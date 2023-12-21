@@ -17,9 +17,8 @@ import {ref, shallowReactive, shallowRef, ShallowRef, watchEffect} from 'vue'
 import {useGLTF, GLTFModel} from '@tresjs/cientos'
 import {Terrain} from "../store/Entity/Terrain";
 import {useMainStore} from "../store/MainStore";
-import {storeToRefs} from "pinia";
 
-const {hakoniwa, terrains} = storeToRefs(useMainStore())
+const store = useMainStore()
 
 interface Props {
     terrain: Terrain
@@ -28,24 +27,11 @@ interface Props {
 
 const props = defineProps<Props>();
 
-let paths = {
-    sea: '/img/hakoniwa/gltf/land0.gltf',
-    shallow: '/img/hakoniwa/gltf/land14.gltf',
-    plain: '/img/hakoniwa/gltf/land2.gltf',
-    wasteland: '/img/hakoniwa/gltf/land1.gltf',
-    forest: '/img/hakoniwa/gltf/land2.gltf',
-    village: '/img/hakoniwa/gltf/land3.gltf',
-    volcano: '/img/hakoniwa/gltf/volcano.gltf',
-    lake: '/img/hakoniwa/gltf/land14.gltf',
-}
-
-let {scene, nodes, animations, materials} = await useGLTF(paths[props.terrain.type], { draco: true })
+let {scene, nodes, animations, materials} = await useGLTF(store.getCells[props.terrain.type].path, { draco: true })
 
 let box = new Box3()
 const size = box.setFromObject(scene).getSize(new Vector3())
 props.position[1]+=(size.y-8)/2
-
-const store = useMainStore()
 
 const onMouseOverCell = (event: MouseEvent) => {
     console.log("over")
@@ -69,20 +55,13 @@ const onMouseOverCell = (event: MouseEvent) => {
 
     store.showHoverWindow = true;
     store.hoverCellPoint = props.terrain.data.point
-
-    store.hoverCellType = props.terrain.type
-    store.hoverCellPath = paths[props.terrain.type]
-
-    console.log(store.hoverCellType)
 }
 
 const onMouseLeaveCell = (event: MouseEvent) => {
-    console.log("leave")
     store.showHoverWindow = false;
 }
 
 const onMouseClick = (event: MouseEvent) => {
-    console.log("click")
     store.hoverCellPoint = props.terrain.data.point;
 }
 
