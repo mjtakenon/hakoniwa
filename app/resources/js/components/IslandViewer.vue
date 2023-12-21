@@ -1,36 +1,33 @@
 <template>
     <div id="island">
-        <Suspense>
-            <TresCanvas v-bind="gl" class="island-canvas">
-                <IslandCanvas
-                    style="width:500px; height:500px;"
-                ></IslandCanvas>
-            </TresCanvas>
-        </Suspense>
-        <div v-if="store.showHoverWindow" class="hover-window" :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
+        <div v-show="store.showHoverWindow" class="hover-window" :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
             <div class="hover-window-header">
-                <img
-                    class="hover-window-img"
-                    :src="getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.image_path"
-                >
+                <TresCanvas class="hover-window-img" :alpha="true">
+                    <CellCanvas/>
+                </TresCanvas>
                 <div class="grow items-center hover-window-info">
                     {{ (getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.info) }}
                 </div>
             </div>
         </div>
+        <TresCanvas v-bind="gl" class="island-canvas">
+            <IslandCanvas/>
+        </TresCanvas>
     </div>
 </template>
 
 <script lang="ts">
-import { Terrain } from "../store/Entity/Terrain";
-import { defineComponent } from "vue";
-import { useMainStore } from "../store/MainStore";
+import {Terrain} from "../store/Entity/Terrain";
+import {defineComponent} from "vue";
+import {useMainStore} from "../store/MainStore";
 import IslandCanvas from "./IslandCanvas.vue";
 import {TresCanvas} from "@tresjs/core";
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace} from "three";
+import CellCanvas from "./CellCanvas.vue";
 
 export default defineComponent({
     components: {
+        CellCanvas,
         TresCanvas,
         IslandCanvas,
     },
@@ -49,17 +46,16 @@ export default defineComponent({
             gl: {
                 clearColor: '#888888',
                 shadows: true,
-                alpha: false,
+                alpha: true,
                 shadowMapType: BasicShadowMap,
                 outputColorSpace: SRGBColorSpace,
                 toneMapping: NoToneMapping,
             }
-
         }
     },
     setup() {
         const store = useMainStore();
-        return { store };
+        return {store};
     },
     mounted() {
         window.addEventListener("resize", this.onWindowSizeChanged);
@@ -69,7 +65,7 @@ export default defineComponent({
     },
     methods: {
         getIslandTerrain(x, y): Terrain {
-            return this.store.terrains.filter(function(item, idx){
+            return this.store.terrains.filter(function (item, idx) {
                 if (item.data.point.x === x && item.data.point.y === y) return true;
             }).pop();
         },
@@ -79,16 +75,15 @@ export default defineComponent({
             this.hoverWindowX = event.pageX;
 
             // Screen Overflow Check
-            if(this.isMobile) {
+            if (this.isMobile) {
                 const windowSize = 200;
                 const paddingOffset = 20;
-                const leftEdge = this.hoverWindowX - (windowSize/2);
-                const rightEdge = this.hoverWindowX + (windowSize/2);
+                const leftEdge = this.hoverWindowX - (windowSize / 2);
+                const rightEdge = this.hoverWindowX + (windowSize / 2);
                 if (leftEdge < paddingOffset) {
                     this.hoverWindowX += (-leftEdge) + paddingOffset;
-                }
-                else if (rightEdge > this.screenWidth) {
-                    this.hoverWindowX -= (rightEdge-this.screenWidth) + paddingOffset;
+                } else if (rightEdge > this.screenWidth) {
+                    this.hoverWindowX -= (rightEdge - this.screenWidth) + paddingOffset;
                 }
             }
 
@@ -163,8 +158,10 @@ export default defineComponent({
             @apply flex px-3 items-center;
 
             .hover-window-img {
-                width:32px;
-                height:32px;
+                //min-width: 32px;
+                min-height: 32px;
+                //max-width: 32px;
+                max-height: 32px;
                 margin-right: 10px;
             }
 
