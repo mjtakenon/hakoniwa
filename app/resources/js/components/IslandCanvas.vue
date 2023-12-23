@@ -8,15 +8,13 @@
         make-default
     />
     <TresGroup :position="[-64, 0, -64] as Vector3">
-        <template v-for="y of store.hakoniwa.height">
-            <template v-for="x of store.hakoniwa.width">
-                <Suspense>
-                    <IslandCell
-                        :position="[x*8+((y%2-1)*4), 0, y*8] as Vector3"
-                        :terrain="getIslandTerrain(x-1, y-1)"
-                    ></IslandCell>
-                </Suspense>
-            </template>
+        <template v-for="terrain of store.terrains">
+            <Suspense>
+                <IslandCell
+                    :position="[terrain.data.point.x*8+((terrain.data.point.y%2-1)*4), 0, terrain.data.point.y*8] as Vector3"
+                    :terrain="terrain"
+                ></IslandCell>
+            </Suspense>
         </template>
     </TresGroup>
 

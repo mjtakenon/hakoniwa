@@ -1,6 +1,9 @@
 <template>
     <primitive
-        v-for="node of nodes" :object="node" :position="props.position"
+        ref="objectRef"
+        v-for="child of model.scene.children"
+        :object="child"
+        :position="props.position"
         @click="(intersection, pointerEvent) => onMouseClick(pointerEvent)"
         @pointer-enter="(intersection, pointerEvent) => onMouseOverCell(pointerEvent)"
         @pointer-leave="(intersection, pointerEvent) => onMouseLeaveCell(pointerEvent)"
@@ -27,14 +30,15 @@ interface Props {
 
 const props = defineProps<Props>();
 
-let {scene, nodes, animations, materials} = await useGLTF(store.getCells[props.terrain.type].path, { draco: true })
+let objectRef: ShallowRef<TresInstance | null> = shallowRef(null)
 
-let box = new Box3()
-const size = box.setFromObject(scene).getSize(new Vector3())
+let model = await useGLTF(store.getCells[props.terrain.type].path, { draco: true })
+
+const size = (new Box3()).setFromObject(model.scene).getSize(new Vector3())
 props.position[1]+=(size.y-8)/2
 
 const onMouseOverCell = (event: MouseEvent) => {
-    console.log("over")
+    console.log("over", objectRef.value)
     const offsetY = 25;
     store.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
     store.hoverWindowX = event.pageX;
