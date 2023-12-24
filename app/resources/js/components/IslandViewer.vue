@@ -18,97 +18,32 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {Terrain} from "../store/Entity/Terrain";
-import {defineComponent} from "vue";
+import {reactive} from "vue";
 import {useMainStore} from "../store/MainStore";
 import IslandCanvas from "./IslandCanvas.vue";
 import {TresCanvas} from "@tresjs/core";
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace} from "three";
 import CellCanvas from "./CellCanvas.vue";
 
-export default defineComponent({
-    components: {
-        CellCanvas,
-        TresCanvas,
-        IslandCanvas,
-    },
-    data() {
-        return {
-            showHoverWindow: false,
-            hoverCellPoint: {
-                "x": 0,
-                "y": 0,
-            },
-            hoverWindowY: 170,
-            hoverWindowX: 0,
-            screenWidth: document.documentElement.clientWidth,
-            isMobile: (document.documentElement.clientWidth < 1024),
-            state: null,
-            gl: {
-                clearColor: '#888888',
-                shadows: true,
-                alpha: true,
-                shadowMapType: BasicShadowMap,
-                outputColorSpace: SRGBColorSpace,
-                toneMapping: NoToneMapping,
-            }
-        }
-    },
-    setup() {
-        const store = useMainStore();
-        return {store};
-    },
-    mounted() {
-        window.addEventListener("resize", this.onWindowSizeChanged);
-    },
-    unmounted() {
-        window.removeEventListener("resize", this.onWindowSizeChanged);
-    },
-    methods: {
-        getIslandTerrain(x, y): Terrain {
-            return this.store.terrains.filter(function (item, idx) {
-                if (item.data.point.x === x && item.data.point.y === y) return true;
-            }).pop();
-        },
-        onMouseOverCell(x, y, event: MouseEvent) {
-            const offsetY = 25;
-            this.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
-            this.hoverWindowX = event.pageX;
+const gl = reactive({
+    clearColor: '#888888',
+    shadows: true,
+    alpha: true,
+    shadowMapType: BasicShadowMap,
+    outputColorSpace: SRGBColorSpace,
+    toneMapping: NoToneMapping,
+})
 
-            // Screen Overflow Check
-            if (this.isMobile) {
-                const windowSize = 200;
-                const paddingOffset = 20;
-                const leftEdge = this.hoverWindowX - (windowSize / 2);
-                const rightEdge = this.hoverWindowX + (windowSize / 2);
-                if (leftEdge < paddingOffset) {
-                    this.hoverWindowX += (-leftEdge) + paddingOffset;
-                } else if (rightEdge > this.screenWidth) {
-                    this.hoverWindowX -= (rightEdge - this.screenWidth) + paddingOffset;
-                }
-            }
+const store = useMainStore();
 
-            this.showHoverWindow = true;
-            this.hoverCellPoint.x = x;
-            this.hoverCellPoint.y = y;
-        },
-        onMouseLeaveCell() {
-            this.showHoverWindow = false;
-        },
-        onMouseClick(x, y) {
-            this.store.selectedPoint.x = x;
-            this.store.selectedPoint.y = y;
-        },
-        onWindowSizeChanged() {
-            this.showHoverWindow = false;
-            this.isMobile = (document.documentElement.clientWidth < 1024);
-            this.screenWidth = document.documentElement.clientWidth;
-        },
-    },
-    computed: {},
-    props: [],
-});
+const getIslandTerrain = (x, y): Terrain => {
+    return store.terrains.filter(function (item, idx) {
+        if (item.data.point.x === x && item.data.point.y === y) return true;
+    }).pop();
+}
+
 </script>
 
 <style lang="scss" scoped>
