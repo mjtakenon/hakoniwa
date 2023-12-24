@@ -2,11 +2,9 @@
     <div id="island">
         <div v-show="store.showHoverWindow" class="hover-window" :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
             <div class="hover-window-header">
-                <TresCanvas class="hover-window-img" :alpha="true">
                     <Suspense>
-                        <CellCanvas/>
+                        <HoverCanvas class="hover-window-img"/>
                     </Suspense>
-                </TresCanvas>
                 <div class="grow items-center hover-window-info">
                     {{ (getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.info) }}
                 </div>
@@ -25,7 +23,7 @@ import {useMainStore} from "../store/MainStore";
 import IslandCanvas from "./IslandCanvas.vue";
 import {TresCanvas} from "@tresjs/core";
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace} from "three";
-import CellCanvas from "./CellCanvas.vue";
+import HoverCanvas from "./HoverCanvas.vue";
 
 const gl = reactive({
     clearColor: '#888888',
