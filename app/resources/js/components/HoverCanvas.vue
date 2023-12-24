@@ -1,5 +1,5 @@
 <template>
-    <canvas id="hover-canvas">
+    <canvas ref="canvas">
     </canvas>
 </template>
 
@@ -8,7 +8,7 @@ import {Terrain} from "../store/Entity/Terrain"
 import {AmbientLight, PerspectiveCamera, Scene, WebGLRenderer} from "three";
 import {useMainStore} from "../store/MainStore";
 import {useGLTF} from "@tresjs/cientos";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 
 const store = useMainStore()
 
@@ -17,7 +17,9 @@ const height = 500
 
 const scene = new Scene()
 
-const camera = new PerspectiveCamera(50, width / height)
+const canvas = ref(null)
+
+const camera = new PerspectiveCamera(45, width / height)
 
 let models = {}
 for (let type in store.getCells) {
@@ -31,7 +33,7 @@ let renderer: WebGLRenderer | null = null
 onMounted(() => {
 
     renderer = new WebGLRenderer({
-        canvas: document.getElementById("hover-canvas")
+        canvas: canvas.value
     })
 
     renderer.setPixelRatio(window.devicePixelRatio)
