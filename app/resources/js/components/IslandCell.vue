@@ -6,6 +6,7 @@
         :position="props.position"
         @click="(intersection, pointerEvent) => onMouseClick(pointerEvent)"
         @pointer-enter="(intersection, pointerEvent) => onMouseOverCell(pointerEvent)"
+        @pointer-move="(intersection, pointerEvent) => onMouseOverCell(pointerEvent)"
         @pointer-leave="(intersection, pointerEvent) => onMouseLeaveCell(pointerEvent)"
         blocks-pointer-events
     ></primitive>
@@ -32,6 +33,15 @@ const props = defineProps<Props>();
 let objectRef: ShallowRef<TresInstance | null> = shallowRef(null)
 
 const onMouseOverCell = (event: MouseEvent) => {
+    onMouseMoveCell(event)
+
+    store.showHoverWindow = true;
+    store.hoverCellPoint = props.terrain.data.point
+
+    store.changeHoverCellCameraFocus(props.terrain.type);
+}
+
+const onMouseMoveCell = (event: MouseEvent) => {
     const offsetY = 25;
     store.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
     store.hoverWindowX = event.pageX;
@@ -48,11 +58,6 @@ const onMouseOverCell = (event: MouseEvent) => {
             store.hoverWindowX -= (rightEdge - store.screenWidth) + paddingOffset;
         }
     }
-
-    store.showHoverWindow = true;
-    store.hoverCellPoint = props.terrain.data.point
-
-    store.changeHoverCellCameraFocus(props.terrain.type);
 }
 
 const onMouseLeaveCell = (event: MouseEvent) => {
