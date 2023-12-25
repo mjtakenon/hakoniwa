@@ -2,14 +2,14 @@
     <nav class="navbar">
         <a class="navbar-left text-on-surface" href="/">
             <div class="navbar-brand">
-                <img src="/favicon.ico">
+                <img :src="'/favicon.ico'">
             </div>
             <div class="navbar-title">
                 やまにてぃ（仮）
             </div>
         </a>
         <button id="hamburger-button" @click="isOpenHamburgerMenu=!isOpenHamburgerMenu">
-            <img class="hamburger-icon" src="/img/hakoniwa/ui/hamburger.svg">
+            <img class="hamburger-icon" :src="'/img/hakoniwa/ui/hamburger.svg'">
         </button>
 
 
@@ -51,7 +51,7 @@
             </div>
             <div v-else class="navbar-menu">
                 <a class="block max-md:mb-2 md:mr-2" href="/auth/google/redirect">
-                    <img class="mx-auto" src="/img/btn_google_signin_light_normal_web.png">
+                    <img class="mx-auto" :src="'/img/btn_google_signin_light_normal_web.png'">
                 </a>
                 <div class="navbar-yahoo">
                     <a class="yahoo-link-box" href="/auth/yahoo/redirect">

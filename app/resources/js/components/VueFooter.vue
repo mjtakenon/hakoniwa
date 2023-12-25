@@ -3,7 +3,7 @@
         <div class="footer-contents">
             <div class="footer-main">
                 <div class="footer-head">
-                    <img class="brand-logo" src="/favicon.ico" />
+                    <img class="brand-logo" :src="'/favicon.ico'" />
                     <span class="brand-title">やまにてぃ（仮）</span>
                 </div>
                 <div class="footer-grid">
