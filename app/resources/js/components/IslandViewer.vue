@@ -1,17 +1,35 @@
 <template>
     <div id="island">
-        <div v-show="store.showHoverWindow" class="hover-window" :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
+        <div v-show="store.showHoverWindow" class="hover-window"
+             :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
             <div class="hover-window-header">
-                    <Suspense>
-                        <HoverCanvas class="hover-window-img"/>
-                    </Suspense>
+                <Suspense>
+                    <HoverCanvas class="hover-window-img"/>
+                </Suspense>
                 <div class="grow items-center hover-window-info">
                     {{ (getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.info) }}
                 </div>
             </div>
         </div>
         <TresCanvas v-bind="gl" class="island-canvas">
-            <IslandCanvas/>
+            <TresPerspectiveCamera
+                ref="camera"
+                :position="[64, 192, 192] as Vector3"
+            />
+            <CameraControls
+                v-bind="cameraControlsState"
+                make-default
+            />
+
+            <Suspense>
+                <IslandCanvas/>
+            </Suspense>
+
+            <TresAmbientLight :intensity="2"/>
+            <TresDirectionalLight
+                :position="[192, 192, 192] as Vector3"
+                :intensity="3"
+            />
         </TresCanvas>
     </div>
 </template>
@@ -22,8 +40,9 @@ import {reactive} from "vue";
 import {useMainStore} from "../store/MainStore";
 import IslandCanvas from "./IslandCanvas.vue";
 import {TresCanvas} from "@tresjs/core";
-import {BasicShadowMap, NoToneMapping, SRGBColorSpace} from "three";
+import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
 import HoverCanvas from "./HoverCanvas.vue";
+import {CameraControls} from "@tresjs/cientos";
 
 const gl = reactive({
     clearColor: '#888888',
@@ -32,6 +51,12 @@ const gl = reactive({
     shadowMapType: BasicShadowMap,
     outputColorSpace: SRGBColorSpace,
     toneMapping: NoToneMapping,
+})
+
+const cameraControlsState = reactive({
+    minDistance: 20,
+    maxDistance: 200,
+    maxPolarAngle: Math.PI / 2,
 })
 
 const store = useMainStore()

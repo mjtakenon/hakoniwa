@@ -1,49 +1,31 @@
 <template>
-    <TresGroup>
-        <TresPerspectiveCamera
-            ref="camera"
-            :position="[64, 192, 192] as Vector3"
-        />
-        <CameraControls
-            v-bind="cameraControlsState"
-            make-default
-        />
-        <TresGroup :position="[-64, 0, -64] as Vector3">
-            <template v-for="terrain of store.terrains">
-                <Suspense>
-                    <IslandCell
-                        :position="[terrain.data.point.x*8+((terrain.data.point.y%2-1)*4), 0, terrain.data.point.y*8] as Vector3"
-                        :terrain="terrain"
-                    ></IslandCell>
-                </Suspense>
-            </template>
-        </TresGroup>
-
-        <TresAmbientLight :intensity="2"/>
-        <TresDirectionalLight
-            :position="[192, 192, 192] as Vector3"
-            :intensity="3"
-        />
+    <TresGroup :position="[-64, 0, -64] as Vector3">
+        <template v-for="terrain of store.terrains">
+            <IslandCell
+                :position="[terrain.data.point.x*8+((terrain.data.point.y%2-1)*4), models[terrain.type].scene.position.y, terrain.data.point.y*8] as Vector3"
+                :terrain="terrain"
+                :scene="models[terrain.type].scene.clone()"
+            ></IslandCell>
+        </template>
     </TresGroup>
 </template>
 
-<script setup lang="ts">
-import {Vector3} from 'three'
-import {CameraControls} from '@tresjs/cientos'
-
-import {reactive} from 'vue'
+<script async setup lang="ts">
+import {Box3, Vector3} from 'three'
+import {useGLTF} from '@tresjs/cientos'
 import {useMainStore} from "../store/MainStore"
 import IslandCell from "./IslandCell.vue"
 
-let controls = null
-
-const cameraControlsState = reactive({
-    minDistance: 20,
-    maxDistance: 200,
-    maxPolarAngle: Math.PI / 2,
-})
-
 const store = useMainStore()
+
+let models = {}
+
+for (let type in store.getCells) {
+    let model = await useGLTF(store.getCells[type].path, {draco: true})
+    const size = (new Box3()).setFromObject(model.scene).getSize(new Vector3())
+    model.scene.position.y += (size.y - 8) / 2
+    models[type] = model
+}
 
 </script>
 

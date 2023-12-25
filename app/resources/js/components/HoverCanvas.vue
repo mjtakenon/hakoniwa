@@ -1,10 +1,9 @@
 <template>
-    <canvas ref="canvas">
-    </canvas>
+    <canvas ref="canvas"/>
 </template>
 
 <script setup lang="ts">
-import {AmbientLight, PerspectiveCamera, Scene, WebGLRenderer} from "three";
+import {AmbientLight, Box3, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from "three";
 import {useMainStore} from "../store/MainStore";
 import {useGLTF} from "@tresjs/cientos";
 import {onMounted, ref} from "vue";
@@ -20,7 +19,10 @@ const canvas = ref(null)
 
 let models = {}
 for (let type in store.getCells) {
-    models[type] = await useGLTF(store.getCells[type].path, {draco: true})
+    let model = await useGLTF(store.getCells[type].path, {draco: true})
+    const size = (new Box3()).setFromObject(model.scene).getSize(new Vector3())
+    model.scene.position.y += (size.y - 8) / 2
+    models[type] = model
 }
 
 const light = new AmbientLight(0xffffff, 3)
