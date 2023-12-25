@@ -13,7 +13,7 @@ import {defaultTheme, Theme} from "./Entity/Theme";
 import {AjaxResult, ErrorType, RequestStatus} from "./Entity/Network";
 import {Achievement} from "./Entity/Achievement";
 import {BbsMessage, BbsVisibility} from "./Entity/Bbs";
-import {Vector3} from "three";
+import {Camera, PerspectiveCamera, Vector3} from "three";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -45,6 +45,7 @@ export interface PiniaState {
     screenWidth: number,
     showHoverWindow: boolean,
     hoverCellPoint: Point,
+    hoverCellCamera: Camera|null,
     turn: Turn,
     theme: Theme,
     isOpenPopup: boolean,
@@ -96,6 +97,7 @@ export const useMainStore = defineStore('main', {
             screenWidth: 0,
             showHoverWindow: false,
             hoverCellPoint: {x: 0, y: 0},
+            hoverCellCamera: null,
             turn: {
                 turn: 0,
                 next_time: new Date('1970/1/1 00:00:00')
@@ -142,14 +144,14 @@ export const useMainStore = defineStore('main', {
         },
         getCells() {
             return {
-                sea: { "path": "/img/hakoniwa/gltf/sea.gltf",             "position": [32*0, 32*0, -32*0] as Vector3, "cameraPosition": [32*0+4, 32*0+16, -32*0+8] as Vector3},
-                shallow: { "path": "/img/hakoniwa/gltf/shallow.gltf",     "position": [32*1, 32*1, -32*1] as Vector3, "cameraPosition": [32*1+4, 32*1+16, -32*1+8] as Vector3},
-                plain: { "path": "/img/hakoniwa/gltf/plain.gltf",         "position": [32*2, 32*2, -32*2] as Vector3, "cameraPosition": [32*2+4, 32*2+16, -32*2+8] as Vector3},
-                wasteland: { "path": "/img/hakoniwa/gltf/wasteland.gltf", "position": [32*3, 32*3, -32*3] as Vector3, "cameraPosition": [32*3+4, 32*3+16, -32*3+8] as Vector3},
-                forest: { "path": "/img/hakoniwa/gltf/forest.gltf",       "position": [32*4, 32*4, -32*4] as Vector3, "cameraPosition": [32*4+4, 32*4+16, -32*4+8] as Vector3},
-                village: { "path": "/img/hakoniwa/gltf/village.gltf",     "position": [32*5, 32*5, -32*5] as Vector3, "cameraPosition": [32*5+4, 32*5+16, -32*5+8] as Vector3},
-                volcano: { "path": "/img/hakoniwa/gltf/volcano.gltf",     "position": [32*6, 32*6, -32*6] as Vector3, "cameraPosition": [32*6+4, 32*6+16, -32*6+8] as Vector3},
-                lake: { "path": "/img/hakoniwa/gltf/shallow.gltf",        "position": [32*7, 32*7, -32*7] as Vector3, "cameraPosition": [32*7+4, 32*7+16, -32*7+8] as Vector3},
+                sea: { "path": "/img/hakoniwa/gltf/sea.gltf",             "position": [32*0, 32*0, -32*0] as Vector3, "cameraPosition": [32*0+8, 32*0+12, -32*0+12] as Vector3},
+                shallow: { "path": "/img/hakoniwa/gltf/shallow.gltf",     "position": [32*1, 32*1, -32*1] as Vector3, "cameraPosition": [32*1+8, 32*1+12, -32*1+12] as Vector3},
+                plain: { "path": "/img/hakoniwa/gltf/plain.gltf",         "position": [32*2, 32*2, -32*2] as Vector3, "cameraPosition": [32*2+8, 32*2+12, -32*2+12] as Vector3},
+                wasteland: { "path": "/img/hakoniwa/gltf/wasteland.gltf", "position": [32*3, 32*3, -32*3] as Vector3, "cameraPosition": [32*3+8, 32*3+12, -32*3+12] as Vector3},
+                forest: { "path": "/img/hakoniwa/gltf/forest.gltf",       "position": [32*4, 32*4, -32*4] as Vector3, "cameraPosition": [32*4+8, 32*4+12, -32*4+12] as Vector3},
+                village: { "path": "/img/hakoniwa/gltf/village.gltf",     "position": [32*5, 32*5, -32*5] as Vector3, "cameraPosition": [32*5+8, 32*5+12, -32*5+12] as Vector3},
+                volcano: { "path": "/img/hakoniwa/gltf/volcano.gltf",     "position": [32*6, 32*6, -32*6] as Vector3, "cameraPosition": [32*6+8, 32*6+12, -32*6+12] as Vector3},
+                lake: { "path": "/img/hakoniwa/gltf/shallow.gltf",        "position": [32*7, 32*7, -32*7] as Vector3, "cameraPosition": [32*7+8, 32*7+12, -32*7+12] as Vector3},
             }
         }
     },
@@ -307,6 +309,10 @@ export const useMainStore = defineStore('main', {
             app.classList.add(theme.themeClass);
             app.classList.add(theme.type.toString());
             localStorage.setItem("theme", JSON.stringify(theme));
+        },
+        changeHoverCellCameraFocus(type: String) {
+            this.hoverCellCamera.position.set(...this.getCells[type].cameraPosition)
+            this.hoverCellCamera.lookAt(this.getCells[type].position[0], this.getCells[type].position[1], this.getCells[type].position[2])
         }
     }
 })

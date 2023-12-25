@@ -34,12 +34,12 @@ const gl = reactive({
     toneMapping: NoToneMapping,
 })
 
-const store = useMainStore();
+const store = useMainStore()
 
 const getIslandTerrain = (x, y): Terrain => {
     return store.terrains.filter(function (item, idx) {
         if (item.data.point.x === x && item.data.point.y === y) return true;
-    }).pop();
+    }).pop()
 }
 
 </script>

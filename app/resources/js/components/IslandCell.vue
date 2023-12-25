@@ -38,7 +38,6 @@ const size = (new Box3()).setFromObject(model.scene).getSize(new Vector3())
 props.position[1]+=(size.y-8)/2
 
 const onMouseOverCell = (event: MouseEvent) => {
-    console.log("over", objectRef.value)
     const offsetY = 25;
     store.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
     store.hoverWindowX = event.pageX;
@@ -59,6 +58,8 @@ const onMouseOverCell = (event: MouseEvent) => {
 
     store.showHoverWindow = true;
     store.hoverCellPoint = props.terrain.data.point
+
+    store.changeHoverCellCameraFocus(props.terrain.type);
 }
 
 const onMouseLeaveCell = (event: MouseEvent) => {

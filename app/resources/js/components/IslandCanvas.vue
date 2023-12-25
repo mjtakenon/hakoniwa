@@ -28,29 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import {
-    TresCanvas,
-    TresInstance,
-    useLoader,
-    useRenderLoop,
-    useTres,
-    useTresContext,
-    useTresContextProvider
-} from '@tresjs/core'
-import {BasicShadowMap, NoToneMapping, Raycaster, SRGBColorSpace, Vector2, Vector3} from 'three'
-import {CameraControls, Box} from '@tresjs/cientos'
+import {Vector3} from 'three'
+import {CameraControls} from '@tresjs/cientos'
 
-import {reactive, ref, shallowReactive, shallowRef, ShallowRef, watchEffect} from 'vue'
-import {useGLTF, OrbitControls} from '@tresjs/cientos'
-import {Terrain} from "../store/Entity/Terrain"
+import {reactive} from 'vue'
 import {useMainStore} from "../store/MainStore"
-import {storeToRefs} from "pinia"
 import IslandCell from "./IslandCell.vue"
 
-// const camera1 = ref(null)
-// const camera2 = ref(null)
-// const group = ref(null)
-// const canvas = ref(null)
 let controls = null
 
 const cameraControlsState = reactive({
@@ -60,12 +44,6 @@ const cameraControlsState = reactive({
 })
 
 const store = useMainStore()
-
-const getIslandTerrain = (x, y): Terrain => {
-    return store.terrains.filter(function (item, idx) {
-        if (item.data.point.x === x && item.data.point.y === y) return true;
-    }).pop();
-}
 
 </script>
 
