@@ -46,13 +46,5 @@ const getIslandTerrain = (x, y): Terrain => {
             white-space: pre-line;
         }
     }
-
-    .hover-window-plan {
-        @apply text-sm text-left m-0 p-0;
-    }
-
-    .hover-window-plan:nth-child(2) {
-        @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
-    }
 }
 </style>

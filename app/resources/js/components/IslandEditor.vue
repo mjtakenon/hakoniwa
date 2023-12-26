@@ -14,7 +14,7 @@
                 <!--                isSelectedCell(x-1, y-1) && this.showPlanWindow ? 'cell-is-selected' : '
                 !isSelectedCell(x-1, y-1) && this.showPlanWindow ? 'opacity-80' : '',
                 isReferencedCell(x-1, y-1) ? 'cell-is-referenced' : '',-->
-                <IslandCanvas/>
+                <IslandEditorCanvas/>
             </Suspense>
 
             <TresAmbientLight :intensity="2"/>
@@ -84,7 +84,7 @@ import {useMainStore} from "../store/MainStore";
 import CountdownWidget from "./CountdownWidget.vue";
 import {TresCanvas} from "@tresjs/core";
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
-import IslandCanvas from "./IslandCanvas.vue";
+import IslandEditorCanvas from "./IslandEditorCanvas.vue";
 import {CameraControls} from "@tresjs/cientos";
 import HoverWindow from "./HoverWindow.vue";
 
@@ -112,12 +112,6 @@ let planWindowY = 0
 let planWindowX = 0
 let isMobile = (document.documentElement.clientWidth < 1024)
 let terrains = []
-
-const getIslandTerrain = (x, y): Terrain => {
-    return store.terrains.filter(function (item) {
-        if (item.data.point.x === x && item.data.point.y === y) return true;
-    }).pop()
-}
 
 const onMouseOverCell = (x, y, event: MouseEvent) => {
     const offsetY = 25;
@@ -308,6 +302,14 @@ onBeforeMount(() => {
                 @apply max-xs:hidden absolute left-1 leading-none text-white text-xs md:text-sm overflow-hidden z-10
             }
         }
+    }
+
+    .hover-window-plan {
+        @apply text-sm text-left m-0 p-0;
+    }
+
+    .hover-window-plan:nth-child(2) {
+        @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
     }
 
     .plan-window {

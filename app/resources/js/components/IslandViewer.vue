@@ -10,7 +10,7 @@
             />
 
             <Suspense>
-                <IslandCanvas/>
+                <IslandViewerCanvas/>
             </Suspense>
 
             <TresAmbientLight :intensity="2"/>
@@ -27,12 +27,11 @@
 import {Terrain} from "../store/Entity/Terrain";
 import {reactive} from "vue";
 import {useMainStore} from "../store/MainStore";
-import IslandCanvas from "./IslandCanvas.vue";
 import {TresCanvas} from "@tresjs/core";
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
-import HoverCanvas from "./HoverCanvas.vue";
 import {CameraControls} from "@tresjs/cientos";
 import HoverWindow from "./HoverWindow.vue";
+import IslandViewerCanvas from "./IslandViewerCanvas.vue";
 
 const gl = reactive({
     clearColor: '#888888',
