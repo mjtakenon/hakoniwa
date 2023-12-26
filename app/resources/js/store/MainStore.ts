@@ -13,7 +13,7 @@ import {defaultTheme, Theme} from "./Entity/Theme";
 import {AjaxResult, ErrorType, RequestStatus} from "./Entity/Network";
 import {Achievement} from "./Entity/Achievement";
 import {BbsMessage, BbsVisibility} from "./Entity/Bbs";
-import {Camera, PerspectiveCamera, Vector3} from "three";
+import {Camera, Vector3} from "three";
 
 const ISLAND_ENVIRONMENT = {
     'best': '最高',
@@ -48,7 +48,10 @@ export interface PiniaState {
     showHoverWindow: boolean,
     showPlanWindow: boolean,
     hoverCellPoint: Point,
-    hoverCellCamera: Camera|null,
+    hoverCellCamera: Camera | null,
+    hoverCellCameraPositions: Vector3[],
+    hoverCellCameraLookAt: Vector3[],
+    cellSize: number,
     turn: Turn,
     theme: Theme,
     isOpenPopup: boolean,
@@ -104,6 +107,9 @@ export const useMainStore = defineStore('main', {
             showPlanWindow: false,
             hoverCellPoint: {x: 0, y: 0},
             hoverCellCamera: null,
+            hoverCellCameraPositions: [],
+            hoverCellCameraLookAt: [],
+            cellSize: 8,
             turn: {
                 turn: 0,
                 next_time: new Date('1970/1/1 00:00:00')
@@ -150,17 +156,52 @@ export const useMainStore = defineStore('main', {
         },
         getCells() {
             return {
-                sea: { "path": "/img/hakoniwa/gltf/sea.gltf",             "position": [32*0,  32*0,  -32*0]  as Vector3, "cameraPosition": [32*0+8,  32*0+12,  -32*0+12] as Vector3},
-                shallow: { "path": "/img/hakoniwa/gltf/shallow.gltf",     "position": [32*1,  32*1,  -32*1]  as Vector3, "cameraPosition": [32*1+8,  32*1+12,  -32*1+12] as Vector3},
-                plain: { "path": "/img/hakoniwa/gltf/plain.gltf",         "position": [32*2,  32*2,  -32*2]  as Vector3, "cameraPosition": [32*2+8,  32*2+12,  -32*2+12] as Vector3},
-                wasteland: { "path": "/img/hakoniwa/gltf/wasteland.gltf", "position": [32*3,  32*3,  -32*3]  as Vector3, "cameraPosition": [32*3+8,  32*3+12,  -32*3+12] as Vector3},
-                lake: { "path": "/img/hakoniwa/gltf/shallow.gltf",        "position": [32*4,  32*4,  -32*4]  as Vector3, "cameraPosition": [32*4+8,  32*4+12,  -32*4+12] as Vector3},
-                forest: { "path": "/img/hakoniwa/gltf/forest.gltf",       "position": [32*5,  32*5,  -32*5]  as Vector3, "cameraPosition": [32*5+8,  32*5+12,  -32*5+12] as Vector3},
-                village: { "path": "/img/hakoniwa/gltf/village.gltf",     "position": [32*6,  32*6,  -32*6]  as Vector3, "cameraPosition": [32*6+8,  32*6+12,  -32*6+12] as Vector3},
-                town: { "path": "/img/hakoniwa/gltf/town.gltf",           "position": [32*7,  32*7,  -32*7]  as Vector3, "cameraPosition": [32*7+8,  32*7+12,  -32*7+12] as Vector3},
-                volcano: { "path": "/img/hakoniwa/gltf/volcano.gltf",     "position": [32*8,  32*8,  -32*8]  as Vector3, "cameraPosition": [32*8+8,  32*8+12,  -32*8+12] as Vector3},
-                mine: { "path": "/img/hakoniwa/gltf/volcano.gltf",        "position": [32*9,  32*9,  -32*9]  as Vector3, "cameraPosition": [32*9+8,  32*9+12,  -32*9+12] as Vector3},
-                farm: { "path": "/img/hakoniwa/gltf/farm.gltf",           "position": [32*10, 32*10, -32*10] as Vector3, "cameraPosition": [32*10+8, 32*10+12, -32*10+12] as Vector3},
+                city: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                factory: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                farm: {"path": "/img/hakoniwa/gltf/farm.gltf"},
+                farm_dome: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                forest: {"path": "/img/hakoniwa/gltf/forest.gltf"},
+                metropolis: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                mountain: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                volcano: {"path": "/img/hakoniwa/gltf/volcano.gltf"},
+                mine: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                oilfield: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                plain: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                sea: {"path": "/img/hakoniwa/gltf/sea.gltf"},
+                shallow: {"path": "/img/hakoniwa/gltf/shallow.gltf"},
+                lake: {"path": "/img/hakoniwa/gltf/shallow.gltf"},
+                large_factory: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                town: {"path": "/img/hakoniwa/gltf/town.gltf"},
+                village: {"path": "/img/hakoniwa/gltf/village.gltf"},
+                wasteland: {"path": "/img/hakoniwa/gltf/wasteland.gltf"},
+                missile_base: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                seabed_base: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                park: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                monument_of_agriculture: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                monument_of_mining: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                monument_of_master: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                monument_of_peace: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                monument_of_war: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                monument_of_conquest: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                inora: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                red_inora: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                dark_inora: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                king_inora: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                sanjira: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                kujira: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                hamunemu: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                ghost_inora: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                slime: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                slime_legend: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                levinoth: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                begenoth: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                egg: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                transport_ship: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                battleship: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                submarine: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                pirate: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                levinoth_battleship: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                levinoth_submarine: {"path": "/img/hakoniwa/gltf/plain.gltf"},
             }
         }
     },
@@ -320,8 +361,8 @@ export const useMainStore = defineStore('main', {
             localStorage.setItem("theme", JSON.stringify(theme));
         },
         changeHoverCellCameraFocus(type: String) {
-            this.hoverCellCamera.position.set(...this.getCells[type].cameraPosition)
-            this.hoverCellCamera.lookAt(this.getCells[type].position[0], this.getCells[type].position[1], this.getCells[type].position[2])
+            this.hoverCellCamera.position.set(...this.hoverCellCameraPositions[type])
+            this.hoverCellCamera.lookAt(this.hoverCellCameraLookAt[type])
         }
     }
 })
