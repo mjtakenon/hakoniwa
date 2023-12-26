@@ -10,8 +10,8 @@ import {onMounted, ref} from "vue";
 
 const store = useMainStore()
 
-const width = 500
-const height = 500
+const width = 32
+const height = 32
 
 const scene = new Scene()
 

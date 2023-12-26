@@ -1,19 +1,7 @@
 <template>
     <div id="island">
-        <div v-show="store.showHoverWindow" class="hover-window"
-             :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
-            <div class="hover-window-header">
-                <Suspense>
-                    <HoverCanvas class="hover-window-img"/>
-                </Suspense>
-                <div class="grow items-center hover-window-info">
-                    {{ (getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.info) }}
-                </div>
-            </div>
-        </div>
         <TresCanvas v-bind="gl" class="island-canvas">
             <TresPerspectiveCamera
-                ref="camera"
                 :position="[64, 192, 192] as Vector3"
             />
             <CameraControls
@@ -31,6 +19,7 @@
                 :intensity="3"
             />
         </TresCanvas>
+        <HoverWindow></HoverWindow>
     </div>
 </template>
 
@@ -43,6 +32,7 @@ import {TresCanvas} from "@tresjs/core";
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
 import HoverCanvas from "./HoverCanvas.vue";
 import {CameraControls} from "@tresjs/cientos";
+import HoverWindow from "./HoverWindow.vue";
 
 const gl = reactive({
     clearColor: '#888888',
@@ -62,7 +52,7 @@ const cameraControlsState = reactive({
 const store = useMainStore()
 
 const getIslandTerrain = (x, y): Terrain => {
-    return store.terrains.filter(function (item, idx) {
+    return store.terrains.filter(function (item) {
         if (item.data.point.x === x && item.data.point.y === y) return true;
     }).pop()
 }
@@ -72,12 +62,12 @@ const getIslandTerrain = (x, y): Terrain => {
 <style lang="scss" scoped>
 
 .island-canvas {
-    @apply w-full min-h-[496px] min-h-[496px] mb-4;
+    @apply w-full min-h-[512px] min-h-[512px] mb-4;
 }
 
 #island {
     margin: 0 auto;
-    @apply w-full md:min-w-[496px] max-w-[496px] mb-4;
+    @apply w-full md:min-w-[512px] max-w-[512px] mb-4;
 
     .row {
         @apply m-0 p-0 bg-black;
