@@ -101,25 +101,5 @@ const getIslandTerrain = (x, y): Terrain => {
             }
         }
     }
-
-    .hover-window {
-        @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
-        .hover-window-header {
-            @apply flex px-3 items-center;
-
-            .hover-window-img {
-                min-width: 32px;
-                min-height: 32px;
-                max-width: 32px;
-                max-height: 32px;
-                object-fit: cover;
-                //margin-right: 10px;
-            }
-
-            .hover-window-info {
-                white-space: pre-line;
-            }
-        }
-    }
 }
 </style>

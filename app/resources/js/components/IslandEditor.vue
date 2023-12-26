@@ -310,32 +310,6 @@ onBeforeMount(() => {
         }
     }
 
-    .hover-window {
-        @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
-
-        .hover-window-header {
-            @apply flex px-3 items-center;
-
-            .hover-window-img {
-                width: 32px;
-                height: 32px;
-                margin-right: 10px;
-            }
-
-            .hover-window-info {
-                white-space: pre-line;
-            }
-        }
-
-        .hover-window-plan {
-            @apply text-sm text-left m-0 p-0;
-        }
-
-        .hover-window-plan:nth-child(2) {
-            @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
-        }
-    }
-
     .plan-window {
         @apply block absolute bg-surface-variant text-on-surface-variant w-fit max-lg:min-w-[230px] max-lg:max-w-[230px] max-lg:-translate-x-1/2 lg:max-w-[240px] rounded-md drop-shadow-xl text-left overflow-hidden max-md:text-sm border border-primary dark:border-primary-container z-30;
         @apply animate-fadein;
