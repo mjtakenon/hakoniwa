@@ -1,6 +1,6 @@
 <template>
     <div id="island">
-        <TresCanvas v-bind="gl" :class="['island-canvas', {'opacity-80': showPlanWindow}]">
+        <TresCanvas v-bind="gl" :class="['island-canvas', {'opacity-80': store.showPlanWindow}]">
             <TresPerspectiveCamera
                 :position="[64, 192, 192] as Vector3"
             />
@@ -11,8 +11,8 @@
 
             <Suspense>
                 <!--                以下未実装 -->
-                <!--                isSelectedCell(x-1, y-1) && this.showPlanWindow ? 'cell-is-selected' : '
-                !isSelectedCell(x-1, y-1) && this.showPlanWindow ? 'opacity-80' : '',
+                <!--                isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'cell-is-selected' : '
+                !isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'opacity-80' : '',
                 isReferencedCell(x-1, y-1) ? 'cell-is-referenced' : '',-->
                 <IslandEditorCanvas/>
             </Suspense>
@@ -44,9 +44,9 @@
             </template>
         </HoverWindow>
 
-        <div v-show="showPlanWindow" class="plan-window"
+        <div v-show="store.showPlanWindow" class="plan-window"
              :style="[
-                 { top: planWindowY + 'px'}, { left: planWindowX + 'px'}
+                 { top: store.planWindowY + 'px'}, { left: store.planWindowX + 'px'}
              ]"
         >
             <div class="plan-window-header">
@@ -106,71 +106,9 @@ const cameraControlsState = reactive({
 const store = useMainStore()
 
 const MAX_PLAN_NUMBER = 30
-let showPlanWindow = false
+
 let screenWidth = document.documentElement.clientWidth
-let planWindowY = 0
-let planWindowX = 0
-let isMobile = (document.documentElement.clientWidth < 1024)
 let terrains = []
-
-const onMouseOverCell = (x, y, event: MouseEvent) => {
-    const offsetY = 25;
-    store.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
-    store.hoverWindowX = event.pageX;
-
-    // Screen Overflow Check
-    if (isMobile) {
-        const elementWidth = 200;
-        const paddingOffset = 20;
-        const leftEdge = store.hoverWindowX - (elementWidth / 2);
-        const rightEdge = store.hoverWindowX + (elementWidth / 2);
-        if (leftEdge < paddingOffset) {
-            store.hoverWindowX += (-leftEdge) + paddingOffset;
-        } else if (rightEdge > screenWidth) {
-            store.hoverWindowX -= (rightEdge - screenWidth) + paddingOffset;
-        }
-    }
-
-    store.showHoverWindow = true;
-    store.hoverCellPoint.x = x;
-    store.hoverCellPoint.y = y;
-}
-
-const onMouseLeaveCell = () => {
-    store.showHoverWindow = false;
-}
-
-const onClickCell = (x, y, event: MouseEvent) => {
-    if (showPlanWindow &&
-        store.selectedPoint.x === x &&
-        store.selectedPoint.y === y
-    ) {
-        showPlanWindow = false;
-        return;
-    }
-    store.selectedPoint.x = x;
-    store.selectedPoint.y = y;
-    showPlanWindow = true;
-
-    if (isMobile) {
-        planWindowX = event.pageX;
-        const offsetX = 15;
-        const offsetY = 30;
-        const elementWidth = 230;
-        const leftEdge = planWindowX - (elementWidth / 2);
-        const rightEdge = planWindowX + (elementWidth / 2);
-        if (leftEdge < offsetX) {
-            planWindowX += (-leftEdge) + offsetX;
-        } else if (rightEdge > screenWidth) {
-            planWindowX -= (rightEdge - screenWidth) + offsetX;
-        }
-        planWindowY = event.pageY + offsetY;
-    } else {
-        const offset = 15;
-        planWindowX = event.pageX + offset;
-        planWindowY = event.pageY + offset;
-    }
-}
 
 const onClickPlan = (key) => {
     store.plans.splice(store.selectedPlanNumber - 1, 0, getSelectedPlan(key));
@@ -178,7 +116,7 @@ const onClickPlan = (key) => {
     if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
         store.selectedPlanNumber++;
     }
-    showPlanWindow = false;
+    store.showPlanWindow = false;
 }
 
 const getSelectedPlan = (key): Plan => {
@@ -209,7 +147,7 @@ const getSelectedPlan = (key): Plan => {
 }
 
 const onClickClosePlan = () => {
-    showPlanWindow = false;
+    store.showPlanWindow = false;
 }
 
 const onWindowSizeChanged = () => {
@@ -217,8 +155,8 @@ const onWindowSizeChanged = () => {
     if (screenWidth !== newScreenWidth) {
         screenWidth = newScreenWidth;
         store.showHoverWindow = false;
-        showPlanWindow = false;
-        isMobile = (document.documentElement.clientWidth < 1024);
+        store.showPlanWindow = false;
+        store.isMobile = (document.documentElement.clientWidth < 1024);
     }
 }
 
