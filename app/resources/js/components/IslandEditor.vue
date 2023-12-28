@@ -10,10 +10,8 @@
             />
 
             <Suspense>
-                <!--                以下未実装 -->
-                <!--                isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'cell-is-selected' : '
-                !isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'opacity-80' : '',
-                isReferencedCell(x-1, y-1) ? 'cell-is-referenced' : '',-->
+                <!-- TODO: 以下未実装 -->
+                <!-- isReferencedCell(x-1, y-1) ? 'cell-is-referenced' : '',-->
                 <IslandEditorCanvas/>
             </Suspense>
 
@@ -77,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeMount, reactive} from "vue";
+import {computed, onBeforeMount, onMounted, onUnmounted, reactive} from "vue";
 import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
 import {useMainStore} from "../store/MainStore";
@@ -153,19 +151,10 @@ const onClickClosePlan = () => {
 const onWindowSizeChanged = () => {
     const newScreenWidth = document.documentElement.clientWidth;
     if (screenWidth !== newScreenWidth) {
-        screenWidth = newScreenWidth;
-        store.showHoverWindow = false;
-        store.showPlanWindow = false;
+        store.screenWidth = newScreenWidth;
         store.isMobile = (document.documentElement.clientWidth < 1024);
     }
 }
-
-const isSelectedCell = computed((x, y) => {
-    if (store.selectedPoint === null) {
-        return false;
-    }
-    return x === store.selectedPoint.x && y === store.selectedPoint.y
-})
 
 const isReferencedCell = computed((x, y) => {
     let referencedPlan = store.plans[store.selectedPlanNumber - 1]
@@ -187,6 +176,17 @@ onBeforeMount(() => {
     for (let terrain of store.terrains) {
         terrains[terrain.data.point.y][terrain.data.point.x] = terrain;
     }
+})
+
+onMounted(() => {
+    window.addEventListener("resize", onWindowSizeChanged)
+
+    store.screenWidth = document.documentElement.clientWidth
+    store.isMobile = (document.documentElement.clientWidth < 1024)
+})
+
+onUnmounted(() => {
+    window.removeEventListener("resize", onWindowSizeChanged)
 })
 
 </script>
