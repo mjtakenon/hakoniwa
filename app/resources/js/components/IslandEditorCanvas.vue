@@ -9,35 +9,50 @@
             ></IslandEditorCell>
         </template>
 
+        <!-- 選択セルカーソル -->
         <TresMesh
             ref="selectedBox"
-            :scale="[store.cellSize+0.1, getModelSize(getIslandTerrain(store.selectedPoint.x, store.selectedPoint.y).type).y+0.1 , store.cellSize+0.1] as Vector3"
-            :position="[store.selectedPoint.x * store.cellSize + (store.selectedPoint.y%2-1) * store.cellSize / 2, (getModelSize(getIslandTerrain(store.selectedPoint.x, store.selectedPoint.y).type).y - 8) / 2 + 4, store.selectedPoint.y * store.cellSize] as Vector3"
+            :scale="selectedBoxScale"
+            :position="selectedBoxPosition"
             :visible="store.showPlanWindow"
         >
-            <TresBoxGeometry :args="[1, 1, 1]" ref="selectedBoxGeometry"/>
-            <template v-for="selectedBoxLine of selectedBoxLines">
-                <TresMesh :scale="selectedBoxLine.scale" :position="selectedBoxLine.position"> <TresBoxGeometry :args="[1, 1, 1]"/> <TresMeshBasicMaterial color="red"/> </TresMesh>
+            <TresBoxGeometry :args="[1, 1, 1]"/>
+            <template v-for="borderLine of borderLines">
+                <TresMesh :scale="borderLine.scale" :position="borderLine.position"> <TresBoxGeometry :args="[1, 1, 1]"/> <TresMeshBasicMaterial color="white"/> </TresMesh>
+            </template>
+        </TresMesh>
+
+        <!-- プランセルカーソル -->
+        <TresMesh
+            ref="referencedBox"
+            :scale="referencedBoxScale"
+            :position="referencedBoxPosition"
+            :visible="getReferencedPoint !== null"
+        >
+            <TresBoxGeometry :args="[1, 1, 1]"/>
+            <template v-for="borderLine of borderLines">
+                <TresMesh :scale="borderLine.scale" :position="borderLine.position"> <TresBoxGeometry :args="[1, 1, 1]"/> <TresMeshBasicMaterial color="red"/> </TresMesh>
             </template>
         </TresMesh>
     </TresGroup>
 </template>
 
 <script async setup lang="ts">
-import {Box3, EdgesGeometry, LineBasicMaterial, LineSegments, Vector3} from 'three'
+import {Box3, EdgesGeometry, LineBasicMaterial, LineSegments, Vector2, Vector3} from 'three'
 import {useGLTF} from '@tresjs/cientos'
 import {useMainStore} from "../store/MainStore"
 import IslandEditorCell from "./IslandEditorCell.vue";
 import {Terrain} from "../store/Entity/Terrain";
-import {onMounted, ref, shallowRef} from "vue";
+import {computed, onMounted, ref, shallowRef} from "vue";
 
 let selectedBox = shallowRef(null)
+let referencedBox = shallowRef(null)
 
 const store = useMainStore()
 
 let models = {}
 
-const selectedBoxLines = [
+const borderLines = [
     {scale: [0.1,    1, 0.1] as Vector3, position: [-0.5,     0, -0.5] as Vector3},
     {scale: [0.1,    1, 0.1] as Vector3, position: [ 0.5,     0, -0.5] as Vector3},
     {scale: [0.1,    1, 0.1] as Vector3, position: [-0.5,     0,  0.5] as Vector3},
@@ -58,6 +73,9 @@ for (let type in store.getCells) {
 onMounted(() => {
     selectedBox.value.material.opacity = 0.1
     selectedBox.value.material.transparent = true
+
+    referencedBox.value.material.opacity = 0.1
+    referencedBox.value.material.transparent = true
 })
 
 const getIslandTerrain = (x, y): Terrain => {
@@ -69,6 +87,53 @@ const getIslandTerrain = (x, y): Terrain => {
 const getModelSize = (type): Vector3 => {
     return (new Box3()).setFromObject(models[type].scene).getSize(new Vector3())
 }
+
+const selectedBoxScale = computed(() => {
+    const selectedPoint = getReferencedPoint.value
+    const selectedBoxScaleMargin = 0.1
+    if (selectedPoint === null) {
+        return new Vector3(0, 0, 0)
+    }
+    return new Vector3(store.cellSize + selectedBoxScaleMargin, getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y + selectedBoxScaleMargin , store.cellSize + selectedBoxScaleMargin)
+})
+
+const selectedBoxPosition = computed(() => {
+    const selectedPoint = store.selectedPoint
+    const selectedBoxPositionMarginY = 4
+    if (selectedPoint === null) {
+        return new Vector3(0, 0, 0)
+    }
+    return new Vector3(selectedPoint.x * store.cellSize + (selectedPoint.y%2-1) * store.cellSize / 2, (getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY, selectedPoint.y * store.cellSize)
+})
+
+const getReferencedPoint = computed(() => {
+    let referencedPlan = store.plans[store.selectedPlanNumber - 1]
+    if (!referencedPlan.data.usePoint) {
+        return null
+    }
+    if (referencedPlan.data.useTargetIsland && referencedPlan.data.targetIsland !== store.island.id) {
+        return null
+    }
+    return new Vector2(referencedPlan.data.point.x, referencedPlan.data.point.y)
+})
+
+const referencedBoxScale = computed(() => {
+    const referencedPoint = getReferencedPoint.value
+    const referencedBoxScaleMargin = 0.05
+    if (referencedPoint === null) {
+        return new Vector3(0, 0, 0)
+    }
+    return new Vector3(store.cellSize + referencedBoxScaleMargin, getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y + referencedBoxScaleMargin , store.cellSize + referencedBoxScaleMargin)
+})
+
+const referencedBoxPosition = computed(() => {
+    const referencedPoint = getReferencedPoint.value
+    const referencedBoxPositionMarginY = 4
+    if (referencedPoint === null) {
+        return new Vector3(0, 0, 0)
+    }
+    return new Vector3(referencedPoint.x * store.cellSize + (referencedPoint.y%2-1) * store.cellSize / 2, (getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y - 8) / 2 + referencedBoxPositionMarginY, referencedPoint.y * store.cellSize)
+})
 
 </script>
 
