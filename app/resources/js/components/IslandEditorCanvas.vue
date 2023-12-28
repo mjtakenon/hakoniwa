@@ -144,7 +144,5 @@ const referencedBoxPosition = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.island-canvas {
-    @apply w-full min-h-[496px] min-h-[496px] mb-4;
-}
+
 </style>

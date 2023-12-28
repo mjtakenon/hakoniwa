@@ -30,7 +30,5 @@ for (let type in store.getCells) {
 </script>
 
 <style lang="scss" scoped>
-.island-canvas {
-    @apply w-full min-h-[496px] min-h-[496px] mb-4;
-}
+
 </style>

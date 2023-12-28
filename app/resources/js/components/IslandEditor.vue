@@ -10,8 +10,6 @@
             />
 
             <Suspense>
-                <!-- TODO: 以下未実装 -->
-                <!-- isReferencedCell(x-1, y-1) ? 'cell-is-referenced' : '',-->
                 <IslandEditorCanvas/>
             </Suspense>
 
@@ -76,7 +74,6 @@
 
 <script setup lang="ts">
 import {computed, onBeforeMount, onMounted, onUnmounted, reactive} from "vue";
-import {Terrain} from "../store/Entity/Terrain";
 import {Plan} from "../store/Entity/Plan";
 import {useMainStore} from "../store/MainStore";
 import CountdownWidget from "./CountdownWidget.vue";
