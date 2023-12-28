@@ -164,7 +164,7 @@ export const useMainStore = defineStore('main', {
                 metropolis: {"path": "/img/hakoniwa/gltf/plain.gltf"},
                 mountain: {"path": "/img/hakoniwa/gltf/plain.gltf"},
                 volcano: {"path": "/img/hakoniwa/gltf/volcano.gltf"},
-                mine: {"path": "/img/hakoniwa/gltf/plain.gltf"},
+                mine: {"path": "/img/hakoniwa/gltf/mine.gltf"},
                 oilfield: {"path": "/img/hakoniwa/gltf/plain.gltf"},
                 plain: {"path": "/img/hakoniwa/gltf/plain.gltf"},
                 sea: {"path": "/img/hakoniwa/gltf/sea.gltf"},

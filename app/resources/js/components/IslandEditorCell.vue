@@ -1,6 +1,5 @@
 <template>
     <primitive
-        ref="objectRef"
         v-for="child of props.scene.children"
         :object="child"
         :position="props.position"
@@ -13,10 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import {TresInstance} from '@tresjs/core'
 import {Object3D, Vector3} from 'three'
-
-import {shallowRef, ShallowRef} from 'vue'
 import {Terrain} from "../store/Entity/Terrain";
 import {useMainStore} from "../store/MainStore";
 
@@ -29,8 +25,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
-let objectRef: ShallowRef<TresInstance | null> = shallowRef(null)
 
 const onMouseOverCell = (event: MouseEvent) => {
     onMouseMoveCell(event)
@@ -96,7 +90,6 @@ const onClickCell = (event: MouseEvent) => {
         store.planWindowY = event.pageY + offset;
     }
 }
-
 
 
 </script>
