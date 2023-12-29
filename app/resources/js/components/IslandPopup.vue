@@ -5,7 +5,7 @@
             <div class="popup-window-header">
                 <div class="popup-title-target">target:</div>
                 <div class="popup-island-name" :class="titleStyle">
-                        {{ targetIslandName }}島
+                    {{ targetIslandName }}島
                 </div>
                 <button class="close-button" @click="closePopup">
                     ×
@@ -28,7 +28,7 @@
                     v-for="y of store.hakoniwa.height"
                     :key="y"
                 >
-                    <div class="right-padding" :class="{'opacity-80': this.showPlanWindow}" v-if="y%2 === 1">
+                    <div class="right-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 1">
                         <span class="right-padding-text">{{ y - 1 }}</span>
                     </div>
                     <div class="cell" v-for="x of store.hakoniwa.width" :key="x">
@@ -40,14 +40,15 @@
                             :alt="getIslandTerrainInfo(x-1,y-1)"
                             :class="[
                                 'cell',
-                                isSelectedCell(x-1, y-1) && this.showPlanWindow ? 'cell-is-selected' : '',
-                                !isSelectedCell(x-1, y-1) && this.showPlanWindow ? 'opacity-80' : '',
+                                isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'cell-is-selected' : '',
+                                !isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'opacity-80' : '',
                             ]"
                         >
                     </div>
-                    <div class="left-padding" :class="{'opacity-80': this.showPlanWindow}" v-if="y%2 === 0"></div>
+                    <div class="left-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 0"></div>
                 </div>
-                <div v-show="showHoverWindow" class="hover-window" :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
+                <div v-show="store.showHoverWindow" class="hover-window"
+                     :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
                     <div class="hover-window-header">
                         <img
                             class="hover-window-img"
@@ -58,25 +59,26 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="showPlanWindow" class="plan-window"
+                <div v-show="store.showPlanWindow" class="plan-window"
                      :style="[
                  { top: planWindowY + 'px'}, { left: planWindowX + 'px'}
              ]"
                 >
                     <div class="plan-window-header">
                         <div class="grow px-3">
-                            <span class="mr-2">({{selectedPoint.x}},{{selectedPoint.y}})</span>
+                            <span class="mr-2">({{ store.selectedPoint.x }},{{ store.selectedPoint.y }})</span>
                             <span class="text-xs">計画番号: </span>
-                            <span class="mr-1">{{store.selectedPlanNumber}}</span>
+                            <span class="mr-1">{{ store.selectedPlanNumber }}</span>
                         </div>
 
                         <button
                             class="plan-window-close"
                             @click="onClickClosePlan"
-                        >×</button>
+                        >×
+                        </button>
                     </div>
                     <div
-                        v-for="plan of this.store.planCandidate.filter(p => p.data.usePoint && p.data.useTargetIsland)"
+                        v-for="plan of store.planCandidate.filter(p => p.data.usePoint && p.data.useTargetIsland)"
                         :key="plan.key"
                         class="plan-window-select"
                     >
@@ -92,233 +94,223 @@
                     Comment:
                 </div>
                 <div class="comment-text">
-                    {{islandComment}}
+                    {{ islandComment }}
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from "vue";
-import IslandViewer from "./IslandViewer.vue";
-import {useMainStore} from "../store/MainStore";
-import {storeToRefs} from "pinia";
-import {Terrain} from "../store/Entity/Terrain";
-import {Point} from "../store/Entity/Point";
-import {Plan} from "../store/Entity/Plan";
+<script setup lang="ts">
+import {computed, onMounted, onUnmounted, watch} from "vue"
+import {useMainStore} from "../store/MainStore"
+import {storeToRefs} from "pinia"
+import {Terrain} from "../store/Entity/Terrain"
+import {Point} from "../store/Entity/Point"
+import {Plan} from "../store/Entity/Plan"
 
-export default defineComponent({
-    components: {
-        IslandViewer,
-    },
-    data() {
-        return {
-            MAX_PLAN_NUMBER: 30,
-            targetIslandName: "",
-            targetIslandComment: "",
-            targetTerrains: [] as Terrain[],
-            showHoverWindow: false,
-            showPlanWindow: false,
-            hoverCellPoint: {
-                "x": 0,
-                "y": 0,
-            } as Point,
-            hoverWindowY: 170,
-            hoverWindowX: 0,
-            screenWidth: document.documentElement.clientWidth,
-            planWindowY: 0,
-            planWindowX: 0,
-            isMobile: (document.documentElement.clientWidth < 1024),
-            selectedPoint: {
-                x: 0, y:0
-            } as Point,
-        }
-    },
-    setup() {
-        const store = useMainStore();
-        const {isOpenPopup, isLoadingTerrain} = storeToRefs(store);
-        return {store, isOpenPopup, isLoadingTerrain};
-    },
-    mounted() {
-        window.addEventListener("resize", this.onWindowSizeChanged);
-    },
-    unmounted() {
-        window.removeEventListener("resize", this.onWindowSizeChanged);
-    },
-    watch: {
-        isOpenPopup() {
-            this.targetIslandName = this.store.selectedTargetIslandName;
-            if(this.store.isOpenPopup) {
-                document.addEventListener("wheel", this.preventScroll, {passive: false});
-                document.addEventListener("touchmove", this.preventScroll, {passive: false});
-            } else {
-                document.removeEventListener("wheel", this.preventScroll);
-                document.removeEventListener("touchmove", this.preventScroll);
-            }
-        },
-        isLoadingTerrain() {
-            if (this.store.isLoadingTerrain) return;
-            const target = this.store.targetIslands.filter(island => island.id === this.store.selectedTargetIsland);
-            if (target.length < 1) throw new Error("対象の島が見つかりません");
-            if (target[0].terrains === undefined) throw new Error("目標の島に地形情報がありません");
-            this.targetTerrains = target[0].terrains;
-            this.targetIslandComment = target[0].comment;
-        }
-    },
-    computed: {
-        isSelectedCell() {
-            return (x, y) => {
-                if (this.selectedPoint === null) {
-                    return false;
-                }
-                return x === this.selectedPoint.x && y === this.selectedPoint.y
-            }
-        },
-        titleStyle() {
-            if(this.targetIslandName.length > 16) {
-                return 'text-[0.5rem] lg:text-sm';
-            }
-            return 'text-base lg:text-lg'
-        },
-        hasComment() {
-            return this.targetIslandComment === null　|| this.targetIslandComment === undefined || this.targetIslandComment === "";
-        },
-        islandComment() {
-            if (this.hasComment) {
-                return "コメントはありません"
-            } else {
-                return this.targetIslandComment;
-            }
-        }
-    },
-    methods: {
-        closePopup() {
-            this.onMouseLeaveCell();
-            this.onClickClosePlan();
-            this.store.isOpenPopup = false;
-        },
-        preventScroll(event: MouseEvent | TouchEvent) {
-            event.preventDefault();
-        },
-        getIslandTerrainImage(x, y): string {
-            if (this.targetTerrains.length < 1) return "";
-            return this.targetTerrains.filter(item => {
-                if (item.data.point.x === x && item.data.point.y === y) return true;
-            }).pop().data.image_path;
-        },
-        getIslandTerrainInfo(x, y): string {
-            if (this.targetTerrains.length < 1) return "";
-            return this.targetTerrains.filter(item => {
-                if (item.data.point.x === x && item.data.point.y === y) return true;
-            }).pop().data.info;
-        },
-        onMouseOverCell(x, y, event: MouseEvent) {
-            const offsetY = 25;
-            this.hoverWindowY = document.documentElement.clientHeight - event.clientY + offsetY;
-            this.hoverWindowX = event.clientX;
+const MAX_PLAN_NUMBER = 30
+let targetIslandName = ""
+let targetIslandComment = ""
+let targetTerrains: Terrain[] = []
+let hoverCellPoint: Point = {x: 0, y: 0}
+let hoverWindowY = 170
+let hoverWindowX = 0
+let screenWidth = document.documentElement.clientWidth
+let planWindowY = 0
+let planWindowX = 0
+let isMobile = (document.documentElement.clientWidth < 1024)
 
-            // Screen Overflow Check
-            if(this.isMobile) {
-                const elementWidth = 200;
-                const paddingOffset = 20;
-                const leftEdge = this.hoverWindowX - (elementWidth/2);
-                const rightEdge = this.hoverWindowX + (elementWidth/2);
-                if (leftEdge < paddingOffset) {
-                    this.hoverWindowX += (-leftEdge) + paddingOffset;
-                }
-                else if (rightEdge > this.screenWidth) {
-                    this.hoverWindowX -= (rightEdge-this.screenWidth) + paddingOffset;
-                }
-            }
 
-            this.showHoverWindow = true;
-            this.hoverCellPoint.x = x;
-            this.hoverCellPoint.y = y;
-        },
-        onClickPlan(key) {
-            this.store.plans.splice(this.store.selectedPlanNumber-1, 0, this.getSelectedPlan(key));
-            this.store.plans.pop();
-            if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-                this.store.selectedPlanNumber++;
-            }
-            this.showPlanWindow = false;
-        },
-        getSelectedPlan(key): Plan {
-            const result = this.store.planCandidate.find(c => c.key === key);
-            if (result === undefined) return null;
-            else {
-                const p = result.data;
-                return {
-                    key: key,
-                    data: {
-                        name: p.name,
-                        point: {
-                            x: this.selectedPoint.x,
-                            y: this.selectedPoint.y
-                        },
-                        amount: this.store.selectedAmount,
-                        usePoint: p.usePoint,
-                        useAmount: p.useAmount,
-                        useTargetIsland: p.useTargetIsland,
-                        targetIsland: this.store.selectedTargetIsland,
-                        isFiring: p.isFiring,
-                        priceString: p.priceString,
-                        amountString: p.amountString,
-                        defaultAmountString: p.defaultAmountString
-                    }
-                }
-            }
-        },
-        onMouseLeaveCell() {
-            this.showHoverWindow = false;
-        },
-        onClickCell(x, y, event: MouseEvent) {
-            if (this.showPlanWindow &&
-                this.selectedPoint.x === x &&
-                this.selectedPoint.y === y
-            ) {
-                this.showPlanWindow = false;
-                return;
-            }
-            this.selectedPoint = {x: x, y: y};
-            this.showPlanWindow = true;
+const store = useMainStore()
+const {isOpenPopup, isLoadingTerrain} = storeToRefs(store)
 
-            if(this.isMobile) {
-                this.planWindowX = event.clientX;
-                const offsetX = 15;
-                const offsetY = 30;
-                const elementWidth = 230;
-                const leftEdge = this.planWindowX - (elementWidth/2);
-                const rightEdge = this.planWindowX + (elementWidth/2);
-                if (leftEdge < offsetX) {
-                    this.planWindowX += (-leftEdge) + offsetX;
-                }
-                else if (rightEdge > this.screenWidth) {
-                    this.planWindowX -= (rightEdge-this.screenWidth) + offsetX;
-                }
-                this.planWindowY = event.clientY + offsetY;
-            }
-            else {
-                const offset = 15;
-                this.planWindowX = event.clientX + offset;
-                this.planWindowY = event.clientY + offset;
-            }
-        },
-        onClickClosePlan() {
-            this.showPlanWindow = false;
-        },
-        onWindowSizeChanged() {
-            const newScreenWidth = document.documentElement.clientWidth;
-            if (this.screenWidth != newScreenWidth) {
-                this.screenWidth = newScreenWidth;
-                this.showHoverWindow = false;
-                this.showPlanWindow = false;
-                this.isMobile = (document.documentElement.clientWidth < 1024);
-            }
-        },
+onMounted(() => {
+    window.addEventListener("resize", onWindowSizeChanged)
+})
+
+onUnmounted(() => {
+    window.removeEventListener("resize", onWindowSizeChanged)
+})
+
+watch(isOpenPopup, () => {
+    targetIslandName = store.selectedTargetIslandName
+    if (store.isOpenPopup) {
+        document.addEventListener("wheel", preventScroll, {passive: false})
+        document.addEventListener("touchmove", preventScroll, {passive: false})
+    } else {
+        document.removeEventListener("wheel", preventScroll)
+        document.removeEventListener("touchmove", preventScroll)
     }
 })
+
+watch(isLoadingTerrain, () => {
+    if (store.isLoadingTerrain) return
+    const target = store.targetIslands.filter(island => island.id === store.selectedTargetIsland)
+    if (target.length < 1) throw new Error("対象の島が見つかりません")
+    if (target[0].terrains === undefined) throw new Error("目標の島に地形情報がありません")
+    targetTerrains = target[0].terrains
+    targetIslandComment = target[0].comment
+})
+
+const isSelectedCell = (x, y) => {
+    if (store.selectedPoint === null) {
+        return false
+    }
+    return x === store.selectedPoint.x && y === store.selectedPoint.y
+}
+
+const titleStyle = computed(() => {
+    if (targetIslandName.length > 16) {
+        return 'text-[0.5rem] lg:text-sm'
+    }
+    return 'text-base lg:text-lg'
+})
+
+const hasComment = computed(() => {
+    return targetIslandComment === null || targetIslandComment === undefined || targetIslandComment === ""
+})
+
+const islandComment = computed(() => {
+
+    if (hasComment) {
+        return "コメントはありません"
+    } else {
+        return targetIslandComment
+    }
+})
+
+const closePopup = () => {
+    onMouseLeaveCell()
+    onClickClosePlan()
+    store.isOpenPopup = false
+    store.showPlanWindow = false
+}
+
+const preventScroll = (event: MouseEvent | TouchEvent) => {
+    event.preventDefault()
+}
+
+const getIslandTerrainImage = (x, y): string => {
+    if (targetTerrains.length < 1) return ""
+    return targetTerrains.filter(item => {
+        if (item.data.point.x === x && item.data.point.y === y) return true
+    }).pop().data.image_path
+}
+
+const getIslandTerrainInfo = (x, y): string => {
+    if (targetTerrains.length < 1) return ""
+    return targetTerrains.filter(item => {
+        if (item.data.point.x === x && item.data.point.y === y) return true
+    }).pop().data.info
+}
+
+const onMouseOverCell = (x, y, event: MouseEvent) => {
+    const offsetY = 25
+    hoverWindowY = document.documentElement.clientHeight - event.clientY + offsetY
+    hoverWindowX = event.clientX
+
+    // Screen Overflow Check
+    if (isMobile) {
+        const elementWidth = 200
+        const paddingOffset = 20
+        const leftEdge = hoverWindowX - (elementWidth / 2)
+        const rightEdge = hoverWindowX + (elementWidth / 2)
+        if (leftEdge < paddingOffset) {
+            hoverWindowX += (-leftEdge) + paddingOffset
+        } else if (rightEdge > screenWidth) {
+            hoverWindowX -= (rightEdge - screenWidth) + paddingOffset
+        }
+    }
+
+    store.showHoverWindow = true
+    hoverCellPoint.x = x
+    hoverCellPoint.y = y
+}
+
+const onClickPlan = (key) => {
+    store.plans.splice(store.selectedPlanNumber - 1, 0, getSelectedPlan(key))
+    store.plans.pop()
+    if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
+        store.selectedPlanNumber++
+    }
+    store.showPlanWindow = false
+}
+const getSelectedPlan = (key): Plan => {
+    const result = store.planCandidate.find(c => c.key === key)
+    if (result === undefined) return null
+    else {
+        const p = result.data
+        return {
+            key: key,
+            data: {
+                name: p.name,
+                point: {
+                    x: store.selectedPoint.x,
+                    y: store.selectedPoint.y
+                },
+                amount: store.selectedAmount,
+                usePoint: p.usePoint,
+                useAmount: p.useAmount,
+                useTargetIsland: p.useTargetIsland,
+                targetIsland: store.selectedTargetIsland,
+                isFiring: p.isFiring,
+                priceString: p.priceString,
+                amountString: p.amountString,
+                defaultAmountString: p.defaultAmountString
+            }
+        }
+    }
+}
+const onMouseLeaveCell = () => {
+    store.showHoverWindow = false
+}
+
+const onClickCell = (x, y, event: MouseEvent) => {
+    if (store.showPlanWindow &&
+        store.selectedPoint.x === x &&
+        store.selectedPoint.y === y
+    ) {
+        store.showPlanWindow = false
+        return
+    }
+    store.selectedPoint = {x: x, y: y}
+    store.showPlanWindow = true
+
+    if (isMobile) {
+        planWindowX = event.clientX
+        const offsetX = 15
+        const offsetY = 30
+        const elementWidth = 230
+        const leftEdge = planWindowX - (elementWidth / 2)
+        const rightEdge = planWindowX + (elementWidth / 2)
+        if (leftEdge < offsetX) {
+            planWindowX += (-leftEdge) + offsetX
+        } else if (rightEdge > screenWidth) {
+            planWindowX -= (rightEdge - screenWidth) + offsetX
+        }
+        planWindowY = event.clientY + offsetY
+    } else {
+        const offset = 15
+        planWindowX = event.clientX + offset
+        planWindowY = event.clientY + offset
+    }
+}
+
+const onClickClosePlan = () => {
+    store.showPlanWindow = false
+}
+
+const onWindowSizeChanged = () => {
+    const newScreenWidth = document.documentElement.clientWidth
+    if (screenWidth != newScreenWidth) {
+        screenWidth = newScreenWidth
+        store.showHoverWindow = false
+        store.showPlanWindow = false
+        isMobile = (document.documentElement.clientWidth < 1024)
+    }
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -441,8 +433,8 @@ export default defineComponent({
             @apply flex px-3 items-center;
 
             .hover-window-img {
-                width:32px;
-                height:32px;
+                width: 32px;
+                height: 32px;
                 margin-right: 10px;
             }
 

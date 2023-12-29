@@ -40,7 +40,7 @@
             </template>
         </HoverWindow>
 
-        <div v-show="store.showPlanWindow" class="plan-window"
+        <div v-show="store.showPlanWindow && !store.isOpenPopup" class="plan-window"
              :style="[
                  { top: store.planWindowY + 'px'}, { left: store.planWindowX + 'px'}
              ]"

@@ -1,5 +1,5 @@
 <template>
-    <div v-show="store.showHoverWindow" class="hover-window"
+    <div v-show="store.showHoverWindow && !store.isOpenPopup" class="hover-window"
          :style="{ bottom: store.hoverWindowY+'px', left: store.hoverWindowX+'px' }">
         <div class="hover-window-header">
             <Suspense>

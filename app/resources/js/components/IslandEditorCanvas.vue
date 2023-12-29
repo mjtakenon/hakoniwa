@@ -14,7 +14,7 @@
             ref="selectedBox"
             :scale="selectedBoxScale"
             :position="selectedBoxPosition"
-            :visible="store.showPlanWindow"
+            :visible="store.showPlanWindow && !store.isOpenPopup"
         >
             <TresBoxGeometry :args="[1, 1, 1]"/>
             <template v-for="borderLine of borderLines">
@@ -30,7 +30,7 @@
             ref="referencedBox"
             :scale="referencedBoxScale"
             :position="referencedBoxPosition"
-            :visible="getReferencedPoint !== null"
+            :visible="getReferencedPoint !== null && !store.isOpenPopup"
         >
             <TresBoxGeometry :args="[1, 1, 1]"/>
             <template v-for="borderLine of borderLines">

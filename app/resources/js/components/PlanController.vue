@@ -289,6 +289,7 @@ export default defineComponent({
         openIslandPopup() {
             this.store.getIslandTerrain(this.store.selectedTargetIsland);
             this.store.isOpenPopup = true;
+            this.store.showPlanWindow = false;
         },
     },
     computed: {},
