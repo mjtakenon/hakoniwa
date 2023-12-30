@@ -3,7 +3,7 @@
         :position="[-store.cellSize*Math.floor(store.hakoniwa.width/2), 0, -store.cellSize*Math.floor(store.hakoniwa.height/2)] as Vector3">
         <template v-for="terrain of store.terrains">
             <IslandEditorCell
-                :position="[terrain.data.point.x * store.cellSize + (terrain.data.point.y%2-1) * store.cellSize/2, models[terrain.type].scene.position.y, terrain.data.point.y * store.cellSize] as Vector3"
+                :position="[terrain.data.point.x * store.cellSize + ((terrain.data.point.y + 1) % 2 - 1) * store.cellSize / 2, models[terrain.type].scene.position.y, terrain.data.point.y * store.cellSize] as Vector3"
                 :terrain="terrain"
                 :scene="models[terrain.type].scene.clone()"
             ></IslandEditorCell>
@@ -109,7 +109,7 @@ const selectedBoxPosition = computed(() => {
     if (selectedPoint === null) {
         return new Vector3(0, 0, 0)
     }
-    return new Vector3(selectedPoint.x * store.cellSize + (selectedPoint.y % 2 - 1) * store.cellSize / 2, (getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY, selectedPoint.y * store.cellSize)
+    return new Vector3(selectedPoint.x * store.cellSize + ((selectedPoint.y + 1) % 2 - 1) * store.cellSize / 2, (getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY, selectedPoint.y * store.cellSize)
 })
 
 const getReferencedPoint = computed(() => {
@@ -138,7 +138,7 @@ const referencedBoxPosition = computed(() => {
     if (referencedPoint === null) {
         return new Vector3(0, 0, 0)
     }
-    return new Vector3(referencedPoint.x * store.cellSize + (referencedPoint.y % 2 - 1) * store.cellSize / 2, (getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y - 8) / 2 + referencedBoxPositionMarginY, referencedPoint.y * store.cellSize)
+    return new Vector3(referencedPoint.x * store.cellSize + ((referencedPoint.y + 1) % 2 - 1) * store.cellSize / 2, (getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y - 8) / 2 + referencedBoxPositionMarginY, referencedPoint.y * store.cellSize)
 })
 
 </script>

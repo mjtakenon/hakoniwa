@@ -80,9 +80,8 @@ const onClickCell = (event: MouseEvent) => {
         const rightEdge = store.planWindowX + (elementWidth / 2);
         if (leftEdge < offsetX) {
             store.planWindowX += (-leftEdge) + offsetX;
-        }
-        else if (rightEdge > store.screenWidth) {
-            store.planWindowX -= (rightEdge-store.screenWidth) + offsetX;
+        } else if (rightEdge > store.screenWidth) {
+            store.planWindowX -= (rightEdge - store.screenWidth) + offsetX;
         }
         store.planWindowY = event.pageY + offsetY;
     } else {
