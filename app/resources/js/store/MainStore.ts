@@ -25,6 +25,8 @@ export interface PiniaState {
     hakoniwa: Hakoniwa,
     island: Island,
     terrains: Terrain[],
+    targetTerrains: Array<Terrain[]>,
+    targetIslandComment: string,
     status: Status,
     logs: Array<Log>,
     plans: Plan[],
@@ -70,6 +72,8 @@ export const useMainStore = defineStore('main', {
             hakoniwa: {width: 0, height: 0},
             island: {id: 0, name: '', owner_name: '', comment: ''},
             terrains: [],
+            targetTerrains: [],
+            targetIslandComment: "",
             status: {
                 area: 0,
                 development_points: 0,

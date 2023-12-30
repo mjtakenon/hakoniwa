@@ -81,7 +81,12 @@
                         class="target-open button-surface dark:button-variant-reverse"
                         @click="openIslandPopup"
                     >
-                        開く
+                        <template v-if="store.isOpenPopup">
+                            閉じる
+                        </template>
+                        <template v-else>
+                            開く
+                        </template>
                     </button>
                 </div>
             </div>

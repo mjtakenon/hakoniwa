@@ -22,73 +22,73 @@
                         fill="currentFill"/>
                 </svg>
             </div>
-            <div v-else id="popup-island">
-                <div
-                    class="row"
-                    v-for="y of store.hakoniwa.height"
-                    :key="y"
-                >
-                    <div class="right-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 1">
-                        <span class="right-padding-text">{{ y - 1 }}</span>
-                    </div>
-                    <div class="cell" v-for="x of store.hakoniwa.width" :key="x">
-                        <img
-                            @mouseover="onMouseOverCell(x-1, y-1, $event)"
-                            @mouseleave="onMouseLeaveCell()"
-                            @click="onClickCell(x-1, y-1, $event)"
-                            :src="getIslandTerrainImage(x-1,y-1)"
-                            :alt="getIslandTerrainInfo(x-1,y-1)"
-                            :class="[
-                                'cell',
-                                isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'cell-is-selected' : '',
-                                !isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'opacity-80' : '',
-                            ]"
-                        >
-                    </div>
-                    <div class="left-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 0"></div>
-                </div>
-                <div v-show="store.showHoverWindow" class="hover-window"
-                     :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">
-                    <div class="hover-window-header">
-                        <img
-                            class="hover-window-img"
-                            :src="getIslandTerrainImage(hoverCellPoint.x, hoverCellPoint.y)"
-                        >
-                        <div class="grow items-center hover-window-info">
-                            {{ (getIslandTerrainInfo(hoverCellPoint.x, hoverCellPoint.y)) }}
-                        </div>
-                    </div>
-                </div>
-                <div v-show="store.showPlanWindow" class="plan-window"
-                     :style="[
-                 { top: planWindowY + 'px'}, { left: planWindowX + 'px'}
-             ]"
-                >
-                    <div class="plan-window-header">
-                        <div class="grow px-3">
-                            <span class="mr-2">({{ store.selectedPoint.x }},{{ store.selectedPoint.y }})</span>
-                            <span class="text-xs">計画番号: </span>
-                            <span class="mr-1">{{ store.selectedPlanNumber }}</span>
-                        </div>
+<!--            <div v-else id="popup-island">-->
+<!--                <div-->
+<!--                    class="row"-->
+<!--                    v-for="y of store.hakoniwa.height"-->
+<!--                    :key="y"-->
+<!--                >-->
+<!--                    <div class="right-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 1">-->
+<!--                        <span class="right-padding-text">{{ y - 1 }}</span>-->
+<!--                    </div>-->
+<!--                    <div class="cell" v-for="x of store.hakoniwa.width" :key="x">-->
+<!--                        <img-->
+<!--                            @mouseover="onMouseOverCell(x-1, y-1, $event)"-->
+<!--                            @mouseleave="onMouseLeaveCell()"-->
+<!--                            @click="onClickCell(x-1, y-1, $event)"-->
+<!--                            :src="getIslandTerrainImage(x-1,y-1)"-->
+<!--                            :alt="getIslandTerrainInfo(x-1,y-1)"-->
+<!--                            :class="[-->
+<!--                                'cell',-->
+<!--                                isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'cell-is-selected' : '',-->
+<!--                                !isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'opacity-80' : '',-->
+<!--                            ]"-->
+<!--                        >-->
+<!--                    </div>-->
+<!--                    <div class="left-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 0"></div>-->
+<!--                </div>-->
+<!--                <div v-show="store.showHoverWindow" class="hover-window"-->
+<!--                     :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">-->
+<!--                    <div class="hover-window-header">-->
+<!--                        <img-->
+<!--                            class="hover-window-img"-->
+<!--                            :src="getIslandTerrainImage(hoverCellPoint.x, hoverCellPoint.y)"-->
+<!--                        >-->
+<!--                        <div class="grow items-center hover-window-info">-->
+<!--                            {{ (getIslandTerrainInfo(hoverCellPoint.x, hoverCellPoint.y)) }}-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div v-show="store.showPlanWindow" class="plan-window"-->
+<!--                     :style="[-->
+<!--                 { top: planWindowY + 'px'}, { left: planWindowX + 'px'}-->
+<!--             ]"-->
+<!--                >-->
+<!--                    <div class="plan-window-header">-->
+<!--                        <div class="grow px-3">-->
+<!--                            <span class="mr-2">({{ store.selectedPoint.x }},{{ store.selectedPoint.y }})</span>-->
+<!--                            <span class="text-xs">計画番号: </span>-->
+<!--                            <span class="mr-1">{{ store.selectedPlanNumber }}</span>-->
+<!--                        </div>-->
 
-                        <button
-                            class="plan-window-close"
-                            @click="onClickClosePlan"
-                        >×
-                        </button>
-                    </div>
-                    <div
-                        v-for="plan of store.planCandidate.filter(p => p.data.usePoint && p.data.useTargetIsland)"
-                        :key="plan.key"
-                        class="plan-window-select"
-                    >
-                        <div @click="onClickPlan(plan.key)">
-                            <a class="action-name">{{ plan.data.name }}</a>
-                            <span class="action-price">{{ plan.data.priceString }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--                        <button-->
+<!--                            class="plan-window-close"-->
+<!--                            @click="onClickClosePlan"-->
+<!--                        >×-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                    <div-->
+<!--                        v-for="plan of store.planCandidate.filter(p => p.data.usePoint && p.data.useTargetIsland)"-->
+<!--                        :key="plan.key"-->
+<!--                        class="plan-window-select"-->
+<!--                    >-->
+<!--                        <div @click="onClickPlan(plan.key)">-->
+<!--                            <a class="action-name">{{ plan.data.name }}</a>-->
+<!--                            <span class="action-price">{{ plan.data.priceString }}</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="comment-box">
                 <div class="comment-title">
                     Comment:
@@ -149,8 +149,11 @@ watch(isLoadingTerrain, () => {
     const target = store.targetIslands.filter(island => island.id === store.selectedTargetIsland)
     if (target.length < 1) throw new Error("対象の島が見つかりません")
     if (target[0].terrains === undefined) throw new Error("目標の島に地形情報がありません")
-    targetTerrains = target[0].terrains
-    targetIslandComment = target[0].comment
+    store.targetTerrains[store.selectedTargetIsland] = target[0].terrains
+    store.targetTerrains[store.island.id] = store.terrains
+    store.terrains = store.targetTerrains[store.selectedTargetIsland]
+    store.targetIslandComment = target[0].comment
+    console.log(store.targetTerrains)
 })
 
 const isSelectedCell = (x, y) => {
@@ -185,6 +188,8 @@ const closePopup = () => {
     onClickClosePlan()
     store.isOpenPopup = false
     store.showPlanWindow = false
+
+    store.terrains = store.targetTerrains[store.island.id]
 }
 
 const preventScroll = (event: MouseEvent | TouchEvent) => {
@@ -322,9 +327,9 @@ const onWindowSizeChanged = () => {
     }
 }
 
-.popup-background {
-    @apply absolute w-full h-screen bg-[rgba(0,0,0,0.7)] -z-10;
-}
+//.popup-background {
+//    @apply absolute w-full h-screen bg-[rgba(0,0,0,0.7)] -z-10;
+//}
 
 .popup-window {
     // general
