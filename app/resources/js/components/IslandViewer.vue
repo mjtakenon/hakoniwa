@@ -61,7 +61,7 @@ const getIslandTerrain = (x, y): Terrain => {
 <style lang="scss" scoped>
 
 .island-canvas {
-    @apply w-full min-h-[512px] min-h-[512px] mb-4;
+    @apply w-full min-h-[512px] max-h-[512px] mb-4;
 }
 
 #island {

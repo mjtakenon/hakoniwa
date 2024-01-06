@@ -57,6 +57,8 @@ export interface PiniaState {
     turn: Turn,
     theme: Theme,
     isOpenPopup: boolean,
+    isIslandPopupMount: boolean,
+    isIslandEditorMount: boolean,
     isLoadingTerrain: boolean,
     user: {
         user_id: number,
@@ -120,6 +122,8 @@ export const useMainStore = defineStore('main', {
             },
             theme: defaultTheme,
             isOpenPopup: false,
+            isIslandPopupMount: false,
+            isIslandEditorMount: true,
             isLoadingTerrain: false,
             user: {
                 user_id: 0,

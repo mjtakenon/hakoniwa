@@ -11,7 +11,8 @@
                 class="z-30"
                 :class="{'w-full order-1': !canSideBySide}"
             >
-                <island-editor></island-editor>
+                <island-editor v-if="!store.isIslandPopupMount && !store.isOpenPopup"></island-editor>
+                <div v-else class="island-editor-padding"></div>
             </div>
             <plan-list
                 class="grow"
@@ -25,7 +26,7 @@
                 :parsed-logs="store.logs"
             ></log-viewer>
         </div>
-        <island-popup></island-popup>
+        <island-popup v-if="!store.isIslandEditorMount && store.isOpenPopup"></island-popup>
     </div>
 </template>
 
@@ -181,6 +182,11 @@ export default defineComponent({
 
 #plan-page {
     @apply text-center mx-auto max-w-[1000px] min-h-[1200px];
+
+    .island-editor-padding {
+        margin: 0 auto;
+        @apply w-full md:min-w-[496px] max-w-[496px];
+    }
 }
 
 </style>

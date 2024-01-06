@@ -165,6 +165,7 @@ const isReferencedCell = computed((x, y) => {
 })
 
 onBeforeMount(() => {
+    store.isIslandEditorMount = true
     terrains = new Array(store.hakoniwa.height);
     for (let y = 0; y < terrains.length; y++) {
         terrains[y] = new Array(store.hakoniwa.width);
@@ -183,6 +184,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+    store.isIslandEditorMount = false
     window.removeEventListener("resize", onWindowSizeChanged)
 })
 
@@ -191,7 +193,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 
 .island-canvas {
-    @apply w-full min-h-[496px] min-h-[496px] max-h-[496px] max-h-[496px];
+    @apply w-full min-h-[496px] max-h-[496px];
 }
 
 #island {
