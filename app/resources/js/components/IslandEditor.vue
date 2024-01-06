@@ -10,7 +10,7 @@
             />
 
             <Suspense>
-                <IslandEditorCanvas/>
+                <IslandEditorCanvas :terrains="store.terrains"/>
             </Suspense>
 
             <TresAmbientLight :intensity="2"/>
@@ -174,6 +174,8 @@ onBeforeMount(() => {
     for (let terrain of store.terrains) {
         terrains[terrain.data.point.y][terrain.data.point.x] = terrain;
     }
+
+    store.targetTerrains[store.island.id] = store.terrains
 })
 
 onMounted(() => {

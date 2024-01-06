@@ -26,7 +26,7 @@ export interface PiniaState {
     island: Island,
     terrains: Terrain[],
     targetTerrains: Array<Terrain[]>,
-    targetIslandComment: string,
+    targetIslandComments: string[],
     status: Status,
     logs: Array<Log>,
     plans: Plan[],
@@ -75,7 +75,7 @@ export const useMainStore = defineStore('main', {
             island: {id: 0, name: '', owner_name: '', comment: ''},
             terrains: [],
             targetTerrains: [],
-            targetIslandComment: "",
+            targetIslandComments: [],
             status: {
                 area: 0,
                 development_points: 0,

@@ -22,7 +22,7 @@
                         fill="currentFill"/>
                 </svg>
             </div>
-            <TresCanvas v-bind="gl" :class="['island-canvas', {'opacity-80': store.showPlanWindow}]">
+            <TresCanvas v-else v-bind="gl" :class="['island-canvas', {'opacity-80': store.showPlanWindow}]">
                 <TresPerspectiveCamera
                     :position="[64, 192, 192] as Vector3"
                 />
@@ -32,7 +32,7 @@
                 />
 
                 <Suspense>
-                    <IslandEditorCanvas/>
+                    <IslandEditorCanvas :terrains="store.targetTerrains[store.selectedTargetIsland]"/>
                 </Suspense>
 
                 <TresAmbientLight :intensity="2"/>
@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeMount, onMounted, onUnmounted, reactive, ref, watch} from "vue"
+import {computed, onBeforeMount, onMounted, onUnmounted, reactive, watch} from "vue"
 import {useMainStore} from "../store/MainStore"
 import {storeToRefs} from "pinia"
 import {Terrain} from "../store/Entity/Terrain"
@@ -189,10 +189,10 @@ watch(isLoadingTerrain, () => {
     const target = store.targetIslands.filter(island => island.id === store.selectedTargetIsland)
     if (target.length < 1) throw new Error("対象の島が見つかりません")
     if (target[0].terrains === undefined) throw new Error("目標の島に地形情報がありません")
+
+    // 取得した目標島の地形を保存
     store.targetTerrains[store.selectedTargetIsland] = target[0].terrains
-    store.targetTerrains[store.island.id] = store.terrains
-    store.terrains = store.targetTerrains[store.selectedTargetIsland]
-    store.targetIslandComment = target[0].comment
+    store.targetIslandComments[store.selectedTargetIsland] = target[0].comment
 })
 
 const isSelectedCell = (x, y) => {
@@ -210,14 +210,14 @@ const titleStyle = computed(() => {
 })
 
 const hasComment = computed(() => {
-    return store.targetIslandComment === null || store.targetIslandComment === undefined || store.targetIslandComment === ""
+    return store.targetIslandComments[store.selectedTargetIsland] === null || store.targetIslandComments[store.selectedTargetIsland] === undefined || store.targetIslandComments[store.selectedTargetIsland] === ""
 })
 
 const islandComment = computed(() => {
     if (hasComment) {
         return "コメントはありません"
     } else {
-        return store.targetIslandComment
+        return store.targetIslandComments[store.selectedTargetIsland]
     }
 })
 
@@ -226,8 +226,6 @@ const closePopup = () => {
     onClickClosePlan()
     store.isOpenPopup = false
     store.showPlanWindow = false
-
-    store.terrains = store.targetTerrains[store.island.id]
 }
 
 const preventScroll = (event: MouseEvent | TouchEvent) => {
