@@ -32,14 +32,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useMainStore } from '../../../store/MainStore'
 import { AjaxResult, ErrorType, RequestStatus } from '../../../store/Entity/Network'
 import { stringEquals } from '../../../Utils'
 
 const comment = ref('')
-const request: AjaxResult = ref({ status: RequestStatus.None })
-const input: HTMLElement = ref()
+const request = ref<AjaxResult>({ status: RequestStatus.None })
+const input = ref<HTMLElement>()
 
 const store = useMainStore()
 
