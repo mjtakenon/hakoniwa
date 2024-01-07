@@ -75,41 +75,6 @@ const store = useMainStore()
 let screenWidth = document.documentElement.clientWidth
 let terrains = []
 
-const getSelectedPlan = (key): Plan => {
-    const result = store.planCandidate.find(c => c.key === key);
-    if (result === undefined) return null;
-    else {
-        const p = result.data;
-        return {
-            key: key,
-            data: {
-                name: p.name,
-                point: {
-                    x: store.selectedPoint.x,
-                    y: store.selectedPoint.y
-                },
-                amount: store.selectedAmount,
-                usePoint: p.usePoint,
-                useAmount: p.useAmount,
-                useTargetIsland: p.useTargetIsland,
-                targetIsland: store.selectedTargetIsland,
-                isFiring: p.isFiring,
-                priceString: p.priceString,
-                amountString: p.amountString,
-                defaultAmountString: p.defaultAmountString
-            }
-        }
-    }
-}
-
-const onWindowSizeChanged = () => {
-    const newScreenWidth = document.documentElement.clientWidth;
-    if (screenWidth !== newScreenWidth) {
-        store.screenWidth = newScreenWidth;
-        store.isMobile = (document.documentElement.clientWidth < 1024);
-    }
-}
-
 onBeforeMount(() => {
     store.isIslandEditorMount = true
     terrains = new Array(store.hakoniwa.height);
@@ -135,6 +100,14 @@ onUnmounted(() => {
     store.isIslandEditorMount = false
     window.removeEventListener("resize", onWindowSizeChanged)
 })
+
+const onWindowSizeChanged = () => {
+    const newScreenWidth = document.documentElement.clientWidth;
+    if (screenWidth !== newScreenWidth) {
+        store.screenWidth = newScreenWidth;
+        store.isMobile = (document.documentElement.clientWidth < 1024);
+    }
+}
 
 </script>
 
