@@ -35,9 +35,9 @@
     "lodash": "^4.17.21",
     "markdown-it": "^13.0.1",
     "markdown-it-sanitizer": "^0.4.3",
-    "pinia": "^2.0.36",
+    "pinia": "^2.1.7",
     "three": "^0.159.0",
     "tweakpane": "^4.0.2",
-    "vue": "^3.3.4"
+    "vue": "^3.4.5"
   }
 }
