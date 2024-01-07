@@ -4,9 +4,7 @@
       <span class="countdown-label mr-1">ターン:</span>
       <span class="text-sm">{{ store.turn.turn }}</span>
     </div>
-    <div
-      class="countdown-box rounded-bl-xl md:rounded-b-xl"
-      :class="{ 'countdown-box-updated': !this.isTimeRemaining }">
+    <div class="countdown-box rounded-bl-xl md:rounded-b-xl" :class="{ 'countdown-box-updated': !isTimeRemaining }">
       <template v-if="isTimeRemaining">
         <span class="countdown-label mr-1">次の更新まで</span>
         <template v-if="remainTimes.hour > 0">
@@ -27,52 +25,41 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useMainStore } from '../../../store/MainStore'
 
-export default defineComponent({
-  data() {
-    return {
-      remainTimes: {
-        hour: 0,
-        min: 0,
-        sec: 0
-      },
-      isTimeRemaining: true,
-      secInterval: 0
-    }
-  },
-  setup() {
-    const store = useMainStore()
-    return { store }
-  },
-  mounted() {
-    this.secInterval = setInterval(this.countDownTurn, 1000)
-  },
-  unmounted() {
-    clearInterval(this.secInterval)
-  },
-  methods: {
-    countDownTurn() {
-      const now = new Date()
-      if (now > this.store.turn.next_time) {
-        this.isTimeRemaining = false
-        clearInterval(this.secInterval)
-      } else {
-        const diff = this.store.turn.next_time.getTime() - now.getTime()
-        const h = Math.floor(diff / 1000 / 60 / 60)
-        const m = Math.floor(diff / 1000 / 60) % 60
-        const s = Math.floor(diff / 1000) % 60
-        this.remainTimes = {
-          hour: h,
-          min: m,
-          sec: s
-        }
-      }
+const remainTimes = ref<{ hour: number; min: number; sec: number }>({ hour: 0, min: 0, sec: 0 })
+const isTimeRemaining = ref(true)
+const secInterval = ref(0)
+
+const store = useMainStore()
+
+onMounted(() => {
+  secInterval.value = setInterval(countDownTurn, 1000)
+})
+
+onUnmounted(() => {
+  clearInterval(secInterval.value)
+})
+
+const countDownTurn = () => {
+  const now = new Date()
+  if (now > store.turn.next_time) {
+    isTimeRemaining.value = false
+    clearInterval(secInterval.value)
+  } else {
+    const diff = store.turn.next_time.getTime() - now.getTime()
+    const h = Math.floor(diff / 1000 / 60 / 60)
+    const m = Math.floor(diff / 1000 / 60) % 60
+    const s = Math.floor(diff / 1000) % 60
+    remainTimes.value = {
+      hour: h,
+      min: m,
+      sec: s
     }
   }
-})
+}
 </script>
 
 <style scoped lang="scss">

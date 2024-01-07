@@ -24,55 +24,38 @@
         maxlength="128"
         minlength="0"
         v-model="comment"
-        @blur="submitComment"
-        v-on:keydown.enter="submitComment"
+        @blur="submitComment()"
+        v-on:keydown.enter="submitComment()"
         ref="input" />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useMainStore } from '../../../store/MainStore'
 import { AjaxResult, ErrorType, RequestStatus } from '../../../store/Entity/Network'
 import { stringEquals } from '../../../Utils'
 
-export default defineComponent({
-  computed: {
-    ErrorType() {
-      return ErrorType
-    },
-    RequestStatus() {
-      return RequestStatus
-    },
-    UpdateStatus() {
-      return RequestStatus
-    }
-  },
-  data() {
-    return {
-      comment: '',
-      request: { status: RequestStatus.None } as AjaxResult
-    }
-  },
-  setup() {
-    const store = useMainStore()
-    return { store }
-  },
-  mounted() {
-    this.comment = this.store.island.comment
-  },
-  methods: {
-    async submitComment() {
-      ;(this.$refs.input as HTMLElement).blur()
-      if (stringEquals(this.comment, this.store.island.comment)) return
-      if (this.request.status === RequestStatus.Updating) return
+const comment = ref('')
+const request = ref<AjaxResult>({ status: RequestStatus.None })
+const input = ref<HTMLElement>()
 
-      this.request.status = RequestStatus.Updating
-      this.request = await this.store.postComment(this.comment)
-    }
-  }
+const store = useMainStore()
+
+onMounted(() => {
+  comment.value = store.island.comment
+  request.value.status = RequestStatus.None
 })
+
+const submitComment = async () => {
+  input.value.blur()
+  if (stringEquals(comment.value, store.island.comment)) return
+  if (request.value.status === RequestStatus.Updating) return
+
+  request.value.status = RequestStatus.Updating
+  request.value = await store.postComment(comment.value)
+}
 </script>
 
 <style scoped lang="scss">
