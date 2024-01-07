@@ -72,19 +72,8 @@ const cameraControlsState = reactive({
 
 const store = useMainStore()
 
-const MAX_PLAN_NUMBER = 30
-
 let screenWidth = document.documentElement.clientWidth
 let terrains = []
-
-const onClickPlan = (key) => {
-    store.plans.splice(store.selectedPlanNumber - 1, 0, getSelectedPlan(key));
-    store.plans.pop();
-    if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
-        store.selectedPlanNumber++;
-    }
-    store.showPlanWindow = false;
-}
 
 const getSelectedPlan = (key): Plan => {
     const result = store.planCandidate.find(c => c.key === key);
@@ -113,10 +102,6 @@ const getSelectedPlan = (key): Plan => {
     }
 }
 
-const onClickClosePlan = () => {
-    store.showPlanWindow = false;
-}
-
 const onWindowSizeChanged = () => {
     const newScreenWidth = document.documentElement.clientWidth;
     if (screenWidth !== newScreenWidth) {
@@ -124,17 +109,6 @@ const onWindowSizeChanged = () => {
         store.isMobile = (document.documentElement.clientWidth < 1024);
     }
 }
-
-const isReferencedCell = computed((x, y) => {
-    let referencedPlan = store.plans[store.selectedPlanNumber - 1]
-    if (!referencedPlan.data.usePoint) {
-        return false;
-    }
-    if (referencedPlan.data.useTargetIsland && referencedPlan.data.targetIsland !== store.island.id) {
-        return false;
-    }
-    return x === referencedPlan.data.point.x && y === referencedPlan.data.point.y && referencedPlan.data.usePoint
-})
 
 onBeforeMount(() => {
     store.isIslandEditorMount = true
