@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import {onBeforeMount, onMounted, onUnmounted, reactive} from "vue";
 import {useMainStore} from "../../../../store/MainStore";
-import CountdownWidget from "../../../ui/CountdownWidget.vue";
+import CountdownWidget from "../../../islands/common/CountdownWidget.vue";
 import {TresCanvas} from "@tresjs/core";
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
 import IslandEditorCanvas from "../../../islands/Editor/IslandEditorCanvas.vue";
