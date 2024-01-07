@@ -16,6 +16,7 @@
             terrain.data.point.y * store.cellSize
           ] as Vector3
         "
+        :scale="models[terrain.type].scene.scale.x"
         :terrain="terrain"
         :scene="models[terrain.type].scene.clone()"></IslandEditorCell>
     </template>
@@ -87,7 +88,10 @@ const borderLines = [
 for (let type in store.getCells) {
   let model = await useGLTF(store.getCells[type].path, { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-  model.scene.position.y += (size.y - 8) / 2
+  model.scene.scale.x = store.cellSize / size.x
+  model.scene.scale.y = store.cellSize / size.x
+  model.scene.scale.z = store.cellSize / size.x
+  model.scene.position.y += (size.y * (store.cellSize / size.x) - store.cellSize) / 2
   models[type] = model
 }
 
