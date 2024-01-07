@@ -137,75 +137,39 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import { useMainStore } from '../../../store/MainStore'
 import AchievementIcons from '../../ui/AchievementIcons.vue'
 import { storeToRefs } from 'pinia'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faOilWell, faSackDollar, faShield, faWheatAwn } from '@fortawesome/free-solid-svg-icons'
 
-export default defineComponent({
-  components: {
-    AchievementIcons
-  },
-  data() {
-    return {
-      statuses: [] as {
-        title: string
-        numText: string
-        unit: string
-      }[],
-      isMobile: document.documentElement.clientWidth < 1024,
-      screenWidth: document.documentElement.clientWidth
-    }
-  },
-  setup() {
-    library.add(faSackDollar, faWheatAwn, faOilWell, faShield)
+library.add(faSackDollar, faWheatAwn, faOilWell, faShield)
 
-    const store = useMainStore()
-    const { status: statusRef } = storeToRefs(store)
-    return { store, statusRef }
-  },
-  mounted() {
-    window.addEventListener('resize', this.onWindowSizeChanged)
-  },
-  unmounted() {
-    window.removeEventListener('resize', this.onWindowSizeChanged)
-  },
-  computed: {
-    hasComment() {
-      return (
-        this.store.island.comment === null ||
-        this.store.island.comment === undefined ||
-        this.store.island.comment === ''
-      )
-    },
-    islandComment() {
-      if (this.hasComment) {
-        return 'コメントはありません'
-      } else {
-        return this.store.island.comment
-      }
-    },
-    calcUnassigned() {
-      return (
-        this.store.status.population -
-        this.store.status.foods_production_capacity -
-        this.store.status.funds_production_capacity -
-        this.store.status.resources_production_capacity -
-        this.store.status.maintenance_number_of_people
-      )
-    }
-  },
-  methods: {
-    onWindowSizeChanged() {
-      const newScreenWidth = document.documentElement.clientWidth
-      if (this.screenWidth != newScreenWidth) {
-        this.isMobile = document.documentElement.clientWidth < 1024
-      }
-    }
+const store = useMainStore()
+const { status: statusRef } = storeToRefs(store)
+
+const hasComment = computed(() => {
+  return store.island.comment === null || store.island.comment === undefined || store.island.comment === ''
+})
+
+const islandComment = computed(() => {
+  if (hasComment.value) {
+    return 'コメントはありません'
+  } else {
+    return store.island.comment
   }
+})
+
+const calcUnassigned = computed(() => {
+  return (
+    store.status.population -
+    store.status.foods_production_capacity -
+    store.status.funds_production_capacity -
+    store.status.resources_production_capacity -
+    store.status.maintenance_number_of_people
+  )
 })
 </script>
 

@@ -143,7 +143,7 @@ const hasComment = computed(() => {
 })
 
 const islandComment = computed(() => {
-  if (hasComment) {
+  if (hasComment.value) {
     return 'コメントはありません'
   } else {
     return store.targetIslandComments[store.selectedTargetIsland]

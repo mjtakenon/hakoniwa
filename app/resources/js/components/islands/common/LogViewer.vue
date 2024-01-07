@@ -85,49 +85,38 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { LogParser, Log, LogProps } from '../../../store/Entity/Log'
+<script setup lang="ts">
+import { onMounted, PropType, ref } from 'vue'
+import { Log, LogParser, LogProps } from '../../../store/Entity/Log'
 
-export default defineComponent({
-  data() {
-    return {
-      logs: [] as Log[]
-    }
-  },
-  methods: {
-    getBgColor(num: number): string {
-      if (num > 0) return 'border-plus'
-      if (num === 0) return 'border-surface-variant'
-      return 'border-minus'
-    },
-    getTextColor(num: number): string {
-      if (num > 0) return 'text-on-plus'
-      if (num === 0) return 'text-on-surface-variant'
-      return 'text-on-minus'
-    }
-  },
-  mounted() {
-    if (this.unparsedLogs !== undefined) {
-      const parser = new LogParser()
-      this.logs = parser.parse(this.unparsedLogs)
-    } else {
-      this.logs = this.parsedLogs
-    }
-  },
-  props: {
-    title: {
-      required: false,
-      type: String
-    },
-    parsedLogs: {
-      required: false,
-      type: Array as PropType<Log[]>
-    },
-    unparsedLogs: {
-      required: false,
-      type: Array as PropType<LogProps[]>
-    }
+let logs = ref<Log[]>([])
+
+interface Props {
+  title?: String
+  parsedLogs?: PropType<Log[]>
+  unparsedLogs?: PropType<LogProps[]>
+}
+
+const props = defineProps<Props>()
+
+const getBgColor = (num: number): string => {
+  if (num > 0) return 'border-plus'
+  if (num === 0) return 'border-surface-variant'
+  return 'border-minus'
+}
+
+const getTextColor = (num: number): string => {
+  if (num > 0) return 'text-on-plus'
+  if (num === 0) return 'text-on-surface-variant'
+  return 'text-on-minus'
+}
+
+onMounted(() => {
+  if (props.unparsedLogs !== undefined) {
+    const parser = new LogParser()
+    logs.value = parser.parse(props.unparsedLogs)
+  } else {
+    logs.value = props.parsedLogs
   }
 })
 </script>
