@@ -2,13 +2,11 @@ import { defineConfig, loadEnv } from 'vite'
 import laravel from 'laravel-vite-plugin'
 import vue from '@vitejs/plugin-vue'
 import { templateCompilerOptions } from '@tresjs/core'
-import { resolve } from 'url'
 
 export default ({ mode }) => {
   const viteEnv = loadEnv(mode, process.cwd())
 
   const inputs = ['resources/css/app.scss']
-  console.debug(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'development') {
     inputs.push('resources/js/debug.ts')
   } else {
@@ -48,7 +46,6 @@ export default ({ mode }) => {
     },
     build: {
       outDir: 'public/build/', // ビルド成果物の生成先
-      manifest: true
     }
   })
 }
