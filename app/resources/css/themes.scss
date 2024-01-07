@@ -21,109 +21,109 @@
  */
 
 .theme-light {
-    // Primary
-    --theme-primary: #00639b;
-    --theme-on-primary: #ffffff;
-    --theme-primary-container: #cee5ff;
-    --theme-on-primary-container: #001d33;
+  // Primary
+  --theme-primary: #00639b;
+  --theme-on-primary: #ffffff;
+  --theme-primary-container: #cee5ff;
+  --theme-on-primary-container: #001d33;
 
-    // Secondary
-    --theme-secondary: #006b56;
-    --theme-on-secondary: #ffffff;
-    --theme-secondary-container: #7ef8d5;
-    --theme-on-secondary-container: #002018;
+  // Secondary
+  --theme-secondary: #006b56;
+  --theme-on-secondary: #ffffff;
+  --theme-secondary-container: #7ef8d5;
+  --theme-on-secondary-container: #002018;
 
-    // Alert
-    --theme-alert: #765b00;
-    --theme-on-alert: #ffffff;
-    --theme-alert-container: #ffdf93;
-    --theme-on-alert-container: #241a00;
+  // Alert
+  --theme-alert: #765b00;
+  --theme-on-alert: #ffffff;
+  --theme-alert-container: #ffdf93;
+  --theme-on-alert-container: #241a00;
 
-    // Error
-    --theme-error: #ba1a1a;
-    --theme-on-error: #ffffff;
-    --theme-error-container :#ffdad6;
-    --theme-on-error-container: #410002;
+  // Error
+  --theme-error: #ba1a1a;
+  --theme-on-error: #ffffff;
+  --theme-error-container: #ffdad6;
+  --theme-on-error-container: #410002;
 
-    // Plus, Minus
-    --theme-plus: #cee5ff;
-    --theme-on-plus: #0078e1;
-    --theme-minus :#ffdad6;
-    --theme-on-minus: #ff0b14;
+  // Plus, Minus
+  --theme-plus: #cee5ff;
+  --theme-on-plus: #0078e1;
+  --theme-minus: #ffdad6;
+  --theme-on-minus: #ff0b14;
 
-    // Background, Surface
-    --theme-background: #fcfcff;
-    --theme-on-background: #1a1c1e;
-    --theme-surface: #ffffff;
-    --theme-on-surface: #1a1c1e;
+  // Background, Surface
+  --theme-background: #fcfcff;
+  --theme-on-background: #1a1c1e;
+  --theme-surface: #ffffff;
+  --theme-on-surface: #1a1c1e;
 
-    // Scroll bar
-    --theme-scroll-thumb: #ffffff;
-    --theme-scroll-track: #232E3380;
+  // Scroll bar
+  --theme-scroll-thumb: #ffffff;
+  --theme-scroll-track: #232e3380;
 
-    // Others
-    --theme-on-link: #485fc7;
-    --theme-outline: #72777f;
-    --theme-surface-variant: #dee3eb;
-    --theme-on-surface-variant: #42474e;
+  // Others
+  --theme-on-link: #485fc7;
+  --theme-outline: #72777f;
+  --theme-surface-variant: #dee3eb;
+  --theme-on-surface-variant: #42474e;
 
-    // Achievements
-    --theme-achievement-normal: #1a1c1e;
-    --theme-achievement-bronze: #a25a43;
-    --theme-achievement-silver: #a1aeb6;
-    --theme-achievement-gold: #e7bb8b;
+  // Achievements
+  --theme-achievement-normal: #1a1c1e;
+  --theme-achievement-bronze: #a25a43;
+  --theme-achievement-silver: #a1aeb6;
+  --theme-achievement-gold: #e7bb8b;
 }
 
 .theme-dark {
-    // Primary
-    --theme-primary: #96cbff;
-    --theme-on-primary: #003353;
-    --theme-primary-container: #004a76;
-    --theme-on-primary-container: #cee5ff;
+  // Primary
+  --theme-primary: #96cbff;
+  --theme-on-primary: #003353;
+  --theme-primary-container: #004a76;
+  --theme-on-primary-container: #cee5ff;
 
-    // Secondary
-    --theme-secondary: #5fdbb9;
-    --theme-on-secondary: #00382c;
-    --theme-secondary-container: #005140;
-    --theme-on-secondary-container: #7ef8d5;
+  // Secondary
+  --theme-secondary: #5fdbb9;
+  --theme-on-secondary: #00382c;
+  --theme-secondary-container: #005140;
+  --theme-on-secondary-container: #7ef8d5;
 
-    // Alert
-    --theme-alert: #edc148;
-    --theme-on-alert: #3e2e00;
-    --theme-alert-container: #594400;
-    --theme-on-alert-container: #ffdf93;
+  // Alert
+  --theme-alert: #edc148;
+  --theme-on-alert: #3e2e00;
+  --theme-alert-container: #594400;
+  --theme-on-alert-container: #ffdf93;
 
-    // Error
-    --theme-error: #ffb4ab;
-    --theme-on-error: #690005;
-    --theme-error-container: #93000a;
-    --theme-on-error-container: #ffdad6;
+  // Error
+  --theme-error: #ffb4ab;
+  --theme-on-error: #690005;
+  --theme-error-container: #93000a;
+  --theme-on-error-container: #ffdad6;
 
-    // Plus, Minus
-    --theme-plus: #004a76;
-    --theme-on-plus: #5fb3ff;
-    --theme-minus :#93000a;
-    --theme-on-minus: #ff6c72;
+  // Plus, Minus
+  --theme-plus: #004a76;
+  --theme-on-plus: #5fb3ff;
+  --theme-minus: #93000a;
+  --theme-on-minus: #ff6c72;
 
-    // Background, Surface
-    --theme-background: #24272a;
-    --theme-on-background: #e2e2e5;
-    --theme-surface: #34373b;
-    --theme-on-surface: #e2e2e5;
+  // Background, Surface
+  --theme-background: #24272a;
+  --theme-on-background: #e2e2e5;
+  --theme-surface: #34373b;
+  --theme-on-surface: #e2e2e5;
 
-    // Scroll bar
-    --theme-scroll-thumb: #969696;
-    --theme-scroll-track: #232E3380;
+  // Scroll bar
+  --theme-scroll-thumb: #969696;
+  --theme-scroll-track: #232e3380;
 
-    // Others
-    --theme-on-link: #acb7e7;
-    --theme-outline: #8c9198;
-    --theme-surface-variant: #42474e;
-    --theme-on-surface-variant: #c2c7cf;
+  // Others
+  --theme-on-link: #acb7e7;
+  --theme-outline: #8c9198;
+  --theme-surface-variant: #42474e;
+  --theme-on-surface-variant: #c2c7cf;
 
-    // Achievements
-    --theme-achievement-normal: #e2e2e5;
-    --theme-achievement-bronze: #a25a43;
-    --theme-achievement-silver: #a1aeb6;
-    --theme-achievement-gold: #e7bb8b;
+  // Achievements
+  --theme-achievement-normal: #e2e2e5;
+  --theme-achievement-bronze: #a25a43;
+  --theme-achievement-silver: #a1aeb6;
+  --theme-achievement-gold: #e7bb8b;
 }

@@ -2,169 +2,169 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "themes";
+@import 'themes';
 
 @layer base {
-    body {
-        @apply bg-background text-on-background break-words;
+  body {
+    @apply break-words bg-background text-on-background;
 
-        ::-webkit-scrollbar {
-            width: 0.5rem;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--theme-scroll-track);
-            border-radius: 7px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--theme-scroll-thumb);
-            border-radius: 7px;
-        }
+    ::-webkit-scrollbar {
+      width: 0.5rem;
     }
 
-    p {
-        @apply mb-2;
+    ::-webkit-scrollbar-track {
+      background: var(--theme-scroll-track);
+      border-radius: 7px;
     }
 
-    hr {
-        @apply mb-4;
+    ::-webkit-scrollbar-thumb {
+      background: var(--theme-scroll-thumb);
+      border-radius: 7px;
     }
+  }
 
-    a {
-        @apply text-on-link;
-    }
+  p {
+    @apply mb-2;
+  }
 
-    button {
-        @apply inline-block px-4 py-2 rounded border drop-shadow-md;
-        @apply bg-surface border-on-surface text-on-surface hover:bg-surface-variant hover:text-on-surface-variant;
-    }
+  hr {
+    @apply mb-4;
+  }
 
-    select {
-        @apply bg-background text-on-background rounded;
-    }
+  a {
+    @apply text-on-link;
+  }
+
+  button {
+    @apply inline-block rounded border px-4 py-2 drop-shadow-md;
+    @apply border-on-surface bg-surface text-on-surface hover:bg-surface-variant hover:text-on-surface-variant;
+  }
+
+  select {
+    @apply rounded bg-background text-on-background;
+  }
 }
 
 @layer components {
-    // components
-    .title {
-        @apply text-2xl font-black mt-6 mb-2;
-    }
+  // components
+  .title {
+    @apply mb-2 mt-6 text-2xl font-black;
+  }
 
-    .subtitle {
-        @apply text-xl mt-6 mb-2;
-    }
+  .subtitle {
+    @apply mb-2 mt-6 text-xl;
+  }
 
-    .link-text {
-        @apply text-on-link;
-    }
+  .link-text {
+    @apply text-on-link;
+  }
 
-    // ----- InfoBox -----
-    .box-secondary {
-        @apply block my-3 p-4 rounded font-bold text-base drop-shadow-md bg-secondary-container;
-    }
+  // ----- InfoBox -----
+  .box-secondary {
+    @apply my-3 block rounded bg-secondary-container p-4 text-base font-bold drop-shadow-md;
+  }
 
-    .box-alert {
-        @apply block my-3 p-4 rounded font-bold text-base drop-shadow-md bg-alert-container text-on-alert-container;
-    }
+  .box-alert {
+    @apply my-3 block rounded bg-alert-container p-4 text-base font-bold text-on-alert-container drop-shadow-md;
+  }
 
-    .box-error {
-        @apply block my-3 p-4 rounded font-bold text-base drop-shadow-md bg-error text-on-error;
-    }
+  .box-error {
+    @apply my-3 block rounded bg-error p-4 text-base font-bold text-on-error drop-shadow-md;
+  }
 
-    // ----- ボタン -----
-    .button-primary {
-        @apply inline-block px-4 py-2 border rounded drop-shadow-md;
-        @apply border-primary bg-primary text-on-primary hover:bg-on-primary hover:text-primary;
-    }
+  // ----- ボタン -----
+  .button-primary {
+    @apply inline-block rounded border px-4 py-2 drop-shadow-md;
+    @apply border-primary bg-primary text-on-primary hover:bg-on-primary hover:text-primary;
+  }
 
-    .button-secondary {
-        @apply inline-block px-4 py-2 rounded drop-shadow-md;
-        @apply bg-secondary text-on-secondary hover:bg-on-secondary hover:text-secondary;
-    }
+  .button-secondary {
+    @apply inline-block rounded px-4 py-2 drop-shadow-md;
+    @apply bg-secondary text-on-secondary hover:bg-on-secondary hover:text-secondary;
+  }
 
-    .button-alert {
-        @apply inline-block px-4 py-2 rounded drop-shadow-md;
-        @apply bg-alert text-on-alert hover:bg-on-alert hover:text-alert;
-    }
+  .button-alert {
+    @apply inline-block rounded px-4 py-2 drop-shadow-md;
+    @apply bg-alert text-on-alert hover:bg-on-alert hover:text-alert;
+  }
 
-    .button-error {
-        @apply inline-block px-4 py-2 rounded drop-shadow-md;
-        @apply bg-error text-on-error hover:bg-on-error hover:text-error;
-    }
+  .button-error {
+    @apply inline-block rounded px-4 py-2 drop-shadow-md;
+    @apply bg-error text-on-error hover:bg-on-error hover:text-error;
+  }
 
-    .button-surface {
-        @apply inline-block px-4 py-2 rounded border drop-shadow-md;
-        @apply bg-surface border-on-surface text-on-surface hover:bg-surface-variant hover:text-on-surface-variant;
-    }
+  .button-surface {
+    @apply inline-block rounded border px-4 py-2 drop-shadow-md;
+    @apply border-on-surface bg-surface text-on-surface hover:bg-surface-variant hover:text-on-surface-variant;
+  }
 
-    .button-variant {
-        @apply inline-block px-4 py-2 rounded border drop-shadow-md;
-        @apply bg-surface-variant text-on-surface-variant hover:bg-on-surface-variant hover:text-surface-variant;
-    }
+  .button-variant {
+    @apply inline-block rounded border px-4 py-2 drop-shadow-md;
+    @apply bg-surface-variant text-on-surface-variant hover:bg-on-surface-variant hover:text-surface-variant;
+  }
 
-    .button-variant-reverse {
-        @apply inline-block px-4 py-2 rounded border drop-shadow-md;
-        @apply bg-on-surface-variant text-surface-variant hover:bg-surface-variant hover:text-on-surface-variant;
-    }
+  .button-variant-reverse {
+    @apply inline-block rounded border px-4 py-2 drop-shadow-md;
+    @apply bg-on-surface-variant text-surface-variant hover:bg-surface-variant hover:text-on-surface-variant;
+  }
 
-    .button-disabled {
-        @apply inline-block px-4 py-2 rounded drop-shadow-md bg-gray-700;
-    }
+  .button-disabled {
+    @apply inline-block rounded bg-gray-700 px-4 py-2 drop-shadow-md;
+  }
 }
 
-@import "markdown";
+@import 'markdown';
 
 :root {
-    @apply bg-background text-on-background;
+  @apply bg-background text-on-background;
 }
 
 #app {
-    @apply bg-background text-on-background pb-0;
+  @apply bg-background pb-0 text-on-background;
 }
 
 #index {
-    @apply mx-auto max-w-[1000px] px-3;
+  @apply mx-auto max-w-[1000px] px-3;
 
-    .index-ranking-viewer {
-        @apply rounded-md;
+  .index-ranking-viewer {
+    @apply rounded-md;
 
-        .subtitle {
-            @apply rounded-t-md
-        }
-
+    .subtitle {
+      @apply rounded-t-md;
     }
+  }
 }
 
 #register {
-    @apply mx-auto max-w-[600px] px-3;
+  @apply mx-auto max-w-[600px] px-3;
 
-    .title {
-        @apply mb-5 px-3 py-10 bg-primary text-on-primary rounded-md;
+  .title {
+    @apply mb-5 rounded-md bg-primary px-3 py-10 text-on-primary;
+  }
+
+  .field {
+    @apply w-full;
+
+    .label {
+      @apply mb-4 block border-b pb-2 md:text-lg;
     }
 
-    .field {
-        @apply w-full;
+    .control {
+      @apply relative mb-10 w-full items-center;
 
-        .label {
-            @apply md:text-lg block mb-4 pb-2 border-b;
-        }
+      .icons {
+        @apply pointer-events-none absolute z-10 flex h-full w-full items-center justify-between px-3 text-lg;
+      }
 
-        .control {
-            @apply relative w-full items-center mb-10;
+      .input,
+      .input-with-icon {
+        @apply w-full rounded-md border border-gray-400 px-3 py-2 drop-shadow-md;
+        @apply focus:outline-2 focus:outline-primary;
+      }
 
-            .icons {
-                @apply absolute flex items-center px-3 justify-between w-full h-full text-lg z-10 pointer-events-none;
-            }
-
-            .input, .input-with-icon {
-                @apply w-full px-3 py-2 rounded-md border border-gray-400 drop-shadow-md;
-                @apply focus:outline-2 focus:outline-primary;
-            }
-
-            .input-with-icon {
-                @apply px-10;
-            }
-        }
+      .input-with-icon {
+        @apply px-10;
+      }
     }
+  }
 }

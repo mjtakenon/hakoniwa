@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import _ from 'lodash'
 
-window._ = _;
+window._ = _
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -8,47 +8,47 @@ window._ = _;
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
+import axios from 'axios'
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 // @ts-ignore
-window.axios = axios;
+window.axios = axios
 
-import {App} from "vue";
-import {createApp} from "vue/dist/vue.esm-bundler";
-import {createPinia} from "pinia";
+import { App } from 'vue'
+import { createApp } from 'vue/dist/vue.esm-bundler'
+import { createPinia } from 'pinia'
 import Tres from '@tresjs/core'
-import IslandsPage from "./components/pages/Islands/IslandsPage.vue";
-import PlansPage from "./components/pages/Islands/Plans/PlansPage.vue";
-import VueHeader from "./components/layout/VueHeader.vue";
-import TurnViewer from "./components/pages/Index/TurnViewer.vue";
-import RankingViewer from "./components/pages/Index/RankingViewer.vue";
-import LogViewer from "./components/islands/common/LogViewer.vue";
-import SettingsPage from "./components/pages/Settings/SettingsPage.vue";
-import ReleaseNotes from "./components/pages/Releases/ReleasesPage.vue";
-import VueFooter from "./components/layout/VueFooter.vue";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import ReleasesPage from "./components/pages/Releases/ReleasesPage.vue";
+import IslandsPage from './components/pages/Islands/IslandsPage.vue'
+import PlansPage from './components/pages/Islands/Plans/PlansPage.vue'
+import VueHeader from './components/layout/VueHeader.vue'
+import TurnViewer from './components/pages/Index/TurnViewer.vue'
+import RankingViewer from './components/pages/Index/RankingViewer.vue'
+import LogViewer from './components/islands/common/LogViewer.vue'
+import SettingsPage from './components/pages/Settings/SettingsPage.vue'
+import ReleaseNotes from './components/pages/Releases/ReleasesPage.vue'
+import VueFooter from './components/layout/VueFooter.vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import ReleasesPage from './components/pages/Releases/ReleasesPage.vue'
 
 export const app: App = createApp({
-    components: {
-        IslandsPage,
-        PlansPage,
-        VueHeader,
-        VueFooter,
-        TurnViewer,
-        ReleaseNotes,
-        RankingViewer,
-        LogViewer,
-        SettingsPage,
-        ReleasesPage,
-    }
-});
+  components: {
+    IslandsPage,
+    PlansPage,
+    VueHeader,
+    VueFooter,
+    TurnViewer,
+    ReleaseNotes,
+    RankingViewer,
+    LogViewer,
+    SettingsPage,
+    ReleasesPage
+  }
+})
 
-const pinia = createPinia();
-app.use(pinia);
-app.use(Tres);
+const pinia = createPinia()
+app.use(pinia)
+app.use(Tres)
 app.component('FontAwesomeIcon', FontAwesomeIcon)
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

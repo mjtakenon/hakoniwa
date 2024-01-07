@@ -1,82 +1,82 @@
 [
-    {
-        "type": "turn_prize",
-        "title": "ターン賞",
-        "category": "turn_prize",
-        "grade": 0,
-        "icon": "fa-solid fa-medal",
-        "color": "normal"
-    },
-    {
-        "type": "conquest_sign",
-        "title": "制覇の証",
-        "category": "conquest_sign",
-        "grade": 0,
-        "icon": "fa-solid fa-crown",
-        "color": "gold"
-    },
-    {
-        "type": "prosperity_prize",
-        "title": "繁栄賞",
-        "category": "prosperity_prize",
-        "grade": 0,
-        "icon": "fa-solid fa-mountain-city",
-        "color": "bronze"
-    },
-    {
-        "type": "high_prosperity_prize",
-        "title": "超繁栄賞",
-        "category": "prosperity_prize",
-        "grade": 1,
-        "icon": "fa-solid fa-mountain-city",
-        "color": "silver"
-    },
-    {
-        "type": "super_prosperity_prize",
-        "title": "究極繁栄賞",
-        "category": "prosperity_prize",
-        "grade": 2,
-        "icon": "fa-solid fa-mountain-city",
-        "color": "gold"
-    },
-    {
-        "type": "calamity_prize",
-        "title": "災難賞",
-        "category": "calamity_prize",
-        "grade": 0,
-        "icon": "fa-solid fa-skull",
-        "color": "bronze"
-    },
-    {
-        "type": "high_calamity_prize",
-        "title": "超災難賞",
-        "category": "calamity_prize",
-        "grade": 1,
-        "icon": "fa-solid fa-skull",
-        "color": "silver"
-    },
-    {
-        "type": "super_calamity_prize",
-        "title": "究極災難賞",
-        "category": "calamity_prize",
-        "grade": 2,
-        "icon": "fa-solid fa-skull",
-        "color": "gold"
-    },
-    {
-        "type": "levinoth_hunter",
-        "title": "リヴァイノスハンター",
-        "category": "levinoth_hunter",
-        "grade": 0,
-        "icon": "fa-solid fa-dragon",
-        "color": "normal"
-    },
-    {
-        "type": "treasure_hunter",
-        "title": "トレジャーハンター",
-        "category": "treasure_hunter",
-        "grade": 0,
-        "icon": "fa-solid fa-gem",
-        "color": "normal"
-    }
+  {
+    "type": "turn_prize",
+    "title": "ターン賞",
+    "category": "turn_prize",
+    "grade": 0,
+    "icon": "fa-solid fa-medal",
+    "color": "normal"
+  },
+  {
+    "type": "conquest_sign",
+    "title": "制覇の証",
+    "category": "conquest_sign",
+    "grade": 0,
+    "icon": "fa-solid fa-crown",
+    "color": "gold"
+  },
+  {
+    "type": "prosperity_prize",
+    "title": "繁栄賞",
+    "category": "prosperity_prize",
+    "grade": 0,
+    "icon": "fa-solid fa-mountain-city",
+    "color": "bronze"
+  },
+  {
+    "type": "high_prosperity_prize",
+    "title": "超繁栄賞",
+    "category": "prosperity_prize",
+    "grade": 1,
+    "icon": "fa-solid fa-mountain-city",
+    "color": "silver"
+  },
+  {
+    "type": "super_prosperity_prize",
+    "title": "究極繁栄賞",
+    "category": "prosperity_prize",
+    "grade": 2,
+    "icon": "fa-solid fa-mountain-city",
+    "color": "gold"
+  },
+  {
+    "type": "calamity_prize",
+    "title": "災難賞",
+    "category": "calamity_prize",
+    "grade": 0,
+    "icon": "fa-solid fa-skull",
+    "color": "bronze"
+  },
+  {
+    "type": "high_calamity_prize",
+    "title": "超災難賞",
+    "category": "calamity_prize",
+    "grade": 1,
+    "icon": "fa-solid fa-skull",
+    "color": "silver"
+  },
+  {
+    "type": "super_calamity_prize",
+    "title": "究極災難賞",
+    "category": "calamity_prize",
+    "grade": 2,
+    "icon": "fa-solid fa-skull",
+    "color": "gold"
+  },
+  {
+    "type": "levinoth_hunter",
+    "title": "リヴァイノスハンター",
+    "category": "levinoth_hunter",
+    "grade": 0,
+    "icon": "fa-solid fa-dragon",
+    "color": "normal"
+  },
+  {
+    "type": "treasure_hunter",
+    "title": "トレジャーハンター",
+    "category": "treasure_hunter",
+    "grade": 0,
+    "icon": "fa-solid fa-gem",
+    "color": "normal"
+  }
 ]

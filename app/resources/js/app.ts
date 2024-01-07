@@ -1,4 +1,4 @@
-import './bootstrap';
-import {app} from "./bootstrap";
+import './bootstrap'
+import { app } from './bootstrap'
 
-app.mount("#app");
+app.mount('#app')

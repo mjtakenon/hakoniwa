@@ -1,7 +1,7 @@
-import {Point} from "./Point";
+import { Point } from './Point'
 
 export interface Cell {
-    image_path: string,
-    info: string,
-    point: Point,
+  image_path: string
+  info: string
+  point: Point
 }

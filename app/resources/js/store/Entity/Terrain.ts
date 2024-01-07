@@ -1,6 +1,6 @@
-import {Cell} from "./Cell";
+import { Cell } from './Cell'
 
 export interface Terrain {
-    data: Cell,
-    type: string,
+  data: Cell
+  type: string
 }

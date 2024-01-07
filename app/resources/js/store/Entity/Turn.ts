@@ -1,4 +1,4 @@
 export interface Turn {
-    turn: number,
-    next_time: Date
+  turn: number
+  next_time: Date
 }
