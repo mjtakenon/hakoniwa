@@ -99,11 +99,11 @@ import { faChalkboardUser, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { BbsMessage, BbsVisibility } from '../../../store/Entity/Bbs'
 import { ErrorType, RequestStatus } from '../../../store/Entity/Network'
 
-let sendMode: BbsVisibility = ref('public')
+let sendMode = ref<BbsVisibility>('public')
 let comment = ref('')
 let formError = ref('')
-let submitStatus: RequestStatus = ref(RequestStatus.None)
-let deleteStatus: RequestStatus = ref(RequestStatus.None)
+let submitStatus = ref<RequestStatus>(RequestStatus.None)
+let deleteStatus = ref<RequestStatus>(RequestStatus.None)
 
 library.add(faChalkboardUser, faTrashCan)
 const store = useMainStore()
