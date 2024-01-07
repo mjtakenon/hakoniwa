@@ -18,7 +18,7 @@
             </button>
         </div>
         <div
-            v-for="plan of store.planCandidate.filter(p => p.data.usePoint)"
+            v-for="plan of planCandidate"
             :key="plan.key"
             class="plan-window-select"
         >
@@ -33,11 +33,15 @@
 <script setup lang="ts">
 import {useMainStore} from "../store/MainStore";
 import {Plan} from "../store/Entity/Plan";
+import {computed} from "vue";
 
 const store = useMainStore()
 
 const MAX_PLAN_NUMBER = 30
 
+const planCandidate = computed(() => {
+    return store.planCandidate.filter(p => store.isOpenPopup ? p.data.usePoint && p.data.useTargetIsland : p.data.usePoint)
+})
 
 const onClickClosePlan = () => {
     store.showPlanWindow = false;

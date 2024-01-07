@@ -41,73 +41,26 @@
                     :intensity="3"
                 />
             </TresCanvas>
-            <!--            <div v-else id="popup-island">-->
-            <!--                <div-->
-            <!--                    class="row"-->
-            <!--                    v-for="y of store.hakoniwa.height"-->
-            <!--                    :key="y"-->
-            <!--                >-->
-            <!--                    <div class="right-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 1">-->
-            <!--                        <span class="right-padding-text">{{ y - 1 }}</span>-->
-            <!--                    </div>-->
-            <!--                    <div class="cell" v-for="x of store.hakoniwa.width" :key="x">-->
-            <!--                        <img-->
-            <!--                            @mouseover="onMouseOverCell(x-1, y-1, $event)"-->
-            <!--                            @mouseleave="onMouseLeaveCell()"-->
-            <!--                            @click="onClickCell(x-1, y-1, $event)"-->
-            <!--                            :src="getIslandTerrainImage(x-1,y-1)"-->
-            <!--                            :alt="getIslandTerrainInfo(x-1,y-1)"-->
-            <!--                            :class="[-->
-            <!--                                'cell',-->
-            <!--                                isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'cell-is-selected' : '',-->
-            <!--                                !isSelectedCell(x-1, y-1) && store.showPlanWindow ? 'opacity-80' : '',-->
-            <!--                            ]"-->
-            <!--                        >-->
-            <!--                    </div>-->
-            <!--                    <div class="left-padding" :class="{'opacity-80': store.showPlanWindow}" v-if="y%2 === 0"></div>-->
-            <!--                </div>-->
-            <!--                <div v-show="store.showHoverWindow" class="hover-window"-->
-            <!--                     :style="{ bottom: hoverWindowY+'px', left: hoverWindowX+'px' }">-->
-            <!--                    <div class="hover-window-header">-->
-            <!--                        <img-->
-            <!--                            class="hover-window-img"-->
-            <!--                            :src="getIslandTerrainImage(hoverCellPoint.x, hoverCellPoint.y)"-->
-            <!--                        >-->
-            <!--                        <div class="grow items-center hover-window-info">-->
-            <!--                            {{ (getIslandTerrainInfo(hoverCellPoint.x, hoverCellPoint.y)) }}-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--                <div v-show="store.showPlanWindow" class="plan-window"-->
-            <!--                     :style="[-->
-            <!--                 { top: planWindowY + 'px'}, { left: planWindowX + 'px'}-->
-            <!--             ]"-->
-            <!--                >-->
-            <!--                    <div class="plan-window-header">-->
-            <!--                        <div class="grow px-3">-->
-            <!--                            <span class="mr-2">({{ store.selectedPoint.x }},{{ store.selectedPoint.y }})</span>-->
-            <!--                            <span class="text-xs">計画番号: </span>-->
-            <!--                            <span class="mr-1">{{ store.selectedPlanNumber }}</span>-->
-            <!--                        </div>-->
-
-            <!--                        <button-->
-            <!--                            class="plan-window-close"-->
-            <!--                            @click="onClickClosePlan"-->
-            <!--                        >×-->
-            <!--                        </button>-->
-            <!--                    </div>-->
-            <!--                    <div-->
-            <!--                        v-for="plan of store.planCandidate.filter(p => p.data.usePoint && p.data.useTargetIsland)"-->
-            <!--                        :key="plan.key"-->
-            <!--                        class="plan-window-select"-->
-            <!--                    >-->
-            <!--                        <div @click="onClickPlan(plan.key)">-->
-            <!--                            <a class="action-name">{{ plan.data.name }}</a>-->
-            <!--                            <span class="action-price">{{ plan.data.priceString }}</span>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
+            <HoverWindow>
+                <template v-for="(plan, index) of store.plans">
+                    <div class="hover-window-plan" v-if="
+                    plan.data.usePoint &&
+                    plan.data.point.x === store.hoverCellPoint.x &&
+                    plan.data.point.y === store.hoverCellPoint.y &&
+                    (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === store.island.id)
+                ">
+                        <span>[{{ index + 1 }}] </span>
+                        <span>{{ plan.data.name }}</span>
+                        <span v-if="plan.data.useAmount">
+                        <span v-if="plan.data.amount === 0"> {{ plan.data.defaultAmountString }}</span>
+                        <span v-else> {{
+                                plan.data.amountString.replace(':amount:', plan.data.amount.toString())
+                            }} </span>
+                    </span>
+                    </div>
+                </template>
+            </HoverWindow>
+            <PlanWindow/>
             <div class="comment-box">
                 <div class="comment-title">
                     Comment:
@@ -131,6 +84,8 @@ import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
 import {TresCanvas} from "@tresjs/core";
 import IslandEditorCanvas from "./IslandEditorCanvas.vue";
 import {CameraControls} from "@tresjs/cientos";
+import HoverWindow from "./HoverWindow.vue";
+import PlanWindow from "./PlanWindow.vue";
 
 const MAX_PLAN_NUMBER = 30
 let targetTerrains: Terrain[] = []
@@ -410,6 +365,14 @@ const onWindowSizeChanged = () => {
             @apply text-sm px-1 leading-none md:text-base md:leading-none text-on-surface-variant;
         }
     }
+
+    .hover-window-plan {
+        @apply text-sm text-left m-0 p-0;
+    }
+
+    .hover-window-plan:nth-child(2) {
+        @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
+    }
 }
 
 .loading {
@@ -422,109 +385,6 @@ const onWindowSizeChanged = () => {
 
     .loading-circle {
         @apply w-1/6 h-1/6 text-surface-variant animate-spin fill-primary;
-    }
-}
-
-#popup-island {
-    // sp
-    @apply w-[clamp(0px,100vw,498px)] mx-auto;
-    // desktop
-    @apply max-w-[498px] max-h-[498px];
-
-    .row {
-        @apply m-0 -mt-[0.1px] p-0 bg-black;
-        display: grid;
-
-        .cell {
-            @apply w-full aspect-square;
-        }
-
-        &:nth-child(odd) {
-            grid-template-columns: 1fr repeat(15, 2fr);
-        }
-
-        &:nth-child(even) {
-            grid-template-columns: repeat(15, 2fr) 1fr;
-        }
-
-        .cell-is-selected {
-            border: 1px solid white;
-        }
-
-        .cell-is-referenced {
-            border: 1px solid red;
-        }
-
-        .left-padding {
-            @apply w-full aspect-[1/2] z-10;
-            background-image: url("/img/hakoniwa/hakogif/land0.gif");
-            background-position: left;
-        }
-
-        .right-padding {
-            @apply relative w-full aspect-[1/2] z-10;
-            background-image: url("/img/hakoniwa/hakogif/land0.gif");
-            background-position: right;
-
-            .right-padding-text {
-                @apply max-xs:hidden absolute left-1 leading-none text-white text-xs md:text-sm overflow-hidden z-10
-            }
-        }
-    }
-
-    .hover-window {
-        @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
-
-        .hover-window-header {
-            @apply flex px-3 items-center;
-
-            .hover-window-img {
-                width: 32px;
-                height: 32px;
-                margin-right: 10px;
-            }
-
-            .hover-window-info {
-                white-space: pre-line;
-            }
-        }
-
-        .hover-window-plan {
-            @apply text-sm text-left m-0 p-0;
-        }
-
-        .hover-window-plan:nth-child(2) {
-            @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
-        }
-    }
-
-    .plan-window {
-        @apply block absolute bg-surface-variant text-on-surface-variant w-fit max-lg:min-w-[230px] max-lg:max-w-[230px] max-lg:-translate-x-1/2 lg:max-w-[240px] rounded-md drop-shadow-xl text-left overflow-hidden max-md:text-sm border border-primary dark:border-primary-container z-30;
-        @apply animate-fadein;
-
-        .plan-window-header {
-            @apply flex p-0 m-0 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container items-center;
-
-            .plan-window-close {
-                @apply inline-block bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container p-0 border-none hover:bg-primary hover:dark:bg-primary-container drop-shadow-none mr-3;
-            }
-        }
-
-        .plan-window-select {
-            @apply w-full px-2 max-md:py-1 hover:bg-on-primary;
-
-            .action-name {
-                @apply inline-block font-bold text-sm md:text-base mr-1;
-            }
-
-            .action-price {
-                @apply inline-block text-xs;
-            }
-
-            &:not(:last-child) {
-                @apply border-b border-gray-700;
-            }
-        }
     }
 }
 

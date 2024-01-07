@@ -44,8 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeMount, onMounted, onUnmounted, reactive} from "vue";
-import {Plan} from "../store/Entity/Plan";
+import {onBeforeMount, onMounted, onUnmounted, reactive} from "vue";
 import {useMainStore} from "../store/MainStore";
 import CountdownWidget from "./CountdownWidget.vue";
 import {TresCanvas} from "@tresjs/core";
