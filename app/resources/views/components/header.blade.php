@@ -1,8 +1,8 @@
 <header>
     <vue-header
         csrf-token="{{ @csrf_token() }}"
-        is-logged-in="{{ \Auth::check() }}"
-        is-island-registered="{{ \HakoniwaService::isIslandRegistered() }}"
+        :is-logged-in="@js(\Auth::check())"
+        :is-island-registered="@js(\HakoniwaService::isIslandRegistered())"
         @if (\Auth::check())
             :user="{{ \Auth::user() }}"
         @endif
