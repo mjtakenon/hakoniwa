@@ -170,7 +170,7 @@ export const useMainStore = defineStore('main', {
         farm_dome: { path: '/img/hakoniwa/gltf/plain.gltf' },
         forest: { path: '/img/hakoniwa/gltf/forest.gltf' },
         metropolis: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        mountain: { path: '/img/hakoniwa/gltf/plain.gltf' },
+        mountain: { path: '/img/hakoniwa/gltf/volcano.gltf' },
         volcano: { path: '/img/hakoniwa/gltf/volcano.gltf' },
         mine: { path: '/img/hakoniwa/gltf/mine.gltf' },
         oilfield: { path: '/img/hakoniwa/gltf/plain.gltf' },
