@@ -19,13 +19,13 @@
             </div>
             <div class="footer-icons">
                 <a class="icon-link">
-                    <font-awesome-icon class="icon" icon="fa-brands fa-twitter" size="xl" />
+                    <FontAwesomeIcon class="icon" icon="fa-brands fa-twitter" size="xl" />
                 </a>
                 <a class="icon-link" href="https://github.com/mjtakenon/hakoniwa">
-                    <font-awesome-icon class="icon" icon="fa-brands fa-github" size="xl" />
+                    <FontAwesomeIcon class="icon" icon="fa-brands fa-github" size="xl" />
                 </a>
                 <a class="icon-link">
-                    <font-awesome-icon class="icon" icon="fa-brands fa-discord" size="xl" />
+                    <FontAwesomeIcon class="icon" icon="fa-brands fa-discord" size="xl" />
                 </a>
             </div>
             <div class="footer-credits">

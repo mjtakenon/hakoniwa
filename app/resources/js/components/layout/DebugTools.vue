@@ -3,7 +3,7 @@
      :class="{'hidden' : !visible}">
     <div class="text-xs mr-5">DEBUG TOOLS:</div>
     <div class="text-xs">theme:</div>
-    <theme-switcher></theme-switcher>
+    <ThemeSwitcher></ThemeSwitcher>
     <a v-if="debugLoginUsingId >= 1" class="button-primary login" href="/auth/debug/login">
         <div>
             ログイン

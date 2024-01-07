@@ -1,7 +1,7 @@
 <template>
     <div id="bbs">
         <div class="header">
-            <font-awesome-icon class="mr-6" :icon="['fas', 'chalkboard-user']" size="xl"/>
+            <FontAwesomeIcon class="mr-6" :icon="['fas', 'chalkboard-user']" size="xl"/>
             <span>{{ store.island.name }}島の掲示板</span>
         </div>
         <div v-if="store.user.island !== null" class="bbs-form">
@@ -69,7 +69,7 @@
                             <div class="badge-text">秘密通信</div>
                         </div>
                         <div v-show="post.user_id === store.user.user_id" class="delete-button" @click="deleteComment(post)">
-                            <font-awesome-icon class="icon pointer-events-none" :icon="['fas', 'trash-can']"/>
+                            <FontAwesomeIcon class="icon pointer-events-none" :icon="['fas', 'trash-can']"/>
                         </div>
                     </div>
                     <div class="post-contents">

@@ -19,7 +19,7 @@
                 :intensity="3"
             />
         </TresCanvas>
-        <countdown-widget></countdown-widget>
+        <CountdownWidget></CountdownWidget>
         <HoverWindow>
             <template v-for="(plan, index) of store.plans">
                 <div class="hover-window-plan" v-if="

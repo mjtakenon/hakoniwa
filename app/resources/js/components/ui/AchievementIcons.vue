@@ -8,11 +8,11 @@
                 @mouseover.self="onHover($event, achievement.title, achievement.hover_text)"
                 @mouseout.self="onLeaved()"
             >
-                <font-awesome-icon
+                <FontAwesomeIcon
                     class="achievement-icon"
                     :class="achievement.color"
                     :icon="achievement.icon"
-                ></font-awesome-icon>
+                ></FontAwesomeIcon>
                 <span v-if="achievement.extra_text !== undefined" class="extra-text">
                     {{ achievement.extra_text }}
                 </span>
@@ -48,8 +48,10 @@ import {
     filterDuplicatedAchievementType,
     getAchievementsList, sortAchievements
 } from "../../store/Entity/Achievement";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 export default defineComponent({
+    components: {FontAwesomeIcon},
     data() {
         return {
             hoverWindow: {

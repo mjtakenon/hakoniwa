@@ -1,39 +1,39 @@
 <template>
     <div id="plan-page">
-        <status-table></status-table>
-        <comment-form></comment-form>
+        <StatusTable></StatusTable>
+        <CommentForm></CommentForm>
         <div class="flex flex-wrap items-stretch mx-auto justify-center mt-10">
-            <plan-controller
+            <PlanController
                 class="grow"
                 :class="{'order-2' : !canSideBySide}"
-            ></plan-controller>
+            ></PlanController>
             <div
                 class="z-30"
                 :class="{'w-full order-1': !canSideBySide}"
             >
-                <island-editor v-if="!store.isIslandPopupMount && !store.isOpenPopup"></island-editor>
+                <PlansIslandEditor v-if="!store.isIslandPopupMount && !store.isOpenPopup"></PlansIslandEditor>
                 <div v-else class="island-editor-padding"></div>
             </div>
-            <plan-list
+            <PlanList
                 class="grow"
                 :class="{'order-2' : !canSideBySide}"
-            ></plan-list>
+            ></PlanList>
         </div>
         <div class="md:max-lg:px-3">
-            <bbs></bbs>
-            <log-viewer
+            <Bbs></Bbs>
+            <LogViewer
                 :title="store.island.name + '島の近況'"
                 :parsed-logs="store.logs"
-            ></log-viewer>
+            ></LogViewer>
         </div>
-        <island-popup v-if="!store.isIslandEditorMount && store.isOpenPopup"></island-popup>
+        <IslandPopup v-if="!store.isIslandEditorMount && store.isOpenPopup"></IslandPopup>
     </div>
 </template>
 
 <script lang="ts">
 import StatusTable from "../../../islands/common/StatusTable.vue";
 import LogViewer from "../../../islands/common/LogViewer.vue";
-import IslandEditor from "./PlansIslandEditor.vue";
+import PlansIslandEditor from "./PlansIslandEditor.vue";
 import PlanController from "./PlansController.vue";
 import PlanList from "./PlansList.vue";
 import lodash from 'lodash';
@@ -57,7 +57,7 @@ export default defineComponent({
     components: {
         Bbs,
         CommentForm,
-        IslandEditor,
+        PlansIslandEditor,
         IslandPopup,
         PlanController,
         StatusTable,

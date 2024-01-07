@@ -121,20 +121,20 @@
 
             </div>
         </div>
-        <send-notification></send-notification>
+        <PlansNotification></PlansNotification>
     </div>
 </template>
 
 <script lang="ts">
 
 import {Plan} from "../../../../store/Entity/Plan";
-import SendNotification from "./PlansNotification.vue";
+import PlansNotification from "./PlansNotification.vue";
 import {defineComponent} from "vue";
 import {useMainStore} from "../../../../store/MainStore";
 import {Point} from "../../../../store/Entity/Point";
 
 export default defineComponent({
-    components: {SendNotification},
+    components: {PlansNotification},
     data() {
         return {
             MAX_PLAN_NUMBER: 30,

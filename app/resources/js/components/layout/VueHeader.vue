@@ -22,17 +22,17 @@
                 </div>
                 <a v-if="isIslandRegistered" class="menu-item primary group" :href="'/islands/'+store.user.island.id+'/plans'"
                    title="開発画面に行く">
-                    <font-awesome-icon
+                    <FontAwesomeIcon
                         icon="fa-solid fa-pen-to-square"
                         class="menu-icon text-on-primary group-hover:text-primary"
-                    ></font-awesome-icon>
+                    ></FontAwesomeIcon>
                     <span class="menu-title plan-title text-on-primary group-hover:text-primary">島を開発</span>
                 </a>
                 <a v-if="isIslandRegistered" class="menu-item group" href="/settings" title="設定">
-                    <font-awesome-icon
+                    <FontAwesomeIcon
                         icon="fa-solid fa-gear"
                         class="menu-icon text-on-surface-variant group-hover:text-surface-variant"
-                    ></font-awesome-icon>
+                    ></FontAwesomeIcon>
                     <span class="menu-title text-on-surface-variant group-hover:text-surface-variant">設定</span>
                 </a>
                 <a v-if="!isIslandRegistered" class="button-primary navbar-register" href="/register">
@@ -41,10 +41,10 @@
                 <form method="POST" name="logout" action="/logout">
                     <input type="hidden" name="_token" :value="csrfToken">
                     <a href="javascript:logout.submit()"  class="menu-item group" title="ログアウト">
-                        <font-awesome-icon
+                        <FontAwesomeIcon
                             icon="fa-solid fa-arrow-right-from-bracket"
                             class="menu-icon text-on-surface-variant group-hover:text-surface-variant"
-                        ></font-awesome-icon>
+                        ></FontAwesomeIcon>
                         <span class="menu-title text-on-surface-variant group-hover:text-surface-variant">ログアウト</span>
                     </a>
                 </form>

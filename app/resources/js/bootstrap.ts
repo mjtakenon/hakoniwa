@@ -49,7 +49,7 @@ export const app: App = createApp({
 const pinia = createPinia();
 app.use(pinia);
 app.use(Tres);
-app.component('font-awesome-icon', FontAwesomeIcon)
+app.component('FontAwesomeIcon', FontAwesomeIcon)
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

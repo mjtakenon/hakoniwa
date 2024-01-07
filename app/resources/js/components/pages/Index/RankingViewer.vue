@@ -74,9 +74,9 @@
                 </div>
                 <div class="flex max-md:flex-wrap w-full border-t border-dashed">
                     <div class="achievements-box">
-                        <achievement-icons
+                        <AchievementIcons
                             :achievement_props="$props.island.achievements"
-                        ></achievement-icons>
+                        ></AchievementIcons>
                     </div>
                     <div class="island-comment-box" :class="{'text-on-surface-variant': hasComment}">
                         <div class="comment-index">comment:</div>

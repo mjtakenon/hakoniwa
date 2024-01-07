@@ -1,13 +1,13 @@
 <template>
     <div id="sightseeing-page" class="wrapper">
-        <status-table></status-table>
-        <island-viewer></island-viewer>
+        <StatusTable></StatusTable>
+        <IslandViewer></IslandViewer>
         <div class="md:max-lg:px-3">
-            <bbs></bbs>
-            <log-viewer
+            <Bbs></Bbs>
+            <LogViewer
                 :title="store.island.name + '島の近況'"
                 :parsed-logs="store.logs"
-            ></log-viewer>
+            ></LogViewer>
         </div>
     </div>
 </template>

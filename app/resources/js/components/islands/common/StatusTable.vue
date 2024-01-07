@@ -6,7 +6,7 @@
                 <span class="owner-name">({{ store.island.owner_name }})</span>
             </div>
             <div class="header-achievements">
-                <achievement-icons :achievement_data="store.achievements"></achievement-icons>
+                <AchievementIcons :achievement_data="store.achievements"></AchievementIcons>
             </div>
         </div>
         <div class="stats-contents">
@@ -47,19 +47,19 @@
                     <div class="stats-subtitle">島の情報</div>
                     <div class="stats-summary-inner">
                         <div class="stat-box-info">
-                            <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon"/>
+                            <FontAwesomeIcon icon="fa-solid fa-sack-dollar" class="stat-box-icon"/>
                             <div class="stat-box-title">資金</div>
                             <div class="stat-box-num">{{ store.status.funds.toLocaleString() }}</div>
                             <div class="stat-box-unit">億円</div>
                         </div>
                         <div class="stat-box-info">
-                            <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon"/>
+                            <FontAwesomeIcon icon="fa-solid fa-wheat-awn" class="stat-box-icon"/>
                             <div class="stat-box-title">食料</div>
                             <div class="stat-box-num">{{ store.status.foods.toLocaleString() }}</div>
                             <div class="stat-box-unit">㌧</div>
                         </div>
                         <div class="stat-box-info">
-                            <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon"/>
+                            <FontAwesomeIcon icon="fa-solid fa-oil-well" class="stat-box-icon"/>
                             <div class="stat-box-title">資源</div>
                             <div class="stat-box-num">{{ store.status.resources.toLocaleString() }}</div>
                             <div class="stat-box-unit">㌧</div>
@@ -97,7 +97,7 @@
                         </div>
                         <div class="stats-human-right">
                             <div class="stat-box-info human">
-                                <font-awesome-icon icon="fa-solid fa-wheat-awn" class="stat-box-icon"/>
+                                <FontAwesomeIcon icon="fa-solid fa-wheat-awn" class="stat-box-icon"/>
                                 <div class="stat-box-title">農業</div>
                                 <div class="stat-box-num">
                                     {{ store.status.foods_production_capacity.toLocaleString() }}
@@ -105,7 +105,7 @@
                                 <div class="stat-box-unit">人</div>
                             </div>
                             <div class="stat-box-info human">
-                                <font-awesome-icon icon="fa-solid fa-sack-dollar" class="stat-box-icon"/>
+                                <FontAwesomeIcon icon="fa-solid fa-sack-dollar" class="stat-box-icon"/>
                                 <div class="stat-box-title">工業</div>
                                 <div class="stat-box-num">
                                     {{ store.status.funds_production_capacity.toLocaleString() }}
@@ -113,7 +113,7 @@
                                 <div class="stat-box-unit">人</div>
                             </div>
                             <div class="stat-box-info human">
-                                <font-awesome-icon icon="fa-solid fa-oil-well" class="stat-box-icon"/>
+                                <FontAwesomeIcon icon="fa-solid fa-oil-well" class="stat-box-icon"/>
                                 <div class="stat-box-title">資源生産</div>
                                 <div class="stat-box-num">
                                     {{ store.status.resources_production_capacity.toLocaleString() }}
@@ -121,7 +121,7 @@
                                 <div class="stat-box-unit">人</div>
                             </div>
                             <div class="stat-box-info human">
-                                <font-awesome-icon icon="fa-solid fa-shield" class="stat-box-icon"/>
+                                <FontAwesomeIcon icon="fa-solid fa-shield" class="stat-box-icon"/>
                                 <div class="stat-box-title">軍事</div>
                                 <div class="stat-box-num">
                                     {{ store.status.maintenance_number_of_people.toLocaleString() }}
