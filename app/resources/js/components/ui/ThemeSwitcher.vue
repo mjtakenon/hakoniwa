@@ -6,44 +6,29 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { Theme } from '../../store/Entity/Theme'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import type { Theme, ThemeType } from '../../store/Entity/Theme'
 import { useMainStore } from '../../store/MainStore'
 
-export default defineComponent({
-  data() {
-    return {
-      themes: [
-        { name: 'light', themeClass: 'theme-light', type: 'light' },
-        { name: 'dark', themeClass: 'theme-dark', type: 'dark' }
-      ] as Theme[]
-    }
-  },
-  setup() {
-    const store = useMainStore()
-    return { store }
-  },
-  watch: {
-    theme() {
-      console.debug('changed')
-    }
-  },
-  computed: {
-    isDark() {
-      return this.store.theme.type === 'dark'
-    }
-  },
-  methods: {
-    onClickThemeToggle() {
-      if (this.isDark) {
-        this.store.changeTheme(this.themes[0])
-      } else {
-        this.store.changeTheme(this.themes[1])
-      }
-    }
-  }
+const themes = ref<Theme[]>([
+  { name: 'light', themeClass: 'theme-light', type: 'light' },
+  { name: 'dark', themeClass: 'theme-dark', type: 'dark' }
+])
+
+const store = useMainStore()
+
+const isDark: ThemeType = computed(() => {
+  return store.theme.type === 'dark'
 })
+
+const onClickThemeToggle = () => {
+  if (isDark) {
+    store.changeTheme(themes.value[0])
+  } else {
+    store.changeTheme(themes.value[1])
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -61,6 +46,7 @@ export default defineComponent({
       @apply absolute bottom-0 left-0 top-0 m-auto h-5 w-5 rounded-3xl;
       @apply bg-on-surface-variant;
     }
+
     .switch-button.active {
       @apply left-5;
     }

@@ -30,8 +30,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCrown, faDragon, faGem, faMedal, faQuestionCircle, faSkull } from '@fortawesome/free-solid-svg-icons'
 import { faMountainCity } from '@fortawesome/free-solid-svg-icons'
@@ -44,77 +44,64 @@ import {
 } from '../../store/Entity/Achievement'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-export default defineComponent({
-  components: { FontAwesomeIcon },
-  data() {
-    return {
-      hoverWindow: {
-        bottom: 100,
-        left: 100,
-        title: '',
-        text: '',
-        show: false
-      },
-      BOTTOM_OFFSET: 40
-    }
-  },
-  setup(props) {
-    library.add(faMedal, faMountainCity, faSkull, faDragon, faGem, faQuestionCircle, faCrown)
+library.add(faMedal, faMountainCity, faSkull, faDragon, faGem, faQuestionCircle, faCrown)
 
-    let achievements: Achievement[]
-    if (props.achievement_data === undefined) {
-      achievements = filterDuplicatedAchievementType(getAchievementsList(props.achievement_props))
-    } else {
-      achievements = filterDuplicatedAchievementType(props.achievement_data)
-    }
+// Props
+interface Props {
+  achievement_data?: Achievement[]
+  achievement_props?: AchievementProp[]
+  max_cols?: number
+}
 
-    sortAchievements(achievements)
-
-    let cols = props.max_cols
-    if (achievements.length < cols) cols = achievements.length
-    if (cols === 0) cols = 1
-
-    return { achievements, cols }
-  },
-  computed: {
-    gridColumns() {
-      return 'grid-cols-' + this.cols
-    },
-    hasAchievement() {
-      return this.achievements !== null && this.achievements !== undefined && this.achievements.length > 0
-    }
-  },
-  methods: {
-    onHover(event: MouseEvent, title: string, text: string) {
-      const target = event.target as HTMLElement
-
-      this.hoverWindow.show = true
-      this.hoverWindow.title = title
-      this.hoverWindow.text = text
-
-      this.hoverWindow.left = target.offsetLeft + target.offsetWidth / 2
-      this.hoverWindow.bottom = this.BOTTOM_OFFSET
-    },
-    onLeaved() {
-      this.hoverWindow.show = false
-    }
-  },
-  props: {
-    achievement_data: {
-      require: false,
-      type: Array as PropType<Achievement[]>
-    },
-    achievement_props: {
-      require: false,
-      type: Array as PropType<AchievementProp[]>
-    },
-    max_cols: {
-      require: false,
-      type: Number,
-      default: 5
-    }
-  }
+const props = withDefaults(defineProps<Props>(), {
+  max_cols: 5
 })
+
+const hoverWindow = ref({
+  bottom: 100,
+  left: 100,
+  title: '',
+  text: '',
+  show: false
+})
+
+const BOTTOM_OFFSET = 40
+
+let achievements: Achievement[]
+if (props.achievement_data === undefined) {
+  achievements = filterDuplicatedAchievementType(getAchievementsList(props.achievement_props))
+} else {
+  achievements = filterDuplicatedAchievementType(props.achievement_data)
+}
+sortAchievements(achievements)
+
+const cols = ref(props.max_cols)
+if (achievements.length < cols.value) cols.value = achievements.length
+if (cols.value === 0) cols.value = 1
+
+// Computed
+const gridColumns = computed(() => {
+  return 'grid-cols-' + cols.value
+})
+
+const hasAchievement = computed(() => {
+  return achievements !== null && achievements !== undefined && achievements.length > 0
+})
+
+const onHover = (event: MouseEvent, title: string, text: string) => {
+  const target = event.target as HTMLElement
+
+  hoverWindow.value.show = true
+  hoverWindow.value.title = title
+  hoverWindow.value.text = text
+
+  hoverWindow.value.left = target.offsetLeft + target.offsetWidth / 2
+  hoverWindow.value.bottom = BOTTOM_OFFSET
+}
+
+const onLeaved = () => {
+  hoverWindow.value.show = false
+}
 </script>
 
 <style scoped lang="scss">
