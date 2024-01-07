@@ -32,7 +32,7 @@
                 />
 
                 <Suspense>
-                    <IslandEditorCanvas :terrains="store.targetTerrains[store.selectedTargetIsland]"/>
+                    <IslandEditorCanvas v-if="store.targetTerrains[store.selectedTargetIsland] !== undefined" :terrains="store.targetTerrains[store.selectedTargetIsland]"/>
                 </Suspense>
 
                 <TresAmbientLight :intensity="2"/>
