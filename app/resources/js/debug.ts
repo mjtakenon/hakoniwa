@@ -1,5 +1,5 @@
 import './bootstrap'
-import DebugTools from "./components/DebugTools.vue";
+import DebugTools from "./components/layout/DebugTools.vue";
 import {app} from "./bootstrap";
 
 console.debug("---development mode---");

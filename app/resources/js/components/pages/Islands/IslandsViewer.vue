@@ -1,0 +1,104 @@
+<template>
+    <div id="island">
+        <TresCanvas v-bind="gl" class="island-canvas">
+            <TresPerspectiveCamera
+                :position="[64, 192, 192] as Vector3"
+            />
+            <CameraControls
+                v-bind="cameraControlsState"
+                make-default
+            />
+
+            <Suspense>
+                <IslandViewerCanvas/>
+            </Suspense>
+
+            <TresAmbientLight :intensity="2"/>
+            <TresDirectionalLight
+                :position="[192, 192, 192] as Vector3"
+                :intensity="3"
+            />
+        </TresCanvas>
+        <HoverWindow></HoverWindow>
+    </div>
+</template>
+
+<script setup lang="ts">
+import {Terrain} from "../../../store/Entity/Terrain";
+import {reactive} from "vue";
+import {useMainStore} from "../../../store/MainStore";
+import {TresCanvas} from "@tresjs/core";
+import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
+import {CameraControls} from "@tresjs/cientos";
+import HoverWindow from "../../islands/Hover/IslandHoverWindow.vue";
+import IslandViewerCanvas from "../../islands/Viewer/IslandViewerCanvas.vue";
+
+const gl = reactive({
+    clearColor: '#888888',
+    shadows: true,
+    alpha: true,
+    shadowMapType: BasicShadowMap,
+    outputColorSpace: SRGBColorSpace,
+    toneMapping: NoToneMapping,
+})
+
+const cameraControlsState = reactive({
+    minDistance: 20,
+    maxDistance: 200,
+    maxPolarAngle: Math.PI / 2,
+})
+
+const store = useMainStore()
+
+const getIslandTerrain = (x, y): Terrain => {
+    return store.terrains.filter(function (item) {
+        if (item.data.point.x === x && item.data.point.y === y) return true;
+    }).pop()
+}
+
+</script>
+
+<style lang="scss" scoped>
+
+.island-canvas {
+    @apply w-full min-h-[512px] max-h-[512px] mb-4;
+}
+
+#island {
+    margin: 0 auto;
+    @apply w-full md:min-w-[512px] max-w-[512px] mb-4;
+
+    .row {
+        @apply m-0 p-0 bg-black;
+        display: grid;
+
+        .cell {
+            @apply w-full aspect-square;
+        }
+
+        &:nth-child(odd) {
+            grid-template-columns: 1fr repeat(15, 2fr);
+        }
+
+        &:nth-child(even) {
+            grid-template-columns: repeat(15, 2fr) 1fr;
+        }
+
+        .left-padding {
+            @apply w-full aspect-[1/2] z-10;
+            background-image: url("/img/hakoniwa/hakogif/land0.gif");
+            background-position: left;
+        }
+
+        .right-padding {
+            @apply relative w-full aspect-[1/2] z-10;
+            background-image: url("/img/hakoniwa/hakogif/land0.gif");
+            background-position: right;
+
+            .right-padding-text {
+                @apply max-xs:hidden absolute left-1 leading-none text-white text-xs md:text-sm overflow-hidden z-10
+            }
+        }
+    }
+}
+</style>

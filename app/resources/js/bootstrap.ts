@@ -19,22 +19,22 @@ import {App} from "vue";
 import {createApp} from "vue/dist/vue.esm-bundler";
 import {createPinia} from "pinia";
 import Tres from '@tresjs/core'
-import SightseeingPage from "./pages/SightseeingPage.vue";
-import PlanPage from "./pages/PlanPage.vue";
-import VueHeader from "./components/VueHeader.vue";
-import TurnViewer from "./components/TurnViewer.vue";
-import RankingViewer from "./components/RankingViewer.vue";
-import LogViewer from "./components/LogViewer.vue";
-import SettingsPage from "./pages/SettingsPage.vue";
-import ReleaseNotes from "./pages/ReleasesPage.vue";
-import VueFooter from "./components/VueFooter.vue";
+import IslandsPage from "./components/pages/Islands/IslandsPage.vue";
+import PlansPage from "./components/pages/Islands/Plans/PlansPage.vue";
+import VueHeader from "./components/layout/VueHeader.vue";
+import TurnViewer from "./components/pages/Index/TurnViewer.vue";
+import RankingViewer from "./components/pages/Index/RankingViewer.vue";
+import LogViewer from "./components/islands/common/LogViewer.vue";
+import SettingsPage from "./components/pages/Settings/SettingsPage.vue";
+import ReleaseNotes from "./components/pages/Releases/ReleasesPage.vue";
+import VueFooter from "./components/layout/VueFooter.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import ReleasesPage from "./pages/ReleasesPage.vue";
+import ReleasesPage from "./components/pages/Releases/ReleasesPage.vue";
 
 export const app: App = createApp({
     components: {
-        SightseeingPage,
-        PlanPage,
+        IslandsPage,
+        PlansPage,
         VueHeader,
         VueFooter,
         TurnViewer,
