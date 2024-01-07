@@ -47,7 +47,7 @@
                     plan.data.usePoint &&
                     plan.data.point.x === store.hoverCellPoint.x &&
                     plan.data.point.y === store.hoverCellPoint.y &&
-                    (!plan.data.useTargetIsland || plan.data.useTargetIsland && plan.data.targetIsland === store.island.id)
+                    (!plan.data.useTargetIsland && plan.data.targetIsland === store.island.id || plan.data.useTargetIsland && plan.data.targetIsland === store.selectedTargetIsland)
                 ">
                         <span>[{{ index + 1 }}] </span>
                         <span>{{ plan.data.name }}</span>
