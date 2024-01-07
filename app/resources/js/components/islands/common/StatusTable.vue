@@ -145,31 +145,17 @@ import { storeToRefs } from 'pinia'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faOilWell, faSackDollar, faShield, faWheatAwn } from '@fortawesome/free-solid-svg-icons'
 
-const statuses = ref<{
-  title: string
-  numText: string
-  unit: string
-}>([])
-
 library.add(faSackDollar, faWheatAwn, faOilWell, faShield)
 
 const store = useMainStore()
 const { status: statusRef } = storeToRefs(store)
-
-onMounted(() => {
-  window.addEventListener('resize', onWindowSizeChanged)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onWindowSizeChanged)
-})
 
 const hasComment = computed(() => {
   return store.island.comment === null || store.island.comment === undefined || store.island.comment === ''
 })
 
 const islandComment = computed(() => {
-  if (this.hasComment) {
+  if (hasComment.value) {
     return 'コメントはありません'
   } else {
     return store.island.comment
@@ -185,13 +171,6 @@ const calcUnassigned = computed(() => {
     store.status.maintenance_number_of_people
   )
 })
-
-const onWindowSizeChanged = () => {
-  const newScreenWidth = document.documentElement.clientWidth
-  if (this.screenWidth != newScreenWidth) {
-    this.isMobile = document.documentElement.clientWidth < 1024
-  }
-}
 </script>
 
 <style lang="scss" scoped>
