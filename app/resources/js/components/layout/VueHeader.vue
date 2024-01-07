@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-    <a class="navbar-left text-on-surface" href="/app/public">
+    <a class="navbar-left text-on-surface" href="/">
       <div class="navbar-brand">
         <img :src="'/favicon.ico'" />
       </div>
