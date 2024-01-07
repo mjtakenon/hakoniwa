@@ -72,7 +72,7 @@ interface Props {
   csrfToken: string
   isLoggedIn: boolean
   isIslandRegistered: boolean
-  user?: number
+  user?: User
   ownedIsland?: Island
 }
 
