@@ -15,9 +15,11 @@
             maxlength="128"
             minlength="0"
             v-model="comment"
-            @blur="checkInput" />
+            @blur="checkInput()" />
           <div v-if="isSubmitting" class="bbs-input-notify updating">
-            <div class="update-circle"><div class="update-circle-spin"></div></div>
+            <div class="update-circle">
+              <div class="update-circle-spin"></div>
+            </div>
             <span>送信中...</span>
           </div>
           <div v-else-if="formError !== ''" class="bbs-input-notify error">{{ formError }}</div>
@@ -35,7 +37,7 @@
         <button
           class="bbs-submit"
           :class="[sendMode === 'public' ? 'public' : 'private']"
-          @click="bbsSubmit"
+          @click="bbsSubmit()"
           :disabled="isSubmitting || hasError">
           送信
         </button>
@@ -43,8 +45,8 @@
     </div>
     <div class="viewer">
       <div class="viewer-title">投稿一覧</div>
-      <div v-show="this.store.bbs.length === 0" class="no-post">投稿はありません</div>
-      <template v-for="post of this.store.bbs">
+      <div v-show="store.bbs.length === 0" class="no-post">投稿はありません</div>
+      <template v-for="post of store.bbs">
         <div
           v-if="post.comment !== null && post.comment !== undefined"
           class="post"
@@ -89,86 +91,78 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { useMainStore } from '../../../store/MainStore'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChalkboardUser, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { BbsMessage, BbsVisibility } from '../../../store/Entity/Bbs'
 import { ErrorType, RequestStatus } from '../../../store/Entity/Network'
 
-export default defineComponent({
-  data() {
-    return {
-      sendMode: 'public' as BbsVisibility,
-      comment: '',
-      formError: '',
-      submitStatus: RequestStatus.None as RequestStatus,
-      deleteStatus: RequestStatus.None as RequestStatus
-    }
-  },
-  setup() {
-    library.add(faChalkboardUser, faTrashCan)
-    const store = useMainStore()
-    return { store }
-  },
-  computed: {
-    isSubmitting() {
-      return this.submitStatus === RequestStatus.Updating
-    },
-    hasError() {
-      return this.formError !== ''
-    }
-  },
-  methods: {
-    changeSendMode(mode: BbsVisibility) {
-      this.sendMode = mode
-    },
-    async bbsSubmit() {
-      this.checkInput()
-      if (this.hasError || this.isSubmitting) return
-      this.submitStatus = RequestStatus.Updating
-      const result = await this.store.postBbs(this.comment, this.sendMode)
-      this.submitStatus = result.status
+let sendMode: BbsVisibility = ref('public')
+let comment = ref('')
+let formError = ref('')
+let submitStatus: RequestStatus = ref(RequestStatus.None)
+let deleteStatus: RequestStatus = ref(RequestStatus.None)
 
-      if (result.status === RequestStatus.Success) {
-        this.comment = ''
-      }
+library.add(faChalkboardUser, faTrashCan)
+const store = useMainStore()
 
-      if (result.status === RequestStatus.Failed) {
-        if (result.error === ErrorType.LackOfFunds) {
-          this.formError = '資金が不足しています'
-        } else if (result.error === ErrorType.NotFound) {
-          this.formError = '島が見つかりません'
-        } else if (result.error === ErrorType.TooManyRequests) {
-          this.formError = '時間をおいてから送信してください'
-        } else {
-          this.formError = '不明なエラーです'
-        }
-      }
-    },
-    async deleteComment(target: BbsMessage) {
-      if (this.deleteStatus === RequestStatus.Updating) return
-      this.deleteStatus = RequestStatus.Updating
-      const result = await this.store.deleteBbs(target)
-      this.deleteStatus = result.status
+const isSubmitting = computed(() => {
+  return submitStatus.value === RequestStatus.Updating
+})
 
-      if (this.deleteStatus === RequestStatus.Failed) {
-        target.errorMessage = 'コメント削除時にエラーが発生しました'
-      }
-    },
-    checkInput() {
-      this.comment = this.comment.trim()
-      this.formError = ''
-      if (this.comment === '') {
-        this.formError = '入力されていません'
-      }
-    },
-    hasIsland(target: BbsMessage) {
-      return target.island !== null && target.island !== undefined
+const hasError = computed(() => {
+  return formError.value !== ''
+})
+
+const changeSendMode = (mode: BbsVisibility) => {
+  sendMode.value = mode
+}
+
+const bbsSubmit = async () => {
+  checkInput()
+  if (hasError.value || isSubmitting.value) return
+  submitStatus.value = RequestStatus.Updating
+  const result = await store.postBbs(comment.value, sendMode.value)
+  submitStatus.value = result.status
+
+  if (result.status === RequestStatus.Success) {
+    comment.value = ''
+  }
+
+  if (result.status === RequestStatus.Failed) {
+    if (result.error === ErrorType.LackOfFunds) {
+      formError.value = '資金が不足しています'
+    } else if (result.error === ErrorType.NotFound) {
+      formError.value = '島が見つかりません'
+    } else if (result.error === ErrorType.TooManyRequests) {
+      formError.value = '時間をおいてから送信してください'
+    } else {
+      formError.value = '不明なエラーです'
     }
   }
-})
+}
+
+const deleteComment = async (target: BbsMessage) => {
+  if (deleteStatus.value === RequestStatus.Updating) return
+  deleteStatus.value = RequestStatus.Updating
+  const result = await store.deleteBbs(target)
+  deleteStatus.value = result.status
+
+  if (deleteStatus.value === RequestStatus.Failed) {
+    target.errorMessage = 'コメント削除時にエラーが発生しました'
+  }
+}
+
+const checkInput = () => {
+  comment.value = comment.value.trim()
+  if (comment.value === '') {
+    formError.value = '入力されていません'
+    return
+  }
+  formError.value = ''
+}
 </script>
 
 <style scoped lang="scss">
