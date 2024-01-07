@@ -12,38 +12,33 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
 import ThemeSwitcher from '../ui/ThemeSwitcher.vue'
 
-export default defineComponent({
-  components: { ThemeSwitcher },
-  data() {
-    return {
-      visible: true
-    }
-  },
-  mounted() {
-    document.addEventListener('keydown', this.onKeyDown)
-  },
-  unmounted() {
-    document.removeEventListener('keydown', this.onKeyDown)
-  },
-  methods: {
-    onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Pause') {
-        this.visible = !this.visible
-      }
-    }
-  },
-  props: {
-    debugLoginUsingId: {
-      require: false,
-      type: Number,
-      default: 0
-    }
-  }
+interface Props {
+  debugLoginUsingId?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  debugLoginUsingId: 0
 })
+
+let visible = ref(true)
+
+onMounted(() => {
+  document.addEventListener('keydown', onKeyDown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKeyDown)
+})
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Pause') {
+    visible.value = !visible.value
+  }
+}
 </script>
 
 <style scoped lang="scss">

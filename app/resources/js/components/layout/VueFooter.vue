@@ -55,12 +55,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { faDiscord } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 interface LinkGroup {
   title: string
@@ -70,33 +68,26 @@ interface LinkGroup {
   }[]
 }
 
-export default defineComponent({
-  data() {
-    return {
-      linkGroups: [
-        {
-          title: '一般',
-          links: [
-            { name: 'トップページ', href: '/' },
-            { name: '更新情報', href: '/releases' },
-            { name: 'プライバシーポリシー', href: '/privacy' }
-          ]
-        },
-        {
-          title: 'マニュアル',
-          links: [
-            { name: '遊び方', href: '/help' },
-            { name: 'コマンド一覧', href: '/help' },
-            { name: '地形一覧', href: '/help' }
-          ]
-        }
-      ] as LinkGroup[]
-    }
+const linkGroups = ref<LinkGroup[]>([
+  {
+    title: '一般',
+    links: [
+      { name: 'トップページ', href: '/' },
+      { name: '更新情報', href: '/releases' },
+      { name: 'プライバシーポリシー', href: '/privacy' }
+    ]
   },
-  setup() {
-    library.add(faTwitter, faGithub, faDiscord)
+  {
+    title: 'マニュアル',
+    links: [
+      { name: '遊び方', href: '/help' },
+      { name: 'コマンド一覧', href: '/help' },
+      { name: '地形一覧', href: '/help' }
+    ]
   }
-})
+])
+
+library.add(faTwitter, faGithub, faDiscord)
 </script>
 
 <style scoped lang="scss">

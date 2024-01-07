@@ -59,43 +59,43 @@
   </nav>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import ThemeSwitcher from '../ui/ThemeSwitcher.vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useMainStore } from '../../store/MainStore'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
-import { faGear } from '@fortawesome/free-solid-svg-icons'
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket, faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { Island } from '../../store/Entity/Island.js'
 
-export default defineComponent({
-  components: { ThemeSwitcher },
-  data() {
-    return {
-      isOpenHamburgerMenu: false
-    }
-  },
-  setup(props) {
-    library.add(faPenToSquare, faGear, faArrowRightFromBracket)
+let isOpenHamburgerMenu = ref(false)
 
-    const store = useMainStore()
-    const theme = localStorage.getItem('theme')
-    if (theme !== null && theme !== undefined) {
-      store.theme = JSON.parse(theme)
-    }
+interface Props {
+  csrfToken: string
+  isLoggedIn: boolean
+  isIslandRegistered: boolean
+  user?: User
+  ownedIsland?: Island
+}
 
-    if (props.ownedIsland !== null && props.ownedIsland !== undefined) {
-      store.user = {
-        user_id: props.user.id,
-        island: props.ownedIsland ?? null
-      }
-    }
-    return { store }
-  },
-  mounted() {
-    this.store.changeTheme(this.store.theme)
-  },
-  props: ['csrfToken', 'isLoggedIn', 'user', 'isIslandRegistered', 'ownedIsland']
+const props = defineProps<Props>()
+
+library.add(faPenToSquare, faGear, faArrowRightFromBracket)
+
+const store = useMainStore()
+const theme = localStorage.getItem('theme')
+
+if (theme !== null && theme !== undefined) {
+  store.theme = JSON.parse(theme)
+}
+
+if (props.ownedIsland !== null && props.ownedIsland !== undefined) {
+  store.user = {
+    user_id: props.user.id,
+    island: props.ownedIsland ?? null
+  }
+}
+
+onMounted(() => {
+  store.changeTheme(store.theme)
 })
 </script>
 
