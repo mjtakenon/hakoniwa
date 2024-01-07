@@ -77,28 +77,15 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeMount, onMounted, onUnmounted, reactive, watch} from "vue"
+import {computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, watch} from "vue"
 import {useMainStore} from "../store/MainStore"
 import {storeToRefs} from "pinia"
-import {Terrain} from "../store/Entity/Terrain"
-import {Point} from "../store/Entity/Point"
-import {Plan} from "../store/Entity/Plan"
 import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
 import {TresCanvas} from "@tresjs/core";
 import IslandEditorCanvas from "./IslandEditorCanvas.vue";
 import {CameraControls} from "@tresjs/cientos";
 import HoverWindow from "./HoverWindow.vue";
 import PlanWindow from "./PlanWindow.vue";
-
-const MAX_PLAN_NUMBER = 30
-let targetTerrains: Terrain[] = []
-let hoverCellPoint: Point = {x: 0, y: 0}
-let hoverWindowY = 170
-let hoverWindowX = 0
-let screenWidth = document.documentElement.clientWidth
-let planWindowY = 0
-let planWindowX = 0
-let isMobile = (document.documentElement.clientWidth < 1024)
 
 const store = useMainStore()
 const {isOpenPopup, isLoadingTerrain} = storeToRefs(store)
@@ -125,21 +112,18 @@ onBeforeMount(() => {
 
 onMounted(() => {
     window.addEventListener("resize", onWindowSizeChanged)
+    document.addEventListener("wheel", preventScroll, {passive: false})
+    document.addEventListener("touchmove", preventScroll, {passive: false})
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener("wheel", preventScroll)
+    document.removeEventListener("touchmove", preventScroll)
 })
 
 onUnmounted(() => {
     store.isIslandPopupMount = false
     window.removeEventListener("resize", onWindowSizeChanged)
-})
-
-watch(isOpenPopup, () => {
-    if (store.isOpenPopup) {
-        document.addEventListener("wheel", preventScroll, {passive: false})
-        document.addEventListener("touchmove", preventScroll, {passive: false})
-    } else {
-        document.removeEventListener("wheel", preventScroll)
-        document.removeEventListener("touchmove", preventScroll)
-    }
 })
 
 watch(isLoadingTerrain, () => {
@@ -193,11 +177,11 @@ const onClickClosePlan = () => {
 
 const onWindowSizeChanged = () => {
     const newScreenWidth = document.documentElement.clientWidth
-    if (screenWidth != newScreenWidth) {
-        screenWidth = newScreenWidth
+    if (store.screenWidth != newScreenWidth) {
+        store.screenWidth = newScreenWidth
         store.showHoverWindow = false
         store.showPlanWindow = false
-        isMobile = (document.documentElement.clientWidth < 1024)
+        store.isMobile = (document.documentElement.clientWidth < 1024)
     }
 }
 

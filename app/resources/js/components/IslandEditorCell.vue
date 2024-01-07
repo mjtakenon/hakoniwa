@@ -37,7 +37,11 @@ const onMouseOverCell = (event: MouseEvent) => {
 
 const onMouseMoveCell = (event: MouseEvent) => {
     const offsetY = 25;
-    store.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
+    if (store.isOpenPopup) {
+        store.hoverWindowY = document.documentElement.clientHeight - (event.pageY - window.scrollY) + offsetY;
+    } else {
+        store.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY;
+    }
     store.hoverWindowX = event.pageX;
 
     // Screen Overflow Check
@@ -83,11 +87,20 @@ const onClickCell = (event: MouseEvent) => {
         } else if (rightEdge > store.screenWidth) {
             store.planWindowX -= (rightEdge - store.screenWidth) + offsetX;
         }
-        store.planWindowY = event.pageY + offsetY;
+
+        if (store.isOpenPopup) {
+            store.planWindowY = (event.pageY - window.scrollY) + offsetY;
+        } else {
+            store.planWindowY = event.pageY + offsetY;
+        }
     } else {
         const offset = 15;
         store.planWindowX = event.pageX + offset;
-        store.planWindowY = event.pageY + offset;
+        if (store.isOpenPopup) {
+            store.planWindowY = (event.pageY - window.scrollY) + offset;
+        } else {
+            store.planWindowY = event.pageY + offset;
+        }
     }
 }
 
