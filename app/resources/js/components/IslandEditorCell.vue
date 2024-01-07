@@ -65,6 +65,7 @@ const onClickCell = (event: MouseEvent) => {
         store.selectedPoint.y === props.terrain.data.point.y
     ) {
         store.showPlanWindow = false;
+        console.log(store.showPlanWindow)
         return;
     }
     store.selectedPoint.x = props.terrain.data.point.x
@@ -89,6 +90,8 @@ const onClickCell = (event: MouseEvent) => {
         store.planWindowX = event.pageX + offset;
         store.planWindowY = event.pageY + offset;
     }
+
+    console.log(store.showPlanWindow)
 }
 
 

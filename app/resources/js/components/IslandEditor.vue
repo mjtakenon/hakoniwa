@@ -39,36 +39,7 @@
                 </div>
             </template>
         </HoverWindow>
-
-        <div v-show="store.showPlanWindow && !store.isOpenPopup" class="plan-window"
-             :style="[
-                 { top: store.planWindowY + 'px'}, { left: store.planWindowX + 'px'}
-             ]"
-        >
-            <div class="plan-window-header">
-                <div class="grow px-3">
-                    <span class="mr-2">({{ store.selectedPoint.x }},{{ store.selectedPoint.y }})</span>
-                    <span class="text-xs">計画番号: </span>
-                    <span class="mr-1">{{ store.selectedPlanNumber }}</span>
-                </div>
-
-                <button
-                    class="plan-window-close"
-                    @click="onClickClosePlan"
-                >×
-                </button>
-            </div>
-            <div
-                v-for="plan of store.planCandidate.filter(p => p.data.usePoint)"
-                :key="plan.key"
-                class="plan-window-select"
-            >
-                <div @click="onClickPlan(plan.key)">
-                    <a class="action-name">{{ plan.data.name }}</a>
-                    <span class="action-price">{{ plan.data.priceString }}</span>
-                </div>
-            </div>
-        </div>
+        <PlanWindow/>
     </div>
 </template>
 
@@ -82,6 +53,7 @@ import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from "three";
 import IslandEditorCanvas from "./IslandEditorCanvas.vue";
 import {CameraControls} from "@tresjs/cientos";
 import HoverWindow from "./HoverWindow.vue";
+import PlanWindow from "./PlanWindow.vue";
 
 const gl = reactive({
     clearColor: '#888888',
@@ -249,35 +221,6 @@ onUnmounted(() => {
 
     .hover-window-plan:nth-child(2) {
         @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
-    }
-
-    .plan-window {
-        @apply block absolute bg-surface-variant text-on-surface-variant w-fit max-lg:min-w-[230px] max-lg:max-w-[230px] max-lg:-translate-x-1/2 lg:max-w-[240px] rounded-md drop-shadow-xl text-left overflow-hidden max-md:text-sm border border-primary dark:border-primary-container z-30;
-        @apply animate-fadein;
-
-        .plan-window-header {
-            @apply flex p-0 m-0 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container items-center;
-
-            .plan-window-close {
-                @apply inline-block bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container p-0 border-none hover:bg-primary hover:dark:bg-primary-container drop-shadow-none mr-3;
-            }
-        }
-
-        .plan-window-select {
-            @apply w-full px-2 max-md:py-1 hover:bg-on-primary;
-
-            .action-name {
-                @apply inline-block font-bold text-sm md:text-base mr-1;
-            }
-
-            .action-price {
-                @apply inline-block text-xs;
-            }
-
-            &:not(:last-child) {
-                @apply border-b border-gray-700;
-            }
-        }
     }
 }
 

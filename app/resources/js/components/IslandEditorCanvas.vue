@@ -14,7 +14,7 @@
             ref="selectedBox"
             :scale="selectedBoxScale()"
             :position="selectedBoxPosition()"
-            :visible="store.showPlanWindow && !store.isOpenPopup"
+            :visible="store.showPlanWindow"
         >
             <TresBoxGeometry :args="[1, 1, 1]"/>
             <template v-for="borderLine of borderLines">
