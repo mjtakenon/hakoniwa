@@ -1,0 +1,17 @@
+# Laravel
+app
+bootstrap
+config
+database
+lang
+routes
+storage
+tests
+vendor
+
+# GLTF ignore
+**/*/*.gltf
+**/*/*.glb
+
+# Composer
+composer.lock
