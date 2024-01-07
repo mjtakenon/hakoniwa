@@ -12,8 +12,8 @@
         <!-- 選択セルカーソル -->
         <TresMesh
             ref="selectedBox"
-            :scale="selectedBoxScale()"
-            :position="selectedBoxPosition()"
+            :scale="selectedBoxScale"
+            :position="selectedBoxPosition"
             :visible="store.showPlanWindow"
         >
             <TresBoxGeometry :args="[1, 1, 1]"/>
@@ -100,23 +100,22 @@ const getModelSize = (type): Vector3 => {
     return (new Box3()).setFromObject(models[type].scene).getSize(new Vector3())
 }
 
-const selectedBoxScale = () => {
-    const selectedPoint = getReferencedPoint.value
+const selectedBoxScale = computed(() => {
     const selectedBoxScaleMargin = 0.1
-    if (selectedPoint === null) {
+    if (store.selectedPoint === null) {
         return new Vector3(0, 0, 0)
     }
-    return new Vector3(store.cellSize + selectedBoxScaleMargin, getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y + selectedBoxScaleMargin, store.cellSize + selectedBoxScaleMargin)
-}
+    return new Vector3(store.cellSize + selectedBoxScaleMargin, getModelSize(getIslandTerrain(store.selectedPoint.x, store.selectedPoint.y).type).y + selectedBoxScaleMargin, store.cellSize + selectedBoxScaleMargin)
+})
 
-const selectedBoxPosition = () => {
+const selectedBoxPosition = computed(() => {
     const selectedPoint = store.selectedPoint
     const selectedBoxPositionMarginY = 4
     if (selectedPoint === null) {
         return new Vector3(0, 0, 0)
     }
     return new Vector3(selectedPoint.x * store.cellSize + ((selectedPoint.y + 1) % 2 - 1) * store.cellSize / 2, (getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY, selectedPoint.y * store.cellSize)
-}
+})
 
 const getReferencedPoint = computed(() => {
     let referencedPlan = store.plans[store.selectedPlanNumber - 1]

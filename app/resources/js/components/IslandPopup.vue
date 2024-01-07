@@ -32,7 +32,10 @@
                 />
 
                 <Suspense>
-                    <IslandEditorCanvas v-if="store.targetTerrains[store.selectedTargetIsland] !== undefined" :terrains="store.targetTerrains[store.selectedTargetIsland]"/>
+                    <IslandEditorCanvas
+                        v-if="store.targetTerrains[store.selectedTargetIsland] !== undefined"
+                        :terrains="store.targetTerrains[store.selectedTargetIsland]"
+                    />
                 </Suspense>
 
                 <TresAmbientLight :intensity="2"/>
@@ -150,13 +153,6 @@ watch(isLoadingTerrain, () => {
     store.targetIslandComments[store.selectedTargetIsland] = target[0].comment
 })
 
-const isSelectedCell = (x, y) => {
-    if (store.selectedPoint === null) {
-        return false
-    }
-    return x === store.selectedPoint.x && y === store.selectedPoint.y
-}
-
 const titleStyle = computed(() => {
     if (store.selectedTargetIslandName.length > 16) {
         return 'text-[0.5rem] lg:text-sm'
@@ -187,110 +183,8 @@ const preventScroll = (event: MouseEvent | TouchEvent) => {
     event.preventDefault()
 }
 
-const getIslandTerrainImage = (x, y): string => {
-    if (targetTerrains.length < 1) return ""
-    return targetTerrains.filter(item => {
-        if (item.data.point.x === x && item.data.point.y === y) return true
-    }).pop().data.image_path
-}
-
-const getIslandTerrainInfo = (x, y): string => {
-    if (targetTerrains.length < 1) return ""
-    return targetTerrains.filter(item => {
-        if (item.data.point.x === x && item.data.point.y === y) return true
-    }).pop().data.info
-}
-
-const onMouseOverCell = (x, y, event: MouseEvent) => {
-    const offsetY = 25
-    hoverWindowY = document.documentElement.clientHeight - event.clientY + offsetY
-    hoverWindowX = event.clientX
-
-    // Screen Overflow Check
-    if (isMobile) {
-        const elementWidth = 200
-        const paddingOffset = 20
-        const leftEdge = hoverWindowX - (elementWidth / 2)
-        const rightEdge = hoverWindowX + (elementWidth / 2)
-        if (leftEdge < paddingOffset) {
-            hoverWindowX += (-leftEdge) + paddingOffset
-        } else if (rightEdge > screenWidth) {
-            hoverWindowX -= (rightEdge - screenWidth) + paddingOffset
-        }
-    }
-
-    store.showHoverWindow = true
-    hoverCellPoint.x = x
-    hoverCellPoint.y = y
-}
-
-const onClickPlan = (key) => {
-    store.plans.splice(store.selectedPlanNumber - 1, 0, getSelectedPlan(key))
-    store.plans.pop()
-    if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
-        store.selectedPlanNumber++
-    }
-    store.showPlanWindow = false
-}
-const getSelectedPlan = (key): Plan => {
-    const result = store.planCandidate.find(c => c.key === key)
-    if (result === undefined) return null
-    else {
-        const p = result.data
-        return {
-            key: key,
-            data: {
-                name: p.name,
-                point: {
-                    x: store.selectedPoint.x,
-                    y: store.selectedPoint.y
-                },
-                amount: store.selectedAmount,
-                usePoint: p.usePoint,
-                useAmount: p.useAmount,
-                useTargetIsland: p.useTargetIsland,
-                targetIsland: store.selectedTargetIsland,
-                isFiring: p.isFiring,
-                priceString: p.priceString,
-                amountString: p.amountString,
-                defaultAmountString: p.defaultAmountString
-            }
-        }
-    }
-}
 const onMouseLeaveCell = () => {
     store.showHoverWindow = false
-}
-
-const onClickCell = (x, y, event: MouseEvent) => {
-    if (store.showPlanWindow &&
-        store.selectedPoint.x === x &&
-        store.selectedPoint.y === y
-    ) {
-        store.showPlanWindow = false
-        return
-    }
-    store.selectedPoint = {x: x, y: y}
-    store.showPlanWindow = true
-
-    if (isMobile) {
-        planWindowX = event.clientX
-        const offsetX = 15
-        const offsetY = 30
-        const elementWidth = 230
-        const leftEdge = planWindowX - (elementWidth / 2)
-        const rightEdge = planWindowX + (elementWidth / 2)
-        if (leftEdge < offsetX) {
-            planWindowX += (-leftEdge) + offsetX
-        } else if (rightEdge > screenWidth) {
-            planWindowX -= (rightEdge - screenWidth) + offsetX
-        }
-        planWindowY = event.clientY + offsetY
-    } else {
-        const offset = 15
-        planWindowX = event.clientX + offset
-        planWindowY = event.clientY + offset
-    }
 }
 
 const onClickClosePlan = () => {
