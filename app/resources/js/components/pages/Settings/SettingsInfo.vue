@@ -58,98 +58,94 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { AjaxResult, ErrorType, RequestStatus } from '../../../store/Entity/Network'
-import { useMainStore } from '../../../store/MainStore'
-import { stringEquals } from '../../../Utils'
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import { AjaxResult, ErrorType, RequestStatus } from '../../../store/Entity/Network.js'
+import { useMainStore } from '../../../store/MainStore.js'
+import { stringEquals } from '../../../Utils.js'
 
-export default defineComponent({
-  data() {
-    return {
-      name: '',
-      nameError: '',
-      owner: '',
-      ownerError: '',
-      otherError: '',
-      submitStatus: { status: RequestStatus.None } as AjaxResult
-    }
-  },
-  setup() {
-    const store = useMainStore()
-    return { store }
-  },
-  mounted() {
-    this.name = this.store.island.name
-    this.owner = this.store.island.owner_name
-  },
-  computed: {
-    isFundsEnough() {
-      return (
-        this.store.status.funds >= this.change_island_name_price || this.submitStatus.error === ErrorType.LackOfFunds
-      )
-    },
-    isSuccess() {
-      return this.submitStatus.status === RequestStatus.Success
-    },
-    isSubmitting() {
-      return this.submitStatus.status === RequestStatus.Updating
-    },
-    hasError() {
-      return this.nameError !== '' || this.ownerError !== '' || this.otherError !== ''
-    }
-  },
-  methods: {
-    async submitNameChange() {
-      this.checkInputs()
-      if (this.hasError) return
-      if (this.isSubmitting) return
-      this.submitStatus.status = RequestStatus.Updating
-      this.submitStatus = await this.store.patchIslandName(this.name, this.owner)
+interface Props {
+  change_island_name_price: number
+}
+const props = defineProps<Props>()
 
-      if (this.submitStatus.status === RequestStatus.Success) return
+const name = ref('')
+const nameError = ref('')
+const owner = ref('')
+const ownerError = ref('')
+const otherError = ref('')
+const submitStatus = ref<AjaxResult>({
+  status: RequestStatus.None
+})
 
-      if (this.submitStatus.error === ErrorType.LackOfFunds) {
-        this.otherError = '資金が不足しているため、更新に失敗しました。'
-      } else if (this.submitStatus.error === ErrorType.NotChanged) {
-        this.otherError = '名称の変更がなかったため、更新を中止しました。'
-        this.nameError = ' '
-        this.ownerError = ' '
-      } else if (this.submitStatus.error === ErrorType.DuplicatedIslandName) {
-        this.nameError = '島名が既に利用されているため、変更できません。'
-      } else if (this.submitStatus.error === ErrorType.DuplicatedOwnerName) {
-        this.ownerError = 'オーナー名が既に利用されているため、変更できません。'
-      } else {
-        this.otherError = '不明なエラーが発生しました。'
-      }
-    },
-    checkInputs() {
-      this.name = this.name.trim()
-      this.owner = this.owner.trim()
-      this.nameError = ''
-      this.ownerError = ''
-      this.otherError = ''
+const store = useMainStore()
 
-      if (this.name === '') {
-        this.nameError = '島名が入力されていません'
-      }
-      if (this.owner === '') {
-        this.ownerError = 'オーナー名が入力されていません'
-      }
+const isFundsEnough = computed(() => {
+  return store.status.funds >= props.change_island_name_price || submitStatus.value.error === ErrorType.LackOfFunds
+})
 
-      if (stringEquals(this.name, this.store.island.name) && stringEquals(this.owner, this.store.island.owner_name)) {
-        this.otherError = '島名・オーナー名ともに変更されていません。更新する場合はどちらかの名称を変更してください。'
-        this.nameError = ' '
-        this.ownerError = ' '
-      }
-    }
-  },
-  props: {
-    change_island_name_price: {
-      required: true,
-      type: Number
-    }
+const isSuccess = computed(() => {
+  return submitStatus.value.status === RequestStatus.Success
+})
+
+const isSubmitting = computed(() => {
+  return submitStatus.value.status === RequestStatus.Updating
+})
+
+const hasError = computed(() => {
+  return nameError.value !== '' || ownerError.value !== '' || otherError.value !== ''
+})
+
+const submitNameChange = async () => {
+  checkInputs()
+  if (hasError.value) return
+  if (isSubmitting.value) return
+  submitStatus.value.status = RequestStatus.Updating
+  submitStatus.value = await store.patchIslandName(name.value, owner.value)
+
+  console.log(submitStatus.value)
+
+  if (submitStatus.value.status === RequestStatus.Success) return
+
+  if (submitStatus.value.error === ErrorType.LackOfFunds) {
+    otherError.value = '資金が不足しているため、更新に失敗しました。'
+  } else if (submitStatus.value.error === ErrorType.NotChanged) {
+    otherError.value = '名称の変更がなかったため、更新を中止しました。'
+    nameError.value = ' '
+    ownerError.value = ' '
+  } else if (submitStatus.value.error === ErrorType.DuplicatedIslandName) {
+    nameError.value = '島名が既に利用されているため、変更できません。'
+  } else if (submitStatus.value.error === ErrorType.DuplicatedOwnerName) {
+    ownerError.value = 'オーナー名が既に利用されているため、変更できません。'
+  } else {
+    otherError.value = '不明なエラーが発生しました。'
   }
+}
+
+const checkInputs = () => {
+  name.value = name.value.trim()
+  owner.value = owner.value.trim()
+  nameError.value = ''
+  ownerError.value = ''
+  otherError.value = ''
+
+  if (name.value === '') {
+    nameError.value = '島名が入力されていません'
+  }
+  if (owner.value === '') {
+    ownerError.value = 'オーナー名が入力されていません'
+  }
+
+  if (stringEquals(name.value, store.island.name) && stringEquals(owner.value, store.island.owner_name)) {
+    otherError.value = '島名・オーナー名ともに変更されていません。更新する場合はどちらかの名称を変更してください。'
+    nameError.value = ' '
+    ownerError.value = ' '
+  }
+}
+
+onMounted(() => {
+  name.value = store.island.name
+  owner.value = store.island.owner_name
 })
 </script>
 
