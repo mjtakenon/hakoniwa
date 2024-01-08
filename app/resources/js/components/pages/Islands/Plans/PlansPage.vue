@@ -1,20 +1,20 @@
 <template>
   <div id="plan-page">
-    <StatusTable></StatusTable>
-    <CommentForm></CommentForm>
+    <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
+    <CommentForm />
     <div class="mx-auto mt-10 flex flex-wrap items-stretch justify-center">
-      <PlanController class="grow" :class="{ 'order-2': !canSideBySide }"></PlanController>
+      <PlanController class="grow" :class="{ 'order-2': !canSideBySide }" />
       <div class="z-30" :class="{ 'order-1 w-full': !canSideBySide }">
-        <PlansIslandEditor v-if="!store.isIslandPopupMount && !store.isOpenPopup"></PlansIslandEditor>
+        <PlansIslandEditor v-if="!store.isIslandPopupMount && !store.isOpenPopup" />
         <div v-else class="island-editor-padding"></div>
       </div>
       <PlanList class="grow" :class="{ 'order-2': !canSideBySide }"></PlanList>
     </div>
     <div class="md:max-lg:px-3">
       <Bbs></Bbs>
-      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs"></LogViewer>
+      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs" />
     </div>
-    <IslandPopup v-if="!store.isIslandEditorMount && store.isOpenPopup"></IslandPopup>
+    <IslandPopup v-if="!store.isIslandEditorMount && store.isOpenPopup" />
   </div>
 </template>
 
@@ -40,6 +40,7 @@ import CommentForm from '../../../islands/common/CommentForm.vue'
 import { AchievementProp, getAchievementsList } from '../../../../store/Entity/Achievement'
 import Bbs from '../../../islands/common/Bbs.vue'
 import { BbsMessage } from '../../../../store/Entity/Bbs'
+import { useIslandEditorStore } from '../../../../store/IslandEditorStore.js'
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -93,7 +94,8 @@ const logs = parser.parse(props.island.logs, props.island.summary)
 const achievements = getAchievementsList(props.island.achievements)
 
 // Pinia
-const store = useMainStore()
+const store = useIslandEditorStore()
+
 store.$patch((state) => {
   state.hakoniwa = props.hakoniwa
   state.island = {

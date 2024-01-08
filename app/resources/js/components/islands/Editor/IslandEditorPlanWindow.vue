@@ -22,11 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from '../../../store/MainStore'
 import { Plan } from '../../../store/Entity/Plan'
 import { computed } from 'vue'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 const MAX_PLAN_NUMBER = 30
 

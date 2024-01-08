@@ -35,7 +35,12 @@
         <TresAmbientLight :intensity="2" />
         <TresDirectionalLight :position="[192, 192, 192] as Vector3" :intensity="3" />
       </TresCanvas>
-      <HoverWindow>
+      <IslandHoverWindow
+        :showHoverWindow="store.showHoverWindow"
+        :hoverWindowY="store.hoverWindowY"
+        :hoverWindowX="store.hoverWindowX"
+        :hoverCellPoint="store.hoverCellPoint"
+        :terrains="store.terrains">
         <template v-for="(plan, index) of store.plans">
           <div
             class="hover-window-plan"
@@ -54,7 +59,7 @@
             </span>
           </div>
         </template>
-      </HoverWindow>
+      </IslandHoverWindow>
       <PlanWindow />
       <div class="comment-box">
         <div class="comment-title">Comment:</div>
@@ -74,7 +79,7 @@ import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import IslandEditorCanvas from '../Editor/IslandEditorCanvas.vue'
 import { CameraControls } from '@tresjs/cientos'
-import HoverWindow from '../Hover/IslandHoverWindow.vue'
+import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
 import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
 
 const store = useMainStore()

@@ -2,11 +2,11 @@
   <div class="stats">
     <div class="stats-header">
       <div class="names">
-        <h1 class="island-name">{{ store.island.name }}島</h1>
-        <span class="owner-name">({{ store.island.owner_name }})</span>
+        <h1 class="island-name">{{ props.island.name }}島</h1>
+        <span class="owner-name">({{ props.island.owner_name }})</span>
       </div>
       <div class="header-achievements">
-        <AchievementIcons :achievement_data="store.achievements"></AchievementIcons>
+        <AchievementIcons :achievement_data="props.achievements"></AchievementIcons>
       </div>
     </div>
     <div class="stats-contents">
@@ -15,7 +15,7 @@
           <div class="stat-box-title">発展ポイント</div>
           <div class="stat-inner">
             <div class="stat-box-num">
-              {{ store.status.development_points.toLocaleString() }}
+              {{ props.status.development_points.toLocaleString() }}
             </div>
             <div class="stat-box-unit">pts</div>
           </div>
@@ -24,7 +24,7 @@
           <div class="stat-box-title">面積</div>
           <div class="stat-inner">
             <div class="stat-box-num">
-              {{ store.status.area.toLocaleString() }}
+              {{ props.status.area.toLocaleString() }}
             </div>
             <div class="stat-box-unit">万坪</div>
           </div>
@@ -33,7 +33,7 @@
           <div class="stat-box-title">環境</div>
           <div class="stat-inner environment">
             <div class="stat-box-num">
-              {{ getEnvironmentString(store.status.environment) }}
+              {{ getEnvironmentString(props.status.environment) }}
             </div>
           </div>
         </div>
@@ -45,19 +45,19 @@
             <div class="stat-box-info">
               <FontAwesomeIcon icon="fa-solid fa-sack-dollar" class="stat-box-icon" />
               <div class="stat-box-title">資金</div>
-              <div class="stat-box-num">{{ store.status.funds.toLocaleString() }}</div>
+              <div class="stat-box-num">{{ props.status.funds.toLocaleString() }}</div>
               <div class="stat-box-unit">億円</div>
             </div>
             <div class="stat-box-info">
               <FontAwesomeIcon icon="fa-solid fa-wheat-awn" class="stat-box-icon" />
               <div class="stat-box-title">食料</div>
-              <div class="stat-box-num">{{ store.status.foods.toLocaleString() }}</div>
+              <div class="stat-box-num">{{ props.status.foods.toLocaleString() }}</div>
               <div class="stat-box-unit">㌧</div>
             </div>
             <div class="stat-box-info">
               <FontAwesomeIcon icon="fa-solid fa-oil-well" class="stat-box-icon" />
               <div class="stat-box-title">資源</div>
-              <div class="stat-box-num">{{ store.status.resources.toLocaleString() }}</div>
+              <div class="stat-box-num">{{ props.status.resources.toLocaleString() }}</div>
               <div class="stat-box-unit">㌧</div>
             </div>
           </div>
@@ -70,7 +70,7 @@
                 <div class="stat-box-title">総人口</div>
                 <div class="stat-inner">
                   <div class="stat-box-num">
-                    {{ store.status.population.toLocaleString() }}
+                    {{ props.status.population.toLocaleString() }}
                   </div>
                   <div class="stat-box-unit">人</div>
                 </div>
@@ -90,7 +90,7 @@
                 <FontAwesomeIcon icon="fa-solid fa-wheat-awn" class="stat-box-icon" />
                 <div class="stat-box-title">農業</div>
                 <div class="stat-box-num">
-                  {{ store.status.foods_production_capacity.toLocaleString() }}
+                  {{ props.status.foods_production_capacity.toLocaleString() }}
                 </div>
                 <div class="stat-box-unit">人</div>
               </div>
@@ -98,7 +98,7 @@
                 <FontAwesomeIcon icon="fa-solid fa-sack-dollar" class="stat-box-icon" />
                 <div class="stat-box-title">工業</div>
                 <div class="stat-box-num">
-                  {{ store.status.funds_production_capacity.toLocaleString() }}
+                  {{ props.status.funds_production_capacity.toLocaleString() }}
                 </div>
                 <div class="stat-box-unit">人</div>
               </div>
@@ -106,7 +106,7 @@
                 <FontAwesomeIcon icon="fa-solid fa-oil-well" class="stat-box-icon" />
                 <div class="stat-box-title">資源生産</div>
                 <div class="stat-box-num">
-                  {{ store.status.resources_production_capacity.toLocaleString() }}
+                  {{ props.status.resources_production_capacity.toLocaleString() }}
                 </div>
                 <div class="stat-box-unit">人</div>
               </div>
@@ -114,7 +114,7 @@
                 <FontAwesomeIcon icon="fa-solid fa-shield" class="stat-box-icon" />
                 <div class="stat-box-title">軍事</div>
                 <div class="stat-box-num">
-                  {{ store.status.maintenance_number_of_people.toLocaleString() }}
+                  {{ props.status.maintenance_number_of_people.toLocaleString() }}
                 </div>
                 <div class="stat-box-unit">人</div>
               </div>
@@ -126,50 +126,63 @@
     <div class="stat-comment">
       <div class="stat-comment-title">コメント</div>
       <div
-        v-if="store.island.comment === '' || store.island.comment === undefined || store.island.comment === null"
+        v-if="props.island.comment === '' || props.island.comment === undefined || props.island.comment === null"
         class="stat-comment-empty">
         コメントはありません
       </div>
       <div v-else class="stat-comment-main">
-        {{ store.island.comment }}
+        {{ props.island.comment }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
+import { computed } from 'vue'
 import AchievementIcons from '../../ui/AchievementIcons.vue'
-import { storeToRefs } from 'pinia'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faOilWell, faSackDollar, faShield, faWheatAwn } from '@fortawesome/free-solid-svg-icons'
 import { getEnvironmentString } from '../../../store/Entity/Island.js'
+import { Status } from '../../../store/Entity/Status.js'
+import { AchievementProp } from '../../../store/Entity/Achievement.js'
 
 library.add(faSackDollar, faWheatAwn, faOilWell, faShield)
 
-const store = useMainStore()
-const { status: statusRef } = storeToRefs(store)
+interface Props {
+  island: {
+    id: number
+    name: string
+    owner_name: string
+    comment?: string
+  }
+  status: Status
+  achievements: AchievementProp[]
+}
+
+const props = defineProps<Props>()
+
+// const store = useMainStore()
+// const { status: statusRef } = storeToRefs(store)
 
 const hasComment = computed(() => {
-  return store.island.comment === null || store.island.comment === undefined || store.island.comment === ''
+  return props.island.comment === null || props.island.comment === undefined || props.island.comment === ''
 })
 
 const islandComment = computed(() => {
   if (hasComment.value) {
     return 'コメントはありません'
   } else {
-    return store.island.comment
+    return props.island.comment
   }
 })
 
 const calcUnassigned = computed(() => {
   return (
-    store.status.population -
-    store.status.foods_production_capacity -
-    store.status.funds_production_capacity -
-    store.status.resources_production_capacity -
-    store.status.maintenance_number_of_people
+    props.status.population -
+    props.status.foods_production_capacity -
+    props.status.funds_production_capacity -
+    props.status.resources_production_capacity -
+    props.status.maintenance_number_of_people
   )
 })
 </script>

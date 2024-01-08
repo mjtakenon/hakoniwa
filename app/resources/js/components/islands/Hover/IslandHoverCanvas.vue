@@ -4,12 +4,12 @@
 
 <script setup lang="ts">
 import { AmbientLight, Box3, Camera, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
-import { useMainStore } from '../../../store/MainStore'
 import { useGLTF } from '@tresjs/cientos'
 import { onMounted, ref, UnwrapRef } from 'vue'
 import { getCells } from '../../../store/Entity/Cell.js'
+import { useIslandHoverStore } from '../../../store/IslandHoverStore.js'
 
-const store = useMainStore()
+const store = useIslandHoverStore()
 
 const width = 32
 const height = 32

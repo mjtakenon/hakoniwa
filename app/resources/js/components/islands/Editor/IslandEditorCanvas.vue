@@ -56,16 +56,16 @@
 <script async setup lang="ts">
 import { Box3, Vector2, Vector3 } from 'three'
 import { useGLTF } from '@tresjs/cientos'
-import { useMainStore } from '../../../store/MainStore'
 import IslandEditorCell from './IslandEditorCell.vue'
 import { Terrain } from '../../../store/Entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
 import { getCells } from '../../../store/Entity/Cell.js'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
 let selectedBox = shallowRef(null)
 let referencedBox = shallowRef(null)
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 let models = {}
 

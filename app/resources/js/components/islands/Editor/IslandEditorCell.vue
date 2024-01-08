@@ -14,9 +14,10 @@
 <script setup lang="ts">
 import { Object3D, Vector3 } from 'three'
 import { Terrain } from '../../../store/Entity/Terrain'
-import { useMainStore } from '../../../store/MainStore'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
+import { useIslandHoverStore } from '../../../store/IslandHoverStore.js'
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 interface Props {
   terrain: Terrain
@@ -33,7 +34,7 @@ const onMouseOverCell = (event: MouseEvent) => {
   store.showHoverWindow = true
   store.hoverCellPoint = props.terrain.data.point
 
-  store.changeHoverCellCameraFocus(props.terrain.type)
+  useIslandHoverStore().changeHoverCellCameraFocus(props.terrain.type)
 }
 
 const onMouseMoveCell = (event: MouseEvent) => {

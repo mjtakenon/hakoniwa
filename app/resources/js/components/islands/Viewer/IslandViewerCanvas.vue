@@ -26,11 +26,11 @@
 <script async setup lang="ts">
 import { Box3, Vector3 } from 'three'
 import { useGLTF } from '@tresjs/cientos'
-import { useMainStore } from '../../../store/MainStore'
 import IslandViewerCell from './IslandViewerCell.vue'
 import { getCells } from '../../../store/Entity/Cell.js'
+import { useIslandViewerStore } from '../../../store/IslandViewerStore.js'
 
-const store = useMainStore()
+const store = useIslandViewerStore()
 
 let models = {}
 

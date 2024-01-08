@@ -58,10 +58,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useMainStore } from '../../../../store/MainStore'
+import { computed } from 'vue'
+import { useIslandEditorStore } from '../../../../store/IslandEditorStore.js'
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 const onClickPlan = (index: number) => {
   store.selectedPlanNumber = index + 1
