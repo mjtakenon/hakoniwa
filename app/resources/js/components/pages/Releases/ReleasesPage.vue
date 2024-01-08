@@ -7,7 +7,7 @@
           <h2 class="subtitle">{{ release.title }}</h2>
           <div class="update-at">更新日: {{ release.update_at }}</div>
         </div>
-        <ReleasesMarkdown :sources="release.body"></ReleasesMarkdown>
+        <AsyncReleasesMarkdown :sources="release.body" />
       </div>
     </div>
     <div v-else>
@@ -16,10 +16,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineAsyncComponent, defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 import axios from 'axios'
-import { formatDate } from '../../../Utils'
+import { formatDate } from '../../../Utils.js'
 
 interface Release {
   title: string
@@ -27,42 +27,35 @@ interface Release {
   update_at: string
 }
 
-export default defineComponent({
-  components: {
-    ReleasesMarkdown: defineAsyncComponent(() => import('./ReleasesMarkdown.vue'))
-  },
-  data() {
-    return {
-      releases: [] as Release[] | null,
-      MAX_LATEST_RELEASES: 3
-    }
-  },
-  mounted() {
-    this.getReleases()
-  },
-  methods: {
-    async getReleases() {
-      await axios
-        .get('https://api.github.com/repos/mjtakenon/hakoniwa/releases')
-        .then((res) => {
-          let count = 0
-          for (const release of res.data) {
-            if (release.draft) continue
-            this.releases.push({
-              title: release.name,
-              body: release.body,
-              update_at: formatDate(new Date(release.created_at))
-            })
-            count++
-            if (count > this.MAX_LATEST_RELEASES) break
-          }
+const AsyncReleasesMarkdown = defineAsyncComponent(() => import('./ReleasesMarkdown.vue'))
+
+const releases = ref<Release[] | null>([])
+const MAX_LATEST_RELEASES = 3
+
+const getReleases = async () => {
+  await axios
+    .get('https://api.github.com/repos/mjtakenon/hakoniwa/releases')
+    .then((res) => {
+      let count = 0
+      for (const release of res.data) {
+        if (release.draft) continue
+        releases.value.push({
+          title: release.name,
+          body: release.body,
+          update_at: formatDate(new Date(release.created_at))
         })
-        .catch((err) => {
-          console.debug(err)
-          this.releases = null
-        })
-    }
-  }
+        count++
+        if (count > MAX_LATEST_RELEASES) break
+      }
+    })
+    .catch((err) => {
+      console.debug(err)
+      releases.value = null
+    })
+}
+
+onMounted(() => {
+  getReleases()
 })
 </script>
 
