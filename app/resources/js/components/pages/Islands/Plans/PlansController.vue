@@ -125,8 +125,7 @@ const selectedPlan = ref('grading')
 const store = useMainStore()
 
 const getSelectedPlan = (): Plan => {
-  // TODO: IslandEditorと共通化できる
-  const result = store.planCandidate.find((c) => c.key === selectedPlan)
+  const result = store.planCandidate.find((c) => c.key === selectedPlan.value)
   if (result === undefined) return null
   else {
     const p = result.data
