@@ -27,13 +27,13 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
 const remainTimes = ref<{ hour: number; min: number; sec: number }>({ hour: 0, min: 0, sec: 0 })
 const isTimeRemaining = ref(true)
-const secInterval = ref(0)
+const secInterval = ref<NodeJS.Timeout>()
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 onMounted(() => {
   secInterval.value = setInterval(countDownTurn, 1000)

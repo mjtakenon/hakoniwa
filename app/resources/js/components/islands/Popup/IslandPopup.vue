@@ -73,7 +73,6 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, watch } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
 import { storeToRefs } from 'pinia'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import { TresCanvas } from '@tresjs/core'
@@ -81,8 +80,9 @@ import IslandEditorCanvas from '../Editor/IslandEditorCanvas.vue'
 import { CameraControls } from '@tresjs/cientos'
 import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
 import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 const { isOpenPopup, isLoadingTerrain } = storeToRefs(store)
 
 const gl = reactive({

@@ -161,9 +161,6 @@ interface Props {
 
 const props = defineProps<Props>()
 
-// const store = useMainStore()
-// const { status: statusRef } = storeToRefs(store)
-
 const hasComment = computed(() => {
   return props.island.comment === null || props.island.comment === undefined || props.island.comment === ''
 })

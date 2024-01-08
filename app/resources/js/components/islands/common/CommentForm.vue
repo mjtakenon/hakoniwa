@@ -33,15 +33,15 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
 import { AjaxResult, ErrorType, RequestStatus } from '../../../store/Entity/Network'
 import { stringEquals } from '../../../Utils'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
 const comment = ref('')
 const request = ref<AjaxResult>({ status: RequestStatus.None })
 const input = ref<HTMLElement>()
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 onMounted(() => {
   comment.value = store.island.comment
