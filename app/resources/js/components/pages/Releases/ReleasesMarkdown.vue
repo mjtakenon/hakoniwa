@@ -2,32 +2,21 @@
   <div class="markdown" v-html="html"></div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import MarkdownIt from 'markdown-it'
-// Typescript未対応の為
-// @ts-ignore
 import sanitizer from 'markdown-it-sanitizer'
 
-export default defineComponent({
-  setup() {
-    const markdown = new MarkdownIt({
-      html: true
-    }).use(sanitizer)
-    return { markdown }
-  },
-  computed: {
-    html() {
-      return this.markdown.render(this.sources)
-    }
-  },
-  props: {
-    sources: {
-      required: true,
-      type: String
-    }
-  }
+interface Props {
+  sources: string
+}
+const props = defineProps<Props>()
+
+const markdown = new MarkdownIt({
+  html: true
+}).use(sanitizer)
+
+const html = computed(() => {
+  return markdown.render(props.sources)
 })
 </script>
-
-<style scoped lang="scss"></style>
