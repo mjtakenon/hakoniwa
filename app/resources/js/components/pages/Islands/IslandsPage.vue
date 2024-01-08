@@ -9,86 +9,64 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import StatusTable from '../../islands/common/StatusTable.vue'
 import LogViewer from '../../islands/common/LogViewer.vue'
 import IslandViewer from './IslandsViewer.vue'
-import { defineComponent, PropType } from 'vue'
+import { ref } from 'vue'
 import { useMainStore } from '../../../store/MainStore'
 import { Hakoniwa } from '../../../store/Entity/Hakoniwa'
 import { Status } from '../../../store/Entity/Status'
 import { Terrain } from '../../../store/Entity/Terrain'
 import { Plan } from '../../../store/Entity/Plan'
 import { LogParser, LogProps, SummaryProps } from '../../../store/Entity/Log'
-import CommentForm from '../../islands/common/CommentForm.vue'
-import { AchievementProp, getAchievementsList } from '../../../store/Entity/Achievement'
+import { AchievementProp } from '../../../store/Entity/Achievement'
 import { BbsMessage } from '../../../store/Entity/Bbs'
 import Bbs from '../../islands/common/Bbs.vue'
 
-export default defineComponent({
-  components: {
-    Bbs,
-    CommentForm,
-    IslandViewer,
-    StatusTable,
-    LogViewer
-  },
-  data() {
-    return {
-      showHoverWindow: false,
-      hoverCell: {
-        x: 0,
-        y: 0
-      },
-      hoverWindowTop: 170,
-      hoverWindowLeft: 0
-    }
-  },
-  setup(props) {
-    const store = useMainStore()
-    const parser = new LogParser()
-    const logs = parser.parse(props.island.logs, props.island.summary)
+let hoverWindowTop = ref(170)
+let hoverWindowLeft = ref(0)
 
-    const achievements = getAchievementsList(props.island.achievements)
+const store = useMainStore()
 
-    store.$patch({
-      hakoniwa: props.hakoniwa,
-      island: props.island,
-      status: props.island.status,
-      terrains: props.island.terrains,
-      logs: logs,
-      achievements: achievements,
-      bbs: props.island.bbs
-    })
-    return { store }
-  },
-  methods: {},
-  computed: {
-    // showHoverWindow() { return true; }
-  },
-  props: {
-    hakoniwa: {
-      required: true,
-      type: Object as PropType<Hakoniwa>
-    },
-    // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/store/Entity/Islandの中身と異なっている　共通化できないか？
-    island: {
-      required: true,
-      type: Object as PropType<{
-        id: number
-        name: string
-        owner_name: string
-        status: Status
-        terrains: Array<Terrain>
-        plans: Array<Plan>
-        logs: LogProps[]
-        comment?: string
-        summary: SummaryProps[]
-        achievements: AchievementProp[]
-        bbs: BbsMessage[]
-      }>
-    }
+interface Props {
+  hakoniwa: Hakoniwa
+  // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/store/Entity/Islandの中身と異なっている　共通化できないか？
+  island: {
+    id: number
+    name: string
+    owner_name: string
+    status: Status
+    terrains: Array<Terrain>
+    plans: Array<Plan>
+    logs: LogProps[]
+    summary: SummaryProps[]
+    comment?: string
+    achievements: AchievementProp[]
+    bbs: BbsMessage[]
   }
+}
+
+const props = defineProps<Props>()
+
+// Logsのparse
+const parser = new LogParser()
+const logs = parser.parse(props.island.logs, props.island.summary)
+
+store.$patch((state) => {
+  state.hakoniwa = props.hakoniwa
+  state.island = {
+    id: props.island.id,
+    name: props.island.name,
+    owner_name: props.island.owner_name,
+    comment: props.island.comment,
+    terrains: props.island.terrains
+  }
+  state.status = props.island.status
+  state.terrains = props.island.terrains
+  state.logs = logs
+  state.achievements = props.island.achievements
+  state.bbs = props.island.bbs
 })
 </script>
 
