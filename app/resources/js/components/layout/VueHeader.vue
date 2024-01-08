@@ -61,12 +61,11 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useMainStore } from '../../store/MainStore'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faArrowRightFromBracket, faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { Island } from '../../store/Entity/Island.js'
 import { useUserSettingsStore } from '../../store/UserSettingsStore.js'
-import { useBbsStore } from '../../store/BbsStore.js'
+import { useUserStore } from '../../store/UserStore.js'
 
 let isOpenHamburgerMenu = ref(false)
 
@@ -74,7 +73,7 @@ interface Props {
   csrfToken: string
   isLoggedIn: boolean
   isIslandRegistered: boolean
-  user?: User
+  userId?: number
   ownedIsland?: Island
 }
 
@@ -82,7 +81,7 @@ const props = defineProps<Props>()
 
 library.add(faPenToSquare, faGear, faArrowRightFromBracket)
 
-const store = useBbsStore()
+const store = useUserStore()
 const userSettings = useUserSettingsStore()
 const theme = localStorage.getItem('theme')
 
@@ -91,10 +90,12 @@ if (theme !== null && theme !== undefined) {
 }
 
 if (props.ownedIsland !== null && props.ownedIsland !== undefined) {
-  store.user = {
-    user_id: props.user.id,
-    island: props.ownedIsland ?? null
-  }
+  store.$patch((state) => {
+    state.user = {
+      id: props.userId,
+      island: props.ownedIsland ?? null
+    }
+  })
 }
 
 onMounted(() => {

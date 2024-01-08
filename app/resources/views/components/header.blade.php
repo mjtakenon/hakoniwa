@@ -4,7 +4,7 @@
         :is-logged-in="@js(\Auth::check())"
         :is-island-registered="@js(\HakoniwaService::isIslandRegistered())"
         @if (\Auth::check())
-            :user="{{ \Auth::user() }}"
+            :user-id="@js(\Auth::user()->id)"
         @endif
         @if (\Auth::check() && \HakoniwaService::isIslandRegistered())
             :owned-island="{{ \HakoniwaService::getOwnedIsland() }}"

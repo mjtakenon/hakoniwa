@@ -11,7 +11,6 @@ import { Point } from './Entity/Point.js'
 import { Turn } from './Entity/Turn.js'
 import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
 import { Achievement } from './Entity/Achievement.js'
-import { BbsMessage, BbsVisibility } from './Entity/Bbs.js'
 
 export interface PiniaState {
   hakoniwa: Hakoniwa
@@ -47,12 +46,7 @@ export interface PiniaState {
   isIslandPopupMount: boolean
   isIslandEditorMount: boolean
   isLoadingTerrain: boolean
-  user: {
-    user_id: number
-    island: Island
-  }
   achievements: Achievement[]
-  bbs: BbsMessage[]
 }
 
 export const useIslandViewerStore = defineStore('island-viewer', {
@@ -107,12 +101,7 @@ export const useIslandViewerStore = defineStore('island-viewer', {
       isIslandPopupMount: false,
       isIslandEditorMount: true,
       isLoadingTerrain: false,
-      user: {
-        user_id: 0,
-        island: null
-      },
-      achievements: [],
-      bbs: []
+      achievements: []
     }
   },
   getters: {
@@ -205,86 +194,6 @@ export const useIslandViewerStore = defineStore('island-viewer', {
           console.debug(err)
           result.status = RequestStatus.Failed
           result.error = err.response.status
-        })
-      return result
-    },
-    async patchIslandName(name: string, owner: string): Promise<AjaxResult> {
-      let result = {} as AjaxResult
-      console.debug('PATCH', '/api/islands/' + this.island.id)
-      await axios
-        .patch('/api/islands/' + this.island.id, {
-          name: name,
-          owner_name: owner
-        })
-        .then((res) => {
-          result.status = RequestStatus.Success
-          this.user.island.name = res.data.island.name
-          this.user.island.owner_name = res.data.island.owner_name
-          this.status.funds -= 1000
-        })
-        .catch((err) => {
-          console.debug(err)
-          const code = err.response.data.code
-          if (code === 'lack_of_funds') {
-            result.error = ErrorType.LackOfFunds
-          } else if (code === 'not_changed') {
-            result.error = ErrorType.NotChanged
-          } else if (code === 'island_name_duplicated') {
-            result.error = ErrorType.DuplicatedIslandName
-          } else if (code === 'owner_name_duplicated') {
-            result.error = ErrorType.DuplicatedOwnerName
-          } else {
-            result.error = ErrorType.Unknown
-          }
-        })
-      return result
-    },
-    async postBbs(comment: string, visibility: BbsVisibility): Promise<AjaxResult> {
-      let result = {} as AjaxResult
-      console.debug('POST', '/api/islands/' + this.island.id + '/bbs')
-      await axios
-        .post('/api/islands/' + this.island.id + '/bbs', {
-          comment: comment,
-          visibility: visibility
-        })
-        .then((res) => {
-          result.status = RequestStatus.Success
-          if (visibility === 'private' && this.user.island.id === this.island.id) {
-            this.status.funds -= 1000
-          }
-          this.bbs = res.data.bbs
-        })
-        .catch((err) => {
-          console.debug(err)
-          result.status = RequestStatus.Failed
-          const code = err.response.data.code
-          if (code === 'lack_of_funds') {
-            result.error = ErrorType.LackOfFunds
-          } else if (err.response.status === ErrorType.TooManyRequests) {
-            // TODO:enumに含まれているかでstatusを直で入れるようにしたい
-            result.error = ErrorType.TooManyRequests
-          } else if (err.response.status === ErrorType.NotFound) {
-            result.error = ErrorType.NotFound
-          } else {
-            result.error = ErrorType.Unknown
-          }
-        })
-
-      return result
-    },
-    async deleteBbs(target: BbsMessage): Promise<AjaxResult> {
-      let result = {} as AjaxResult
-      console.debug('DELETE', '/api/islands/' + this.island.id + '/bbs/' + target.id)
-
-      await axios
-        .delete('/api/islands/' + this.island.id + '/bbs/' + target.id)
-        .then((res) => {
-          result.status = RequestStatus.Success
-          this.bbs = res.data.bbs
-        })
-        .catch((err) => {
-          console.debug(err)
-          result.status = RequestStatus.Failed
         })
       return result
     }
