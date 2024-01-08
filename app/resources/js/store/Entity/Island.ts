@@ -8,8 +8,14 @@ export interface Island {
   terrains?: Terrain[]
 }
 
-export const ISLAND_ENVIRONMENT = {
+export type IslandEnvironment = 'best' | 'good' | 'normal'
+
+export const ISLAND_ENVIRONMENT_STRING = {
   best: '最高',
   good: '良好',
   normal: '通常'
+}
+
+export const getEnvironmentString = (environment: IslandEnvironment): string => {
+  return ISLAND_ENVIRONMENT_STRING[environment]
 }

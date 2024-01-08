@@ -33,7 +33,7 @@
           <div class="stat-box-title">環境</div>
           <div class="stat-inner environment">
             <div class="stat-box-num">
-              {{ store.getEnvironmentString }}
+              {{ getEnvironmentString(store.status.environment) }}
             </div>
           </div>
         </div>
@@ -144,6 +144,7 @@ import AchievementIcons from '../../ui/AchievementIcons.vue'
 import { storeToRefs } from 'pinia'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faOilWell, faSackDollar, faShield, faWheatAwn } from '@fortawesome/free-solid-svg-icons'
+import { getEnvironmentString } from '../../../store/Entity/Island.js'
 
 library.add(faSackDollar, faWheatAwn, faOilWell, faShield)
 

@@ -1,32 +1,32 @@
 <template>
   <div id="theme-switch">
-    <div class="switch-bar" @click="onClickThemeToggle">
+    <div class="switch-bar" @click="onClickThemeToggle()">
       <div class="switch-button" :class="{ active: isDark }"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import type { Theme, ThemeType } from '../../store/Entity/Theme'
-import { useMainStore } from '../../store/MainStore'
+import { computed } from 'vue'
+import type { Theme } from '../../store/Entity/Theme'
+import { useUserSettingsStore } from '../../store/UserSettingsStore.js'
 
-const themes = ref<Theme[]>([
+const userSettings = useUserSettingsStore()
+
+const themes: Theme[] = [
   { name: 'light', themeClass: 'theme-light', type: 'light' },
   { name: 'dark', themeClass: 'theme-dark', type: 'dark' }
-])
+]
 
-const store = useMainStore()
-
-const isDark: ThemeType = computed(() => {
-  return store.theme.type === 'dark'
+const isDark = computed(() => {
+  return userSettings.theme.type === 'dark'
 })
 
 const onClickThemeToggle = () => {
-  if (isDark) {
-    store.changeTheme(themes.value[0])
+  if (isDark.value) {
+    userSettings.changeTheme(themes[0])
   } else {
-    store.changeTheme(themes.value[1])
+    userSettings.changeTheme(themes[1])
   }
 }
 </script>

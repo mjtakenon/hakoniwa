@@ -52,14 +52,14 @@
 import { ref } from 'vue'
 import themeListJson from '../../../ThemeList.json'
 import { Theme } from '../../../store/Entity/Theme.js'
-import { useMainStore } from '../../../store/MainStore.js'
+import { useUserSettingsStore } from '../../../store/UserSettingsStore.js'
 
 const themes = ref<Theme[]>(themeListJson as Theme[])
-const store = useMainStore()
+const userSettings = useUserSettingsStore()
 
 const onClickTheme = (theme: Theme) => {
-  if (store.theme.name === theme.name) return
-  store.changeTheme(theme)
+  if (userSettings.theme.name === theme.name) return
+  userSettings.changeTheme(theme)
 }
 </script>
 

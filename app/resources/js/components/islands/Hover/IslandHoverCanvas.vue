@@ -7,6 +7,7 @@ import { AmbientLight, Box3, Camera, PerspectiveCamera, Scene, Vector3, WebGLRen
 import { useMainStore } from '../../../store/MainStore'
 import { useGLTF } from '@tresjs/cientos'
 import { onMounted, ref, UnwrapRef } from 'vue'
+import { getCells } from '../../../store/Entity/Cell.js'
 
 const store = useMainStore()
 
@@ -18,8 +19,8 @@ const scene = new Scene()
 const canvas = ref(null)
 
 let models = {}
-for (let type in store.getCells) {
-  let model = await useGLTF(store.getCells[type].path, { draco: true })
+for (let type in getCells()) {
+  let model = await useGLTF(getCells()[type].path, { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
   model.scene.scale.x = store.cellSize / size.x
   model.scene.scale.y = store.cellSize / size.x

@@ -28,13 +28,14 @@ import { Box3, Vector3 } from 'three'
 import { useGLTF } from '@tresjs/cientos'
 import { useMainStore } from '../../../store/MainStore'
 import IslandViewerCell from './IslandViewerCell.vue'
+import { getCells } from '../../../store/Entity/Cell.js'
 
 const store = useMainStore()
 
 let models = {}
 
-for (let type in store.getCells) {
-  let model = await useGLTF(store.getCells[type].path, { draco: true })
+for (let type in getCells()) {
+  let model = await useGLTF(getCells()[type].path, { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
   model.scene.scale.x = store.cellSize / size.x
   model.scene.scale.y = store.cellSize / size.x

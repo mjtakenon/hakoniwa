@@ -2,14 +2,13 @@ import { defineStore } from 'pinia'
 import lodash from 'lodash'
 import { Status } from './Entity/Status.js'
 import { Hakoniwa } from './Entity/Hakoniwa.js'
-import { Island, ISLAND_ENVIRONMENT } from './Entity/Island.js'
+import { Island } from './Entity/Island.js'
 import { Terrain } from './Entity/Terrain.js'
 import { Log } from './Entity/Log.js'
 import { Plan } from './Entity/Plan.js'
 import axios from 'axios'
 import { Point } from './Entity/Point.js'
 import { Turn } from './Entity/Turn.js'
-import { defaultTheme, Theme } from './Entity/Theme.js'
 import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
 import { Achievement } from './Entity/Achievement.js'
 import { BbsMessage, BbsVisibility } from './Entity/Bbs.js'
@@ -49,7 +48,6 @@ export interface PiniaState {
   hoverCellCameraLookAt: Vector3[]
   cellSize: number
   turn: Turn
-  theme: Theme
   isOpenPopup: boolean
   isIslandPopupMount: boolean
   isIslandEditorMount: boolean
@@ -73,7 +71,7 @@ export const useMainStore = defineStore('main', {
       status: {
         area: 0,
         development_points: 0,
-        environment: '',
+        environment: 'best',
         foods: 0,
         foods_production_capacity: 0,
         funds: 0,
@@ -114,7 +112,6 @@ export const useMainStore = defineStore('main', {
         turn: 0,
         next_time: new Date('1970/1/1 00:00:00')
       },
-      theme: defaultTheme,
       isOpenPopup: false,
       isIslandPopupMount: false,
       isIslandEditorMount: true,
@@ -128,9 +125,6 @@ export const useMainStore = defineStore('main', {
     }
   },
   getters: {
-    getEnvironmentString(): string {
-      return ISLAND_ENVIRONMENT[this.status.environment]
-    },
     getDefaultPlan(): Plan {
       return {
         key: 'cash_flow',
@@ -155,56 +149,6 @@ export const useMainStore = defineStore('main', {
     selectedTargetIslandName(): string {
       const target = this.targetIslands.find((island) => island.id === this.selectedTargetIsland)
       return target.name
-    },
-    getCells() {
-      return {
-        city: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        factory: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        farm: { path: '/img/hakoniwa/gltf/farm.gltf' },
-        farm_dome: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        forest: { path: '/img/hakoniwa/gltf/forest.gltf' },
-        metropolis: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        mountain: { path: '/img/hakoniwa/gltf/volcano.gltf' },
-        volcano: { path: '/img/hakoniwa/gltf/volcano.gltf' },
-        mine: { path: '/img/hakoniwa/gltf/mine.gltf' },
-        oilfield: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        plain: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        sea: { path: '/img/hakoniwa/gltf/sea.gltf' },
-        shallow: { path: '/img/hakoniwa/gltf/shallow.gltf' },
-        lake: { path: '/img/hakoniwa/gltf/shallow.gltf' },
-        large_factory: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        town: { path: '/img/hakoniwa/gltf/town.gltf' },
-        village: { path: '/img/hakoniwa/gltf/village.gltf' },
-        wasteland: { path: '/img/hakoniwa/gltf/wasteland.gltf' },
-        missile_base: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        seabed_base: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        park: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        monument_of_agriculture: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        monument_of_mining: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        monument_of_master: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        monument_of_peace: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        monument_of_war: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        monument_of_conquest: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        inora: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        red_inora: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        dark_inora: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        king_inora: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        sanjira: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        kujira: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        hamunemu: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        ghost_inora: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        slime: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        slime_legend: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        levinoth: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        begenoth: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        egg: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        transport_ship: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        battleship: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        submarine: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        pirate: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        levinoth_battleship: { path: '/img/hakoniwa/gltf/plain.gltf' },
-        levinoth_submarine: { path: '/img/hakoniwa/gltf/plain.gltf' }
-      }
     }
   },
   actions: {
@@ -352,14 +296,6 @@ export const useMainStore = defineStore('main', {
           result.status = RequestStatus.Failed
         })
       return result
-    },
-    changeTheme(theme: Theme) {
-      const app = document.getElementById('app')
-      this.theme = theme
-      app.classList.remove(...app.classList)
-      app.classList.add(theme.themeClass)
-      app.classList.add(theme.type.toString())
-      localStorage.setItem('theme', JSON.stringify(theme))
     },
     changeHoverCellCameraFocus(type: string) {
       this.hoverCellCamera.position.set(

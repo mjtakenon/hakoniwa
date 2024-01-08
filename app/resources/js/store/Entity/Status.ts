@@ -1,7 +1,9 @@
+import { IslandEnvironment } from './Island.js'
+
 export interface Status {
   area: number
   development_points: number
-  environment: string
+  environment: IslandEnvironment
   foods: number
   foods_production_capacity: number
   funds: number

@@ -60,6 +60,7 @@ import { useMainStore } from '../../../store/MainStore'
 import IslandEditorCell from './IslandEditorCell.vue'
 import { Terrain } from '../../../store/Entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
+import { getCells } from '../../../store/Entity/Cell.js'
 
 let selectedBox = shallowRef(null)
 let referencedBox = shallowRef(null)
@@ -85,8 +86,8 @@ const borderLines = [
   { scale: [0.1, 0.05, 1] as Vector3, position: [-0.5, 0.475, 0] as Vector3 }
 ]
 
-for (let type in store.getCells) {
-  let model = await useGLTF(store.getCells[type].path, { draco: true })
+for (let type in getCells()) {
+  let model = await useGLTF(getCells()[type].path, { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
   model.scene.scale.x = store.cellSize / size.x
   model.scene.scale.y = store.cellSize / size.x
