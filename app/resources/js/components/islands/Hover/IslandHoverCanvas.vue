@@ -31,7 +31,7 @@ for (let type in getCells()) {
 
 const light = new AmbientLight(0xffffff, 3)
 
-store.hoverCellCamera = new PerspectiveCamera(40, width / height) as UnwrapRef<Camera>
+store.camera = new PerspectiveCamera(40, width / height) as UnwrapRef<Camera>
 
 let renderer: WebGLRenderer | null = null
 
@@ -55,8 +55,8 @@ onMounted(() => {
     models[type].scene.position.x = position.x
     models[type].scene.position.y = position.y
     models[type].scene.position.z = position.z
-    store.hoverCellCameraLookAt[type] = position.clone()
-    store.hoverCellCameraPositions[type] = position.clone().add(cameraPositionDiff)
+    store.cameraLookAt[type] = position.clone()
+    store.cameraPositions[type] = position.clone().add(cameraPositionDiff)
 
     position.add(positionMargin)
     scene.add(models[type].scene)
@@ -71,7 +71,7 @@ const tick = () => {
   for (let type in models) {
     models[type].scene.rotation.y += 0.01
   }
-  renderer.render(scene, store.hoverCellCamera)
+  renderer.render(scene, store.camera)
   requestAnimationFrame(tick)
 }
 </script>
