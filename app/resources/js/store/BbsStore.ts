@@ -1,15 +1,7 @@
 import { defineStore } from 'pinia'
-import { Status } from './Entity/Status.js'
-import { Hakoniwa } from './Entity/Hakoniwa.js'
 import { Island } from './Entity/Island.js'
-import { Terrain } from './Entity/Terrain.js'
-import { Log } from './Entity/Log.js'
-import { Plan } from './Entity/Plan.js'
 import axios from 'axios'
-import { Point } from './Entity/Point.js'
-import { Turn } from './Entity/Turn.js'
 import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
-import { Achievement } from './Entity/Achievement.js'
 import { BbsMessage, BbsVisibility } from './Entity/Bbs.js'
 
 export interface PiniaState {

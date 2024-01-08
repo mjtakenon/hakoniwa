@@ -9,7 +9,7 @@ import { Plan } from './Entity/Plan.js'
 import axios from 'axios'
 import { Point } from './Entity/Point.js'
 import { Turn } from './Entity/Turn.js'
-import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
+import { AjaxResult, RequestStatus } from './Entity/Network.js'
 import { Achievement } from './Entity/Achievement.js'
 
 export interface PiniaState {

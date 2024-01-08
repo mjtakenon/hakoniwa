@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Theme } from './Entity/Theme.js'
+
 export const useUserSettingsStore = defineStore('user-settings', () => {
   const theme = ref<Theme>({
     name: 'light',
