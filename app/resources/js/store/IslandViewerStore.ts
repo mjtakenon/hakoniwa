@@ -46,7 +46,6 @@ export interface PiniaState {
   hoverCellCamera: Camera | null
   hoverCellCameraPositions: Vector3[]
   hoverCellCameraLookAt: Vector3[]
-  cellSize: number
   turn: Turn
   isOpenPopup: boolean
   isIslandPopupMount: boolean
@@ -107,7 +106,6 @@ export const useIslandViewerStore = defineStore('island-viewer', {
       hoverCellCamera: null,
       hoverCellCameraPositions: [],
       hoverCellCameraLookAt: [],
-      cellSize: 8,
       turn: {
         turn: 0,
         next_time: new Date('1970/1/1 00:00:00')

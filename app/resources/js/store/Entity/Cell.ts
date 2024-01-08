@@ -6,6 +6,8 @@ export interface Cell {
   point: Point
 }
 
+export const DEFAULT_CELL_SIZE = 8
+
 export const getCells = () => {
   return {
     city: { path: '/img/hakoniwa/gltf/plain.gltf' },

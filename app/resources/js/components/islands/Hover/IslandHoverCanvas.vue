@@ -6,7 +6,7 @@
 import { AmbientLight, Box3, Camera, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
 import { useGLTF } from '@tresjs/cientos'
 import { onMounted, ref, UnwrapRef } from 'vue'
-import { getCells } from '../../../store/Entity/Cell.js'
+import { DEFAULT_CELL_SIZE, getCells } from '../../../store/Entity/Cell.js'
 import { useIslandHoverStore } from '../../../store/IslandHoverStore.js'
 
 const store = useIslandHoverStore()
@@ -22,10 +22,10 @@ let models = {}
 for (let type in getCells()) {
   let model = await useGLTF(getCells()[type].path, { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-  model.scene.scale.x = store.cellSize / size.x
-  model.scene.scale.y = store.cellSize / size.x
-  model.scene.scale.z = store.cellSize / size.x
-  model.scene.position.y += (size.y * (store.cellSize / size.x) - store.cellSize) / 2
+  model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
+  model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
+  model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
+  model.scene.position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
   models[type] = model
 }
 
@@ -48,7 +48,7 @@ onMounted(() => {
   scene.add(light)
 
   let position = new Vector3(0, 0, 0)
-  const positionMargin = new Vector3(store.cellSize * 4, store.cellSize * 4, store.cellSize * -4)
+  const positionMargin = new Vector3(DEFAULT_CELL_SIZE * 4, DEFAULT_CELL_SIZE * 4, DEFAULT_CELL_SIZE * -4)
   const cameraPositionDiff = new Vector3(8, 12, 12)
 
   for (let type in models) {

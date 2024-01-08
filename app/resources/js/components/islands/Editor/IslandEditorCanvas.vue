@@ -2,18 +2,18 @@
   <TresGroup
     :position="
       [
-        -store.cellSize * Math.floor(store.hakoniwa.width / 2),
+        -DEFAULT_CELL_SIZE * Math.floor(store.hakoniwa.width / 2),
         0,
-        -store.cellSize * Math.floor(store.hakoniwa.height / 2)
+        -DEFAULT_CELL_SIZE * Math.floor(store.hakoniwa.height / 2)
       ] as Vector3
     ">
     <template v-for="terrain of props.terrains">
       <IslandEditorCell
         :position="
           [
-            terrain.data.point.x * store.cellSize + ((((terrain.data.point.y + 1) % 2) - 1) * store.cellSize) / 2,
+            terrain.data.point.x * DEFAULT_CELL_SIZE + ((((terrain.data.point.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
             models[terrain.type].scene.position.y,
-            terrain.data.point.y * store.cellSize
+            terrain.data.point.y * DEFAULT_CELL_SIZE
           ] as Vector3
         "
         :scale="models[terrain.type].scene.scale.x"
@@ -59,7 +59,7 @@ import { useGLTF } from '@tresjs/cientos'
 import IslandEditorCell from './IslandEditorCell.vue'
 import { Terrain } from '../../../store/Entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
-import { getCells } from '../../../store/Entity/Cell.js'
+import { DEFAULT_CELL_SIZE, getCells } from '../../../store/Entity/Cell.js'
 import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
 let selectedBox = shallowRef(null)
@@ -89,10 +89,10 @@ const borderLines = [
 for (let type in getCells()) {
   let model = await useGLTF(getCells()[type].path, { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-  model.scene.scale.x = store.cellSize / size.x
-  model.scene.scale.y = store.cellSize / size.x
-  model.scene.scale.z = store.cellSize / size.x
-  model.scene.position.y += (size.y * (store.cellSize / size.x) - store.cellSize) / 2
+  model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
+  model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
+  model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
+  model.scene.position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
   models[type] = model
 }
 
@@ -122,9 +122,9 @@ const selectedBoxScale = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    store.cellSize + selectedBoxScaleMargin,
+    DEFAULT_CELL_SIZE + selectedBoxScaleMargin,
     getModelSize(getIslandTerrain(store.selectedPoint.x, store.selectedPoint.y).type).y + selectedBoxScaleMargin,
-    store.cellSize + selectedBoxScaleMargin
+    DEFAULT_CELL_SIZE + selectedBoxScaleMargin
   )
 })
 
@@ -135,9 +135,9 @@ const selectedBoxPosition = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    selectedPoint.x * store.cellSize + ((((selectedPoint.y + 1) % 2) - 1) * store.cellSize) / 2,
+    selectedPoint.x * DEFAULT_CELL_SIZE + ((((selectedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
     (getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY,
-    selectedPoint.y * store.cellSize
+    selectedPoint.y * DEFAULT_CELL_SIZE
   )
 })
 
@@ -159,9 +159,9 @@ const referencedBoxScale = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    store.cellSize + referencedBoxScaleMargin,
+    DEFAULT_CELL_SIZE + referencedBoxScaleMargin,
     getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y + referencedBoxScaleMargin,
-    store.cellSize + referencedBoxScaleMargin
+    DEFAULT_CELL_SIZE + referencedBoxScaleMargin
   )
 })
 
@@ -172,10 +172,10 @@ const referencedBoxPosition = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    referencedPoint.x * store.cellSize + ((((referencedPoint.y + 1) % 2) - 1) * store.cellSize) / 2,
+    referencedPoint.x * DEFAULT_CELL_SIZE + ((((referencedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
     (getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y - 8) / 2 +
       referencedBoxPositionMarginY,
-    referencedPoint.y * store.cellSize
+    referencedPoint.y * DEFAULT_CELL_SIZE
   )
 })
 </script>
