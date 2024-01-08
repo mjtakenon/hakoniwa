@@ -1,25 +1,19 @@
 import { defineStore } from 'pinia'
 import lodash from 'lodash'
-import { Status } from './Entity/Status'
-import { Hakoniwa } from './Entity/Hakoniwa'
-import { Island } from './Entity/Island'
-import { Terrain } from './Entity/Terrain'
-import { Log } from './Entity/Log'
-import { Plan } from './Entity/Plan'
+import { Status } from './Entity/Status.js'
+import { Hakoniwa } from './Entity/Hakoniwa.js'
+import { Island, ISLAND_ENVIRONMENT } from './Entity/Island.js'
+import { Terrain } from './Entity/Terrain.js'
+import { Log } from './Entity/Log.js'
+import { Plan } from './Entity/Plan.js'
 import axios from 'axios'
-import { Point } from './Entity/Point'
-import { Turn } from './Entity/Turn'
-import { defaultTheme, Theme } from './Entity/Theme'
-import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network'
-import { Achievement } from './Entity/Achievement'
-import { BbsMessage, BbsVisibility } from './Entity/Bbs'
+import { Point } from './Entity/Point.js'
+import { Turn } from './Entity/Turn.js'
+import { defaultTheme, Theme } from './Entity/Theme.js'
+import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
+import { Achievement } from './Entity/Achievement.js'
+import { BbsMessage, BbsVisibility } from './Entity/Bbs.js'
 import { Camera, Vector3 } from 'three'
-
-const ISLAND_ENVIRONMENT = {
-  best: '最高',
-  good: '良好',
-  normal: '通常'
-}
 
 export interface PiniaState {
   hakoniwa: Hakoniwa
@@ -367,8 +361,12 @@ export const useMainStore = defineStore('main', {
       app.classList.add(theme.type.toString())
       localStorage.setItem('theme', JSON.stringify(theme))
     },
-    changeHoverCellCameraFocus(type: String) {
-      this.hoverCellCamera.position.set(...this.hoverCellCameraPositions[type])
+    changeHoverCellCameraFocus(type: string) {
+      this.hoverCellCamera.position.set(
+        this.hoverCellCameraPositions[type].x,
+        this.hoverCellCameraPositions[type].y,
+        this.hoverCellCameraPositions[type].z
+      )
       this.hoverCellCamera.lookAt(this.hoverCellCameraLookAt[type])
     }
   }

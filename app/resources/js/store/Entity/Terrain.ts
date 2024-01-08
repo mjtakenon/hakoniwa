@@ -1,4 +1,4 @@
-import { Cell } from './Cell'
+import { Cell } from './Cell.js'
 
 export interface Terrain {
   data: Cell

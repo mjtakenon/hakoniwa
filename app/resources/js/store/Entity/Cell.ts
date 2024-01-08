@@ -1,4 +1,4 @@
-import { Point } from './Point'
+import { Point } from './Point.js'
 
 export interface Cell {
   image_path: string
