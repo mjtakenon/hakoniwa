@@ -3,6 +3,7 @@
     ref="objectRef"
     v-for="child of props.scene.children"
     :object="child"
+    :scale="props.scale"
     :position="props.position"
     @pointer-enter="(intersection, pointerEvent) => onMouseOverCell(pointerEvent)"
     @pointer-move="(intersection, pointerEvent) => onMouseOverCell(pointerEvent)"
@@ -24,6 +25,7 @@ interface Props {
   terrain: Terrain
   position: Vector3
   scene: Object3D
+  scale: number
 }
 
 const props = defineProps<Props>()

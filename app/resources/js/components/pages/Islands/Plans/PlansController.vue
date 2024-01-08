@@ -3,9 +3,9 @@
     <div class="mb-4">
       <div class="section-header">動作</div>
       <div class="action">
-        <button class="action-button dark:button-variant-reverse" @click="onClickInsert">挿入</button>
-        <button class="action-button dark:button-variant-reverse" @click="onClickOverwrite">上書き</button>
-        <button class="action-button dark:button-variant-reverse" @click="onClickDelete">削除</button>
+        <button class="action-button dark:button-variant-reverse" @click="onClickInsert()">挿入</button>
+        <button class="action-button dark:button-variant-reverse" @click="onClickOverwrite()">上書き</button>
+        <button class="action-button dark:button-variant-reverse" @click="onClickDelete()">削除</button>
       </div>
     </div>
 
@@ -72,9 +72,9 @@
               {{ targetIsland.name }} 島
             </option>
           </select>
-          <button class="target-open button-surface dark:button-variant-reverse" @click="openIslandPopup">
-            <template v-if="store.isOpenPopup"> 閉じる </template>
-            <template v-else> 開く </template>
+          <button class="target-open button-surface dark:button-variant-reverse" @click="openIslandPopup()">
+            <template v-if="store.isOpenPopup"> 閉じる</template>
+            <template v-else> 開く</template>
           </button>
         </div>
       </div>
@@ -87,20 +87,20 @@
         <div class="move-command">
           <button
             class="move-command-button dark:button-variant-reverse mr-2"
-            @click="onClickMoveUp"
+            @click="onClickMoveUp()"
             :disabled="store.selectedPlanNumber <= 1">
             ▲
           </button>
           <button
             class="move-command-button dark:button-variant-reverse"
-            @click="onClickMoveDown"
+            @click="onClickMoveDown()"
             :disabled="store.selectedPlanNumber >= MAX_PLAN_NUMBER">
             ▼
           </button>
         </div>
       </div>
       <div class="send-plan">
-        <button class="send-plan-button" :class="{ 'button-disabled': store.isSendingPlan }" @click="onClickSendPlan">
+        <button class="send-plan-button" :class="{ 'button-disabled': store.isSendingPlan }" @click="onClickSendPlan()">
           <span v-if="!store.isSendingPlan">計画送信</span>
           <span v-if="store.isSendingPlan" class="button-circle">
             <span class="button-circle-spin"></span>
@@ -112,185 +112,181 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Plan } from '../../../../store/Entity/Plan'
 import PlansNotification from './PlansNotification.vue'
-import { defineComponent } from 'vue'
+import { ref } from 'vue'
 import { useMainStore } from '../../../../store/MainStore'
 import { Point } from '../../../../store/Entity/Point'
 
-export default defineComponent({
-  components: { PlansNotification },
-  data() {
+const MAX_PLAN_NUMBER = 30
+const selectedPlan = ref('grading')
+
+const store = useMainStore()
+
+const getSelectedPlan = (): Plan => {
+  const result = store.planCandidate.find((c) => c.key === selectedPlan.value)
+  if (result === undefined) return null
+  else {
+    const p = result.data
     return {
-      MAX_PLAN_NUMBER: 30,
-      selectedPlan: 'grading'
+      key: selectedPlan.value,
+      data: {
+        name: p.name,
+        point: {
+          x: store.selectedPoint.x,
+          y: store.selectedPoint.y
+        },
+        amount: store.selectedAmount,
+        usePoint: p.usePoint,
+        useAmount: p.useAmount,
+        useTargetIsland: p.useTargetIsland,
+        targetIsland: store.selectedTargetIsland,
+        isFiring: p.isFiring,
+        priceString: p.priceString,
+        amountString: p.amountString,
+        defaultAmountString: p.defaultAmountString
+      }
     }
-  },
-  setup() {
-    const store = useMainStore()
-    return { store }
-  },
-  methods: {
-    getSelectedPlan(): Plan {
-      // TODO: IslandEditorと共通化できる
-      const result = this.store.planCandidate.find((c) => c.key === this.selectedPlan)
-      if (result === undefined) return null
-      else {
-        const p = result.data
-        return {
-          key: this.selectedPlan,
-          data: {
-            name: p.name,
-            point: {
-              x: this.store.selectedPoint.x,
-              y: this.store.selectedPoint.y
-            },
-            amount: this.store.selectedAmount,
-            usePoint: p.usePoint,
-            useAmount: p.useAmount,
-            useTargetIsland: p.useTargetIsland,
-            targetIsland: this.store.selectedTargetIsland,
-            isFiring: p.isFiring,
-            priceString: p.priceString,
-            amountString: p.amountString,
-            defaultAmountString: p.defaultAmountString
-          }
-        }
-      }
-    },
-    getCustomPlan(key: string, point: Point): Plan {
-      const result = this.store.planCandidate.find((c) => c.key === key)
-      if (result === undefined) return null
-      else {
-        return {
-          key: key,
-          data: {
-            name: result.data.name,
-            point: {
-              x: point.x,
-              y: point.y
-            },
-            amount: this.store.selectedAmount,
-            usePoint: result.data.usePoint,
-            useAmount: result.data.useAmount,
-            useTargetIsland: result.data.useTargetIsland,
-            targetIsland: this.store.selectedTargetIsland,
-            isFiring: result.data.isFiring,
-            priceString: result.data.priceString,
-            amountString: result.data.amountString,
-            defaultAmountString: result.data.defaultAmountString
-          }
-        }
-      }
-    },
-    insertPlanAutomatically(source: string, target: string) {
-      // targetのコマンドが操作できない場合はreturn
-      if (!this.store.planCandidate.find((p) => p.key === target)) {
-        return
-      }
-      for (let terrain of this.store.terrains) {
-        if (terrain.type === source) {
-          let plan = this.getCustomPlan(target, terrain.data.point)
+  }
+}
 
-          this.store.plans.splice(this.store.selectedPlanNumber - 1, 0, plan)
-          this.store.plans.pop()
-          if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-            this.store.selectedPlanNumber++
-          }
-        }
+const getCustomPlan = (key: string, point: Point): Plan => {
+  const result = store.planCandidate.find((c) => c.key === key)
+  if (result === undefined) return null
+  else {
+    return {
+      key: key,
+      data: {
+        name: result.data.name,
+        point: {
+          x: point.x,
+          y: point.y
+        },
+        amount: store.selectedAmount,
+        usePoint: result.data.usePoint,
+        useAmount: result.data.useAmount,
+        useTargetIsland: result.data.useTargetIsland,
+        targetIsland: store.selectedTargetIsland,
+        isFiring: result.data.isFiring,
+        priceString: result.data.priceString,
+        amountString: result.data.amountString,
+        defaultAmountString: result.data.defaultAmountString
       }
-    },
-    overwritePlanAutomatically(source: string, target: string) {
-      // targetのコマンドが操作できない場合はreturn
-      if (!this.store.planCandidate.find((p) => p.key === target)) {
-        return
-      }
-      for (let terrain of this.store.terrains) {
-        if (terrain.type === source) {
-          this.store.plans[this.store.selectedPlanNumber - 1] = this.getCustomPlan(target, terrain.data.point)
-
-          if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-            this.store.selectedPlanNumber++
-          }
-        }
-      }
-    },
-    onClickInsert() {
-      if (this.selectedPlan === 'all_grading') {
-        this.insertPlanAutomatically('wasteland', 'grading')
-        return
-      } else if (this.selectedPlan === 'all_ground_leveling') {
-        this.insertPlanAutomatically('wasteland', 'ground_leveling')
-        return
-      } else if (this.selectedPlan === 'all_excavation') {
-        this.insertPlanAutomatically('shallow', 'excavation')
-        return
-      }
-
-      this.store.plans.splice(this.store.selectedPlanNumber - 1, 0, this.getSelectedPlan())
-      this.store.plans.pop()
-      if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-        this.store.selectedPlanNumber++
-      }
-    },
-    onClickOverwrite() {
-      if (this.selectedPlan === 'all_grading') {
-        this.overwritePlanAutomatically('wasteland', 'grading')
-        return
-      } else if (this.selectedPlan === 'all_ground_leveling') {
-        this.overwritePlanAutomatically('wasteland', 'ground_leveling')
-        return
-      } else if (this.selectedPlan === 'all_excavation') {
-        this.overwritePlanAutomatically('shallow', 'excavation')
-        return
-      }
-
-      this.store.plans[this.store.selectedPlanNumber - 1] = this.getSelectedPlan()
-
-      if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-        this.store.selectedPlanNumber++
-      }
-    },
-    onClickDelete() {
-      this.store.plans.splice(this.store.selectedPlanNumber - 1, 1)
-      this.store.plans.push(this.store.getDefaultPlan)
-    },
-    onClickMoveUp() {
-      if (this.store.selectedPlanNumber <= 1) {
-        return
-      }
-      ;[this.store.plans[this.store.selectedPlanNumber - 2], this.store.plans[this.store.selectedPlanNumber - 1]] = [
-        this.store.plans[this.store.selectedPlanNumber - 1],
-        this.store.plans[this.store.selectedPlanNumber - 2]
-      ]
-      this.store.selectedPlanNumber--
-    },
-    onClickMoveDown() {
-      if (this.store.selectedPlanNumber >= 30) {
-        return
-      }
-      ;[this.store.plans[this.store.selectedPlanNumber], this.store.plans[this.store.selectedPlanNumber - 1]] = [
-        this.store.plans[this.store.selectedPlanNumber - 1],
-        this.store.plans[this.store.selectedPlanNumber]
-      ]
-      if (this.store.selectedPlanNumber < this.MAX_PLAN_NUMBER) {
-        this.store.selectedPlanNumber++
-      }
-    },
-    onClickSendPlan() {
-      this.store.isSendingPlan = true
-      this.store.putPlan()
-    },
-    openIslandPopup() {
-      this.store.getIslandTerrain(this.store.selectedTargetIsland)
-      this.store.isOpenPopup = true
-      this.store.showPlanWindow = false
     }
-  },
-  computed: {},
-  props: []
-})
+  }
+}
+
+const insertPlanAutomatically = (source: string, target: string) => {
+  // targetのコマンドが操作できない場合はreturn
+  if (!store.planCandidate.find((p) => p.key === target)) {
+    return
+  }
+  for (let terrain of store.terrains) {
+    if (terrain.type === source) {
+      let plan = getCustomPlan(target, terrain.data.point)
+
+      store.plans.splice(store.selectedPlanNumber - 1, 0, plan)
+      store.plans.pop()
+      if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
+        store.selectedPlanNumber++
+      }
+    }
+  }
+}
+
+const overwritePlanAutomatically = (source: string, target: string) => {
+  // targetのコマンドが操作できない場合はreturn
+  if (!store.planCandidate.find((p) => p.key === target)) {
+    return
+  }
+  for (let terrain of store.terrains) {
+    if (terrain.type === source) {
+      store.plans[store.selectedPlanNumber - 1] = getCustomPlan(target, terrain.data.point)
+
+      if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
+        store.selectedPlanNumber++
+      }
+    }
+  }
+}
+
+const onClickInsert = () => {
+  if (selectedPlan.value === 'all_grading') {
+    insertPlanAutomatically('wasteland', 'grading')
+    return
+  } else if (selectedPlan.value === 'all_ground_leveling') {
+    insertPlanAutomatically('wasteland', 'ground_leveling')
+    return
+  } else if (selectedPlan.value === 'all_excavation') {
+    insertPlanAutomatically('shallow', 'excavation')
+    return
+  }
+
+  store.plans.splice(store.selectedPlanNumber - 1, 0, getSelectedPlan())
+  store.plans.pop()
+  if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
+    store.selectedPlanNumber++
+  }
+}
+const onClickOverwrite = () => {
+  if (selectedPlan.value === 'all_grading') {
+    overwritePlanAutomatically('wasteland', 'grading')
+    return
+  } else if (selectedPlan.value === 'all_ground_leveling') {
+    overwritePlanAutomatically('wasteland', 'ground_leveling')
+    return
+  } else if (selectedPlan.value === 'all_excavation') {
+    overwritePlanAutomatically('shallow', 'excavation')
+    return
+  }
+
+  store.plans[store.selectedPlanNumber - 1] = getSelectedPlan()
+
+  if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
+    store.selectedPlanNumber++
+  }
+}
+
+const onClickDelete = () => {
+  store.plans.splice(store.selectedPlanNumber - 1, 1)
+  store.plans.push(store.getDefaultPlan)
+}
+
+const onClickMoveUp = () => {
+  if (store.selectedPlanNumber <= 1) {
+    return
+  }
+  ;[store.plans[store.selectedPlanNumber - 2], store.plans[store.selectedPlanNumber - 1]] = [
+    store.plans[store.selectedPlanNumber - 1],
+    store.plans[store.selectedPlanNumber - 2]
+  ]
+  store.selectedPlanNumber--
+}
+
+const onClickMoveDown = () => {
+  if (store.selectedPlanNumber >= 30) {
+    return
+  }
+  ;[store.plans[store.selectedPlanNumber], store.plans[store.selectedPlanNumber - 1]] = [
+    store.plans[store.selectedPlanNumber - 1],
+    store.plans[store.selectedPlanNumber]
+  ]
+  if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
+    store.selectedPlanNumber++
+  }
+}
+
+const onClickSendPlan = () => {
+  store.isSendingPlan = true
+  store.putPlan()
+}
+
+const openIslandPopup = () => {
+  store.getIslandTerrain(store.selectedTargetIsland)
+  store.isOpenPopup = true
+  store.showPlanWindow = false
+}
 </script>
 
 <style lang="scss" scoped>
@@ -348,6 +344,7 @@ export default defineComponent({
       }
     }
   }
+
   .move-command {
     @apply text-center max-lg:w-full lg:float-right;
 

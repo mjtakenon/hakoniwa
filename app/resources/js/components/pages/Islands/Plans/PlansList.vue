@@ -57,29 +57,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, defineComponent } from 'vue'
 import { useMainStore } from '../../../../store/MainStore'
 
-export default defineComponent({
-  data() {
-    return {}
-  },
-  setup() {
-    const store = useMainStore()
-    return { store }
-  },
-  methods: {
-    onClickPlan(index) {
-      this.store.selectedPlanNumber = parseInt(index) + 1
-    }
-  },
-  mounted() {},
-  computed: {
-    isPlanSent: function () {
-      return JSON.stringify(this.store.plans) === JSON.stringify(this.store.sentPlans)
-    }
-  }
+const store = useMainStore()
+
+const onClickPlan = (index: number) => {
+  store.selectedPlanNumber = index + 1
+}
+
+const isPlanSent = computed(() => {
+  return JSON.stringify(store.plans) === JSON.stringify(store.sentPlans)
 })
 </script>
 

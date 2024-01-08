@@ -16,6 +16,7 @@
             terrain.data.point.y * 8
           ] as Vector3
         "
+        :scale="models[terrain.type].scene.scale.x"
         :terrain="terrain"
         :scene="models[terrain.type].scene.clone()"></IslandViewerCell>
     </template>
