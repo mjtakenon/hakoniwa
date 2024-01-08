@@ -12,7 +12,9 @@
     ></vue-header>
     @if(\App::environment('local') && \APP::hasDebugModeEnabled() && file_exists(public_path('hot')))
         <debug-tools
-            :debug-login-using-id="{{ config('app.hakoniwa.debug.login_using_id') }}"
+            @if(is_numeric(config('app.hakoniwa.debug.login_using_id')))
+                :debug-login-using-id="{{ config('app.hakoniwa.debug.login_using_id') }}"
+            @endif
         ></debug-tools>
     @endif
 </header>

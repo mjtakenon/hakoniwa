@@ -4,7 +4,7 @@
     :class="{ hidden: !visible }">
     <div class="mr-5 text-xs">DEBUG TOOLS:</div>
     <div class="text-xs">theme:</div>
-    <ThemeSwitcher></ThemeSwitcher>
+    <ThemeSwitcher />
     <a v-if="debugLoginUsingId >= 1" class="button-primary login" href="/auth/debug/login">
       <div>ログイン</div>
     </a>

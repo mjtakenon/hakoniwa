@@ -11,33 +11,33 @@
       <h3 class="samples-title">サンプル</h3>
       <div class="samples-wrapper">
         <div class="samples-grid">
-          <div class="sample-box bg-background text-on-background">background</div>
-          <div class="sample-box bg-surface text-on-surface">surface</div>
-          <div class="sample-box bg-primary text-on-primary">
-            <div class="sample-box">primary</div>
-            <div class="sample-box bg-primary-container text-on-primary-container">primary container</div>
+          <div class="bg-background text-on-background">background</div>
+          <div class="bg-surface text-on-surface">surface</div>
+          <div class="bg-primary text-on-primary">
+            <div>primary</div>
+            <div class="bg-primary-container text-on-primary-container">primary container</div>
           </div>
-          <div class="sample-box bg-secondary text-on-secondary">
-            <div class="sample-box">secondary</div>
-            <div class="sample-box bg-secondary-container text-on-secondary-container">secondary container</div>
+          <div class="bg-secondary text-on-secondary">
+            <div>secondary</div>
+            <div class="bg-secondary-container text-on-secondary-container">secondary container</div>
           </div>
-          <div class="sample-box bg-alert text-on-alert">
-            <div class="sample-box">alert</div>
-            <div class="sample-box bg-alert-container text-on-alert-container">alert container</div>
+          <div class="bg-alert text-on-alert">
+            <div>alert</div>
+            <div class="bg-alert-container text-on-alert-container">alert container</div>
           </div>
-          <div class="sample-box bg-error text-on-error">
-            <div class="sample-box">error</div>
-            <div class="sample-box bg-error-container text-on-error-container">error container</div>
+          <div class="bg-error text-on-error">
+            <div>error</div>
+            <div class="bg-error-container text-on-error-container">error container</div>
           </div>
-          <div class="sample-box bg-surface-variant text-on-surface-variant">surface-variant</div>
-          <div class="sample-box border-2">outline</div>
-          <div class="sample-box font-bold text-on-link">Link Text Color</div>
-          <div class="sample-box font-bold">
-            <div class="sample-box">
+          <div class="bg-surface-variant text-on-surface-variant">surface-variant</div>
+          <div class="border-2">outline</div>
+          <div class="font-bold text-on-link">Link Text Color</div>
+          <div class="font-bold">
+            <div>
               <span class="mr-3">PLUS</span>
               <span class="border-b-2 border-b-plus text-on-plus">+ 100 pts</span>
             </div>
-            <div class="sample-box">
+            <div>
               <span class="mr-3">MINUS</span>
               <span class="border-b-2 border-b-minus text-on-minus">- 100 pts</span>
             </div>
@@ -48,29 +48,19 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import themes from '../../../ThemeList.json'
-import { Theme } from '../../../store/Entity/Theme'
-import { useMainStore } from '../../../store/MainStore'
+<script setup lang="ts">
+import { ref } from 'vue'
+import themeListJson from '../../../ThemeList.json'
+import { Theme } from '../../../store/Entity/Theme.js'
+import { useMainStore } from '../../../store/MainStore.js'
 
-export default defineComponent({
-  data() {
-    return {
-      themes: themes as Theme[]
-    }
-  },
-  setup() {
-    const store = useMainStore()
-    return { store }
-  },
-  methods: {
-    onClickTheme(theme: Theme) {
-      if (this.store.theme.name === theme.name) return
-      this.store.changeTheme(theme)
-    }
-  }
-})
+const themes = ref<Theme[]>(themeListJson as Theme[])
+const store = useMainStore()
+
+const onClickTheme = (theme: Theme) => {
+  if (store.theme.name === theme.name) return
+  store.changeTheme(theme)
+}
 </script>
 
 <style scoped lang="scss">
@@ -116,7 +106,7 @@ export default defineComponent({
         @apply md:grid-cols-2;
       }
 
-      .sample-box {
+      div {
         @apply flex min-h-[4rem] w-full flex-wrap items-center justify-center rounded-md p-3;
       }
     }
