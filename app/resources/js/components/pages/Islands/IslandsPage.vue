@@ -3,8 +3,8 @@
     <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
     <IslandViewer />
     <div class="md:max-lg:px-3">
-      <Bbs></Bbs>
-      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs"></LogViewer>
+      <Bbs :island="store.island" />
+      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs" />
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ import { AchievementProp } from '../../../store/Entity/Achievement'
 import { BbsMessage } from '../../../store/Entity/Bbs'
 import Bbs from '../../islands/common/Bbs.vue'
 import { useIslandViewerStore } from '../../../store/IslandViewerStore.js'
+import { useBbsStore } from '../../../store/BbsStore.js'
 
 let hoverWindowTop = ref(170)
 let hoverWindowLeft = ref(0)
@@ -66,8 +67,9 @@ store.$patch((state) => {
   state.terrains = props.island.terrains
   state.logs = logs
   state.achievements = props.island.achievements
-  state.bbs = props.island.bbs
 })
+
+useBbsStore().bbs = props.island.bbs
 </script>
 
 <style lang="scss" scoped>

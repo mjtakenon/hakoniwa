@@ -12,7 +12,6 @@ import { Turn } from './Entity/Turn.js'
 import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
 import { Achievement } from './Entity/Achievement.js'
 import { BbsMessage, BbsVisibility } from './Entity/Bbs.js'
-import { Camera, Vector3 } from 'three'
 
 export interface PiniaState {
   hakoniwa: Hakoniwa
@@ -43,9 +42,6 @@ export interface PiniaState {
   showHoverWindow: boolean
   showPlanWindow: boolean
   hoverCellPoint: Point
-  hoverCellCamera: Camera | null
-  hoverCellCameraPositions: Vector3[]
-  hoverCellCameraLookAt: Vector3[]
   turn: Turn
   isOpenPopup: boolean
   isIslandPopupMount: boolean
@@ -103,9 +99,6 @@ export const useIslandViewerStore = defineStore('island-viewer', {
       showHoverWindow: false,
       showPlanWindow: false,
       hoverCellPoint: { x: 0, y: 0 },
-      hoverCellCamera: null,
-      hoverCellCameraPositions: [],
-      hoverCellCameraLookAt: [],
       turn: {
         turn: 0,
         next_time: new Date('1970/1/1 00:00:00')
@@ -294,14 +287,6 @@ export const useIslandViewerStore = defineStore('island-viewer', {
           result.status = RequestStatus.Failed
         })
       return result
-    },
-    changeHoverCellCameraFocus(type: string) {
-      this.hoverCellCamera.position.set(
-        this.hoverCellCameraPositions[type].x,
-        this.hoverCellCameraPositions[type].y,
-        this.hoverCellCameraPositions[type].z
-      )
-      this.hoverCellCamera.lookAt(this.hoverCellCameraLookAt[type])
     }
   }
 })

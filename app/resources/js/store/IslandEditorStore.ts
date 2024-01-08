@@ -43,9 +43,6 @@ export interface PiniaState {
   showHoverWindow: boolean
   showPlanWindow: boolean
   hoverCellPoint: Point
-  hoverCellCamera: Camera | null
-  hoverCellCameraPositions: Vector3[]
-  hoverCellCameraLookAt: Vector3[]
   turn: Turn
   isOpenPopup: boolean
   isIslandPopupMount: boolean
@@ -103,9 +100,6 @@ export const useIslandEditorStore = defineStore('island-editor', {
       showHoverWindow: false,
       showPlanWindow: false,
       hoverCellPoint: { x: 0, y: 0 },
-      hoverCellCamera: null,
-      hoverCellCameraPositions: [],
-      hoverCellCameraLookAt: [],
       turn: {
         turn: 0,
         next_time: new Date('1970/1/1 00:00:00')
@@ -294,14 +288,6 @@ export const useIslandEditorStore = defineStore('island-editor', {
           result.status = RequestStatus.Failed
         })
       return result
-    },
-    changeHoverCellCameraFocus(type: string) {
-      this.hoverCellCamera.position.set(
-        this.hoverCellCameraPositions[type].x,
-        this.hoverCellCameraPositions[type].y,
-        this.hoverCellCameraPositions[type].z
-      )
-      this.hoverCellCamera.lookAt(this.hoverCellCameraLookAt[type])
     }
   }
 })

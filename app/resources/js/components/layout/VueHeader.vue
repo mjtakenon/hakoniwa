@@ -66,6 +66,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faArrowRightFromBracket, faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { Island } from '../../store/Entity/Island.js'
 import { useUserSettingsStore } from '../../store/UserSettingsStore.js'
+import { useBbsStore } from '../../store/BbsStore.js'
 
 let isOpenHamburgerMenu = ref(false)
 
@@ -81,7 +82,7 @@ const props = defineProps<Props>()
 
 library.add(faPenToSquare, faGear, faArrowRightFromBracket)
 
-const store = useMainStore()
+const store = useBbsStore()
 const userSettings = useUserSettingsStore()
 const theme = localStorage.getItem('theme')
 

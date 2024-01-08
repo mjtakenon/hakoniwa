@@ -11,7 +11,7 @@
       <PlanList class="grow" :class="{ 'order-2': !canSideBySide }"></PlanList>
     </div>
     <div class="md:max-lg:px-3">
-      <Bbs></Bbs>
+      <Bbs :island="store.island" />
       <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs" />
     </div>
     <IslandPopup v-if="!store.isIslandEditorMount && store.isOpenPopup" />
@@ -26,7 +26,6 @@ import PlanController from './PlansController.vue'
 import PlanList from './PlansList.vue'
 import lodash from 'lodash'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { useMainStore } from '../../../../store/MainStore'
 
 import { Hakoniwa } from '../../../../store/Entity/Hakoniwa'
 import { Island } from '../../../../store/Entity/Island'
@@ -41,6 +40,7 @@ import { AchievementProp, getAchievementsList } from '../../../../store/Entity/A
 import Bbs from '../../../islands/common/Bbs.vue'
 import { BbsMessage } from '../../../../store/Entity/Bbs'
 import { useIslandEditorStore } from '../../../../store/IslandEditorStore.js'
+import { useBbsStore } from '../../../../store/BbsStore.js'
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -115,8 +115,9 @@ store.$patch((state) => {
   state.selectedTargetIsland = props.island.id
   state.turn = turn
   state.achievements = achievements
-  state.bbs = props.island.bbs
 })
+
+useBbsStore().bbs = props.island.bbs
 
 const canSideBySide = computed(() => {
   return store.screenWidth > 912
