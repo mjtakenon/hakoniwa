@@ -1,4 +1,4 @@
-import { Island } from './Island'
+import { Island } from './Island.js'
 
 export type BbsVisibility = 'public' | 'private'
 
