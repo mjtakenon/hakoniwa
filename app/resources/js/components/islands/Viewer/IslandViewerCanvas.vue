@@ -11,9 +11,9 @@
       <IslandViewerCell
         :position="
           [
-            terrain.data.point.x * 8 + ((terrain.data.point.y % 2) - 1) * 4,
+            terrain.data.point.x * store.cellSize + ((((terrain.data.point.y + 1) % 2) - 1) * store.cellSize) / 2,
             models[terrain.type].scene.position.y,
-            terrain.data.point.y * 8
+            terrain.data.point.y * store.cellSize
           ] as Vector3
         "
         :scale="models[terrain.type].scene.scale.x"
