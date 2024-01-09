@@ -13,8 +13,7 @@
     </TresCanvas>
     <IslandHoverWindow
       :showHoverWindow="store.showHoverWindow"
-      :hoverWindowY="store.hoverWindowY"
-      :hoverWindowX="store.hoverWindowX"
+      :hoverWindow="store.hoverWindow"
       :hoverCellPoint="store.hoverCellPoint"
       :terrains="store.terrains" />
   </div>

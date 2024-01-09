@@ -14,8 +14,7 @@
     <CountdownWidget></CountdownWidget>
     <IslandHoverWindow
       :showHoverWindow="store.showHoverWindow"
-      :hoverWindowY="store.hoverWindowY"
-      :hoverWindowX="store.hoverWindowX"
+      :hoverWindow="store.hoverWindow"
       :hoverCellPoint="store.hoverCellPoint"
       :terrains="store.terrains">
       <template v-for="(plan, index) of store.plans">

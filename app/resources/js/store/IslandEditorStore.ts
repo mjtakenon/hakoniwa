@@ -32,8 +32,7 @@ export interface PiniaState {
   planCandidate: Plan[]
   planSendingResult: number
   showNotification: boolean
-  hoverWindowX: number
-  hoverWindowY: number
+  hoverWindow: Point
   planWindowX: number
   planWindowY: number
   isMobile: boolean
@@ -84,8 +83,7 @@ export const useIslandEditorStore = defineStore('island-editor', {
       planCandidate: [],
       planSendingResult: 200,
       showNotification: false,
-      hoverWindowX: 100,
-      hoverWindowY: 100,
+      hoverWindow: { x: 100, y: 100 },
       planWindowX: 100,
       planWindowY: 100,
       isMobile: document.documentElement.clientWidth < 1024,
