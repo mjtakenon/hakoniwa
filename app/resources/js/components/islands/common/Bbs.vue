@@ -58,20 +58,20 @@
               <span class="turn-title">ターン: </span>
               <span class="turn-num">{{ post.turn }}</span>
             </div>
-            <a v-if="post.island?.id !== undefined" class="post-profile" :href="'/islands/' + post.island.id">
-              <div class="post-island-owner">{{ post.island.owner_name }}</div>
-              <div class="post-island-name">({{ post.island.name }}島)</div>
+            <a v-if="post.user.island?.id !== undefined" class="post-profile" :href="'/islands/' + post.user.island.id">
+              <div class="post-island-owner">{{ post.user.island.owner_name }}</div>
+              <div class="post-island-name">({{ post.user.island.name }}島)</div>
             </a>
             <div v-else class="post-profile">
               <div class="post-island-owner">削除された島</div>
             </div>
-            <div v-show="post.island?.id === props.island.id" class="post-badge owner">
+            <div v-show="post.user.island?.id === props.island.id" class="post-badge owner">
               <div class="badge-text">島のオーナー</div>
             </div>
             <div v-show="post.visibility === 'private'" class="post-badge private">
               <div class="badge-text">秘密通信</div>
             </div>
-            <div v-show="post.user_id === userStore.user?.id" class="delete-button" @click="deleteComment(post)">
+            <div v-show="post.user.id === userStore.user?.id" class="delete-button" @click="deleteComment(post)">
               <FontAwesomeIcon class="icon pointer-events-none" :icon="['fas', 'trash-can']" />
             </div>
           </div>

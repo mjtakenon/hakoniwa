@@ -44,7 +44,10 @@ class IslandBbs extends Model
     {
         $data = [
             'id' => $this->id,
-            'user_id' => $this->commenter_user_id,
+            'user' => [
+                'id' => $this->commenter_user_id,
+                'island' => $commenterIsland,
+            ],
             'visibility' => $this->visibility,
             'deleted' => !is_null($this->deleted_at),
         ];
