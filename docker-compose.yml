@@ -9,8 +9,9 @@ services:
     working_dir: /app
     volumes:
       - ./app/:/app
+      - ./frontend/resources/js:/app/resources/js
+      - ./frontend/resources/css:/app/resources/css
       - sqlite:/app/database/sqlite/
-      - node_modules:/app/node_modules
     privileged: true
     tty: true
     depends_on:
@@ -22,7 +23,6 @@ services:
       dockerfile: ./infra/composer/Dockerfile
     volumes:
       - ./app/:/app/
-      - node_modules:/app/node_modules
     working_dir: /app
   db:
     image: mysql:8
@@ -63,8 +63,9 @@ services:
       dockerfile: ./infra/frontend/Dockerfile
     tty: true
     volumes:
-      - ./app/:/app
-      - node_modules:/app/node_modules
+      - ./frontend/:/frontend
+      - ./app/public/:/frontend/public
+      - node_modules:/frontend/node_modules
     ports:
       - "${FRONT_PORT:-54373}:54373"
 volumes:

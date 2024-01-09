@@ -4,19 +4,24 @@ up:
 	docker compose up -d
 down: 
 	docker compose down
-setup: 
+init:
+	make build
+	make up
+	make init-db
+	make init-db-testing
+setup:
+	make create-node-modules-dir
 	make build
 	make up
 	make create-log-file
 	make composer-install
-	make init-db
-	make init-db-testing
 	make migrate
 	make seeding
 	make ide-helper-generate
 	make yarn-install
 	make yarn-run-dev
 start:
+	make create-node-modules-dir
 	make up
 	make migrate
 	make seeding
@@ -53,6 +58,9 @@ create-log-file:
 next-turn:
 	docker compose exec --user www-data app php artisan execute:turn
 
+create-node-modules-dir:
+	-mkdir ./frontend/node_modules
+
 exec-composer:
 	docker compose run --user debian composer bash
 composer-install:
@@ -77,8 +85,8 @@ exec-frontend:
 	docker compose exec frontend bash
 yarn-install:
 	docker compose exec frontend bash -c "yarn install --frozen-lockfile"
-	docker compose exec frontend bash -c "chown node:node /app/node_modules -R"
-	docker compose cp app:/app/node_modules ./app
+	docker compose exec frontend bash -c "chown node:node /frontend/node_modules -R"
+	docker compose cp frontend:/frontend/node_modules ./frontend
 yarn-run-dev:
 	docker compose exec frontend bash -c "yarn run dev"
 yarn-prettier:

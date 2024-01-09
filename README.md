@@ -36,6 +36,7 @@ cp app/.env.local app/.env
 - Windows+WSL環境で以下コマンドの実行に権限周りのエラーが出る場合、sudoをつけて実行してください
 
 ```sh
+$ make init
 $ make setup
 ```
 

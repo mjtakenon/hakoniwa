@@ -45,7 +45,7 @@ export default ({ mode }) => {
       }
     },
     build: {
-      outDir: 'public/build/', // ビルド成果物の生成先
+      outDir: 'public/build/' // ビルド成果物の生成先
     }
   })
 }
