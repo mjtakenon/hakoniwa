@@ -4,7 +4,7 @@
       <FontAwesomeIcon class="mr-6" :icon="['fas', 'chalkboard-user']" size="xl" />
       <span>{{ props.island.name }}島の掲示板</span>
     </div>
-    <div v-if="userStore.user !== null && userStore.user.island !== null" class="bbs-form">
+    <div v-if="userStore.hasIsland" class="bbs-form">
       <div class="bbs-form-inner">
         <div class="bbs-form-title">掲示板送信</div>
         <div class="bbs-input-box">

@@ -89,14 +89,14 @@ if (theme !== null && theme !== undefined) {
   userSettings.theme = JSON.parse(theme)
 }
 
-if (props.ownedIsland !== null && props.ownedIsland !== undefined) {
-  store.$patch((state) => {
-    state.user = {
-      id: props.userId,
-      island: props.ownedIsland ?? null
-    }
-  })
-}
+store.$patch((state) => {
+  state.user = props.userId
+    ? {
+        id: props.userId,
+        island: props.ownedIsland ?? null
+      }
+    : null
+})
 
 onMounted(() => {
   userSettings.changeTheme(userSettings.theme)
