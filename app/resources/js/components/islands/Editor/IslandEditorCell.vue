@@ -78,30 +78,30 @@ const onClickCell = (event: MouseEvent) => {
   store.showPlanWindow = true
 
   if (store.isMobile) {
-    store.planWindowX = event.pageX
+    store.planWindow.x = event.pageX
     const offsetX = 15
     const offsetY = 30
     const elementWidth = 230
-    const leftEdge = store.planWindowX - elementWidth / 2
-    const rightEdge = store.planWindowX + elementWidth / 2
+    const leftEdge = store.planWindow.x - elementWidth / 2
+    const rightEdge = store.planWindow.x + elementWidth / 2
     if (leftEdge < offsetX) {
-      store.planWindowX += -leftEdge + offsetX
+      store.planWindow.x += -leftEdge + offsetX
     } else if (rightEdge > store.screenWidth) {
-      store.planWindowX -= rightEdge - store.screenWidth + offsetX
+      store.planWindow.x -= rightEdge - store.screenWidth + offsetX
     }
 
     if (store.isOpenPopup) {
-      store.planWindowY = event.pageY - window.scrollY + offsetY
+      store.planWindow.y = event.pageY - window.scrollY + offsetY
     } else {
-      store.planWindowY = event.pageY + offsetY
+      store.planWindow.y = event.pageY + offsetY
     }
   } else {
     const offset = 15
-    store.planWindowX = event.pageX + offset
+    store.planWindow.x = event.pageX + offset
     if (store.isOpenPopup) {
-      store.planWindowY = event.pageY - window.scrollY + offset
+      store.planWindow.y = event.pageY - window.scrollY + offset
     } else {
-      store.planWindowY = event.pageY + offset
+      store.planWindow.y = event.pageY + offset
     }
   }
 }
