@@ -4,13 +4,8 @@ import axios from 'axios'
 import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
 import { BbsMessage, BbsVisibility } from './Entity/Bbs.js'
 import { ref } from 'vue'
-import { User } from './Entity/User.js'
 
 export const useBbsStore = defineStore('bbs', () => {
-  const user = ref<User | null>({
-    id: 0,
-    island: null
-  })
   const bbs = ref<BbsMessage[]>([])
 
   const postBbs = async (comment: string, visibility: BbsVisibility, island: Island): Promise<AjaxResult> => {
@@ -60,5 +55,5 @@ export const useBbsStore = defineStore('bbs', () => {
     return result
   }
 
-  return { user, bbs, postBbs, deleteBbs }
+  return { bbs, postBbs, deleteBbs }
 })
