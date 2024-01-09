@@ -9,8 +9,6 @@ services:
     working_dir: /app
     volumes:
       - ./app/:/app
-      - ./frontend/resources/js:/app/resources/js
-      - ./frontend/resources/css:/app/resources/css
       - sqlite:/app/database/sqlite/
     privileged: true
     tty: true
