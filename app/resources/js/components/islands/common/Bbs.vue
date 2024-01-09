@@ -2,9 +2,9 @@
   <div id="bbs">
     <div class="header">
       <FontAwesomeIcon class="mr-6" :icon="['fas', 'chalkboard-user']" size="xl" />
-      <span>{{ store.island.name }}島の掲示板</span>
+      <span>{{ props.island.name }}島の掲示板</span>
     </div>
-    <div v-if="store.user.island !== null" class="bbs-form">
+    <div v-if="userStore.hasIsland" class="bbs-form">
       <div class="bbs-form-inner">
         <div class="bbs-form-title">掲示板送信</div>
         <div class="bbs-input-box">
@@ -28,7 +28,7 @@
           全体
         </button>
         <button
-          v-if="store.island.id !== store.user.island.id"
+          v-if="props.island.id !== userStore.user?.island?.id"
           class="button-private"
           :class="{ active: sendMode === 'private' }"
           @click="changeSendMode('private')">
@@ -45,8 +45,8 @@
     </div>
     <div class="viewer">
       <div class="viewer-title">投稿一覧</div>
-      <div v-show="store.bbs.length === 0" class="no-post">投稿はありません</div>
-      <template v-for="post of store.bbs">
+      <div v-show="bbsStore.bbs.length === 0" class="no-post">投稿はありません</div>
+      <template v-for="post of bbsStore.bbs">
         <div
           v-if="post.comment !== null && post.comment !== undefined"
           class="post"
@@ -58,20 +58,20 @@
               <span class="turn-title">ターン: </span>
               <span class="turn-num">{{ post.turn }}</span>
             </div>
-            <a v-if="post.island?.id !== undefined" class="post-profile" :href="'/islands/' + post.island.id">
-              <div class="post-island-owner">{{ post.island.owner_name }}</div>
-              <div class="post-island-name">({{ post.island.name }}島)</div>
+            <a v-if="post.user.island?.id !== undefined" class="post-profile" :href="'/islands/' + post.user.island.id">
+              <div class="post-island-owner">{{ post.user.island.owner_name }}</div>
+              <div class="post-island-name">({{ post.user.island.name }}島)</div>
             </a>
             <div v-else class="post-profile">
               <div class="post-island-owner">削除された島</div>
             </div>
-            <div v-show="post.island?.id === store.island.id" class="post-badge owner">
+            <div v-show="post.user.island?.id === props.island.id" class="post-badge owner">
               <div class="badge-text">島のオーナー</div>
             </div>
             <div v-show="post.visibility === 'private'" class="post-badge private">
               <div class="badge-text">秘密通信</div>
             </div>
-            <div v-show="post.user_id === store.user.user_id" class="delete-button" @click="deleteComment(post)">
+            <div v-show="post.user.id === userStore.user?.id" class="delete-button" @click="deleteComment(post)">
               <FontAwesomeIcon class="icon pointer-events-none" :icon="['fas', 'trash-can']" />
             </div>
           </div>
@@ -93,20 +93,30 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChalkboardUser, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { BbsMessage, BbsVisibility } from '../../../store/Entity/Bbs'
 import { ErrorType, RequestStatus } from '../../../store/Entity/Network'
+import { useBbsStore } from '../../../store/BbsStore.js'
+import { useUserStore } from '../../../store/UserStore.js'
+import { Island } from '../../../store/Entity/Island.js'
 
-let sendMode = ref<BbsVisibility>('public')
-let comment = ref('')
-let formError = ref('')
-let submitStatus = ref<RequestStatus>(RequestStatus.None)
-let deleteStatus = ref<RequestStatus>(RequestStatus.None)
+const bbsStore = useBbsStore()
+const userStore = useUserStore()
+
+interface Props {
+  island: Island
+}
+
+const props = defineProps<Props>()
+
+const sendMode = ref<BbsVisibility>('public')
+const comment = ref('')
+const formError = ref('')
+const submitStatus = ref<RequestStatus>(RequestStatus.None)
+const deleteStatus = ref<RequestStatus>(RequestStatus.None)
 
 library.add(faChalkboardUser, faTrashCan)
-const store = useMainStore()
 
 const isSubmitting = computed(() => {
   return submitStatus.value === RequestStatus.Updating
@@ -124,7 +134,7 @@ const bbsSubmit = async () => {
   checkInput()
   if (hasError.value || isSubmitting.value) return
   submitStatus.value = RequestStatus.Updating
-  const result = await store.postBbs(comment.value, sendMode.value)
+  const result = await bbsStore.postBbs(comment.value, sendMode.value, props.island)
   submitStatus.value = result.status
 
   if (result.status === RequestStatus.Success) {
@@ -147,7 +157,7 @@ const bbsSubmit = async () => {
 const deleteComment = async (target: BbsMessage) => {
   if (deleteStatus.value === RequestStatus.Updating) return
   deleteStatus.value = RequestStatus.Updating
-  const result = await store.deleteBbs(target)
+  const result = await bbsStore.deleteBbs(target, props.island)
   deleteStatus.value = result.status
 
   if (deleteStatus.value === RequestStatus.Failed) {

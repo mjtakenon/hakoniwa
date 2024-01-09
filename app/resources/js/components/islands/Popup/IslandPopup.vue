@@ -35,7 +35,11 @@
         <TresAmbientLight :intensity="2" />
         <TresDirectionalLight :position="[192, 192, 192] as Vector3" :intensity="3" />
       </TresCanvas>
-      <HoverWindow>
+      <IslandHoverWindow
+        :showHoverWindow="store.showHoverWindow"
+        :hoverWindow="store.hoverWindow"
+        :hoverCellPoint="store.hoverCellPoint"
+        :terrains="store.terrains">
         <template v-for="(plan, index) of store.plans">
           <div
             class="hover-window-plan"
@@ -54,7 +58,7 @@
             </span>
           </div>
         </template>
-      </HoverWindow>
+      </IslandHoverWindow>
       <PlanWindow />
       <div class="comment-box">
         <div class="comment-title">Comment:</div>
@@ -68,16 +72,16 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, watch } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
 import { storeToRefs } from 'pinia'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import IslandEditorCanvas from '../Editor/IslandEditorCanvas.vue'
 import { CameraControls } from '@tresjs/cientos'
-import HoverWindow from '../Hover/IslandHoverWindow.vue'
+import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
 import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 const { isOpenPopup, isLoadingTerrain } = storeToRefs(store)
 
 const gl = reactive({

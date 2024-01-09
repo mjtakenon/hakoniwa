@@ -17,9 +17,10 @@ import { Object3D, Vector3 } from 'three'
 
 import { shallowRef, ShallowRef } from 'vue'
 import { Terrain } from '../../../store/Entity/Terrain'
-import { useMainStore } from '../../../store/MainStore'
+import { useIslandViewerStore } from '../../../store/IslandViewerStore.js'
+import { useIslandHoverStore } from '../../../store/IslandHoverStore.js'
 
-const store = useMainStore()
+const store = useIslandViewerStore()
 
 interface Props {
   terrain: Terrain
@@ -38,24 +39,24 @@ const onMouseOverCell = (event: MouseEvent) => {
   store.showHoverWindow = true
   store.hoverCellPoint = props.terrain.data.point
 
-  store.changeHoverCellCameraFocus(props.terrain.type)
+  useIslandHoverStore().changeHoverCellCameraFocus(props.terrain.type)
 }
 
 const onMouseMoveCell = (event: MouseEvent) => {
   const offsetY = 25
-  store.hoverWindowY = document.documentElement.clientHeight - event.pageY + offsetY
-  store.hoverWindowX = event.pageX
+  store.hoverWindow.y = document.documentElement.clientHeight - event.pageY + offsetY
+  store.hoverWindow.x = event.pageX
 
   // Screen Overflow Check
   if (store.isMobile) {
     const windowSize = 200
     const paddingOffset = 20
-    const leftEdge = store.hoverWindowX - windowSize / 2
-    const rightEdge = store.hoverWindowX + windowSize / 2
+    const leftEdge = store.hoverWindow.x - windowSize / 2
+    const rightEdge = store.hoverWindow.x + windowSize / 2
     if (leftEdge < paddingOffset) {
-      store.hoverWindowX += -leftEdge + paddingOffset
+      store.hoverWindow.x += -leftEdge + paddingOffset
     } else if (rightEdge > store.screenWidth) {
-      store.hoverWindowX -= rightEdge - store.screenWidth + paddingOffset
+      store.hoverWindow.x -= rightEdge - store.screenWidth + paddingOffset
     }
   }
 }

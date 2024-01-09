@@ -11,19 +11,22 @@
       <TresAmbientLight :intensity="2" />
       <TresDirectionalLight :position="[192, 192, 192] as Vector3" :intensity="3" />
     </TresCanvas>
-    <HoverWindow></HoverWindow>
+    <IslandHoverWindow
+      :showHoverWindow="store.showHoverWindow"
+      :hoverWindow="store.hoverWindow"
+      :hoverCellPoint="store.hoverCellPoint"
+      :terrains="store.terrains" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Terrain } from '../../../store/Entity/Terrain'
 import { reactive } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
 import { TresCanvas } from '@tresjs/core'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import { CameraControls } from '@tresjs/cientos'
-import HoverWindow from '../../islands/Hover/IslandHoverWindow.vue'
+import IslandHoverWindow from '../../islands/Hover/IslandHoverWindow.vue'
 import IslandViewerCanvas from '../../islands/Viewer/IslandViewerCanvas.vue'
+import { useIslandViewerStore } from '../../../store/IslandViewerStore.js'
 
 const gl = reactive({
   clearColor: '#888888',
@@ -40,15 +43,7 @@ const cameraControlsState = reactive({
   maxPolarAngle: Math.PI / 2
 })
 
-const store = useMainStore()
-
-const getIslandTerrain = (x, y): Terrain => {
-  return store.terrains
-    .filter(function (item) {
-      if (item.data.point.x === x && item.data.point.y === y) return true
-    })
-    .pop()
-}
+const store = useIslandViewerStore()
 </script>
 
 <style lang="scss" scoped>

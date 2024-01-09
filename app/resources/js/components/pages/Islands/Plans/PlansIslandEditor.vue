@@ -12,7 +12,11 @@
       <TresDirectionalLight :position="[192, 192, 192] as Vector3" :intensity="3" />
     </TresCanvas>
     <CountdownWidget></CountdownWidget>
-    <HoverWindow>
+    <IslandHoverWindow
+      :showHoverWindow="store.showHoverWindow"
+      :hoverWindow="store.hoverWindow"
+      :hoverCellPoint="store.hoverCellPoint"
+      :terrains="store.terrains">
       <template v-for="(plan, index) of store.plans">
         <div
           class="hover-window-plan"
@@ -30,21 +34,21 @@
           </span>
         </div>
       </template>
-    </HoverWindow>
+    </IslandHoverWindow>
     <PlanWindow />
   </div>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted, onUnmounted, reactive } from 'vue'
-import { useMainStore } from '../../../../store/MainStore'
 import CountdownWidget from '../../../islands/common/CountdownWidget.vue'
 import { TresCanvas } from '@tresjs/core'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import IslandEditorCanvas from '../../../islands/Editor/IslandEditorCanvas.vue'
 import { CameraControls } from '@tresjs/cientos'
-import HoverWindow from '../../../islands/Hover/IslandHoverWindow.vue'
 import PlanWindow from '../../../islands/Editor/IslandEditorPlanWindow.vue'
+import IslandHoverWindow from '../../../islands/Hover/IslandHoverWindow.vue'
+import { useIslandEditorStore } from '../../../../store/IslandEditorStore.js'
 
 const gl = reactive({
   clearColor: '#888888',
@@ -61,7 +65,7 @@ const cameraControlsState = reactive({
   maxPolarAngle: Math.PI / 2
 })
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 let screenWidth = document.documentElement.clientWidth
 let terrains = []

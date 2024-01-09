@@ -1,10 +1,10 @@
 <template>
   <div id="sightseeing-page" class="wrapper">
-    <StatusTable></StatusTable>
-    <IslandViewer></IslandViewer>
+    <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
+    <IslandViewer />
     <div class="md:max-lg:px-3">
-      <Bbs></Bbs>
-      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs"></LogViewer>
+      <Bbs :island="store.island" />
+      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs" />
     </div>
   </div>
 </template>
@@ -14,7 +14,6 @@ import StatusTable from '../../islands/common/StatusTable.vue'
 import LogViewer from '../../islands/common/LogViewer.vue'
 import IslandViewer from './IslandsViewer.vue'
 import { ref } from 'vue'
-import { useMainStore } from '../../../store/MainStore'
 import { Hakoniwa } from '../../../store/Entity/Hakoniwa'
 import { Status } from '../../../store/Entity/Status'
 import { Terrain } from '../../../store/Entity/Terrain'
@@ -23,11 +22,13 @@ import { LogParser, LogProps, SummaryProps } from '../../../store/Entity/Log'
 import { AchievementProp } from '../../../store/Entity/Achievement'
 import { BbsMessage } from '../../../store/Entity/Bbs'
 import Bbs from '../../islands/common/Bbs.vue'
+import { useIslandViewerStore } from '../../../store/IslandViewerStore.js'
+import { useBbsStore } from '../../../store/BbsStore.js'
 
 let hoverWindowTop = ref(170)
 let hoverWindowLeft = ref(0)
 
-const store = useMainStore()
+const store = useIslandViewerStore()
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -66,8 +67,9 @@ store.$patch((state) => {
   state.terrains = props.island.terrains
   state.logs = logs
   state.achievements = props.island.achievements
-  state.bbs = props.island.bbs
 })
+
+useBbsStore().bbs = props.island.bbs
 </script>
 
 <style lang="scss" scoped>

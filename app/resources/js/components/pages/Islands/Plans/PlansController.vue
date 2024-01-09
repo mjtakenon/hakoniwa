@@ -116,13 +116,13 @@
 import { Plan } from '../../../../store/Entity/Plan'
 import PlansNotification from './PlansNotification.vue'
 import { ref } from 'vue'
-import { useMainStore } from '../../../../store/MainStore'
 import { Point } from '../../../../store/Entity/Point'
+import { useIslandEditorStore } from '../../../../store/IslandEditorStore.js'
 
 const MAX_PLAN_NUMBER = 30
 const selectedPlan = ref('grading')
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 const getSelectedPlan = (): Plan => {
   const result = store.planCandidate.find((c) => c.key === selectedPlan.value)

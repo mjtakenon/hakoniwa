@@ -2,7 +2,7 @@
   <div
     v-show="store.showPlanWindow"
     class="plan-window"
-    :style="[{ top: store.planWindowY + 'px' }, { left: store.planWindowX + 'px' }]">
+    :style="[{ top: store.planWindow.y + 'px' }, { left: store.planWindow.x + 'px' }]">
     <div class="plan-window-header">
       <div class="grow px-3">
         <span class="mr-2">({{ store.selectedPoint.x }},{{ store.selectedPoint.y }})</span>
@@ -22,11 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from '../../../store/MainStore'
 import { Plan } from '../../../store/Entity/Plan'
 import { computed } from 'vue'
+import { useIslandEditorStore } from '../../../store/IslandEditorStore.js'
 
-const store = useMainStore()
+const store = useIslandEditorStore()
 
 const MAX_PLAN_NUMBER = 30
 

@@ -1,14 +1,14 @@
 <template>
   <div
-    v-show="store.showHoverWindow"
+    v-show="props.showHoverWindow"
     class="hover-window"
-    :style="{ bottom: store.hoverWindowY + 'px', left: store.hoverWindowX + 'px' }">
+    :style="{ bottom: props.hoverWindow.y + 'px', left: props.hoverWindow.x + 'px' }">
     <div class="hover-window-header">
       <Suspense>
         <HoverCanvas class="hover-window-img" />
       </Suspense>
       <div class="hover-window-info grow items-center">
-        {{ getIslandTerrain(store.hoverCellPoint.x, store.hoverCellPoint.y).data.info }}
+        {{ getIslandTerrain(props.hoverCellPoint.x, props.hoverCellPoint.y).data.info }}
       </div>
     </div>
     <slot></slot>
@@ -16,14 +16,21 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from '../../../store/MainStore'
 import HoverCanvas from './IslandHoverCanvas.vue'
 import { Terrain } from '../../../store/Entity/Terrain'
+import { Point } from '../../../store/Entity/Point.js'
 
-const store = useMainStore()
+interface Props {
+  showHoverWindow: boolean
+  hoverWindow: Point
+  hoverCellPoint: Point
+  terrains: Terrain[]
+}
+
+const props = defineProps<Props>()
 
 const getIslandTerrain = (x, y): Terrain => {
-  return store.terrains
+  return props.terrains
     .filter(function (item) {
       if (item.data.point.x === x && item.data.point.y === y) return true
     })

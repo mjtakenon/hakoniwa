@@ -9,9 +9,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useMainStore } from '../../../../store/MainStore'
+import { useIslandEditorStore } from '../../../../store/IslandEditorStore.js'
 
-const store = useMainStore()
+const store = useIslandEditorStore()
+
 const STATUS_PAGE_EXPIRED = 419
 
 const onClickNotificationClose = () => {

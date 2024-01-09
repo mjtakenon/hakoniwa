@@ -3,7 +3,7 @@
     <h2 class="subtitle">島名・オーナー名の設定</h2>
     <p class="descriptions">
       島名・オーナー名の設定には一回当たり
-      <span class="font-bold text-error">{{ change_island_name_price }}億円</span>
+      <span class="font-bold text-error">{{ changeIslandNamePrice }}億円</span>
       がかかります。不足している場合は変更することができません。
     </p>
     <p v-if="!isFundsEnough" class="lack-of-funds">資金が不足しているため、再設定ができません。</p>
@@ -61,11 +61,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { AjaxResult, ErrorType, RequestStatus } from '../../../store/Entity/Network.js'
-import { useMainStore } from '../../../store/MainStore.js'
 import { stringEquals } from '../../../Utils.js'
+import { useUserStore } from '../../../store/UserStore.js'
 
 interface Props {
-  change_island_name_price: number
+  changeIslandNamePrice: number
 }
 const props = defineProps<Props>()
 
@@ -78,10 +78,10 @@ const submitStatus = ref<AjaxResult>({
   status: RequestStatus.None
 })
 
-const store = useMainStore()
+const store = useUserStore()
 
 const isFundsEnough = computed(() => {
-  return store.status.funds >= props.change_island_name_price || submitStatus.value.error === ErrorType.LackOfFunds
+  return store.user.status.funds >= props.changeIslandNamePrice || submitStatus.value.error === ErrorType.LackOfFunds
 })
 
 const isSuccess = computed(() => {
@@ -136,7 +136,7 @@ const checkInputs = () => {
     ownerError.value = 'オーナー名が入力されていません'
   }
 
-  if (stringEquals(name.value, store.island.name) && stringEquals(owner.value, store.island.owner_name)) {
+  if (stringEquals(name.value, store.user.island.name) && stringEquals(owner.value, store.user.island.owner_name)) {
     otherError.value = '島名・オーナー名ともに変更されていません。更新する場合はどちらかの名称を変更してください。'
     nameError.value = ' '
     ownerError.value = ' '
@@ -144,8 +144,8 @@ const checkInputs = () => {
 }
 
 onMounted(() => {
-  name.value = store.island.name
-  owner.value = store.island.owner_name
+  name.value = store.user.island.name
+  owner.value = store.user.island.owner_name
 })
 </script>
 

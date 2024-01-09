@@ -61,11 +61,11 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useMainStore } from '../../store/MainStore'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faArrowRightFromBracket, faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { Island } from '../../store/Entity/Island.js'
 import { useUserSettingsStore } from '../../store/UserSettingsStore.js'
+import { useUserStore } from '../../store/UserStore.js'
 
 let isOpenHamburgerMenu = ref(false)
 
@@ -73,7 +73,7 @@ interface Props {
   csrfToken: string
   isLoggedIn: boolean
   isIslandRegistered: boolean
-  user?: User
+  userId?: number
   ownedIsland?: Island
 }
 
@@ -81,7 +81,7 @@ const props = defineProps<Props>()
 
 library.add(faPenToSquare, faGear, faArrowRightFromBracket)
 
-const store = useMainStore()
+const store = useUserStore()
 const userSettings = useUserSettingsStore()
 const theme = localStorage.getItem('theme')
 
@@ -89,12 +89,14 @@ if (theme !== null && theme !== undefined) {
   userSettings.theme = JSON.parse(theme)
 }
 
-if (props.ownedIsland !== null && props.ownedIsland !== undefined) {
-  store.user = {
-    user_id: props.user.id,
-    island: props.ownedIsland ?? null
-  }
-}
+store.$patch((state) => {
+  state.user = props.userId
+    ? {
+        id: props.userId,
+        island: props.ownedIsland ?? null
+      }
+    : null
+})
 
 onMounted(() => {
   userSettings.changeTheme(userSettings.theme)
