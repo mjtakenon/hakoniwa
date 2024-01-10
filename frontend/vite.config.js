@@ -46,6 +46,14 @@ export default defineConfig(({ command, mode }) => {
     },
     build: {
       outDir: 'public/build/' // ビルド成果物の生成先
+    },
+    resolve: {
+      alias: [
+        { find: '$css/', replacement: `${__dirname}/src/css/` },
+        { find: '$js/', replacement: `${__dirname}/src/js/` },
+        { find: '$store/', replacement: `${__dirname}/src/js/store/` },
+        { find: '$vue/', replacement: `${__dirname}/src/vue/` }
+      ]
     }
   }
 })

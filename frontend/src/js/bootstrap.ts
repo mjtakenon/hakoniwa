@@ -11,25 +11,23 @@ window._ = _
 import axios from 'axios'
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-
-// @ts-ignore
 window.axios = axios
 
 import { App } from 'vue'
-import { createApp } from 'vue/dist/vue.esm-bundler.js'
+import { createApp } from 'vue/dist/vue.esm-bundler'
 import { createPinia } from 'pinia'
 import Tres from '@tresjs/core'
-import IslandsPage from './components/pages/Islands/IslandsPage.vue'
-import PlansPage from './components/pages/Islands/Plans/PlansPage.vue'
-import VueHeader from './components/layout/VueHeader.vue'
-import TurnViewer from './components/pages/Index/TurnViewer.vue'
-import RankingViewer from './components/pages/Index/RankingViewer.vue'
-import LogViewer from './components/islands/common/LogViewer.vue'
-import SettingsPage from './components/pages/Settings/SettingsPage.vue'
-import ReleaseNotes from './components/pages/Releases/ReleasesPage.vue'
-import VueFooter from './components/layout/VueFooter.vue'
+import IslandsPage from '$vue/pages/Islands/IslandsPage.vue'
+import PlansPage from '$vue/pages/Islands/Plans/PlansPage.vue'
+import VueHeader from '$vue/layout/VueHeader.vue'
+import TurnViewer from '$vue/pages/Index/TurnViewer.vue'
+import RankingViewer from '$vue/pages/Index/RankingViewer.vue'
+import LogViewer from '$vue/components/islands/common/LogViewer.vue'
+import SettingsPage from '$vue/pages/Settings/SettingsPage.vue'
+import ReleaseNotes from '$vue/pages/Releases/ReleasesPage.vue'
+import VueFooter from '$vue/layout/VueFooter.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import ReleasesPage from './components/pages/Releases/ReleasesPage.vue'
+import ReleasesPage from '$vue/pages/Releases/ReleasesPage.vue'
 
 export const app: App = createApp({
   components: {

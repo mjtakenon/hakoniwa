@@ -18,6 +18,15 @@
     // Vite & Vue Recommends
     "isolatedModules": true,
     "useDefineForClassFields": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    // Path aliases
+    "baseUrl": "./",
+    "paths": {
+      "$css/*": ["src/css/*"],
+      "$js/*": ["src/js/*"],
+      "$store/*": ["src/js/store/*"],
+      "$vue/*": ["src/vue/*"]
+    }
   }
 }
