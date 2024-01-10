@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./resources/**/*.blade.php', './resources/**/*.ts', './resources/**/*.vue'],
+  content: ['./src/**/*.blade.php', './src/**/*.ts', './src/**/*.vue'],
   safelist: [
     {
       pattern: /grid-cols-([1-9]?[1-9])/

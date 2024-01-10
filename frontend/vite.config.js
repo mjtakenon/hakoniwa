@@ -6,11 +6,11 @@ import { templateCompilerOptions } from '@tresjs/core'
 export default ({ mode }) => {
   const viteEnv = loadEnv(mode, process.cwd())
 
-  const inputs = ['resources/css/app.scss']
+  const inputs = ['src/css/app.scss']
   if (process.env.NODE_ENV === 'development') {
-    inputs.push('resources/js/debug.ts')
+    inputs.push('src/js/debug.ts')
   } else {
-    inputs.push('resources/js/app.ts')
+    inputs.push('src/js/app.ts')
   }
 
   if (viteEnv.VITE_SERVER_HOST === undefined) viteEnv.VITE_SERVER_HOST = 'localhost'
