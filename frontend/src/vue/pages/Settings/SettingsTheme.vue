@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import themeListJson from '$js/ThemeList.json'
-import { Theme } from '$js/entity/Theme.js'
+import { Theme } from '$entity/Theme.js'
 import { useUserSettingsStore } from '$store/UserSettingsStore.js'
 
 const themes = ref<Theme[]>(themeListJson as Theme[])

@@ -17,8 +17,8 @@
 
 <script setup lang="ts">
 import HoverCanvas from './IslandHoverCanvas.vue'
-import { Terrain } from '$js/entity/Terrain'
-import { Point } from '$js/entity/Point.js'
+import { Terrain } from '$entity/Terrain'
+import { Point } from '$entity/Point.js'
 
 interface Props {
   showHoverWindow: boolean

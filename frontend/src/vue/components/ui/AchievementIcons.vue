@@ -41,7 +41,7 @@ import {
   filterDuplicatedAchievementType,
   getAchievementsList,
   sortAchievements
-} from '$js/entity/Achievement'
+} from '$entity/Achievement'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faMedal, faMountainCity, faSkull, faDragon, faGem, faQuestionCircle, faCrown)

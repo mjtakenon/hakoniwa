@@ -113,10 +113,10 @@
 </template>
 
 <script setup lang="ts">
-import { Plan } from '$js/entity/Plan'
+import { Plan } from '$entity/Plan'
 import PlansNotification from './PlansNotification.vue'
 import { ref } from 'vue'
-import { Point } from '$js/entity/Point'
+import { Point } from '$entity/Point'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 
 const MAX_PLAN_NUMBER = 30

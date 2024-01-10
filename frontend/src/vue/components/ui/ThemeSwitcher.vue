@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Theme } from '$js/entity/Theme'
+import type { Theme } from '$entity/Theme'
 import { useUserSettingsStore } from '$store/UserSettingsStore.js'
 
 const userSettings = useUserSettingsStore()

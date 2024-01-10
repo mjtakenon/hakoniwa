@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { Plan } from '$js/entity/Plan'
+import { Plan } from '$entity/Plan'
 import { computed } from 'vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 

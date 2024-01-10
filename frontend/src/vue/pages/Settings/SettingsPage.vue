@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { Status } from '$js/entity/Status.js'
+import { Status } from '$entity/Status.js'
 import SettingsInfo from './SettingsInfo.vue'
 import SettingsTheme from './SettingsTheme.vue'
 import { useUserStore } from '$store/UserStore.js'

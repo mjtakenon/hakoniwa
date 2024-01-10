@@ -142,9 +142,9 @@ import { computed } from 'vue'
 import AchievementIcons from '../../ui/AchievementIcons.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faOilWell, faSackDollar, faShield, faWheatAwn } from '@fortawesome/free-solid-svg-icons'
-import { getEnvironmentString } from '$js/entity/Island.js'
-import { Status } from '$js/entity/Status.js'
-import { AchievementProp } from '$js/entity/Achievement.js'
+import { getEnvironmentString } from '$entity/Island.js'
+import { Status } from '$entity/Status.js'
+import { AchievementProp } from '$entity/Achievement.js'
 
 library.add(faSackDollar, faWheatAwn, faOilWell, faShield)
 

@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { AjaxResult, ErrorType, RequestStatus } from '$js/entity/Network.js'
+import { AjaxResult, ErrorType, RequestStatus } from '$entity/Network.js'
 import { stringEquals } from '$js/Utils.js'
 import { useUserStore } from '$store/UserStore.js'
 

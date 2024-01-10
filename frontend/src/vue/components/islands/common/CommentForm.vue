@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { AjaxResult, ErrorType, RequestStatus } from '$js/entity/Network'
+import { AjaxResult, ErrorType, RequestStatus } from '$entity/Network'
 import { stringEquals } from '$js/Utils'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 

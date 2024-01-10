@@ -52,6 +52,7 @@ export default defineConfig(({ command, mode }) => {
         { find: '$css/', replacement: `${__dirname}/src/css/` },
         { find: '$js/', replacement: `${__dirname}/src/js/` },
         { find: '$store/', replacement: `${__dirname}/src/js/store/` },
+        { find: '$entity/', replacement: `${__dirname}/src/js/entity/` },
         { find: '$vue/', replacement: `${__dirname}/src/vue/` }
       ]
     }

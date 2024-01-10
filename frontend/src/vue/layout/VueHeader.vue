@@ -63,7 +63,7 @@
 import { onMounted, ref } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faArrowRightFromBracket, faGear, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
-import { Island } from '$js/entity/Island.js'
+import { Island } from '$entity/Island.js'
 import { useUserSettingsStore } from '$store/UserSettingsStore.js'
 import { useUserStore } from '$store/UserStore.js'
 
