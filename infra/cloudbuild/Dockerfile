@@ -2,7 +2,8 @@ FROM node:18.15.0-bullseye AS frontend_build_stage
 
 WORKDIR /app
 
-COPY ./app ./
+COPY ./frontend ./
+COPY ./app/public ./public
 
 RUN yarn install && yarn build
 

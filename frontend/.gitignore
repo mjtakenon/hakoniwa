@@ -1,0 +1,5 @@
+/public
+/node_modules
+.env.local
+npm-debug.log
+yarn-error.log

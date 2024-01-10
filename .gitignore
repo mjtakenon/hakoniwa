@@ -1,8 +1,6 @@
 .vscode/
 .idea/
 *.iml
-app/node_modules/
-app/vendor/
 app/public/img/hakoniwa/vox
 materials
 *.DS_Store
