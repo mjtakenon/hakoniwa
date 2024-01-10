@@ -63,6 +63,7 @@ services:
     volumes:
       - ./frontend/:/frontend
       - ./app/public/:/frontend/public
+      - ./app/resources/views/:/frontend/resources/views
       - node_modules:/frontend/node_modules
     ports:
       - "${FRONT_PORT:-54373}:54373"
