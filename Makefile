@@ -89,8 +89,10 @@ yarn-install:
 	docker compose cp frontend:/frontend/node_modules ./frontend
 yarn-run-dev:
 	docker compose exec frontend bash -c "yarn run dev"
-yarn-prettier:
-	docker compose exec frontend bash -c "yarn prettier-format"
+yarn-run-prettier:
+	docker compose exec frontend bash -c "yarn run prettier-format"
+yarn-run-build:
+	docker compose exec frontend bash -c "yarn run build"
 
 testing:
 	docker compose exec --user www-data app php artisan test tests/App
