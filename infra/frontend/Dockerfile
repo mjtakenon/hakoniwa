@@ -1,4 +1,4 @@
-FROM node:18.15.0-bullseye
+FROM node:20.10.0-bullseye-slim
 
 EXPOSE 54373
 
