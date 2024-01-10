@@ -16,7 +16,7 @@ import { TresInstance } from '@tresjs/core'
 import { Object3D, Vector3 } from 'three'
 
 import { shallowRef, ShallowRef } from 'vue'
-import { Terrain } from '$js/entity//Terrain'
+import { Terrain } from '$js/entity/Terrain'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 import { useIslandHoverStore } from '$store/IslandHoverStore.js'
 

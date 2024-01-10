@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { AchievementProp } from '$js/entity//Achievement'
+import { AchievementProp } from '$js/entity/Achievement'
 import AchievementIcons from '$vue/components/ui/AchievementIcons.vue'
 
 interface IslandWithStatuses {

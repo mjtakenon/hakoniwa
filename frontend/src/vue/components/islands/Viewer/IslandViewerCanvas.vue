@@ -27,7 +27,7 @@
 import { Box3, Vector3 } from 'three'
 import { useGLTF } from '@tresjs/cientos'
 import IslandViewerCell from './IslandViewerCell.vue'
-import { DEFAULT_CELL_SIZE, getCells } from '$js/entity//Cell.js'
+import { DEFAULT_CELL_SIZE, getCells } from '$js/entity/Cell.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 const store = useIslandViewerStore()
