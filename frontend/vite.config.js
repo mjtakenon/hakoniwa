@@ -3,20 +3,20 @@ import laravel from 'laravel-vite-plugin'
 import vue from '@vitejs/plugin-vue'
 import { templateCompilerOptions } from '@tresjs/core'
 
-export default ({ mode }) => {
-  const viteEnv = loadEnv(mode, process.cwd())
+export default defineConfig(({ command, mode }) => {
+  const env = loadEnv(mode, process.cwd())
 
   const inputs = ['src/css/app.scss']
-  if (process.env.NODE_ENV === 'development') {
+  if (mode === 'development') {
     inputs.push('src/js/debug.ts')
   } else {
     inputs.push('src/js/app.ts')
   }
 
-  if (viteEnv.VITE_SERVER_HOST === undefined) viteEnv.VITE_SERVER_HOST = 'localhost'
-  if (viteEnv.VITE_SERVER_PORT === undefined) viteEnv.VITE_SERVER_PORT = '54373'
+  if (env.VITE_SERVER_HOST === undefined) env.VITE_SERVER_HOST = 'localhost'
+  if (env.VITE_SERVER_PORT === undefined) env.VITE_SERVER_PORT = '54373'
 
-  return defineConfig({
+  return {
     plugins: [
       laravel({
         input: inputs,
@@ -35,10 +35,10 @@ export default ({ mode }) => {
       })
     ],
     server: {
-      port: viteEnv.VITE_SERVER_PORT,
+      port: env.VITE_SERVER_PORT,
       host: true,
       hmr: {
-        host: viteEnv.VITE_SERVER_HOST
+        host: env.VITE_SERVER_HOST
       },
       watch: {
         usePolling: true
@@ -47,5 +47,5 @@ export default ({ mode }) => {
     build: {
       outDir: 'public/build/' // ビルド成果物の生成先
     }
-  })
-}
+  }
+})
