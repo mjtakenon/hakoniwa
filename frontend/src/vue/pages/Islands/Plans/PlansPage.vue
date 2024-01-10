@@ -27,24 +27,24 @@ import PlanList from './PlansList.vue'
 import lodash from 'lodash'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
-import { Hakoniwa } from '$store/Entity/Hakoniwa'
-import { Island } from '$store/Entity/Island'
-import { Status } from '$store/Entity/Status'
-import { Terrain } from '$store/Entity/Terrain'
-import { Plan } from '$store/Entity/Plan'
-import { Turn } from '$store/Entity/Turn'
-import { LogParser, LogProps, SummaryProps } from '$store/Entity/Log'
+import { Hakoniwa } from '$js/entity//Hakoniwa'
+import { Island } from '$js/entity//Island'
+import { Status } from '$js/entity//Status'
+import { Terrain } from '$js/entity//Terrain'
+import { Plan } from '$js/entity//Plan'
+import { Turn } from '$js/entity//Turn'
+import { LogParser, LogProps, SummaryProps } from '$js/entity//Log'
 import IslandPopup from '$vue/components/islands/Popup/IslandPopup.vue'
 import CommentForm from '$vue/components/islands/common/CommentForm.vue'
-import { AchievementProp, getAchievementsList } from '$store/Entity/Achievement'
+import { AchievementProp, getAchievementsList } from '$js/entity//Achievement'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
-import { BbsMessage } from '$store/Entity/Bbs'
+import { BbsMessage } from '$js/entity//Bbs'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
 
 interface Props {
   hakoniwa: Hakoniwa
-  // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/store/Entity/Islandの中身と異なっている　共通化できないか？
+  // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/entity/Islandの中身と異なっている　共通化できないか？
   island: {
     id: number
     name: string

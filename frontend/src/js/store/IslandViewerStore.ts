@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import { Status } from './Entity/Status.js'
-import { Hakoniwa } from './Entity/Hakoniwa.js'
-import { Island } from './Entity/Island.js'
-import { Terrain } from './Entity/Terrain.js'
-import { Log } from './Entity/Log.js'
-import { Point } from './Entity/Point.js'
-import { Achievement } from './Entity/Achievement.js'
+import { Status } from '$js/entity/Status.js'
+import { Hakoniwa } from '$js/entity/Hakoniwa.js'
+import { Island } from '$js/entity/Island.js'
+import { Terrain } from '$js/entity/Terrain.js'
+import { Log } from '$js/entity/Log.js'
+import { Point } from '$js/entity/Point.js'
+import { Achievement } from '$js/entity/Achievement.js'
 import { ref } from 'vue'
 
 export const useIslandViewerStore = defineStore('island-viewer', () => {

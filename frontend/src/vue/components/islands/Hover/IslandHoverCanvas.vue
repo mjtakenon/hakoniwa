@@ -6,7 +6,7 @@
 import { AmbientLight, Box3, Camera, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
 import { useGLTF } from '@tresjs/cientos'
 import { onMounted, ref, UnwrapRef } from 'vue'
-import { DEFAULT_CELL_SIZE, getCells } from '$store/Entity/Cell.js'
+import { DEFAULT_CELL_SIZE, getCells } from '$js/entity//Cell.js'
 import { useIslandHoverStore } from '$store/IslandHoverStore.js'
 
 const store = useIslandHoverStore()

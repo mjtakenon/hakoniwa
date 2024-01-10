@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Point } from './Entity/Point.js'
+import { Point } from '$js/entity/Point.js'
 import { Camera, Vector3 } from 'three'
 import { ref } from 'vue'
 

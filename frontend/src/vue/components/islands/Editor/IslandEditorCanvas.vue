@@ -57,9 +57,9 @@
 import { Box3, Vector2, Vector3 } from 'three'
 import { useGLTF } from '@tresjs/cientos'
 import IslandEditorCell from './IslandEditorCell.vue'
-import { Terrain } from '$store/Entity/Terrain'
+import { Terrain } from '$js/entity//Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
-import { DEFAULT_CELL_SIZE, getCells } from '$store/Entity/Cell.js'
+import { DEFAULT_CELL_SIZE, getCells } from '$js/entity//Cell.js'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 
 let selectedBox = shallowRef(null)

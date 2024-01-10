@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { Object3D, Vector3 } from 'three'
-import { Terrain } from '$store/Entity/Terrain'
+import { Terrain } from '$js/entity//Terrain'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandHoverStore } from '$store/IslandHoverStore.js'
 

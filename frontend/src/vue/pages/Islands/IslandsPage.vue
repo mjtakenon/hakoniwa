@@ -14,13 +14,13 @@ import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
 import IslandViewer from './IslandsViewer.vue'
 import { ref } from 'vue'
-import { Hakoniwa } from '$store/Entity/Hakoniwa'
-import { Status } from '$store/Entity/Status'
-import { Terrain } from '$store/Entity/Terrain'
-import { Plan } from '$store/Entity/Plan'
-import { LogParser, LogProps, SummaryProps } from '$store/Entity/Log'
-import { AchievementProp } from '$store/Entity/Achievement'
-import { BbsMessage } from '$store/Entity/Bbs'
+import { Hakoniwa } from '$js/entity//Hakoniwa'
+import { Status } from '$js/entity//Status'
+import { Terrain } from '$js/entity//Terrain'
+import { Plan } from '$js/entity//Plan'
+import { LogParser, LogProps, SummaryProps } from '$js/entity//Log'
+import { AchievementProp } from '$js/entity//Achievement'
+import { BbsMessage } from '$js/entity//Bbs'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
@@ -32,7 +32,7 @@ const store = useIslandViewerStore()
 
 interface Props {
   hakoniwa: Hakoniwa
-  // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/store/Entity/Islandの中身と異なっている　共通化できないか？
+  // TODO: ここで飛んでくるislandはPlansController.phpで定義されており、js/entity/Islandの中身と異なっている　共通化できないか？
   island: {
     id: number
     name: string

@@ -33,7 +33,7 @@ export interface AchievementProp {
   extra_text?: string
 }
 
-import AchievementLists from '../AchievementList.json'
+import AchievementLists from '$js/store/AchievementList.json'
 
 /**
  * 実績に関連するデータををAchievementList.jsonから取得

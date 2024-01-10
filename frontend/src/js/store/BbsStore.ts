@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { Island } from './Entity/Island.js'
+import { Island } from '$js/entity/Island.js'
 import axios from 'axios'
-import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
-import { BbsMessage, BbsVisibility } from './Entity/Bbs.js'
+import { AjaxResult, ErrorType, RequestStatus } from '$js/entity/Network.js'
+import { BbsMessage, BbsVisibility } from '$js/entity/Bbs.js'
 import { ref } from 'vue'
 
 export const useBbsStore = defineStore('bbs', () => {

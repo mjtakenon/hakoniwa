@@ -95,11 +95,11 @@
 import { computed, ref } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChalkboardUser, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { BbsMessage, BbsVisibility } from '$store/Entity/Bbs'
-import { ErrorType, RequestStatus } from '$store/Entity/Network'
+import { BbsMessage, BbsVisibility } from '$js/entity//Bbs'
+import { ErrorType, RequestStatus } from '$js/entity//Network'
 import { useBbsStore } from '$store/BbsStore.js'
 import { useUserStore } from '$store/UserStore.js'
-import { Island } from '$store/Entity/Island.js'
+import { Island } from '$js/entity//Island.js'
 
 const bbsStore = useBbsStore()
 const userStore = useUserStore()

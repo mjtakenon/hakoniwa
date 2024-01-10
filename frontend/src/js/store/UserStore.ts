@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { AjaxResult, ErrorType, RequestStatus } from './Entity/Network.js'
+import { AjaxResult, ErrorType, RequestStatus } from '$js/entity/Network.js'
 import axios from 'axios'
 import { computed, ref } from 'vue'
-import { User } from './Entity/User.js'
+import { User } from '$js/entity/User.js'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null)

@@ -87,7 +87,7 @@
 </template>
 <script setup lang="ts">
 import { onMounted, PropType, ref } from 'vue'
-import { Log, LogParser, LogProps } from '$store/Entity/Log'
+import { Log, LogParser, LogProps } from '$js/entity//Log'
 
 let logs = ref<Log[]>([])
 
