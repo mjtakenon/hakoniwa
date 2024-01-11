@@ -46,19 +46,6 @@
 }
 
 @layer components {
-  // components
-  .title {
-    @apply mb-2 mt-6 text-2xl font-black;
-  }
-
-  .subtitle {
-    @apply mb-2 mt-6 text-xl;
-  }
-
-  .link-text {
-    @apply text-on-link;
-  }
-
   // ----- InfoBox -----
   .box-secondary {
     @apply my-3 block rounded bg-secondary-container p-4 text-base font-bold drop-shadow-md;
@@ -121,18 +108,6 @@
 
 #app {
   @apply bg-background pb-0 text-on-background;
-}
-
-#index {
-  @apply mx-auto max-w-[1000px] px-3;
-
-  .index-ranking-viewer {
-    @apply rounded-md;
-
-    .subtitle {
-      @apply rounded-t-md;
-    }
-  }
 }
 
 #register {

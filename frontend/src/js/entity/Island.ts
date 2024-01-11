@@ -1,4 +1,5 @@
 import { Terrain } from './Terrain.js'
+import {AchievementProp} from "$entity/Achievement.js";
 
 export interface Island {
   id: number
@@ -6,6 +7,25 @@ export interface Island {
   owner_name: string
   comment?: string
   terrains?: Terrain[]
+}
+
+export interface IslandWithStatuses {
+  id: number
+  name: string
+  owner_name: string
+  development_points: number
+  funds: number
+  foods: number
+  resources: number
+  population: number
+  funds_production_capacity: number
+  foods_production_capacity: number
+  resources_production_capacity: number
+  environment: string
+  area: number
+  abandoned_turn: number
+  comment: string
+  achievements: AchievementProp[]
 }
 
 export type IslandEnvironment = 'best' | 'good' | 'normal'
