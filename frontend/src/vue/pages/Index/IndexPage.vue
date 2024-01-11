@@ -5,8 +5,12 @@
     <TurnViewer :turn="props.turn" :day="props.day" :time="props.time" />
 
     <h2 class="subtitle">注意事項</h2>
-    <p class="box-secondary">現在開発中のため、多くの機能が未実装です。</p>
-    <p class="box-alert">テスト中にデータが消える可能性が高いため、何があっても許せる方のみ登録してください。</p>
+    <InfoBox type="notify">
+      現在開発中のため、多くの機能が未実装です。
+    </InfoBox>
+    <InfoBox type="alert">
+      テスト中にデータが消える可能性が高いため、何があっても許せる方のみ登録してください。
+    </InfoBox>
 
     <h2 class="subtitle">遊び方</h2>
     <p>
@@ -18,7 +22,9 @@
       ログインは（今のところ）Google連携のみ利用できます。メールアドレスとユーザー名をサーバーで保持するので、気になる人は捨て垢の利用を推奨します（パスワードはこちらでは保持しません）。
     </p>
     <p>不具合・不明点はツイッターからご連絡ください。</p>
-    <p class="box-error">重複登録は禁止です。1人1島でお願いします。</p>
+    <InfoBox type="error">
+      重複登録は禁止です。1人1島でお願いします。
+    </InfoBox>
 
     <h2 class="subtitle mt-20">現在のランキング</h2>
     <template v-if="props.rankingIslands.length > 0">
@@ -40,6 +46,7 @@ import RankingViewer from '$vue/pages/Index/RankingViewer.vue'
 import { IslandWithStatuses } from '$entity/Island.js'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
 import { LogProps } from '$entity/Log.js'
+import InfoBox from "$vue/components/ui/InfoBox.vue";
 
 type Props = {
   turn: string
