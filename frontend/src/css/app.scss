@@ -46,19 +46,6 @@
 }
 
 @layer components {
-  // ----- InfoBox -----
-  .box-secondary {
-    @apply my-3 block rounded bg-secondary-container p-4 text-base font-bold drop-shadow-md;
-  }
-
-  .box-alert {
-    @apply my-3 block rounded bg-alert-container p-4 text-base font-bold text-on-alert-container drop-shadow-md;
-  }
-
-  .box-error {
-    @apply my-3 block rounded bg-error p-4 text-base font-bold text-on-error drop-shadow-md;
-  }
-
   // ----- ボタン -----
   .button-primary {
     @apply inline-block rounded border px-4 py-2 drop-shadow-md;
