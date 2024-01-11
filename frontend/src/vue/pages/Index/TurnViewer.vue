@@ -2,23 +2,25 @@
   <div class="grid grid-cols-2 gap-4">
     <div class="turn-box">
       <h2 class="turn-box-title">ターン</h2>
-      <p class="turn-box-text-big m-0 h-2/3">{{ $props.turn }}</p>
+      <p class="turn-box-text-big m-0 h-2/3">{{ props.turn }}</p>
     </div>
     <div class="turn-box">
       <h2 class="turn-box-title">次回更新予定</h2>
-      <p class="turn-box-text-big max-md:hidden">{{ $props.day + ' ' + $props.time }}</p>
-      <p class="turn-box-text-medium mb-0 md:hidden">{{ $props.day }}</p>
-      <p class="turn-box-text-medium -mt-1 md:hidden">{{ $props.time }}</p>
+      <p class="turn-box-text-big max-md:hidden">{{ props.day + ' ' + props.time }}</p>
+      <p class="turn-box-text-medium mb-0 md:hidden">{{ props.day }}</p>
+      <p class="turn-box-text-medium -mt-1 md:hidden">{{ props.time }}</p>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+type Props = {
+  turn: string
+  day: string
+  time: string
+}
 
-export default defineComponent({
-  props: ['turn', 'day', 'time']
-})
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss" scoped>

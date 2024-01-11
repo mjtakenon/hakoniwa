@@ -65,31 +65,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { AchievementProp } from '$entity/Achievement'
 import AchievementIcons from '$vue/components/ui/AchievementIcons.vue'
-
-interface IslandWithStatuses {
-  id: number
-  name: string
-  owner_name: string
-  development_points: number
-  funds: number
-  foods: number
-  resources: number
-  population: number
-  funds_production_capacity: number
-  foods_production_capacity: number
-  resources_production_capacity: number
-  environment: string
-  area: number
-  abandoned_turn: number
-  comment: string
-  achievements: AchievementProp[]
-}
+import { IslandWithStatuses } from '$entity/Island.js'
 
 interface Props {
   index: number
-  // TODO: ランキングのIslandデータ型は個別で定義しておいた方がよい？
   island: IslandWithStatuses
 }
 
