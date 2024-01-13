@@ -1,7 +1,7 @@
 <template>
   <div id="sightseeing-page" class="wrapper">
     <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
-    <div id="island" ref="islandCanvas">
+    <div id="island">
       <TresCanvas v-bind="gl" id="island-canvas">
         <IslandViewer>
           <CameraControls />
@@ -24,7 +24,7 @@
 import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
 import IslandViewer from './IslandsViewer.vue'
-import { onMounted, reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { Hakoniwa } from '$entity/Hakoniwa'
 import { Status } from '$entity/Status'
 import { Terrain } from '$entity/Terrain'
@@ -39,7 +39,6 @@ import { TresCanvas } from '@tresjs/core'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three'
 import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
-import { useCameraStore } from '$store/CameraControlsStore.js'
 
 const store = useIslandViewerStore()
 
@@ -75,7 +74,6 @@ const gl = reactive({
 // Logsのparse
 const parser = new LogParser()
 const logs = parser.parse(props.island.logs, props.island.summary)
-const islandCanvas = ref<HTMLElement>()
 
 store.$patch((state) => {
   state.hakoniwa = props.hakoniwa
@@ -93,12 +91,6 @@ store.$patch((state) => {
 })
 
 useBbsStore().bbs = props.island.bbs
-
-onMounted(() => {
-  console.log(islandCanvas.value)
-  useCameraStore().canvas = islandCanvas.value
-  useCameraStore().init()
-})
 </script>
 
 <style lang="scss" scoped>

@@ -12,6 +12,7 @@ import { Turn } from '$entity/Turn.js'
 import { AjaxResult, RequestStatus } from '$entity/Network.js'
 import { Achievement } from '$entity/Achievement.js'
 import { computed, ref } from 'vue'
+import { useIslandHoverStore } from '$store/IslandHoverStore.js'
 
 export const useIslandEditorStore = defineStore('island-editor', () => {
   const hakoniwa = ref<Hakoniwa>({ width: 0, height: 0 })
@@ -158,6 +159,84 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     return result
   }
 
+  const onMouseOverCell = (event: MouseEvent, terrain: Terrain) => {
+    onMouseMoveCell(event, terrain)
+
+    showHoverWindow.value = true
+    hoverCellPoint.value = terrain.data.point
+
+    useIslandHoverStore().changeHoverCellCameraFocus(terrain.type)
+  }
+
+  const onMouseMoveCell = (event: MouseEvent, terrain: Terrain) => {
+    const offsetY = 25
+    if (isOpenPopup.value) {
+      hoverWindow.value.y = document.documentElement.clientHeight - (event.pageY - window.scrollY) + offsetY
+    } else {
+      hoverWindow.value.y = document.documentElement.clientHeight - event.pageY + offsetY
+    }
+    hoverWindow.value.x = event.pageX
+
+    // Screen Overflow Check
+    if (isMobile.value) {
+      const windowSize = 200
+      const paddingOffset = 20
+      const leftEdge = hoverWindow.value.x - windowSize / 2
+      const rightEdge = hoverWindow.value.x + windowSize / 2
+      if (leftEdge < paddingOffset) {
+        hoverWindow.value.x += -leftEdge + paddingOffset
+      } else if (rightEdge > screenWidth.value) {
+        hoverWindow.value.x -= rightEdge - screenWidth.value + paddingOffset
+      }
+    }
+  }
+
+  const onMouseLeaveCell = (event: MouseEvent, terrain: Terrain) => {
+    showHoverWindow.value = false
+  }
+
+  const onClickCell = (event: MouseEvent, terrain: Terrain) => {
+    if (
+      showPlanWindow.value &&
+      selectedPoint.value.x === terrain.data.point.x &&
+      selectedPoint.value.y === terrain.data.point.y
+    ) {
+      showPlanWindow.value = false
+      return
+    }
+    selectedPoint.value.x = terrain.data.point.x
+    selectedPoint.value.y = terrain.data.point.y
+    showPlanWindow.value = true
+
+    if (isMobile.value) {
+      planWindow.value.x = event.pageX
+      const offsetX = 15
+      const offsetY = 30
+      const elementWidth = 230
+      const leftEdge = planWindow.value.x - elementWidth / 2
+      const rightEdge = planWindow.value.x + elementWidth / 2
+      if (leftEdge < offsetX) {
+        planWindow.value.x += -leftEdge + offsetX
+      } else if (rightEdge > screenWidth.value) {
+        planWindow.value.x -= rightEdge - screenWidth.value + offsetX
+      }
+
+      if (isOpenPopup.value) {
+        planWindow.value.y = event.pageY - window.scrollY + offsetY
+      } else {
+        planWindow.value.y = event.pageY + offsetY
+      }
+    } else {
+      const offset = 15
+      planWindow.value.x = event.pageX + offset
+      if (isOpenPopup.value) {
+        planWindow.value.y = event.pageY - window.scrollY + offset
+      } else {
+        planWindow.value.y = event.pageY + offset
+      }
+    }
+  }
+
   return {
     hakoniwa,
     island,
@@ -195,6 +274,10 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     selectedTargetIslandName,
     putPlan,
     getIslandTerrain,
-    postComment
+    postComment,
+    onMouseOverCell,
+    onMouseMoveCell,
+    onMouseLeaveCell,
+    onClickCell
   }
 })

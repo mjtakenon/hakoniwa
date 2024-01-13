@@ -7,6 +7,7 @@ import { Log } from '$entity/Log.js'
 import { Point } from '$entity/Point.js'
 import { Achievement } from '$entity/Achievement.js'
 import { ref } from 'vue'
+import { useIslandHoverStore } from '$store/IslandHoverStore.js'
 
 export const useIslandViewerStore = defineStore('island-viewer', () => {
   const hakoniwa = ref<Hakoniwa>({ width: 0, height: 0 })
@@ -34,6 +35,38 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
   const hoverCellPoint = ref<Point>({ x: 0, y: 0 })
   const achievements = ref<Achievement[]>([])
 
+  const onMouseOverCell = (event: MouseEvent, terrain: Terrain) => {
+    onMouseMoveCell(event)
+
+    showHoverWindow.value = true
+    hoverCellPoint.value = terrain.data.point
+
+    useIslandHoverStore().changeHoverCellCameraFocus(terrain.type)
+  }
+
+  const onMouseMoveCell = (event: MouseEvent) => {
+    const offsetY = 25
+    hoverWindow.value.y = document.documentElement.clientHeight - event.pageY + offsetY
+    hoverWindow.value.x = event.pageX
+
+    // Screen Overflow Check
+    if (isMobile.value) {
+      const windowSize = 200
+      const paddingOffset = 20
+      const leftEdge = hoverWindow.value.x - windowSize / 2
+      const rightEdge = hoverWindow.value.x + windowSize / 2
+      if (leftEdge < paddingOffset) {
+        hoverWindow.value.x += -leftEdge + paddingOffset
+      } else if (rightEdge > screenWidth.value) {
+        hoverWindow.value.x -= rightEdge - screenWidth.value + paddingOffset
+      }
+    }
+  }
+
+  const onMouseLeaveCell = (event: MouseEvent) => {
+    showHoverWindow.value = false
+  }
+
   return {
     hakoniwa,
     island,
@@ -45,6 +78,9 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
     screenWidth,
     showHoverWindow,
     hoverCellPoint,
-    achievements
+    achievements,
+    onMouseOverCell,
+    onMouseMoveCell,
+    onMouseLeaveCell
   }
 })

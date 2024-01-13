@@ -1,20 +1,24 @@
-<template></template>
+<template>
+  <TresMapControls
+    v-if="context.renderer.value"
+    :args="[context.camera.value, context.renderer.value.domElement]"
+    ref="controls" />
+</template>
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
-import { useTresContext } from '@tresjs/core'
-import { useCameraStore } from '$store/CameraControlsStore.js'
+import { onMounted, ref } from 'vue'
+import { extend, useTresContext } from '@tresjs/core'
+import { MapControls } from 'three/examples/jsm/controls/MapControls.js'
 
-const cameraControlsState = reactive({
-  minDistance: 20,
-  maxDistance: 200,
-  maxPolarAngle: Math.PI / 2
-})
+extend({ MapControls })
 
-const store = useCameraStore()
+const context = useTresContext()
+const controls = ref<MapControls | null>(null)
 
 onMounted(() => {
-  const context = useTresContext()
-  store.camera = context.camera.value
-  // console.log(props.target)
+  controls.value.maxDistance = 250
+  controls.value.minDistance = 20
+  controls.value.maxPolarAngle = Math.PI / 2
+  controls.value.zoomToCursor = true
+  controls.value.zoomSpeed = 2
 })
 </script>
