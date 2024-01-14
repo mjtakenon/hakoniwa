@@ -89,7 +89,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
       })
   }
 
-  const getIslandTerrain = async (id: number) => {
+  const getTargetIslandTerrain = async (id: number) => {
     isLoadingTerrain.value = true
     const target = targetIslands.value.filter((island) => island.id === id)
     if (target.length < 1) throw new Error('存在しない島IDです')
@@ -202,7 +202,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     getDefaultPlan,
     selectedTargetIslandName,
     putPlan,
-    getIslandTerrain,
+    getTargetIslandTerrain,
     postComment,
     onClickCell
   }

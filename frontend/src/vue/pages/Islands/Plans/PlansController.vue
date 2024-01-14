@@ -299,7 +299,7 @@ const onClickSendPlan = () => {
 }
 
 const openIslandPopup = () => {
-  islandEditorStore.getIslandTerrain(islandEditorStore.selectedTargetIsland)
+  islandEditorStore.getTargetIslandTerrain(islandEditorStore.selectedTargetIsland)
   islandEditorStore.isOpenPopup = true
   islandEditorStore.showPlanWindow = false
 }

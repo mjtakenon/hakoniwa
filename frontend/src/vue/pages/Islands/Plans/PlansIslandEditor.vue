@@ -1,7 +1,7 @@
 <template>
   <div id="island">
     <TresCanvas v-bind="gl" :class="['island-canvas', { 'opacity-80': islandEditorStore.showPlanWindow }]">
-      <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" />
+      <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" :look-at="[0, 0, 0]" />
 
       <slot />
       <Suspense>
