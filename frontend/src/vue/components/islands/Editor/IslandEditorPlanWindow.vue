@@ -2,7 +2,7 @@
   <div
     v-show="store.showPlanWindow"
     class="plan-window"
-    :style="[{ top: store.planWindow.y + 'px' }, { left: store.planWindow.x + 'px' }]">
+    :style="[{ top: store.planWindowPoint.y + 'px' }, { left: store.planWindowPoint.x + 'px' }]">
     <div class="plan-window-header">
       <div class="grow px-3">
         <span class="mr-2">({{ store.selectedPoint.x }},{{ store.selectedPoint.y }})</span>

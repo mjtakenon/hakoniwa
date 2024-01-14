@@ -4,10 +4,16 @@
     :object="child"
     :position="props.position"
     :scale="props.scale"
-    @click="(intersection, pointerEvent) => store.onClickCell(pointerEvent, props.terrain)"
-    @pointer-enter="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.terrain)"
-    @pointer-move="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.terrain)"
-    @pointer-leave="(intersection, pointerEvent) => store.onMouseLeaveCell(pointerEvent)"
+    @click="(intersection, pointerEvent) => islandEditorStore.onClickCell(pointerEvent, props.terrain)"
+    @pointer-enter="
+      (intersection, pointerEvent) =>
+        islandViewerStore.onMouseOverCell(pointerEvent, props.terrain, islandEditorStore.isOpenPopup)
+    "
+    @pointer-move="
+      (intersection, pointerEvent) =>
+        islandViewerStore.onMouseOverCell(pointerEvent, props.terrain, islandEditorStore.isOpenPopup)
+    "
+    @pointer-leave="(intersection, pointerEvent) => islandViewerStore.onMouseLeaveCell(pointerEvent)"
     blocks-pointer-events></primitive>
 </template>
 
@@ -15,8 +21,10 @@
 import { Object3D, Vector3 } from 'three'
 import { Terrain } from '$entity/Terrain'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
-const store = useIslandEditorStore()
+const islandEditorStore = useIslandEditorStore()
+const islandViewerStore = useIslandViewerStore()
 
 interface Props {
   terrain: Terrain

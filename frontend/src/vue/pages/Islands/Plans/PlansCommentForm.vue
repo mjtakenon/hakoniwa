@@ -36,25 +36,27 @@ import { onMounted, ref } from 'vue'
 import { AjaxResult, ErrorType, RequestStatus } from '$entity/Network'
 import { stringEquals } from '$js/Utils'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 const comment = ref('')
 const request = ref<AjaxResult>({ status: RequestStatus.None })
 const input = ref<HTMLElement>()
 
-const store = useIslandEditorStore()
+const islandEditorStore = useIslandEditorStore()
+const islandViewerStore = useIslandViewerStore()
 
 onMounted(() => {
-  comment.value = store.island.comment
+  comment.value = islandViewerStore.island.comment
   request.value.status = RequestStatus.None
 })
 
 const submitComment = async () => {
   input.value.blur()
-  if (stringEquals(comment.value, store.island.comment)) return
+  if (stringEquals(comment.value, islandViewerStore.island.comment)) return
   if (request.value.status === RequestStatus.Updating) return
 
   request.value.status = RequestStatus.Updating
-  request.value = await store.postComment(comment.value)
+  request.value = await islandEditorStore.postComment(comment.value)
 }
 </script>
 

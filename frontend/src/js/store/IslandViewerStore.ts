@@ -28,15 +28,15 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
     abandonment_turn: 0
   })
   const logs = ref<Log[]>([])
-  const hoverWindow = ref<Point>({ x: 100, y: 100 })
+  const hoverWindowPoint = ref<Point>({ x: 100, y: 100 })
   const isMobile = ref(document.documentElement.clientWidth < 1024)
   const screenWidth = ref(document.documentElement.clientWidth)
   const showHoverWindow = ref(false)
   const hoverCellPoint = ref<Point>({ x: 0, y: 0 })
   const achievements = ref<Achievement[]>([])
 
-  const onMouseOverCell = (event: MouseEvent, terrain: Terrain) => {
-    onMouseMoveCell(event)
+  const onMouseOverCell = (event: MouseEvent, terrain: Terrain, isOpenPopup: boolean = false) => {
+    onMouseMoveCell(event, isOpenPopup)
 
     showHoverWindow.value = true
     hoverCellPoint.value = terrain.data.point
@@ -44,21 +44,26 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
     useIslandHoverStore().changeHoverCellCameraFocus(terrain.type)
   }
 
-  const onMouseMoveCell = (event: MouseEvent) => {
+  const onMouseMoveCell = (event: MouseEvent, isOpenPopup: boolean = false) => {
     const offsetY = 25
-    hoverWindow.value.y = document.documentElement.clientHeight - event.pageY + offsetY
-    hoverWindow.value.x = event.pageX
+
+    if (isOpenPopup) {
+      hoverWindowPoint.value.y = document.documentElement.clientHeight - event.pageY + window.scrollY + offsetY
+    } else {
+      hoverWindowPoint.value.y = document.documentElement.clientHeight - event.pageY + offsetY
+    }
+    hoverWindowPoint.value.x = event.pageX
 
     // Screen Overflow Check
     if (isMobile.value) {
       const windowSize = 200
       const paddingOffset = 20
-      const leftEdge = hoverWindow.value.x - windowSize / 2
-      const rightEdge = hoverWindow.value.x + windowSize / 2
+      const leftEdge = hoverWindowPoint.value.x - windowSize / 2
+      const rightEdge = hoverWindowPoint.value.x + windowSize / 2
       if (leftEdge < paddingOffset) {
-        hoverWindow.value.x += -leftEdge + paddingOffset
+        hoverWindowPoint.value.x += -leftEdge + paddingOffset
       } else if (rightEdge > screenWidth.value) {
-        hoverWindow.value.x -= rightEdge - screenWidth.value + paddingOffset
+        hoverWindowPoint.value.x -= rightEdge - screenWidth.value + paddingOffset
       }
     }
   }
@@ -73,7 +78,7 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
     terrains,
     status,
     logs,
-    hoverWindow,
+    hoverWindowPoint,
     isMobile,
     screenWidth,
     showHoverWindow,

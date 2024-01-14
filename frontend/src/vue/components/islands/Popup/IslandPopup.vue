@@ -1,13 +1,13 @@
 <template>
-  <div class="popup" :class="{ active: store.isOpenPopup }">
+  <div class="popup" :class="{ active: islandEditorStore.isOpenPopup }">
     <div class="popup-background" @click="closePopup"></div>
     <div class="popup-window">
       <div class="popup-window-header">
         <div class="popup-title-target">target:</div>
-        <div class="popup-island-name" :class="titleStyle">{{ store.selectedTargetIslandName }}島</div>
+        <div class="popup-island-name" :class="titleStyle">{{ islandEditorStore.selectedTargetIslandName }}島</div>
         <button class="close-button" @click="closePopup">×</button>
       </div>
-      <div v-if="store.isLoadingTerrain" class="loading">
+      <div v-if="islandEditorStore.isLoadingTerrain" class="loading">
         <svg
           aria-hidden="true"
           class="loading-circle"
@@ -22,33 +22,33 @@
             fill="currentFill" />
         </svg>
       </div>
-      <TresCanvas v-else v-bind="gl" :class="['island-canvas', { 'opacity-80': store.showPlanWindow }]">
-        <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" />
-        <CameraControls v-bind="cameraControlsState" make-default />
+      <TresCanvas v-else v-bind="gl" :class="['island-canvas', { 'opacity-80': islandEditorStore.showPlanWindow }]">
+        <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" :look-at="[0, 0, 0]" />
+        <CameraControls />
 
         <Suspense>
           <IslandEditorCanvas
-            v-if="store.targetTerrains[store.selectedTargetIsland] !== undefined"
-            :terrains="store.targetTerrains[store.selectedTargetIsland]" />
+            v-if="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland] !== undefined"
+            :terrains="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland]" />
         </Suspense>
 
         <TresAmbientLight :intensity="2" />
         <TresDirectionalLight :position="[192, 192, 192] as Vector3" :intensity="3" />
       </TresCanvas>
       <IslandHoverWindow
-        :showHoverWindow="store.showHoverWindow"
-        :hoverWindow="store.hoverWindow"
-        :hoverCellPoint="store.hoverCellPoint"
-        :terrains="store.terrains">
-        <template v-for="(plan, index) of store.plans">
+        :showHoverWindow="islandViewerStore.showHoverWindow"
+        :hoverWindowPoint="islandViewerStore.hoverWindowPoint"
+        :hoverCellPoint="islandViewerStore.hoverCellPoint"
+        :terrains="islandViewerStore.terrains">
+        <template v-for="(plan, index) of islandEditorStore.plans">
           <div
             class="hover-window-plan"
             v-if="
               plan.data.usePoint &&
-              plan.data.point.x === store.hoverCellPoint.x &&
-              plan.data.point.y === store.hoverCellPoint.y &&
-              ((!plan.data.useTargetIsland && plan.data.targetIsland === store.island.id) ||
-                (plan.data.useTargetIsland && plan.data.targetIsland === store.selectedTargetIsland))
+              plan.data.point.x === islandViewerStore.hoverCellPoint.x &&
+              plan.data.point.y === islandViewerStore.hoverCellPoint.y &&
+              ((!plan.data.useTargetIsland && plan.data.targetIsland === islandViewerStore.island.id) ||
+                (plan.data.useTargetIsland && plan.data.targetIsland === islandEditorStore.selectedTargetIsland))
             ">
             <span>[{{ index + 1 }}] </span>
             <span>{{ plan.data.name }}</span>
@@ -76,13 +76,15 @@ import { storeToRefs } from 'pinia'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import IslandEditorCanvas from '../Editor/IslandEditorCanvas.vue'
-import { CameraControls } from '@tresjs/cientos'
 import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
 import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
+import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 
-const store = useIslandEditorStore()
-const { isOpenPopup, isLoadingTerrain } = storeToRefs(store)
+const islandEditorStore = useIslandEditorStore()
+const islandViewerStore = useIslandViewerStore()
+const { isOpenPopup, isLoadingTerrain } = storeToRefs(islandEditorStore)
 
 const gl = reactive({
   clearColor: '#888888',
@@ -101,7 +103,7 @@ const cameraControlsState = reactive({
 })
 
 onBeforeMount(() => {
-  store.isIslandPopupMount = true
+  islandEditorStore.isIslandPopupMount = true
 })
 
 onMounted(() => {
@@ -116,23 +118,25 @@ onBeforeUnmount(() => {
 })
 
 onUnmounted(() => {
-  store.isIslandPopupMount = false
+  islandEditorStore.isIslandPopupMount = false
   window.removeEventListener('resize', onWindowSizeChanged)
 })
 
 watch(isLoadingTerrain, () => {
-  if (store.isLoadingTerrain) return
-  const target = store.targetIslands.filter((island) => island.id === store.selectedTargetIsland)
+  if (islandEditorStore.isLoadingTerrain) return
+  const target = islandEditorStore.targetIslands.filter(
+    (island) => island.id === islandEditorStore.selectedTargetIsland
+  )
   if (target.length < 1) throw new Error('対象の島が見つかりません')
   if (target[0].terrains === undefined) throw new Error('目標の島に地形情報がありません')
 
   // 取得した目標島の地形を保存
-  store.targetTerrains[store.selectedTargetIsland] = target[0].terrains
-  store.targetIslandComments[store.selectedTargetIsland] = target[0].comment
+  islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland] = target[0].terrains
+  islandEditorStore.targetIslandComments[islandEditorStore.selectedTargetIsland] = target[0].comment
 })
 
 const titleStyle = computed(() => {
-  if (store.selectedTargetIslandName.length > 16) {
+  if (islandEditorStore.selectedTargetIslandName.length > 16) {
     return 'text-[0.5rem] lg:text-sm'
   }
   return 'text-base lg:text-lg'
@@ -140,9 +144,9 @@ const titleStyle = computed(() => {
 
 const hasComment = computed(() => {
   return (
-    store.targetIslandComments[store.selectedTargetIsland] === null ||
-    store.targetIslandComments[store.selectedTargetIsland] === undefined ||
-    store.targetIslandComments[store.selectedTargetIsland] === ''
+    islandEditorStore.targetIslandComments[islandEditorStore.selectedTargetIsland] === null ||
+    islandEditorStore.targetIslandComments[islandEditorStore.selectedTargetIsland] === undefined ||
+    islandEditorStore.targetIslandComments[islandEditorStore.selectedTargetIsland] === ''
   )
 })
 
@@ -150,15 +154,15 @@ const islandComment = computed(() => {
   if (hasComment.value) {
     return 'コメントはありません'
   } else {
-    return store.targetIslandComments[store.selectedTargetIsland]
+    return islandEditorStore.targetIslandComments[islandEditorStore.selectedTargetIsland]
   }
 })
 
 const closePopup = () => {
   onMouseLeaveCell()
   onClickClosePlan()
-  store.isOpenPopup = false
-  store.showPlanWindow = false
+  islandEditorStore.isOpenPopup = false
+  islandEditorStore.showPlanWindow = false
 }
 
 const preventScroll = (event: MouseEvent | TouchEvent) => {
@@ -166,20 +170,20 @@ const preventScroll = (event: MouseEvent | TouchEvent) => {
 }
 
 const onMouseLeaveCell = () => {
-  store.showHoverWindow = false
+  islandViewerStore.showHoverWindow = false
 }
 
 const onClickClosePlan = () => {
-  store.showPlanWindow = false
+  islandEditorStore.showPlanWindow = false
 }
 
 const onWindowSizeChanged = () => {
   const newScreenWidth = document.documentElement.clientWidth
-  if (store.screenWidth != newScreenWidth) {
-    store.screenWidth = newScreenWidth
-    store.showHoverWindow = false
-    store.showPlanWindow = false
-    store.isMobile = document.documentElement.clientWidth < 1024
+  if (islandViewerStore.screenWidth != newScreenWidth) {
+    islandViewerStore.screenWidth = newScreenWidth
+    islandViewerStore.showHoverWindow = false
+    islandEditorStore.showPlanWindow = false
+    islandViewerStore.isMobile = document.documentElement.clientWidth < 1024
   }
 }
 </script>

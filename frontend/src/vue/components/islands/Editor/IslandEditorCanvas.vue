@@ -2,9 +2,9 @@
   <TresGroup
     :position="
       [
-        -DEFAULT_CELL_SIZE * Math.floor(store.hakoniwa.width / 2),
+        -DEFAULT_CELL_SIZE * Math.floor(islandViewerStore.hakoniwa.width / 2),
         0,
-        -DEFAULT_CELL_SIZE * Math.floor(store.hakoniwa.height / 2)
+        -DEFAULT_CELL_SIZE * Math.floor(islandViewerStore.hakoniwa.height / 2)
       ] as Vector3
     ">
     <template v-for="terrain of props.terrains">
@@ -26,7 +26,7 @@
       ref="selectedBox"
       :scale="selectedBoxScale"
       :position="selectedBoxPosition"
-      :visible="store.showPlanWindow">
+      :visible="islandEditorStore.showPlanWindow">
       <TresBoxGeometry :args="[1, 1, 1]" />
       <template v-for="borderLine of borderLines">
         <TresMesh :scale="borderLine.scale" :position="borderLine.position">
@@ -41,7 +41,7 @@
       ref="referencedBox"
       :scale="referencedBoxScale"
       :position="referencedBoxPosition"
-      :visible="getReferencedPoint !== null && !store.isOpenPopup">
+      :visible="getReferencedPoint !== null && !islandEditorStore.isOpenPopup">
       <TresBoxGeometry :args="[1, 1, 1]" />
       <template v-for="borderLine of borderLines">
         <TresMesh :scale="borderLine.scale" :position="borderLine.position">
@@ -61,11 +61,13 @@ import { Terrain } from '$entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
 import { DEFAULT_CELL_SIZE, getCells } from '$entity/Cell.js'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 let selectedBox = shallowRef(null)
 let referencedBox = shallowRef(null)
 
-const store = useIslandEditorStore()
+const islandEditorStore = useIslandEditorStore()
+const islandViewerStore = useIslandViewerStore()
 
 let models = {}
 
@@ -118,18 +120,19 @@ const getModelSize = (type): Vector3 => {
 
 const selectedBoxScale = computed(() => {
   const selectedBoxScaleMargin = 0.1
-  if (store.selectedPoint === null) {
+  if (islandEditorStore.selectedPoint === null) {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin,
-    getModelSize(getIslandTerrain(store.selectedPoint.x, store.selectedPoint.y).type).y + selectedBoxScaleMargin,
+    getModelSize(getIslandTerrain(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y).type).y +
+      selectedBoxScaleMargin,
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin
   )
 })
 
 const selectedBoxPosition = computed(() => {
-  const selectedPoint = store.selectedPoint
+  const selectedPoint = islandEditorStore.selectedPoint
   const selectedBoxPositionMarginY = 4
   if (selectedPoint === null) {
     return new Vector3(0, 0, 0)
@@ -142,11 +145,11 @@ const selectedBoxPosition = computed(() => {
 })
 
 const getReferencedPoint = computed(() => {
-  let referencedPlan = store.plans[store.selectedPlanNumber - 1]
+  let referencedPlan = islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1]
   if (!referencedPlan.data.usePoint) {
     return null
   }
-  if (referencedPlan.data.useTargetIsland && referencedPlan.data.targetIsland !== store.island.id) {
+  if (referencedPlan.data.useTargetIsland && referencedPlan.data.targetIsland !== islandViewerStore.island.id) {
     return null
   }
   return new Vector2(referencedPlan.data.point.x, referencedPlan.data.point.y)

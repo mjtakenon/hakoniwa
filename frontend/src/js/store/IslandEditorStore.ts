@@ -1,10 +1,7 @@
 import { defineStore } from 'pinia'
 import lodash from 'lodash'
-import { Status } from '$entity/Status.js'
-import { Hakoniwa } from '$entity/Hakoniwa.js'
 import { Island } from '$entity/Island.js'
 import { Terrain } from '$entity/Terrain.js'
-import { Log } from '$entity/Log.js'
 import { Plan } from '$entity/Plan.js'
 import axios from 'axios'
 import { Point } from '$entity/Point.js'
@@ -12,29 +9,11 @@ import { Turn } from '$entity/Turn.js'
 import { AjaxResult, RequestStatus } from '$entity/Network.js'
 import { Achievement } from '$entity/Achievement.js'
 import { computed, ref } from 'vue'
-import { useIslandHoverStore } from '$store/IslandHoverStore.js'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 export const useIslandEditorStore = defineStore('island-editor', () => {
-  const hakoniwa = ref<Hakoniwa>({ width: 0, height: 0 })
-  const island = ref<Island>({ id: 0, name: '', owner_name: '', comment: '' })
-  const terrains = ref<Terrain[]>([])
   const targetTerrains = ref<Array<Terrain[]>>([])
   const targetIslandComments = ref<string[]>([])
-  const status = ref<Status>({
-    area: 0,
-    development_points: 0,
-    environment: 'best',
-    foods: 0,
-    foods_production_capacity: 0,
-    funds: 0,
-    funds_production_capacity: 0,
-    population: 0,
-    resources: 0,
-    resources_production_capacity: 0,
-    maintenance_number_of_people: 0,
-    abandonment_turn: 0
-  })
-  const logs = ref<Log[]>([])
   const plans = ref<Plan[]>([])
   const sentPlans = ref<Plan[]>([])
   const targetIslands = ref<Island[]>([])
@@ -47,13 +26,8 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
   const planCandidate = ref<Plan[]>([])
   const planSendingResult = ref(200)
   const showNotification = ref(false)
-  const hoverWindow = ref<Point>({ x: 100, y: 100 })
-  const planWindow = ref<Point>({ x: 100, y: 100 })
-  const isMobile = ref(document.documentElement.clientWidth < 1024)
-  const screenWidth = ref(document.documentElement.clientWidth)
-  const showHoverWindow = ref(false)
+  const planWindowPoint = ref<Point>({ x: 100, y: 100 })
   const showPlanWindow = ref(false)
-  const hoverCellPoint = ref<Point>({ x: 0, y: 0 })
   const turn = ref<Turn>({
     turn: 0,
     next_time: new Date('1970/1/1 00:00:00')
@@ -63,6 +37,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
   const isIslandEditorMount = ref(true)
   const isLoadingTerrain = ref(false)
   const achievements = ref<Achievement[]>([])
+  const islandViewerStore = useIslandViewerStore()
 
   const getDefaultPlan = computed<Plan>(() => {
     return {
@@ -77,7 +52,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
         usePoint: false,
         useAmount: false,
         useTargetIsland: false,
-        targetIsland: island.value.id,
+        targetIsland: islandViewerStore.island.id,
         isFiring: false,
         priceString: '(+10億円)',
         amountString: '',
@@ -92,9 +67,9 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
   })
 
   const putPlan = async () => {
-    console.debug('PUT', '/api/islands/' + island.value.id + '/plans')
+    console.debug('PUT', '/api/islands/' + islandViewerStore.island.id + '/plans')
     await axios
-      .put('/api/islands/' + island.value.id + '/plans', {
+      .put('/api/islands/' + islandViewerStore.island.id + '/plans', {
         plan: JSON.stringify(plans.value)
       })
       .then((res) => {
@@ -114,7 +89,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
       })
   }
 
-  const getIslandTerrain = async (id: number) => {
+  const getTargetIslandTerrain = async (id: number) => {
     isLoadingTerrain.value = true
     const target = targetIslands.value.filter((island) => island.id === id)
     if (target.length < 1) throw new Error('存在しない島IDです')
@@ -140,15 +115,15 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
   }
 
   const postComment = async (comment: string): Promise<AjaxResult> => {
-    console.debug('POST', '/api/islands/' + island.value.id + '/comments')
+    console.debug('POST', '/api/islands/' + islandViewerStore.island.id + '/comments')
     let result = {} as AjaxResult
 
     await axios
-      .post('/api/islands/' + island.value.id + '/comments', {
+      .post('/api/islands/' + islandViewerStore.island.id + '/comments', {
         comment: comment
       })
       .then((res) => {
-        island.value.comment = res.data.comment
+        islandViewerStore.island.comment = res.data.comment
         result.status = RequestStatus.Success
       })
       .catch((err) => {
@@ -157,42 +132,6 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
         result.error = err.response.status
       })
     return result
-  }
-
-  const onMouseOverCell = (event: MouseEvent, terrain: Terrain) => {
-    onMouseMoveCell(event, terrain)
-
-    showHoverWindow.value = true
-    hoverCellPoint.value = terrain.data.point
-
-    useIslandHoverStore().changeHoverCellCameraFocus(terrain.type)
-  }
-
-  const onMouseMoveCell = (event: MouseEvent, terrain: Terrain) => {
-    const offsetY = 25
-    if (isOpenPopup.value) {
-      hoverWindow.value.y = document.documentElement.clientHeight - (event.pageY - window.scrollY) + offsetY
-    } else {
-      hoverWindow.value.y = document.documentElement.clientHeight - event.pageY + offsetY
-    }
-    hoverWindow.value.x = event.pageX
-
-    // Screen Overflow Check
-    if (isMobile.value) {
-      const windowSize = 200
-      const paddingOffset = 20
-      const leftEdge = hoverWindow.value.x - windowSize / 2
-      const rightEdge = hoverWindow.value.x + windowSize / 2
-      if (leftEdge < paddingOffset) {
-        hoverWindow.value.x += -leftEdge + paddingOffset
-      } else if (rightEdge > screenWidth.value) {
-        hoverWindow.value.x -= rightEdge - screenWidth.value + paddingOffset
-      }
-    }
-  }
-
-  const onMouseLeaveCell = (event: MouseEvent) => {
-    showHoverWindow.value = false
   }
 
   const onClickCell = (event: MouseEvent, terrain: Terrain) => {
@@ -208,43 +147,38 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     selectedPoint.value.y = terrain.data.point.y
     showPlanWindow.value = true
 
-    if (isMobile.value) {
-      planWindow.value.x = event.pageX
+    if (islandViewerStore.isMobile) {
+      planWindowPoint.value.x = event.pageX
       const offsetX = 15
       const offsetY = 30
       const elementWidth = 230
-      const leftEdge = planWindow.value.x - elementWidth / 2
-      const rightEdge = planWindow.value.x + elementWidth / 2
+      const leftEdge = planWindowPoint.value.x - elementWidth / 2
+      const rightEdge = planWindowPoint.value.x + elementWidth / 2
       if (leftEdge < offsetX) {
-        planWindow.value.x += -leftEdge + offsetX
-      } else if (rightEdge > screenWidth.value) {
-        planWindow.value.x -= rightEdge - screenWidth.value + offsetX
+        planWindowPoint.value.x += -leftEdge + offsetX
+      } else if (rightEdge > islandViewerStore.screenWidth) {
+        planWindowPoint.value.x -= rightEdge - islandViewerStore.screenWidth + offsetX
       }
 
       if (isOpenPopup.value) {
-        planWindow.value.y = event.pageY - window.scrollY + offsetY
+        planWindowPoint.value.y = event.pageY - window.scrollY + offsetY
       } else {
-        planWindow.value.y = event.pageY + offsetY
+        planWindowPoint.value.y = event.pageY + offsetY
       }
     } else {
       const offset = 15
-      planWindow.value.x = event.pageX + offset
+      planWindowPoint.value.x = event.pageX + offset
       if (isOpenPopup.value) {
-        planWindow.value.y = event.pageY - window.scrollY + offset
+        planWindowPoint.value.y = event.pageY - window.scrollY + offset
       } else {
-        planWindow.value.y = event.pageY + offset
+        planWindowPoint.value.y = event.pageY + offset
       }
     }
   }
 
   return {
-    hakoniwa,
-    island,
-    terrains,
     targetTerrains,
     targetIslandComments,
-    status,
-    logs,
     plans,
     sentPlans,
     targetIslands,
@@ -257,13 +191,8 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     planCandidate,
     planSendingResult,
     showNotification,
-    hoverWindow,
-    planWindow,
-    isMobile,
-    screenWidth,
-    showHoverWindow,
+    planWindowPoint,
     showPlanWindow,
-    hoverCellPoint,
     turn,
     isOpenPopup,
     isIslandPopupMount,
@@ -273,11 +202,8 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     getDefaultPlan,
     selectedTargetIslandName,
     putPlan,
-    getIslandTerrain,
+    getTargetIslandTerrain,
     postComment,
-    onMouseOverCell,
-    onMouseMoveCell,
-    onMouseLeaveCell,
     onClickCell
   }
 })
