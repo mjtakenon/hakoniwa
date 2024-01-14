@@ -35,6 +35,7 @@ abstract class Cell
     protected string $name;
     protected string $imagePath;
     protected string $type;
+    protected ?string $subType = null;
     protected Point $point;
 
     protected int $population = 0;
@@ -48,6 +49,9 @@ abstract class Cell
     public function __construct(...$data)
     {
         $this->point = new Point($data['point']->x, $data['point']->y);
+        if (array_key_exists('sub_type', $data)) {
+            $this->subType = $data['sub_type'];
+        }
     }
 
     public static function create($data)
@@ -60,6 +64,7 @@ abstract class Cell
         $arr = [
             'type' => $this->getType(),
             'data' => [
+                'sub_type' => $this->getSubType(),
                 'point' => $this->getPoint(),
             ]
         ];
@@ -105,6 +110,11 @@ abstract class Cell
     public function getPoint(): Point
     {
         return $this->point;
+    }
+
+    public function getSubType(): ?string
+    {
+        return $this->subType;
     }
 
     public function getInfoString(bool $isPrivate = false): string

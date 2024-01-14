@@ -12,13 +12,13 @@
         :position="
           [
             cell.data.point.x * DEFAULT_CELL_SIZE + ((((cell.data.point.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-            models[cell.type].scene.position.y,
+            models[cell.type][cell.data.sub_type ?? 'default'].scene.position.y,
             cell.data.point.y * DEFAULT_CELL_SIZE
           ] as Vector3
         "
-        :scale="models[cell.type].scene.scale.x"
+        :scale="models[cell.type][cell.data.sub_type ?? 'default'].scene.scale.x"
         :cell="cell"
-        :scene="models[cell.type].scene.clone()"></IslandEditorCell>
+        :scene="models[cell.type][cell.data.sub_type ?? 'default'].scene.clone()"></IslandEditorCell>
     </template>
 
     <!-- 選択セルカーソル -->
@@ -59,7 +59,7 @@ import { useGLTF } from '@tresjs/cientos'
 import IslandEditorCell from './IslandEditorCell.vue'
 import { Terrain } from '$entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
-import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellTypes } from '$entity/Cell.js'
+import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellSubTypes, getCellTypes } from '$entity/Cell.js'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
@@ -68,8 +68,6 @@ let referencedBox = shallowRef(null)
 
 const islandEditorStore = useIslandEditorStore()
 const islandViewerStore = useIslandViewerStore()
-
-let models = {}
 
 interface Props {
   terrain: Terrain
@@ -88,14 +86,18 @@ const borderLines = [
   { scale: [0.1, 0.05, 1] as Vector3, position: [-0.5, 0.475, 0] as Vector3 }
 ]
 
+let models = {}
 for (let type of getCellTypes()) {
-  let model = await useGLTF(getCellPath(type as CellType), { draco: true })
-  const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-  model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
-  model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
-  model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
-  model.scene.position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
-  models[type] = model
+  models[type] = {}
+  for (let subType of getCellSubTypes(type as CellType)) {
+    let model = await useGLTF(getCellPath(type as CellType, subType), { draco: true })
+    const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
+    model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
+    model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
+    model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
+    model.scene.position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
+    models[type][subType] = model
+  }
 }
 
 onMounted(() => {
@@ -114,8 +116,8 @@ const getCell = (x, y): Terrain => {
     .pop()
 }
 
-const getModelSize = (type): Vector3 => {
-  return new Box3().setFromObject(models[type].scene).getSize(new Vector3())
+const getModelSize = (type, subType): Vector3 => {
+  return new Box3().setFromObject(models[type][subType].scene).getSize(new Vector3())
 }
 
 const selectedBoxScale = computed(() => {
@@ -123,10 +125,10 @@ const selectedBoxScale = computed(() => {
   if (islandEditorStore.selectedPoint === null) {
     return new Vector3(0, 0, 0)
   }
+  const cell = getCell(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y)
   return new Vector3(
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin,
-    getModelSize(getCell(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y).type).y +
-      selectedBoxScaleMargin,
+    getModelSize(cell.type, cell.data.sub_type ?? 'default').y + selectedBoxScaleMargin,
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin
   )
 })
@@ -137,9 +139,10 @@ const selectedBoxPosition = computed(() => {
   if (selectedPoint === null) {
     return new Vector3(0, 0, 0)
   }
+  const cell = getCell(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y)
   return new Vector3(
     selectedPoint.x * DEFAULT_CELL_SIZE + ((((selectedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-    (getModelSize(getCell(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY,
+    (getModelSize(cell.type, cell.data.sub_type ?? 'default').y - 8) / 2 + selectedBoxPositionMarginY,
     selectedPoint.y * DEFAULT_CELL_SIZE
   )
 })
@@ -161,9 +164,10 @@ const referencedBoxScale = computed(() => {
   if (referencedPoint === null) {
     return new Vector3(0, 0, 0)
   }
+  const cell = getCell(referencedPoint.x, referencedPoint.y)
   return new Vector3(
     DEFAULT_CELL_SIZE + referencedBoxScaleMargin,
-    getModelSize(getCell(referencedPoint.x, referencedPoint.y).type).y + referencedBoxScaleMargin,
+    getModelSize(cell.type, cell.data.sub_type ?? 'default').y + referencedBoxScaleMargin,
     DEFAULT_CELL_SIZE + referencedBoxScaleMargin
   )
 })
@@ -174,9 +178,10 @@ const referencedBoxPosition = computed(() => {
   if (referencedPoint === null) {
     return new Vector3(0, 0, 0)
   }
+  const cell = getCell(referencedPoint.x, referencedPoint.y)
   return new Vector3(
     referencedPoint.x * DEFAULT_CELL_SIZE + ((((referencedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-    (getModelSize(getCell(referencedPoint.x, referencedPoint.y).type).y - 8) / 2 + referencedBoxPositionMarginY,
+    (getModelSize(cell.type, cell.data.sub_type ?? 'default').y - 8) / 2 + referencedBoxPositionMarginY,
     referencedPoint.y * DEFAULT_CELL_SIZE
   )
 })

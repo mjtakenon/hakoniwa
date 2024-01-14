@@ -62,6 +62,11 @@ abstract class Ship extends Cell
         return $this->elevation === CellConst::ELEVATION_SHALLOW ? $this->shallowImagePath : $this->seaImagePath;
     }
 
+    public function getSubType(): ?string
+    {
+        return $this->elevation === CellConst::ELEVATION_SHALLOW ? 'shallow' : 'sea';
+    }
+
     protected function move(Terrain $terrain, Cell $beforeCell, Cell $afterCell): Terrain
     {
         /** @var Ship $beforeCellCopy */

@@ -64,6 +64,11 @@ class Levinoth extends Monster
         return $arr;
     }
 
+    public function getSubType(): ?string
+    {
+        return $this->elevation === CellConst::ELEVATION_SHALLOW ? 'shallow' : 'sea';
+    }
+
     public function getAppearancePopulation(): int
     {
         return MonsterConst::APPEARANCE_POPULATION_LV5;

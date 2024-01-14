@@ -103,7 +103,7 @@ const submitNameChange = async () => {
   submitStatus.value.status = RequestStatus.Updating
   submitStatus.value = await store.patchIslandName(name.value, owner.value)
 
-  console.log(submitStatus.value)
+  console.debug(submitStatus.value)
 
   if (submitStatus.value.status === RequestStatus.Success) return
 
