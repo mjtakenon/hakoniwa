@@ -9,7 +9,7 @@
       </TresCanvas>
       <IslandHoverWindow
         :showHoverWindow="store.showHoverWindow"
-        :hoverWindow="store.hoverWindow"
+        :hoverWindowPoint="store.hoverWindowPoint"
         :hoverCellPoint="store.hoverCellPoint"
         :terrains="store.terrains" />
     </div>

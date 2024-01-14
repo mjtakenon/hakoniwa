@@ -2,7 +2,7 @@
   <div
     v-show="props.showHoverWindow"
     class="hover-window"
-    :style="{ bottom: props.hoverWindow.y + 'px', left: props.hoverWindow.x + 'px' }">
+    :style="{ bottom: props.hoverWindowPoint.y + 'px', left: props.hoverWindowPoint.x + 'px' }">
     <div class="hover-window-header">
       <Suspense>
         <HoverCanvas class="hover-window-img" />
@@ -22,7 +22,7 @@ import { Point } from '$entity/Point.js'
 
 interface Props {
   showHoverWindow: boolean
-  hoverWindow: Point
+  hoverWindowPoint: Point
   hoverCellPoint: Point
   terrains: Terrain[]
 }
