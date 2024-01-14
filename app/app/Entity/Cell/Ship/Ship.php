@@ -35,8 +35,6 @@ abstract class Ship extends Cell
         CellConst::PREVENTING_TSUNAMI => false,
     ];
 
-    protected string $shallowImagePath;
-    protected string $seaImagePath;
     protected int $elevation = CellConst::ELEVATION_SHALLOW;
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
@@ -57,9 +55,9 @@ abstract class Ship extends Cell
         }
     }
 
-    public function getImagePath(): string
+    public function getSubType(): ?string
     {
-        return $this->elevation === CellConst::ELEVATION_SHALLOW ? $this->shallowImagePath : $this->seaImagePath;
+        return $this->elevation === CellConst::ELEVATION_SHALLOW ? 'shallow' : 'sea';
     }
 
     protected function move(Terrain $terrain, Cell $beforeCell, Cell $afterCell): Terrain

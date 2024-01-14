@@ -17,7 +17,6 @@ use Illuminate\Support\Collection;
 
 class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumberOfPeople
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land9.gif';
     public const TYPE = 'missile_base';
     public const NAME = 'ミサイル基地';
     const MAINTENANCE_NUMBER_OF_PEOPLE = 20000;
@@ -52,7 +51,6 @@ class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumbe
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

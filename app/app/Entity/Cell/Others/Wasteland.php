@@ -7,7 +7,6 @@ use App\Entity\Cell\CellConst;
 
 class Wasteland extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land1.gif';
     public const TYPE = 'wasteland';
     public const NAME = '荒地';
     const ATTRIBUTE = [
@@ -28,7 +27,6 @@ class Wasteland extends Cell
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 }

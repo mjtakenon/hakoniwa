@@ -17,7 +17,6 @@ use Illuminate\Support\Collection;
 
 class Egg extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument41.gif';
     public const TYPE = 'egg';
     public const NAME = '卵';
     const ATTRIBUTE = [
@@ -40,7 +39,6 @@ class Egg extends Cell
 
     private const HATCH_PROBABILITY = 0.2;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

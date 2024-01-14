@@ -6,7 +6,7 @@
 import { AmbientLight, Box3, Camera, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
 import { useGLTF } from '@tresjs/cientos'
 import { onMounted, ref, UnwrapRef } from 'vue'
-import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellTypes } from '$entity/Cell.js'
+import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellSubTypes, getCellTypes } from '$entity/Cell.js'
 import { useIslandHoverStore } from '$store/IslandHoverStore.js'
 
 const store = useIslandHoverStore()
@@ -20,13 +20,16 @@ const canvas = ref(null)
 
 let models = {}
 for (let type of getCellTypes()) {
-  let model = await useGLTF(getCellPath(type as CellType), { draco: true })
-  const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-  model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
-  model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
-  model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
-  model.scene.position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
-  models[type] = model
+  models[type] = {}
+  for (let subType of getCellSubTypes(type as CellType)) {
+    let model = await useGLTF(getCellPath(type as CellType, subType), { draco: true })
+    const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
+    model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
+    model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
+    model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
+    model.scene.position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
+    models[type][subType] = model
+  }
 }
 
 const light = new AmbientLight(0xffffff, 3)
@@ -51,25 +54,32 @@ onMounted(() => {
   const positionMargin = new Vector3(DEFAULT_CELL_SIZE * 4, DEFAULT_CELL_SIZE * 4, DEFAULT_CELL_SIZE * -4)
   const cameraPositionDiff = new Vector3(8, 12, 12)
 
-  for (let type in models) {
-    models[type].scene.position.x = position.x
-    models[type].scene.position.y = position.y
-    models[type].scene.position.z = position.z
-    store.cameraLookAt[type] = position.clone()
-    store.cameraPositions[type] = position.clone().add(cameraPositionDiff)
+  for (let type of getCellTypes()) {
+    store.cameraLookAt[type] = {}
+    store.cameraPositions[type] = {}
 
-    position.add(positionMargin)
-    scene.add(models[type].scene)
+    for (let subType of getCellSubTypes(type as CellType)) {
+      models[type][subType].scene.position.x = position.x
+      models[type][subType].scene.position.y = position.y
+      models[type][subType].scene.position.z = position.z
+      store.cameraLookAt[type][subType] = position.clone()
+      store.cameraPositions[type][subType] = position.clone().add(cameraPositionDiff)
+
+      position.add(positionMargin)
+      scene.add(models[type][subType].scene)
+    }
   }
 
-  store.changeHoverCellCameraFocus('sea')
+  store.changeHoverCellCameraFocus('sea', 'default')
 
   tick()
 })
 
 const tick = () => {
-  for (let type in models) {
-    models[type].scene.rotation.y += 0.01
+  for (let type of getCellTypes()) {
+    for (let subType of getCellSubTypes(type as CellType)) {
+      models[type][subType].scene.rotation.y += 0.01
+    }
   }
   renderer.render(scene, store.camera)
   requestAnimationFrame(tick)

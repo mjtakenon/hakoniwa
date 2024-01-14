@@ -42,7 +42,7 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
     showHoverWindow.value = true
     hoverCellPoint.value = cell.data.point
 
-    useIslandHoverStore().changeHoverCellCameraFocus(cell.type)
+    useIslandHoverStore().changeHoverCellCameraFocus(cell.type, cell.data.sub_type ?? 'default')
   }
 
   const onMouseMoveCell = (event: MouseEvent, isOpenPopup: boolean = false) => {

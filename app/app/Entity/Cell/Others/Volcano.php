@@ -7,7 +7,6 @@ use App\Entity\Cell\CellConst;
 
 class Volcano extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano.png';
     public const TYPE = 'volcano';
     public const NAME = '火山';
     const ATTRIBUTE = [
@@ -29,7 +28,6 @@ class Volcano extends Cell
     ];
     public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;

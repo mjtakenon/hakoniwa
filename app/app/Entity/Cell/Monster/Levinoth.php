@@ -26,8 +26,6 @@ use function DeepCopy\deep_copy;
 
 class Levinoth extends Monster
 {
-    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/levinoth_sea.png';
-    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/levinoth_sea.png';
     public const TYPE = 'levinoth';
     public const NAME = '神獣リヴァイノス';
     public const DEFAULT_HIT_POINTS = 10;
@@ -37,7 +35,6 @@ class Levinoth extends Monster
     private const LAUNCH_EGG_PROBABILITY = 0.3;
     private const SPAWN_EGG_PROBABILITY = 0.3;
 
-    protected string $imagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $level = 1;
@@ -62,6 +59,11 @@ class Levinoth extends Monster
         $arr['data']['level'] = $this->level;
         $arr['data']['elevation'] = $this->elevation;
         return $arr;
+    }
+
+    public function getSubType(): ?string
+    {
+        return $this->elevation === CellConst::ELEVATION_SHALLOW ? 'shallow' : 'sea';
     }
 
     public function getAppearancePopulation(): int
@@ -92,11 +94,6 @@ class Levinoth extends Monster
     public function getLevel(): int
     {
         return $this->level;
-    }
-
-    public function getImagePath(): string
-    {
-        return $this->elevation === CellConst::ELEVATION_SHALLOW ? self::SHALLOW_IMAGE_PATH : self::SEA_IMAGE_PATH;
     }
 
     public function getInfoString(bool $isPrivate = false): string

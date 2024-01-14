@@ -5,7 +5,7 @@ export interface Cell {
   data: {
     info: string
     point: Point
-    subType?: string
+    sub_type?: string
   }
 }
 
@@ -43,44 +43,54 @@ export const CELL_PATHS = {
   red_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
   dark_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
   king_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  sanjira: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  kujira: { default: '/img/hakoniwa/gltf/plain.gltf' },
+  sanjira: {
+    default: '/img/hakoniwa/gltf/plain.gltf',
+    metalized: '/img/hakoniwa/gltf/plain.gltf'
+  },
+  kujira: {
+    default: '/img/hakoniwa/gltf/plain.gltf',
+    metalized: '/img/hakoniwa/gltf/plain.gltf'
+  },
   hamunemu: { default: '/img/hakoniwa/gltf/plain.gltf' },
   ghost_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
   slime: { default: '/img/hakoniwa/gltf/plain.gltf' },
   slime_legend: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  levinoth: { default: '/img/hakoniwa/gltf/plain.gltf' },
+  levinoth: {
+    default: '/img/hakoniwa/gltf/plain.gltf',
+    shallow: '/img/hakoniwa/gltf/volcano.gltf',
+    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+  },
   begenoth: { default: '/img/hakoniwa/gltf/plain.gltf' },
   egg: { default: '/img/hakoniwa/gltf/plain.gltf' },
   transport_ship: {
     default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/wasteland.gltf',
-    sea: '/img/hakoniwa/gltf/mountain.gltf'
+    shallow: '/img/hakoniwa/gltf/volcano.gltf',
+    sea: '/img/hakoniwa/gltf/wasteland.gltf'
   },
   battleship: {
     default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/wasteland.gltf',
-    sea: '/img/hakoniwa/gltf/mountain.gltf'
+    shallow: '/img/hakoniwa/gltf/volcano.gltf',
+    sea: '/img/hakoniwa/gltf/wasteland.gltf'
   },
   submarine: {
     default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/wasteland.gltf',
-    sea: '/img/hakoniwa/gltf/mountain.gltf'
+    shallow: '/img/hakoniwa/gltf/volcano.gltf',
+    sea: '/img/hakoniwa/gltf/wasteland.gltf'
   },
   pirate: {
     default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/wasteland.gltf',
-    sea: '/img/hakoniwa/gltf/mountain.gltf'
+    shallow: '/img/hakoniwa/gltf/volcano.gltf',
+    sea: '/img/hakoniwa/gltf/wasteland.gltf'
   },
   levinoth_battleship: {
     default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/wasteland.gltf',
-    sea: '/img/hakoniwa/gltf/mountain.gltf'
+    shallow: '/img/hakoniwa/gltf/volcano.gltf',
+    sea: '/img/hakoniwa/gltf/wasteland.gltf'
   },
   levinoth_submarine: {
     default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/wasteland.gltf',
-    sea: '/img/hakoniwa/gltf/mountain.gltf'
+    shallow: '/img/hakoniwa/gltf/volcano.gltf',
+    sea: '/img/hakoniwa/gltf/wasteland.gltf'
   }
 } as const
 

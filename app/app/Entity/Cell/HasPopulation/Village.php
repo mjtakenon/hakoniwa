@@ -6,7 +6,6 @@ use App\Entity\Cell\CellConst;
 
 class Village extends City
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land3.gif';
     public const TYPE = 'village';
     public const NAME = '村';
     public const MIN_POPULATION = 100;
@@ -29,7 +28,6 @@ class Village extends City
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

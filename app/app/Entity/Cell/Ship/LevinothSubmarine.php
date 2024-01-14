@@ -22,16 +22,12 @@ use function DeepCopy\deep_copy;
 
 class LevinothSubmarine extends LevinothBattleship
 {
-    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/levinoth_submarine_sea.png';
-    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/levinoth_submarine_shallow.png';
     public const TYPE = 'levinoth_submarine';
     public const NAME = 'リヴァイノス艦隊潜水艦';
     public const AFFILIATION_ENEMY = -1;
     public const DEFAULT_RETURN_TURN = 20;
     protected ?int $affiliationId = self::AFFILIATION_ENEMY;
 
-    protected string $shallowImagePath = self::SHALLOW_IMAGE_PATH;
-    protected string $seaImagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $offensivePower = 40;

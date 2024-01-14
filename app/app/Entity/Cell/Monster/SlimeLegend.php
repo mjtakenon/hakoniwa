@@ -19,7 +19,6 @@ use Illuminate\Support\Collection;
 
 class SlimeLegend extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster19.gif';
     public const TYPE = 'slime_legend';
     public const NAME = '奇獣スライムレジェンド';
     public const DEFAULT_HIT_POINTS = 4;
@@ -27,7 +26,6 @@ class SlimeLegend extends Monster
     public const EXPERIENCE = 5;
     public const CORPSE_PRICE = 300;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

@@ -17,7 +17,6 @@ use Illuminate\Support\Collection;
 
 class GhostInora extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster8.gif';
     public const TYPE = 'ghost_inora';
     public const NAME = '怪獣ゴーストいのら';
     public const DEFAULT_HIT_POINTS = 1;
@@ -25,7 +24,6 @@ class GhostInora extends Monster
     public const EXPERIENCE = 15;
     public const CORPSE_PRICE = 5000;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

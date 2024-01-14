@@ -4,7 +4,6 @@ namespace App\Entity\Cell\Monster;
 
 class Inora extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster0.gif';
     public const TYPE = 'inora';
     public const NAME = '怪獣いのら';
     public const DEFAULT_HIT_POINTS = 1;
@@ -12,7 +11,6 @@ class Inora extends Monster
     public const EXPERIENCE = 5;
     public const CORPSE_PRICE = 1500;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

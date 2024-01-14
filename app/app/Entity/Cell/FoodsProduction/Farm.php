@@ -16,7 +16,6 @@ use Illuminate\Support\Collection;
 
 class Farm extends Cell implements IFoodsProduction
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land72.gif';
     public const TYPE = 'farm';
     public const NAME = '農場';
     const PRODUCTION_CAPACITY = 20000;
@@ -39,7 +38,6 @@ class Farm extends Cell implements IFoodsProduction
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

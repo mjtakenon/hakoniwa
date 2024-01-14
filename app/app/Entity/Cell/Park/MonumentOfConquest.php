@@ -14,12 +14,10 @@ use Illuminate\Support\Collection;
 
 class MonumentOfConquest extends Park
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument53.gif';
     public const TYPE = 'monument_of_conquest';
     public const NAME = '制覇の碑';
     public const PRODUCT_DEVELOPMENT_POINTS = 400;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

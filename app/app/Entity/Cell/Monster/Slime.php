@@ -19,7 +19,6 @@ use Illuminate\Support\Collection;
 
 class Slime extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster14.gif';
     public const TYPE = 'slime';
     public const NAME = '奇獣スライム';
     public const DEFAULT_HIT_POINTS = 2;
@@ -27,7 +26,6 @@ class Slime extends Monster
     public const EXPERIENCE = 2;
     public const CORPSE_PRICE = 100;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

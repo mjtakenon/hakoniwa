@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
 
 class Mine extends Cell implements IResourcesProduction
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/volcano_mine.png';
     public const TYPE = 'mine';
     public const NAME = '採掘場';
     const PRODUCTION_CAPACITY = 50000;
@@ -38,7 +37,6 @@ class Mine extends Cell implements IResourcesProduction
     ];
     public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;
