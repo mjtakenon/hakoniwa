@@ -13,13 +13,11 @@ use Illuminate\Support\Collection;
 
 class MonumentOfPeace extends Park
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument51.gif';
     public const TYPE = 'monument_of_peace';
     public const NAME = '平和の碑';
     public const PRODUCT_DEVELOPMENT_POINTS = 500;
     public const CONSTRUCTABLE_POPULATION_THRESHOLD = 500000;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

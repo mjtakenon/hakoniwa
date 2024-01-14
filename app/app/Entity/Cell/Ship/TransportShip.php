@@ -9,8 +9,6 @@ use App\Models\Island;
 
 class TransportShip extends Ship implements IHasMaintenanceNumberOfPeople
 {
-    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/transport_ship_sea.png';
-    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/transport_ship_shallow.png';
     public const TYPE = 'transport_ship';
     public const NAME = '輸送船';
     public const MAINTENANCE_NUMBER_OF_PEOPLE = 1000;
@@ -33,8 +31,6 @@ class TransportShip extends Ship implements IHasMaintenanceNumberOfPeople
         CellConst::PREVENTING_TSUNAMI => false,
     ];
 
-    protected string $shallowImagePath = self::SHALLOW_IMAGE_PATH;
-    protected string $seaImagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

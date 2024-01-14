@@ -12,7 +12,6 @@ use App\Models\Island;
 
 class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumberOfPeople
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land12.gif';
     public const TYPE = 'seabed_base';
     public const NAME = '海底基地';
     const MAINTENANCE_NUMBER_OF_PEOPLE = 20000;
@@ -44,7 +43,6 @@ class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumber
     ];
     public const ELEVATION = CellConst::ELEVATION_SEA;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;

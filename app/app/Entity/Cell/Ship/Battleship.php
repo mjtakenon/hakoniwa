@@ -27,13 +27,9 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
 
     protected int $maintenanceNumberOfPeople = self::MAINTENANCE_NUMBER_OF_PEOPLE;
 
-    public const SEA_IMAGE_PATH = '/img/hakoniwa/hakogif/battleship_sea.png';
-    public const SHALLOW_IMAGE_PATH = '/img/hakoniwa/hakogif/battleship_shallow.png';
     public const TYPE = 'battleship';
     public const NAME = '戦艦';
 
-    protected string $shallowImagePath = self::SHALLOW_IMAGE_PATH;
-    protected string $seaImagePath = self::SEA_IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $offensivePower = 20;

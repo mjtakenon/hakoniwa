@@ -15,12 +15,10 @@ use Illuminate\Support\Collection;
 
 class Park extends Cell implements IPark
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument0.gif';
     public const TYPE = 'park';
     public const NAME = '公園';
     public const PRODUCT_DEVELOPMENT_POINTS = 100;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

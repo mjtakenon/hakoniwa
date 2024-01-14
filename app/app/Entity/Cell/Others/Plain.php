@@ -21,7 +21,6 @@ use App\Entity\Cell\CellConst;
 
 class Plain extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land2.gif';
     public const TYPE = 'plain';
     public const NAME = '平地';
     public const IMMIGRATE_COEF = 0.2;
@@ -52,7 +51,6 @@ class Plain extends Cell
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

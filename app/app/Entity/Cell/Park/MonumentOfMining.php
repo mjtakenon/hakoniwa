@@ -13,13 +13,11 @@ use Illuminate\Support\Collection;
 
 class MonumentOfMining extends Park
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monument52.gif';
     public const TYPE = 'monument_of_mining';
     public const NAME = '鉱の碑';
     public const PRODUCT_DEVELOPMENT_POINTS = 250;
     public const CONSTRUCTABLE_RESOURCES_THRESHOLD = 4000;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

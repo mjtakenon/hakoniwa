@@ -33,7 +33,6 @@ abstract class Cell
     public const ELEVATION = CellConst::ELEVATION_PLAIN;
 
     protected string $name;
-    protected string $imagePath;
     protected string $type;
     protected ?string $subType = null;
     protected Point $point;
@@ -64,14 +63,16 @@ abstract class Cell
         $arr = [
             'type' => $this->getType(),
             'data' => [
-                'sub_type' => $this->getSubType(),
                 'point' => $this->getPoint(),
             ]
         ];
 
         if ($withStatic) {
-            $arr['data']['image_path'] = $this->getImagePath();
             $arr['data']['info'] = $this->getInfoString($isPrivate);
+        }
+
+        if (!is_null($this->getSubType())) {
+            $arr['data']['sub_type'] = $this->getSubType();
         }
 
         return $arr;
@@ -85,11 +86,6 @@ abstract class Cell
     public function getType(): string
     {
         return $this->type;
-    }
-
-    public function getImagePath(): string
-    {
-        return $this->imagePath;
     }
 
     public function setElevation(int $elevation): void

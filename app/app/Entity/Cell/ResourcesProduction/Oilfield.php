@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
 
 class Oilfield extends Cell implements IResourcesProduction
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land16.gif';
     public const TYPE = 'oilfield';
     public const NAME = '油田';
     const PRODUCTION_CAPACITY = 20000;
@@ -38,7 +37,6 @@ class Oilfield extends Cell implements IResourcesProduction
     ];
     public const ELEVATION = CellConst::ELEVATION_SHALLOW;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;

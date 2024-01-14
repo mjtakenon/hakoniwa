@@ -12,8 +12,6 @@ use Illuminate\Support\Collection;
 
 class Sanjira extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster5.gif';
-    public const METALIZED_IMAGE_PATH = '/img/hakoniwa/hakogif/monster4.gif';
     public const TYPE = 'sanjira';
     public const NAME = '怪獣サンジラ';
     public const DEFAULT_HIT_POINTS = 2;
@@ -22,7 +20,6 @@ class Sanjira extends Monster
     public const CORPSE_PRICE = 3000;
     private bool $isMetalized;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
@@ -44,14 +41,14 @@ class Sanjira extends Monster
         return $arr;
     }
 
+    public function getSubType(): ?string
+    {
+        return $this->isMetalized ? 'metalized' : 'default';
+    }
+
     public function isAttackDisabled(): bool
     {
         return $this->isMetalized;
-    }
-
-    public function getImagePath(): string
-    {
-        return $this->isMetalized ? self::METALIZED_IMAGE_PATH : self::IMAGE_PATH;
     }
 
     public function getAppearancePopulation(): int

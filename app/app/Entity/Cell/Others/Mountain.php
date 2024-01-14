@@ -16,7 +16,6 @@ use App\Entity\Cell\CellConst;
 
 class Mountain extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land11.gif';
     public const TYPE = 'mountain';
     public const NAME = '山';
     const ATTRIBUTE = [
@@ -39,7 +38,6 @@ class Mountain extends Cell
     public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
     private const ACTIVATE_PROBABILITY = 0.3;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;

@@ -14,7 +14,6 @@ use Illuminate\Support\Collection;
 
 class Forest extends Cell implements IHasWoods
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land6.gif';
     public const TYPE = 'forest';
     public const NAME = '森';
     public const INITIAL_WOODS = 100;
@@ -40,7 +39,6 @@ class Forest extends Cell implements IHasWoods
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

@@ -7,7 +7,6 @@ use App\Entity\Cell\CellConst;
 
 class Sea extends Cell
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land0.gif';
     public const TYPE = 'sea';
     public const NAME = '海';
     const ATTRIBUTE = [
@@ -29,7 +28,6 @@ class Sea extends Cell
     ];
     public const ELEVATION = CellConst::ELEVATION_SEA;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $elevation = self::ELEVATION;

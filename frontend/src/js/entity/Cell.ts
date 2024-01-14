@@ -43,8 +43,14 @@ export const CELL_PATHS = {
   red_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
   dark_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
   king_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  sanjira: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  kujira: { default: '/img/hakoniwa/gltf/plain.gltf' },
+  sanjira: {
+    default: '/img/hakoniwa/gltf/plain.gltf',
+    metalized: '/img/hakoniwa/gltf/plain.gltf'
+  },
+  kujira: {
+    default: '/img/hakoniwa/gltf/plain.gltf',
+    metalized: '/img/hakoniwa/gltf/plain.gltf'
+  },
   hamunemu: { default: '/img/hakoniwa/gltf/plain.gltf' },
   ghost_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
   slime: { default: '/img/hakoniwa/gltf/plain.gltf' },

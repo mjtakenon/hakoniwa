@@ -14,7 +14,6 @@ use Illuminate\Support\Collection;
 
 class Factory extends Cell implements IFundsProduction
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/land8.gif';
     public const TYPE = 'factory';
     public const NAME = '工場';
     const PRODUCTION_CAPACITY = 20000;
@@ -38,7 +37,6 @@ class Factory extends Cell implements IFundsProduction
         CellConst::PREVENTING_TSUNAMI => true,
     ];
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
     protected int $productionCapacity = self::PRODUCTION_CAPACITY;

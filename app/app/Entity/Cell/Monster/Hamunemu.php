@@ -17,7 +17,6 @@ use Illuminate\Support\Collection;
 
 class Hamunemu extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/monster16.gif';
     public const TYPE = 'hamunemu';
     public const NAME = '怪獣はむねむ';
     public const DEFAULT_HIT_POINTS = 2;
@@ -25,7 +24,6 @@ class Hamunemu extends Monster
     public const EXPERIENCE = 8;
     public const CORPSE_PRICE = 3000;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 

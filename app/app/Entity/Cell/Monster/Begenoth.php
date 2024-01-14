@@ -4,7 +4,6 @@ namespace App\Entity\Cell\Monster;
 
 class Begenoth extends Monster
 {
-    public const IMAGE_PATH = '/img/hakoniwa/hakogif/begenoth.png';
     public const TYPE = 'begenoth';
     public const NAME = '神獣ベギモス';
     public const DEFAULT_HIT_POINTS = 3;
@@ -12,7 +11,6 @@ class Begenoth extends Monster
     public const EXPERIENCE = 8;
     public const CORPSE_PRICE = 3000;
 
-    protected string $imagePath = self::IMAGE_PATH;
     protected string $type = self::TYPE;
     protected string $name = self::NAME;
 
