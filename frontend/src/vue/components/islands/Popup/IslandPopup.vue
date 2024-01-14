@@ -23,9 +23,8 @@
         </svg>
       </div>
       <TresCanvas v-else v-bind="gl" :class="['island-canvas', { 'opacity-80': islandEditorStore.showPlanWindow }]">
-        <!-- なぜかpositionが近くなるので6.33倍している -->
-        <TresPerspectiveCamera :position="[8 * 6.33, 200 * 6.33, 32 * 6.33] as Vector3" :look-at="[0, 0, 0]" />
-        <CameraControls v-bind="cameraControlsState" make-default />
+        <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" :look-at="[0, 0, 0]" />
+        <CameraControls />
 
         <Suspense>
           <IslandEditorCanvas
@@ -77,11 +76,11 @@ import { storeToRefs } from 'pinia'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import IslandEditorCanvas from '../Editor/IslandEditorCanvas.vue'
-import { CameraControls } from '@tresjs/cientos'
 import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
 import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
+import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 
 const islandEditorStore = useIslandEditorStore()
 const islandViewerStore = useIslandViewerStore()
