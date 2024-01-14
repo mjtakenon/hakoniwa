@@ -7,18 +7,18 @@
         -DEFAULT_CELL_SIZE * Math.floor(islandViewerStore.hakoniwa.height / 2)
       ] as Vector3
     ">
-    <template v-for="terrain of props.terrains">
+    <template v-for="cell of props.terrain.cells">
       <IslandEditorCell
         :position="
           [
-            terrain.data.point.x * DEFAULT_CELL_SIZE + ((((terrain.data.point.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-            models[terrain.type].scene.position.y,
-            terrain.data.point.y * DEFAULT_CELL_SIZE
+            cell.data.point.x * DEFAULT_CELL_SIZE + ((((cell.data.point.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
+            models[cell.type].scene.position.y,
+            cell.data.point.y * DEFAULT_CELL_SIZE
           ] as Vector3
         "
-        :scale="models[terrain.type].scene.scale.x"
-        :terrain="terrain"
-        :scene="models[terrain.type].scene.clone()"></IslandEditorCell>
+        :scale="models[cell.type].scene.scale.x"
+        :cell="cell"
+        :scene="models[cell.type].scene.clone()"></IslandEditorCell>
     </template>
 
     <!-- 選択セルカーソル -->
@@ -59,7 +59,7 @@ import { useGLTF } from '@tresjs/cientos'
 import IslandEditorCell from './IslandEditorCell.vue'
 import { Terrain } from '$entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
-import { DEFAULT_CELL_SIZE, getCells } from '$entity/Cell.js'
+import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellTypes } from '$entity/Cell.js'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
@@ -72,7 +72,7 @@ const islandViewerStore = useIslandViewerStore()
 let models = {}
 
 interface Props {
-  terrains: Terrain[]
+  terrain: Terrain
 }
 
 const props = defineProps<Props>()
@@ -88,8 +88,8 @@ const borderLines = [
   { scale: [0.1, 0.05, 1] as Vector3, position: [-0.5, 0.475, 0] as Vector3 }
 ]
 
-for (let type in getCells()) {
-  let model = await useGLTF(getCells()[type].path, { draco: true })
+for (let type of getCellTypes()) {
+  let model = await useGLTF(getCellPath(type as CellType), { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
   model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
   model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
@@ -106,8 +106,8 @@ onMounted(() => {
   referencedBox.value.material.transparent = true
 })
 
-const getIslandTerrain = (x, y): Terrain => {
-  return props.terrains
+const getCell = (x, y): Terrain => {
+  return props.terrain.cells
     .filter(function (item) {
       if (item.data.point.x === x && item.data.point.y === y) return true
     })
@@ -125,7 +125,7 @@ const selectedBoxScale = computed(() => {
   }
   return new Vector3(
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin,
-    getModelSize(getIslandTerrain(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y).type).y +
+    getModelSize(getCell(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y).type).y +
       selectedBoxScaleMargin,
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin
   )
@@ -139,7 +139,7 @@ const selectedBoxPosition = computed(() => {
   }
   return new Vector3(
     selectedPoint.x * DEFAULT_CELL_SIZE + ((((selectedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-    (getModelSize(getIslandTerrain(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY,
+    (getModelSize(getCell(selectedPoint.x, selectedPoint.y).type).y - 8) / 2 + selectedBoxPositionMarginY,
     selectedPoint.y * DEFAULT_CELL_SIZE
   )
 })
@@ -163,7 +163,7 @@ const referencedBoxScale = computed(() => {
   }
   return new Vector3(
     DEFAULT_CELL_SIZE + referencedBoxScaleMargin,
-    getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y + referencedBoxScaleMargin,
+    getModelSize(getCell(referencedPoint.x, referencedPoint.y).type).y + referencedBoxScaleMargin,
     DEFAULT_CELL_SIZE + referencedBoxScaleMargin
   )
 })
@@ -176,8 +176,7 @@ const referencedBoxPosition = computed(() => {
   }
   return new Vector3(
     referencedPoint.x * DEFAULT_CELL_SIZE + ((((referencedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-    (getModelSize(getIslandTerrain(referencedPoint.x, referencedPoint.y).type).y - 8) / 2 +
-      referencedBoxPositionMarginY,
+    (getModelSize(getCell(referencedPoint.x, referencedPoint.y).type).y - 8) / 2 + referencedBoxPositionMarginY,
     referencedPoint.y * DEFAULT_CELL_SIZE
   )
 })

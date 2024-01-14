@@ -5,7 +5,7 @@
 
       <slot />
       <Suspense>
-        <IslandEditorCanvas :terrains="islandViewerStore.terrains" />
+        <IslandEditorCanvas :terrain="islandViewerStore.terrain" />
       </Suspense>
 
       <TresAmbientLight :intensity="2" />
@@ -16,7 +16,7 @@
       :showHoverWindow="islandViewerStore.showHoverWindow"
       :hoverWindowPoint="islandViewerStore.hoverWindowPoint"
       :hoverCellPoint="islandViewerStore.hoverCellPoint"
-      :terrains="islandViewerStore.terrains">
+      :terrain="islandViewerStore.terrain">
       <template v-for="(plan, index) of islandEditorStore.plans">
         <div
           class="hover-window-plan"
@@ -64,20 +64,10 @@ const islandEditorStore = useIslandEditorStore()
 const islandViewerStore = useIslandViewerStore()
 
 let screenWidth = document.documentElement.clientWidth
-let terrains = []
 
 onBeforeMount(() => {
   islandEditorStore.isIslandEditorMount = true
-  terrains = new Array(islandViewerStore.hakoniwa.height)
-  for (let y = 0; y < terrains.length; y++) {
-    terrains[y] = new Array(islandViewerStore.hakoniwa.width)
-  }
-
-  for (let terrain of islandViewerStore.terrains) {
-    terrains[terrain.data.point.y][terrain.data.point.x] = terrain
-  }
-
-  islandEditorStore.targetTerrains[islandViewerStore.island.id] = islandViewerStore.terrains
+  islandEditorStore.targetTerrains[islandViewerStore.island.id] = islandViewerStore.terrain
 })
 
 onMounted(() => {

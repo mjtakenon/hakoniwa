@@ -29,7 +29,7 @@
         <Suspense>
           <IslandEditorCanvas
             v-if="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland] !== undefined"
-            :terrains="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland]" />
+            :terrain="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland]" />
         </Suspense>
 
         <TresAmbientLight :intensity="2" />
@@ -39,7 +39,7 @@
         :showHoverWindow="islandViewerStore.showHoverWindow"
         :hoverWindowPoint="islandViewerStore.hoverWindowPoint"
         :hoverCellPoint="islandViewerStore.hoverCellPoint"
-        :terrains="islandViewerStore.terrains">
+        :terrain="islandViewerStore.terrain">
         <template v-for="(plan, index) of islandEditorStore.plans">
           <div
             class="hover-window-plan"
@@ -81,6 +81,7 @@ import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
+import { getAchievementsList } from '$entity/Achievement.js'
 
 const islandEditorStore = useIslandEditorStore()
 const islandViewerStore = useIslandViewerStore()
@@ -94,12 +95,6 @@ const gl = reactive({
   outputColorSpace: SRGBColorSpace,
   toneMapping: NoToneMapping,
   width: 100
-})
-
-const cameraControlsState = reactive({
-  minDistance: 20,
-  maxDistance: 200,
-  maxPolarAngle: Math.PI / 2
 })
 
 onBeforeMount(() => {
@@ -128,11 +123,15 @@ watch(isLoadingTerrain, () => {
     (island) => island.id === islandEditorStore.selectedTargetIsland
   )
   if (target.length < 1) throw new Error('対象の島が見つかりません')
-  if (target[0].terrains === undefined) throw new Error('目標の島に地形情報がありません')
+  if (target[0].terrain === undefined) throw new Error('目標の島に地形情報がありません')
 
   // 取得した目標島の地形を保存
-  islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland] = target[0].terrains
-  islandEditorStore.targetIslandComments[islandEditorStore.selectedTargetIsland] = target[0].comment
+  islandEditorStore.$patch((state) => {
+    state.targetTerrains[islandEditorStore.selectedTargetIsland] = {
+      cells: target[0].terrain
+    }
+    state.targetIslandComments[islandEditorStore.selectedTargetIsland] = target[0].comment
+  })
 })
 
 const titleStyle = computed(() => {

@@ -8,11 +8,12 @@ import { Point } from '$entity/Point.js'
 import { Achievement } from '$entity/Achievement.js'
 import { ref } from 'vue'
 import { useIslandHoverStore } from '$store/IslandHoverStore.js'
+import { Cell } from '$entity/Cell.js'
 
 export const useIslandViewerStore = defineStore('island-viewer', () => {
   const hakoniwa = ref<Hakoniwa>({ width: 0, height: 0 })
   const island = ref<Island>({ id: 0, name: '', owner_name: '', comment: '' })
-  const terrains = ref<Terrain[]>([])
+  const terrain = ref<Terrain>()
   const status = ref<Status>({
     area: 0,
     development_points: 0,
@@ -35,13 +36,13 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
   const hoverCellPoint = ref<Point>({ x: 0, y: 0 })
   const achievements = ref<Achievement[]>([])
 
-  const onMouseOverCell = (event: MouseEvent, terrain: Terrain, isOpenPopup: boolean = false) => {
+  const onMouseOverCell = (event: MouseEvent, cell: Cell, isOpenPopup: boolean = false) => {
     onMouseMoveCell(event, isOpenPopup)
 
     showHoverWindow.value = true
-    hoverCellPoint.value = terrain.data.point
+    hoverCellPoint.value = cell.data.point
 
-    useIslandHoverStore().changeHoverCellCameraFocus(terrain.type)
+    useIslandHoverStore().changeHoverCellCameraFocus(cell.type)
   }
 
   const onMouseMoveCell = (event: MouseEvent, isOpenPopup: boolean = false) => {
@@ -75,7 +76,7 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
   return {
     hakoniwa,
     island,
-    terrains,
+    terrain,
     status,
     logs,
     hoverWindowPoint,

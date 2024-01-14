@@ -92,7 +92,7 @@ class DetailController extends Controller
                     'environment' => $islandStatus->environment,
                     'area' => $islandStatus->area,
                 ],
-                'terrains' => $islandTerrain->toEntity()->toArray(false, true),
+                'terrain' => $islandTerrain->toEntity()->toArray(false, true),
                 'logs' => array_values($islandLogs->toArray()),
                 'summary' => $summary->map(function ($status, $index) use ($summary) {
                     if ($summary->count() - 1 > $index) {

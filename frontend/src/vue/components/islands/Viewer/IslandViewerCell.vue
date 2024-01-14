@@ -5,9 +5,9 @@
     :object="child"
     :scale="props.scale"
     :position="props.position"
-    @click="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.terrain)"
-    @pointer-enter="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.terrain)"
-    @pointer-move="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.terrain)"
+    @click="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"
+    @pointer-enter="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"
+    @pointer-move="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"
     @pointer-leave="(intersection, pointerEvent) => store.onMouseLeaveCell(pointerEvent)"
     blocks-pointer-events></primitive>
 </template>
@@ -17,13 +17,13 @@ import { TresInstance } from '@tresjs/core'
 import { Object3D, Vector3 } from 'three'
 
 import { shallowRef, ShallowRef } from 'vue'
-import { Terrain } from '$entity/Terrain'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
+import { Cell } from '$entity/Cell.js'
 
 const store = useIslandViewerStore()
 
 interface Props {
-  terrain: Terrain
+  cell: Cell
   position: Vector3
   scene: Object3D
   scale: number

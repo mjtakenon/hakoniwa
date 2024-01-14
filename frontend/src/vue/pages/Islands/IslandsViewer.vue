@@ -12,9 +12,6 @@
 <script setup lang="ts">
 import { Vector3 } from 'three'
 import IslandViewerCanvas from '$vue/components/islands/Viewer/IslandViewerCanvas.vue'
-import { useIslandViewerStore } from '$store/IslandViewerStore.js'
-
-const store = useIslandViewerStore()
 </script>
 
 <style lang="scss" scoped></style>

@@ -3,15 +3,15 @@
     <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
     <div id="island">
       <TresCanvas v-bind="gl" id="island-canvas">
-        <IslandViewer>
+        <IslandsViewer>
           <CameraControls />
-        </IslandViewer>
+        </IslandsViewer>
       </TresCanvas>
       <IslandHoverWindow
         :showHoverWindow="store.showHoverWindow"
         :hoverWindowPoint="store.hoverWindowPoint"
         :hoverCellPoint="store.hoverCellPoint"
-        :terrains="store.terrains" />
+        :terrain="store.terrain" />
     </div>
     <div class="md:max-lg:px-3">
       <Bbs :island="store.island" />
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
-import IslandViewer from './IslandsViewer.vue'
+import IslandsViewer from './IslandsViewer.vue'
 import { reactive } from 'vue'
 import { Hakoniwa } from '$entity/Hakoniwa'
 import { Status } from '$entity/Status'
@@ -50,7 +50,7 @@ interface Props {
     name: string
     owner_name: string
     status: Status
-    terrains: Array<Terrain>
+    terrain: Terrain
     plans: Array<Plan>
     logs: LogProps[]
     summary: SummaryProps[]
@@ -82,10 +82,14 @@ store.$patch((state) => {
     name: props.island.name,
     owner_name: props.island.owner_name,
     comment: props.island.comment,
-    terrains: props.island.terrains
+    terrain: {
+      cells: props.island.terrain
+    }
   }
   state.status = props.island.status
-  state.terrains = props.island.terrains
+  state.terrain = {
+    cells: props.island.terrain
+  }
   state.logs = logs
   state.achievements = getAchievementsList(props.island.achievements)
 })

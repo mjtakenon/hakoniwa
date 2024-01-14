@@ -6,7 +6,7 @@
 import { AmbientLight, Box3, Camera, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
 import { useGLTF } from '@tresjs/cientos'
 import { onMounted, ref, UnwrapRef } from 'vue'
-import { DEFAULT_CELL_SIZE, getCells } from '$entity/Cell.js'
+import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellTypes } from '$entity/Cell.js'
 import { useIslandHoverStore } from '$store/IslandHoverStore.js'
 
 const store = useIslandHoverStore()
@@ -19,8 +19,8 @@ const scene = new Scene()
 const canvas = ref(null)
 
 let models = {}
-for (let type in getCells()) {
-  let model = await useGLTF(getCells()[type].path, { draco: true })
+for (let type of getCellTypes()) {
+  let model = await useGLTF(getCellPath(type as CellType), { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
   model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
   model.scene.scale.y = DEFAULT_CELL_SIZE / size.x

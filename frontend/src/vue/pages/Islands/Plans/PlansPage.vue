@@ -57,7 +57,7 @@ interface Props {
     name: string
     owner_name: string
     status: Status
-    terrains: Array<Terrain>
+    terrain: Terrain
     plans: Array<Plan>
     logs: LogProps[]
     summary: SummaryProps[]
@@ -118,10 +118,14 @@ islandViewerStore.$patch((state) => {
     name: props.island.name,
     owner_name: props.island.owner_name,
     comment: props.island.comment,
-    terrains: props.island.terrains
+    terrain: {
+      cells: props.island.terrain
+    }
   }
   state.status = props.island.status
-  state.terrains = props.island.terrains
+  state.terrain = {
+    cells: props.island.terrain
+  }
   state.logs = logs
   state.achievements = getAchievementsList(props.island.achievements)
 })

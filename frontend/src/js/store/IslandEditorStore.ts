@@ -10,9 +10,10 @@ import { AjaxResult, RequestStatus } from '$entity/Network.js'
 import { Achievement } from '$entity/Achievement.js'
 import { computed, ref } from 'vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
+import { Cell } from '$entity/Cell.js'
 
 export const useIslandEditorStore = defineStore('island-editor', () => {
-  const targetTerrains = ref<Array<Terrain[]>>([])
+  const targetTerrains = ref<Terrain[]>([])
   const targetIslandComments = ref<string[]>([])
   const plans = ref<Plan[]>([])
   const sentPlans = ref<Plan[]>([])
@@ -104,7 +105,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     await axios
       .get('/api/islands/' + id)
       .then((res) => {
-        target[0].terrains = res.data.island.terrains
+        target[0].terrain = res.data.island.terrain
         target[0].comment = res.data.island.comment
         isLoadingTerrain.value = false
       })
@@ -134,17 +135,17 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     return result
   }
 
-  const onClickCell = (event: MouseEvent, terrain: Terrain) => {
+  const onClickCell = (event: MouseEvent, cell: Cell) => {
     if (
       showPlanWindow.value &&
-      selectedPoint.value.x === terrain.data.point.x &&
-      selectedPoint.value.y === terrain.data.point.y
+      selectedPoint.value.x === cell.data.point.x &&
+      selectedPoint.value.y === cell.data.point.y
     ) {
       showPlanWindow.value = false
       return
     }
-    selectedPoint.value.x = terrain.data.point.x
-    selectedPoint.value.y = terrain.data.point.y
+    selectedPoint.value.x = cell.data.point.x
+    selectedPoint.value.y = cell.data.point.y
     showPlanWindow.value = true
 
     if (islandViewerStore.isMobile) {
