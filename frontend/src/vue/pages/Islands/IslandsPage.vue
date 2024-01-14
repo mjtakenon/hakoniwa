@@ -30,7 +30,7 @@ import { Status } from '$entity/Status'
 import { Terrain } from '$entity/Terrain'
 import { Plan } from '$entity/Plan'
 import { LogParser, LogProps, SummaryProps } from '$entity/Log'
-import { AchievementProp } from '$entity/Achievement'
+import { AchievementProp, getAchievementsList } from '$entity/Achievement'
 import { BbsMessage } from '$entity/Bbs'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
@@ -87,7 +87,7 @@ store.$patch((state) => {
   state.status = props.island.status
   state.terrains = props.island.terrains
   state.logs = logs
-  state.achievements = props.island.achievements
+  state.achievements = getAchievementsList(props.island.achievements)
 })
 
 useBbsStore().bbs = props.island.bbs
