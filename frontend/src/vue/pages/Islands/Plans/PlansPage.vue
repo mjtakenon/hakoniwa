@@ -1,11 +1,14 @@
 <template>
   <div id="plan-page">
-    <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
+    <StatusTable
+      :island="islandViewerStore.island"
+      :status="islandViewerStore.status"
+      :achievements="islandEditorStore.achievements" />
     <CommentForm />
     <div class="mx-auto mt-10 flex flex-wrap items-stretch justify-center">
       <PlanController class="grow" :class="{ 'order-2': !canSideBySide }" />
       <div class="z-30" :class="{ 'order-1 w-full': !canSideBySide }">
-        <PlansIslandEditor v-if="!store.isIslandPopupMount && !store.isOpenPopup">
+        <PlansIslandEditor v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup">
           <CameraControls />
         </PlansIslandEditor>
         <div v-else class="island-editor-padding"></div>
@@ -13,10 +16,10 @@
       <PlanList class="grow" :class="{ 'order-2': !canSideBySide }"></PlanList>
     </div>
     <div class="md:max-lg:px-3">
-      <Bbs :island="store.island" />
-      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs" />
+      <Bbs :island="islandViewerStore.island" />
+      <LogViewer :title="islandViewerStore.island.name + '島の近況'" :parsed-logs="islandViewerStore.logs" />
     </div>
-    <IslandPopup v-if="!store.isIslandEditorMount && store.isOpenPopup" />
+    <IslandPopup v-if="!islandEditorStore.isIslandEditorMount && islandEditorStore.isOpenPopup" />
   </div>
 </template>
 
@@ -37,13 +40,14 @@ import { Plan } from '$entity/Plan'
 import { Turn } from '$entity/Turn'
 import { LogParser, LogProps, SummaryProps } from '$entity/Log'
 import IslandPopup from '$vue/components/islands/Popup/IslandPopup.vue'
-import CommentForm from '$vue/components/islands/common/CommentForm.vue'
+import CommentForm from '$vue/pages/Islands/Plans/PlansCommentForm.vue'
 import { AchievementProp, getAchievementsList } from '$entity/Achievement'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
 import { BbsMessage } from '$entity/Bbs'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
 import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -94,9 +98,20 @@ const logs = parser.parse(props.island.logs, props.island.summary)
 const achievements = getAchievementsList(props.island.achievements)
 
 // Pinia
-const store = useIslandEditorStore()
+const islandEditorStore = useIslandEditorStore()
+const islandViewerStore = useIslandViewerStore()
 
-store.$patch((state) => {
+islandEditorStore.$patch((state) => {
+  state.plans = lodash.cloneDeep(props.island.plans)
+  state.sentPlans = lodash.cloneDeep(props.island.plans)
+  state.planCandidate = candidates
+  state.targetIslands = props.targetIslands
+  state.selectedTargetIsland = props.island.id
+  state.turn = turn
+  state.achievements = achievements
+})
+
+islandViewerStore.$patch((state) => {
   state.hakoniwa = props.hakoniwa
   state.island = {
     id: props.island.id,
@@ -108,19 +123,13 @@ store.$patch((state) => {
   state.status = props.island.status
   state.terrains = props.island.terrains
   state.logs = logs
-  state.plans = lodash.cloneDeep(props.island.plans)
-  state.sentPlans = lodash.cloneDeep(props.island.plans)
-  state.planCandidate = candidates
-  state.targetIslands = props.targetIslands
-  state.selectedTargetIsland = props.island.id
-  state.turn = turn
-  state.achievements = achievements
+  state.achievements = getAchievementsList(props.island.achievements)
 })
 
 useBbsStore().bbs = props.island.bbs
 
 const canSideBySide = computed(() => {
-  return store.screenWidth > 912
+  return islandViewerStore.screenWidth > 912
 })
 
 onMounted(() => {
@@ -132,8 +141,8 @@ onUnmounted(() => {
 
 const onWindowSizeChanged = () => {
   const newScreenWidth = document.documentElement.clientWidth
-  if (store.screenWidth !== newScreenWidth) {
-    store.screenWidth = newScreenWidth
+  if (islandViewerStore.screenWidth !== newScreenWidth) {
+    islandViewerStore.screenWidth = newScreenWidth
   }
 }
 </script>

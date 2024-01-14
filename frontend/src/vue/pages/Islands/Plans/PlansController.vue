@@ -13,23 +13,25 @@
       <div class="section-header">開発計画</div>
       <div class="dev-plan">
         <p class="title-sm-inline">計画番号:</p>
-        <select class="float-right" v-model="store.selectedPlanNumber">
+        <select class="float-right" v-model="islandEditorStore.selectedPlanNumber">
           <option v-for="num of MAX_PLAN_NUMBER" :value="num" :key="num">{{ num }}</option>
         </select>
       </div>
       <div class="dev-plan">
         <p class="title-sm-block">開発:</p>
         <select class="plan-select-develop" v-model="selectedPlan">
-          <option v-for="plan of store.planCandidate" :key="plan.key" :value="plan.key">
+          <option v-for="plan of islandEditorStore.planCandidate" :key="plan.key" :value="plan.key">
             {{ plan.data.name }} {{ plan.data.priceString }}
           </option>
-          <option v-if="store.planCandidate.find((p) => p.key === 'grading')" value="all_grading">
+          <option v-if="islandEditorStore.planCandidate.find((p) => p.key === 'grading')" value="all_grading">
             全荒地に整地入力 (荒地x5億円)
           </option>
-          <option v-if="store.planCandidate.find((p) => p.key === 'ground_leveling')" value="all_ground_leveling">
+          <option
+            v-if="islandEditorStore.planCandidate.find((p) => p.key === 'ground_leveling')"
+            value="all_ground_leveling">
             全荒地に高速整地入力 (荒地x100億円)
           </option>
-          <option v-if="store.planCandidate.find((p) => p.key === 'excavation')" value="all_excavation">
+          <option v-if="islandEditorStore.planCandidate.find((p) => p.key === 'excavation')" value="all_excavation">
             全浅瀬に掘削入力 (浅瀬x200億円)
           </option>
         </select>
@@ -39,16 +41,16 @@
         <div class="plan-select-pos">
           <span>( </span>
           <span>
-            <select v-model="store.selectedPoint.x">
-              <option v-for="x of store.hakoniwa.height" :key="x" :value="x - 1">
+            <select v-model="islandEditorStore.selectedPoint.x">
+              <option v-for="x of islandViewerStore.hakoniwa.height" :key="x" :value="x - 1">
                 {{ x - 1 }}
               </option>
             </select>
           </span>
           <span> , </span>
           <span>
-            <select v-model="store.selectedPoint.y">
-              <option v-for="y of store.hakoniwa.height" :key="y" :value="y - 1">
+            <select v-model="islandEditorStore.selectedPoint.y">
+              <option v-for="y of islandViewerStore.hakoniwa.height" :key="y" :value="y - 1">
                 {{ y - 1 }}
               </option>
             </select>
@@ -58,7 +60,7 @@
       </div>
       <div class="dev-plan">
         <p class="title-sm-block">数量</p>
-        <select class="float-right" v-model="store.selectedAmount">
+        <select class="float-right" v-model="islandEditorStore.selectedAmount">
           <option v-for="n of 100" :key="n - 1" :value="n - 1">
             {{ n - 1 }}
           </option>
@@ -67,13 +69,16 @@
       <div class="dev-plan pt-2">
         <p class="title-block">目標の島:</p>
         <div class="plan-target-island">
-          <select class="target-select" v-model="store.selectedTargetIsland">
-            <option v-for="targetIsland of store.targetIslands" :key="targetIsland.id" :value="targetIsland.id">
+          <select class="target-select" v-model="islandEditorStore.selectedTargetIsland">
+            <option
+              v-for="targetIsland of islandEditorStore.targetIslands"
+              :key="targetIsland.id"
+              :value="targetIsland.id">
               {{ targetIsland.name }} 島
             </option>
           </select>
           <button class="target-open button-surface dark:button-variant-reverse" @click="openIslandPopup()">
-            <template v-if="store.isOpenPopup"> 閉じる</template>
+            <template v-if="islandEditorStore.isOpenPopup"> 閉じる</template>
             <template v-else> 開く</template>
           </button>
         </div>
@@ -88,21 +93,24 @@
           <button
             class="move-command-button dark:button-variant-reverse mr-2"
             @click="onClickMoveUp()"
-            :disabled="store.selectedPlanNumber <= 1">
+            :disabled="islandEditorStore.selectedPlanNumber <= 1">
             ▲
           </button>
           <button
             class="move-command-button dark:button-variant-reverse"
             @click="onClickMoveDown()"
-            :disabled="store.selectedPlanNumber >= MAX_PLAN_NUMBER">
+            :disabled="islandEditorStore.selectedPlanNumber >= MAX_PLAN_NUMBER">
             ▼
           </button>
         </div>
       </div>
       <div class="send-plan">
-        <button class="send-plan-button" :class="{ 'button-disabled': store.isSendingPlan }" @click="onClickSendPlan()">
-          <span v-if="!store.isSendingPlan">計画送信</span>
-          <span v-if="store.isSendingPlan" class="button-circle">
+        <button
+          class="send-plan-button"
+          :class="{ 'button-disabled': islandEditorStore.isSendingPlan }"
+          @click="onClickSendPlan()">
+          <span v-if="!islandEditorStore.isSendingPlan">計画送信</span>
+          <span v-if="islandEditorStore.isSendingPlan" class="button-circle">
             <span class="button-circle-spin"></span>
           </span>
         </button>
@@ -118,14 +126,16 @@ import PlansNotification from './PlansNotification.vue'
 import { ref } from 'vue'
 import { Point } from '$entity/Point'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 const MAX_PLAN_NUMBER = 30
 const selectedPlan = ref('grading')
 
-const store = useIslandEditorStore()
+const islandEditorStore = useIslandEditorStore()
+const islandViewerStore = useIslandViewerStore()
 
 const getSelectedPlan = (): Plan => {
-  const result = store.planCandidate.find((c) => c.key === selectedPlan.value)
+  const result = islandEditorStore.planCandidate.find((c) => c.key === selectedPlan.value)
   if (result === undefined) return null
   else {
     const p = result.data
@@ -134,14 +144,14 @@ const getSelectedPlan = (): Plan => {
       data: {
         name: p.name,
         point: {
-          x: store.selectedPoint.x,
-          y: store.selectedPoint.y
+          x: islandEditorStore.selectedPoint.x,
+          y: islandEditorStore.selectedPoint.y
         },
-        amount: store.selectedAmount,
+        amount: islandEditorStore.selectedAmount,
         usePoint: p.usePoint,
         useAmount: p.useAmount,
         useTargetIsland: p.useTargetIsland,
-        targetIsland: store.selectedTargetIsland,
+        targetIsland: islandEditorStore.selectedTargetIsland,
         isFiring: p.isFiring,
         priceString: p.priceString,
         amountString: p.amountString,
@@ -152,7 +162,7 @@ const getSelectedPlan = (): Plan => {
 }
 
 const getCustomPlan = (key: string, point: Point): Plan => {
-  const result = store.planCandidate.find((c) => c.key === key)
+  const result = islandEditorStore.planCandidate.find((c) => c.key === key)
   if (result === undefined) return null
   else {
     return {
@@ -163,11 +173,11 @@ const getCustomPlan = (key: string, point: Point): Plan => {
           x: point.x,
           y: point.y
         },
-        amount: store.selectedAmount,
+        amount: islandEditorStore.selectedAmount,
         usePoint: result.data.usePoint,
         useAmount: result.data.useAmount,
         useTargetIsland: result.data.useTargetIsland,
-        targetIsland: store.selectedTargetIsland,
+        targetIsland: islandEditorStore.selectedTargetIsland,
         isFiring: result.data.isFiring,
         priceString: result.data.priceString,
         amountString: result.data.amountString,
@@ -179,17 +189,17 @@ const getCustomPlan = (key: string, point: Point): Plan => {
 
 const insertPlanAutomatically = (source: string, target: string) => {
   // targetのコマンドが操作できない場合はreturn
-  if (!store.planCandidate.find((p) => p.key === target)) {
+  if (!islandEditorStore.planCandidate.find((p) => p.key === target)) {
     return
   }
-  for (let terrain of store.terrains) {
+  for (let terrain of islandViewerStore.terrains) {
     if (terrain.type === source) {
       let plan = getCustomPlan(target, terrain.data.point)
 
-      store.plans.splice(store.selectedPlanNumber - 1, 0, plan)
-      store.plans.pop()
-      if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
-        store.selectedPlanNumber++
+      islandEditorStore.plans.splice(islandEditorStore.selectedPlanNumber - 1, 0, plan)
+      islandEditorStore.plans.pop()
+      if (islandEditorStore.selectedPlanNumber < MAX_PLAN_NUMBER) {
+        islandEditorStore.selectedPlanNumber++
       }
     }
   }
@@ -197,15 +207,15 @@ const insertPlanAutomatically = (source: string, target: string) => {
 
 const overwritePlanAutomatically = (source: string, target: string) => {
   // targetのコマンドが操作できない場合はreturn
-  if (!store.planCandidate.find((p) => p.key === target)) {
+  if (!islandEditorStore.planCandidate.find((p) => p.key === target)) {
     return
   }
-  for (let terrain of store.terrains) {
+  for (let terrain of islandViewerStore.terrains) {
     if (terrain.type === source) {
-      store.plans[store.selectedPlanNumber - 1] = getCustomPlan(target, terrain.data.point)
+      islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1] = getCustomPlan(target, terrain.data.point)
 
-      if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
-        store.selectedPlanNumber++
+      if (islandEditorStore.selectedPlanNumber < MAX_PLAN_NUMBER) {
+        islandEditorStore.selectedPlanNumber++
       }
     }
   }
@@ -223,10 +233,10 @@ const onClickInsert = () => {
     return
   }
 
-  store.plans.splice(store.selectedPlanNumber - 1, 0, getSelectedPlan())
-  store.plans.pop()
-  if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
-    store.selectedPlanNumber++
+  islandEditorStore.plans.splice(islandEditorStore.selectedPlanNumber - 1, 0, getSelectedPlan())
+  islandEditorStore.plans.pop()
+  if (islandEditorStore.selectedPlanNumber < MAX_PLAN_NUMBER) {
+    islandEditorStore.selectedPlanNumber++
   }
 }
 const onClickOverwrite = () => {
@@ -241,51 +251,57 @@ const onClickOverwrite = () => {
     return
   }
 
-  store.plans[store.selectedPlanNumber - 1] = getSelectedPlan()
+  islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1] = getSelectedPlan()
 
-  if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
-    store.selectedPlanNumber++
+  if (islandEditorStore.selectedPlanNumber < MAX_PLAN_NUMBER) {
+    islandEditorStore.selectedPlanNumber++
   }
 }
 
 const onClickDelete = () => {
-  store.plans.splice(store.selectedPlanNumber - 1, 1)
-  store.plans.push(store.getDefaultPlan)
+  islandEditorStore.plans.splice(islandEditorStore.selectedPlanNumber - 1, 1)
+  islandEditorStore.plans.push(islandEditorStore.getDefaultPlan)
 }
 
 const onClickMoveUp = () => {
-  if (store.selectedPlanNumber <= 1) {
+  if (islandEditorStore.selectedPlanNumber <= 1) {
     return
   }
-  ;[store.plans[store.selectedPlanNumber - 2], store.plans[store.selectedPlanNumber - 1]] = [
-    store.plans[store.selectedPlanNumber - 1],
-    store.plans[store.selectedPlanNumber - 2]
+  ;[
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 2],
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1]
+  ] = [
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1],
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 2]
   ]
-  store.selectedPlanNumber--
+  islandEditorStore.selectedPlanNumber--
 }
 
 const onClickMoveDown = () => {
-  if (store.selectedPlanNumber >= 30) {
+  if (islandEditorStore.selectedPlanNumber >= 30) {
     return
   }
-  ;[store.plans[store.selectedPlanNumber], store.plans[store.selectedPlanNumber - 1]] = [
-    store.plans[store.selectedPlanNumber - 1],
-    store.plans[store.selectedPlanNumber]
+  ;[
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber],
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1]
+  ] = [
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1],
+    islandEditorStore.plans[islandEditorStore.selectedPlanNumber]
   ]
-  if (store.selectedPlanNumber < MAX_PLAN_NUMBER) {
-    store.selectedPlanNumber++
+  if (islandEditorStore.selectedPlanNumber < MAX_PLAN_NUMBER) {
+    islandEditorStore.selectedPlanNumber++
   }
 }
 
 const onClickSendPlan = () => {
-  store.isSendingPlan = true
-  store.putPlan()
+  islandEditorStore.isSendingPlan = true
+  islandEditorStore.putPlan()
 }
 
 const openIslandPopup = () => {
-  store.getIslandTerrain(store.selectedTargetIsland)
-  store.isOpenPopup = true
-  store.showPlanWindow = false
+  islandEditorStore.getIslandTerrain(islandEditorStore.selectedTargetIsland)
+  islandEditorStore.isOpenPopup = true
+  islandEditorStore.showPlanWindow = false
 }
 </script>
 

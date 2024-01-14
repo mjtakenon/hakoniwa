@@ -1,11 +1,11 @@
 <template>
   <div id="island">
-    <TresCanvas v-bind="gl" :class="['island-canvas', { 'opacity-80': store.showPlanWindow }]">
+    <TresCanvas v-bind="gl" :class="['island-canvas', { 'opacity-80': islandEditorStore.showPlanWindow }]">
       <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" />
 
       <slot />
       <Suspense>
-        <IslandEditorCanvas :terrains="store.terrains" />
+        <IslandEditorCanvas :terrains="islandViewerStore.terrains" />
       </Suspense>
 
       <TresAmbientLight :intensity="2" />
@@ -13,18 +13,19 @@
     </TresCanvas>
     <CountdownWidget></CountdownWidget>
     <IslandHoverWindow
-      :showHoverWindow="store.showHoverWindow"
-      :hoverWindow="store.hoverWindow"
-      :hoverCellPoint="store.hoverCellPoint"
-      :terrains="store.terrains">
-      <template v-for="(plan, index) of store.plans">
+      :showHoverWindow="islandViewerStore.showHoverWindow"
+      :hoverWindow="islandViewerStore.hoverWindow"
+      :hoverCellPoint="islandViewerStore.hoverCellPoint"
+      :terrains="islandViewerStore.terrains">
+      <template v-for="(plan, index) of islandEditorStore.plans">
         <div
           class="hover-window-plan"
           v-if="
             plan.data.usePoint &&
-            plan.data.point.x === store.hoverCellPoint.x &&
-            plan.data.point.y === store.hoverCellPoint.y &&
-            (!plan.data.useTargetIsland || (plan.data.useTargetIsland && plan.data.targetIsland === store.island.id))
+            plan.data.point.x === islandViewerStore.hoverCellPoint.x &&
+            plan.data.point.y === islandViewerStore.hoverCellPoint.y &&
+            (!plan.data.useTargetIsland ||
+              (plan.data.useTargetIsland && plan.data.targetIsland === islandViewerStore.island.id))
           ">
           <span>[{{ index + 1 }}] </span>
           <span>{{ plan.data.name }}</span>
@@ -45,10 +46,10 @@ import CountdownWidget from '$vue/components/islands/common/CountdownWidget.vue'
 import { TresCanvas } from '@tresjs/core'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import IslandEditorCanvas from '$vue/components/islands/Editor/IslandEditorCanvas.vue'
-import { CameraControls } from '@tresjs/cientos'
 import PlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vue'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
+import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 const gl = reactive({
   clearColor: '#888888',
@@ -59,42 +60,43 @@ const gl = reactive({
   toneMapping: NoToneMapping
 })
 
-const store = useIslandEditorStore()
+const islandEditorStore = useIslandEditorStore()
+const islandViewerStore = useIslandViewerStore()
 
 let screenWidth = document.documentElement.clientWidth
 let terrains = []
 
 onBeforeMount(() => {
-  store.isIslandEditorMount = true
-  terrains = new Array(store.hakoniwa.height)
+  islandEditorStore.isIslandEditorMount = true
+  terrains = new Array(islandViewerStore.hakoniwa.height)
   for (let y = 0; y < terrains.length; y++) {
-    terrains[y] = new Array(store.hakoniwa.width)
+    terrains[y] = new Array(islandViewerStore.hakoniwa.width)
   }
 
-  for (let terrain of store.terrains) {
+  for (let terrain of islandViewerStore.terrains) {
     terrains[terrain.data.point.y][terrain.data.point.x] = terrain
   }
 
-  store.targetTerrains[store.island.id] = store.terrains
+  islandEditorStore.targetTerrains[islandViewerStore.island.id] = islandViewerStore.terrains
 })
 
 onMounted(() => {
   window.addEventListener('resize', onWindowSizeChanged)
 
-  store.screenWidth = document.documentElement.clientWidth
-  store.isMobile = document.documentElement.clientWidth < 1024
+  islandViewerStore.screenWidth = document.documentElement.clientWidth
+  islandViewerStore.isMobile = document.documentElement.clientWidth < 1024
 })
 
 onUnmounted(() => {
-  store.isIslandEditorMount = false
+  islandEditorStore.isIslandEditorMount = false
   window.removeEventListener('resize', onWindowSizeChanged)
 })
 
 const onWindowSizeChanged = () => {
   const newScreenWidth = document.documentElement.clientWidth
   if (screenWidth !== newScreenWidth) {
-    store.screenWidth = newScreenWidth
-    store.isMobile = document.documentElement.clientWidth < 1024
+    islandViewerStore.screenWidth = newScreenWidth
+    islandViewerStore.isMobile = document.documentElement.clientWidth < 1024
   }
 }
 </script>
