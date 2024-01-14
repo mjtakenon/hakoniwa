@@ -59,7 +59,7 @@ import { useGLTF } from '@tresjs/cientos'
 import IslandEditorCell from './IslandEditorCell.vue'
 import { Terrain } from '$entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
-import { DEFAULT_CELL_SIZE, getCells } from '$entity/Cell.js'
+import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellTypes } from '$entity/Cell.js'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
@@ -88,8 +88,8 @@ const borderLines = [
   { scale: [0.1, 0.05, 1] as Vector3, position: [-0.5, 0.475, 0] as Vector3 }
 ]
 
-for (let type in getCells()) {
-  let model = await useGLTF(getCells()[type].path, { draco: true })
+for (let type of getCellTypes()) {
+  let model = await useGLTF(getCellPath(type as CellType), { draco: true })
   const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
   model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
   model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
