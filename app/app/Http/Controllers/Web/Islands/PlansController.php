@@ -99,7 +99,7 @@ class PlansController extends Controller
                     'area' => $islandStatus->area,
                     'abandoned_turn' => $islandStatus->abandoned_turn,
                 ],
-                'terrains' => $islandTerrain->toEntity()->toArray(true, true),
+                'terrain' => $islandTerrain->toEntity()->toArray(true, true),
                 'plans' => $islandPlans->toEntity()->toArray(true),
                 'logs' => array_values($islandLogs->toArray()),
                 'summary' => $summary->map(function ($status, $index) use ($summary) {

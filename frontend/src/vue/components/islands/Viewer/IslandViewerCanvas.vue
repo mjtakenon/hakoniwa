@@ -7,18 +7,18 @@
         -DEFAULT_CELL_SIZE * Math.floor(store.hakoniwa.height / 2)
       ] as Vector3
     ">
-    <template v-for="terrain of store.terrains">
+    <template v-for="cell of store.terrain.cells">
       <IslandViewerCell
         :position="
           [
-            terrain.data.point.x * DEFAULT_CELL_SIZE + ((((terrain.data.point.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-            models[terrain.type]['default'].scene.position.y,
-            terrain.data.point.y * DEFAULT_CELL_SIZE
+            cell.data.point.x * DEFAULT_CELL_SIZE + ((((cell.data.point.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
+            models[cell.type]['default'].scene.position.y,
+            cell.data.point.y * DEFAULT_CELL_SIZE
           ] as Vector3
         "
-        :scale="models[terrain.type]['default'].scene.scale.x"
-        :terrain="terrain"
-        :scene="models[terrain.type]['default'].scene.clone()"></IslandViewerCell>
+        :scale="models[cell.type]['default'].scene.scale.x"
+        :cell="cell"
+        :scene="models[cell.type]['default'].scene.clone()"></IslandViewerCell>
     </template>
   </TresGroup>
 </template>

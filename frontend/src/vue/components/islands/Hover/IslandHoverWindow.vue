@@ -8,7 +8,7 @@
         <HoverCanvas class="hover-window-img" />
       </Suspense>
       <div class="hover-window-info grow items-center">
-        {{ getIslandTerrain(props.hoverCellPoint.x, props.hoverCellPoint.y).data.info }}
+        {{ getCell(props.hoverCellPoint.x, props.hoverCellPoint.y).data.info }}
       </div>
     </div>
     <slot></slot>
@@ -19,20 +19,21 @@
 import HoverCanvas from './IslandHoverCanvas.vue'
 import { Terrain } from '$entity/Terrain'
 import { Point } from '$entity/Point.js'
+import { Cell } from '$entity/Cell.js'
 
 interface Props {
   showHoverWindow: boolean
   hoverWindowPoint: Point
   hoverCellPoint: Point
-  terrains: Terrain[]
+  terrain: Terrain
 }
 
 const props = defineProps<Props>()
 
-const getIslandTerrain = (x, y): Terrain => {
-  return props.terrains
-    .filter(function (item) {
-      if (item.data.point.x === x && item.data.point.y === y) return true
+const getCell = (x, y): Cell => {
+  return props.terrain.cells
+    .filter(function (cell: Cell) {
+      if (cell.data.point.x === x && cell.data.point.y === y) return true
     })
     .pop()
 }

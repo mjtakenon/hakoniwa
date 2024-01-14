@@ -1,9 +1,12 @@
 import { Point } from './Point.js'
 
 export interface Cell {
-  info: string
-  point: Point
-  subType?: string
+  type: CellType
+  data: {
+    info: string
+    point: Point
+    subType?: string
+  }
 }
 
 export const DEFAULT_CELL_SIZE = 8

@@ -1,12 +1,12 @@
 import { Terrain } from './Terrain.js'
-import {AchievementProp} from "$entity/Achievement.js";
+import { AchievementProp } from '$entity/Achievement.js'
 
 export interface Island {
   id: number
   name: string
   owner_name: string
   comment?: string
-  terrains?: Terrain[]
+  terrain?: Terrain
 }
 
 export interface IslandWithStatuses {

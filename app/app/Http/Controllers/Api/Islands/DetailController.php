@@ -37,7 +37,7 @@ class DetailController extends Controller
                 'name' => $island->name,
                 'owner_name' => $island->owner_name,
                 'comment' => $islandComment->comment ?? null,
-                'terrains' => $islandTerrain->toEntity()->toArray(false, true),
+                'terrain' => $islandTerrain->toEntity()->toArray(false, true),
             ]
         ]);
     }
