@@ -35,8 +35,8 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
   const hoverCellPoint = ref<Point>({ x: 0, y: 0 })
   const achievements = ref<Achievement[]>([])
 
-  const onMouseOverCell = (event: MouseEvent, terrain: Terrain) => {
-    onMouseMoveCell(event)
+  const onMouseOverCell = (event: MouseEvent, terrain: Terrain, isOpenPopup: boolean = false) => {
+    onMouseMoveCell(event, isOpenPopup)
 
     showHoverWindow.value = true
     hoverCellPoint.value = terrain.data.point
@@ -44,9 +44,14 @@ export const useIslandViewerStore = defineStore('island-viewer', () => {
     useIslandHoverStore().changeHoverCellCameraFocus(terrain.type)
   }
 
-  const onMouseMoveCell = (event: MouseEvent) => {
+  const onMouseMoveCell = (event: MouseEvent, isOpenPopup: boolean = false) => {
     const offsetY = 25
-    hoverWindowPoint.value.y = document.documentElement.clientHeight - event.pageY + offsetY
+
+    if (isOpenPopup) {
+      hoverWindowPoint.value.y = document.documentElement.clientHeight - event.pageY + window.scrollY + offsetY
+    } else {
+      hoverWindowPoint.value.y = document.documentElement.clientHeight - event.pageY + offsetY
+    }
     hoverWindowPoint.value.x = event.pageX
 
     // Screen Overflow Check

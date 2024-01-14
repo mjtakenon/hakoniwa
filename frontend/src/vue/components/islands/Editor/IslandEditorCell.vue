@@ -5,8 +5,14 @@
     :position="props.position"
     :scale="props.scale"
     @click="(intersection, pointerEvent) => islandEditorStore.onClickCell(pointerEvent, props.terrain)"
-    @pointer-enter="(intersection, pointerEvent) => islandViewerStore.onMouseOverCell(pointerEvent, props.terrain)"
-    @pointer-move="(intersection, pointerEvent) => islandViewerStore.onMouseOverCell(pointerEvent, props.terrain)"
+    @pointer-enter="
+      (intersection, pointerEvent) =>
+        islandViewerStore.onMouseOverCell(pointerEvent, props.terrain, islandEditorStore.isOpenPopup)
+    "
+    @pointer-move="
+      (intersection, pointerEvent) =>
+        islandViewerStore.onMouseOverCell(pointerEvent, props.terrain, islandEditorStore.isOpenPopup)
+    "
     @pointer-leave="(intersection, pointerEvent) => islandViewerStore.onMouseLeaveCell(pointerEvent)"
     blocks-pointer-events></primitive>
 </template>

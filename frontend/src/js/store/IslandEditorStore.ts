@@ -26,7 +26,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
   const planCandidate = ref<Plan[]>([])
   const planSendingResult = ref(200)
   const showNotification = ref(false)
-  const planWindow = ref<Point>({ x: 100, y: 100 })
+  const planWindowPoint = ref<Point>({ x: 100, y: 100 })
   const showPlanWindow = ref(false)
   const turn = ref<Turn>({
     turn: 0,
@@ -148,30 +148,30 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     showPlanWindow.value = true
 
     if (islandViewerStore.isMobile) {
-      planWindow.value.x = event.pageX
+      planWindowPoint.value.x = event.pageX
       const offsetX = 15
       const offsetY = 30
       const elementWidth = 230
-      const leftEdge = planWindow.value.x - elementWidth / 2
-      const rightEdge = planWindow.value.x + elementWidth / 2
+      const leftEdge = planWindowPoint.value.x - elementWidth / 2
+      const rightEdge = planWindowPoint.value.x + elementWidth / 2
       if (leftEdge < offsetX) {
-        planWindow.value.x += -leftEdge + offsetX
+        planWindowPoint.value.x += -leftEdge + offsetX
       } else if (rightEdge > islandViewerStore.screenWidth) {
-        planWindow.value.x -= rightEdge - islandViewerStore.screenWidth + offsetX
+        planWindowPoint.value.x -= rightEdge - islandViewerStore.screenWidth + offsetX
       }
 
       if (isOpenPopup.value) {
-        planWindow.value.y = event.pageY - window.scrollY + offsetY
+        planWindowPoint.value.y = event.pageY - window.scrollY + offsetY
       } else {
-        planWindow.value.y = event.pageY + offsetY
+        planWindowPoint.value.y = event.pageY + offsetY
       }
     } else {
       const offset = 15
-      planWindow.value.x = event.pageX + offset
+      planWindowPoint.value.x = event.pageX + offset
       if (isOpenPopup.value) {
-        planWindow.value.y = event.pageY - window.scrollY + offset
+        planWindowPoint.value.y = event.pageY - window.scrollY + offset
       } else {
-        planWindow.value.y = event.pageY + offset
+        planWindowPoint.value.y = event.pageY + offset
       }
     }
   }
@@ -191,7 +191,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     planCandidate,
     planSendingResult,
     showNotification,
-    planWindow,
+    planWindowPoint,
     showPlanWindow,
     turn,
     isOpenPopup,
