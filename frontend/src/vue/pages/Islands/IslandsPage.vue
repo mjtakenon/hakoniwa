@@ -3,9 +3,9 @@
     <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
     <div id="island">
       <TresCanvas v-bind="gl" id="island-canvas">
-        <IslandViewer>
+        <IslandsViewer>
           <CameraControls />
-        </IslandViewer>
+        </IslandsViewer>
       </TresCanvas>
       <IslandHoverWindow
         :showHoverWindow="store.showHoverWindow"
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
-import IslandViewer from './IslandsViewer.vue'
+import IslandsViewer from './IslandsViewer.vue'
 import { reactive } from 'vue'
 import { Hakoniwa } from '$entity/Hakoniwa'
 import { Status } from '$entity/Status'
