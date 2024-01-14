@@ -60,6 +60,7 @@ services:
       context: ./
       dockerfile: ./infra/frontend/Dockerfile
     tty: true
+    working_dir: /frontend
     volumes:
       - ./frontend/:/frontend
       - ./app/public/:/frontend/public

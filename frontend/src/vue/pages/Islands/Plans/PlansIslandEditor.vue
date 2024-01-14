@@ -1,9 +1,9 @@
 <template>
   <div id="island">
     <TresCanvas v-bind="gl" :class="['island-canvas', { 'opacity-80': store.showPlanWindow }]">
-      <TresPerspectiveCamera :position="[64, 192, 192] as Vector3" />
-      <CameraControls v-bind="cameraControlsState" make-default />
+      <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" />
 
+      <slot />
       <Suspense>
         <IslandEditorCanvas :terrains="store.terrains" />
       </Suspense>
@@ -57,12 +57,6 @@ const gl = reactive({
   shadowMapType: BasicShadowMap,
   outputColorSpace: SRGBColorSpace,
   toneMapping: NoToneMapping
-})
-
-const cameraControlsState = reactive({
-  minDistance: 20,
-  maxDistance: 200,
-  maxPolarAngle: Math.PI / 2
 })
 
 const store = useIslandEditorStore()

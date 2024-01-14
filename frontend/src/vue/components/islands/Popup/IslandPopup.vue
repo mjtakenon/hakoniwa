@@ -23,7 +23,7 @@
         </svg>
       </div>
       <TresCanvas v-else v-bind="gl" :class="['island-canvas', { 'opacity-80': store.showPlanWindow }]">
-        <TresPerspectiveCamera :position="[64, 192, 192] as Vector3" />
+        <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" />
         <CameraControls v-bind="cameraControlsState" make-default />
 
         <Suspense>

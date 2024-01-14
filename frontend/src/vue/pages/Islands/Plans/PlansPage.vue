@@ -5,7 +5,9 @@
     <div class="mx-auto mt-10 flex flex-wrap items-stretch justify-center">
       <PlanController class="grow" :class="{ 'order-2': !canSideBySide }" />
       <div class="z-30" :class="{ 'order-1 w-full': !canSideBySide }">
-        <PlansIslandEditor v-if="!store.isIslandPopupMount && !store.isOpenPopup" />
+        <PlansIslandEditor v-if="!store.isIslandPopupMount && !store.isOpenPopup">
+          <CameraControls />
+        </PlansIslandEditor>
         <div v-else class="island-editor-padding"></div>
       </div>
       <PlanList class="grow" :class="{ 'order-2': !canSideBySide }"></PlanList>
@@ -41,6 +43,7 @@ import Bbs from '$vue/components/islands/common/Bbs.vue'
 import { BbsMessage } from '$entity/Bbs'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
+import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -67,9 +70,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-let hoverWindowTop = ref(170)
-let hoverWindowLeft = ref(0)
 
 const candidates: Plan[] = []
 
