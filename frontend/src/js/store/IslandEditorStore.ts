@@ -191,7 +191,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     }
   }
 
-  const onMouseLeaveCell = (event: MouseEvent, terrain: Terrain) => {
+  const onMouseLeaveCell = (event: MouseEvent) => {
     showHoverWindow.value = false
   }
 
