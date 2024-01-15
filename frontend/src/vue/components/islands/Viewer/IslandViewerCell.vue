@@ -5,6 +5,8 @@
     :object="child"
     :scale="props.scale"
     :position="props.position"
+    receive-shadow
+    cast-shadow
     @click="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"
     @pointer-enter="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"
     @pointer-move="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"

@@ -33,7 +33,7 @@
         </Suspense>
 
         <TresAmbientLight :intensity="2" />
-        <TresDirectionalLight :position="[192, 192, 192] as Vector3" :intensity="3" />
+        <TresDirectionalLight :position="[192, 192, 192] as Vector3" cast-shadow :intensity="3" />
       </TresCanvas>
       <IslandHoverWindow
         :showHoverWindow="islandViewerStore.showHoverWindow"

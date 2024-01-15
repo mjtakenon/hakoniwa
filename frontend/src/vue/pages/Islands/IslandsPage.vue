@@ -37,7 +37,7 @@ import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
 import { TresCanvas } from '@tresjs/core'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
-import { BasicShadowMap, NoToneMapping, SRGBColorSpace } from 'three'
+import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
 import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 
 const store = useIslandViewerStore()
@@ -66,7 +66,7 @@ const gl = reactive({
   clearColor: '#888888',
   shadows: true,
   alpha: true,
-  shadowMapType: BasicShadowMap,
+  shadowMapType: VSMShadowMap,
   outputColorSpace: SRGBColorSpace,
   toneMapping: NoToneMapping
 })

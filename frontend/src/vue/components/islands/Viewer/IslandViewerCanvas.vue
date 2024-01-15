@@ -18,7 +18,7 @@
         "
         :scale="models[cell.type][cell.data.sub_type ?? 'default'].scene.scale.x"
         :cell="cell"
-        :scene="models[cell.type][cell.data.sub_type ?? 'default'].scene.clone()"></IslandViewerCell>
+        :scene="models[cell.type][cell.data.sub_type ?? 'default'].scene.clone()" />
     </template>
   </TresGroup>
 </template>
