@@ -112,7 +112,7 @@ class Pirate extends CombatantShip
                 /** @var Cell $destroyTarget */
                 $destroyTarget = $destroyTargetCells->random();
                 $logs->add(new DestructionByShipLog($island, deep_copy($destroyTarget), deep_copy($this)));
-                $terrain->setCell($destroyTarget->getPoint(), new Wasteland(point: $destroyTarget->getPoint()));
+                $terrain->setCell($destroyTarget->getPoint(), CellConst::getDefaultCell($destroyTarget->getPoint(), $destroyTarget->elevation));
             }
         }
 
