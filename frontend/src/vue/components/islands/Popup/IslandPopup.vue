@@ -75,7 +75,7 @@ import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, react
 import { storeToRefs } from 'pinia'
 import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
 import { TresCanvas } from '@tresjs/core'
-import IslandEditorCanvas from '../Editor/IslandEditorCanvas.vue'
+import IslandEditorCanvas from '../Editor/IslandEditorTerrain.vue'
 import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
 import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'

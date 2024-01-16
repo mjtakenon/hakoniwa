@@ -2,11 +2,7 @@
   <div id="sightseeing-page" class="wrapper">
     <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
     <div id="island">
-      <TresCanvas v-bind="gl" id="island-canvas">
-        <IslandsViewer>
-          <CameraControls />
-        </IslandsViewer>
-      </TresCanvas>
+      <IslandsCanvas />
       <IslandHoverWindow
         :showHoverWindow="store.showHoverWindow"
         :hoverWindowPoint="store.hoverWindowPoint"
@@ -23,8 +19,6 @@
 <script setup lang="ts">
 import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
-import IslandsViewer from './IslandsViewer.vue'
-import { reactive } from 'vue'
 import { Hakoniwa } from '$entity/Hakoniwa'
 import { Status } from '$entity/Status'
 import { Terrain } from '$entity/Terrain'
@@ -35,10 +29,8 @@ import { BbsMessage } from '$entity/Bbs'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
-import { TresCanvas } from '@tresjs/core'
+import IslandsCanvas from '$vue/pages/Islands/IslandsCanvas.vue'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
-import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
-import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 
 const store = useIslandViewerStore()
 
@@ -61,15 +53,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-const gl = reactive({
-  clearColor: '#888888',
-  shadows: true,
-  alpha: true,
-  shadowMapType: VSMShadowMap,
-  outputColorSpace: SRGBColorSpace,
-  toneMapping: NoToneMapping
-})
 
 // Logsのparse
 const parser = new LogParser()

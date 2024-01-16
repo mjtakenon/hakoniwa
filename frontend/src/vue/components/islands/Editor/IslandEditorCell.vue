@@ -4,6 +4,8 @@
     :object="child"
     :position="props.position"
     :scale="props.scale"
+    receive-shadow
+    cast-shadow
     @click="(intersection, pointerEvent) => islandEditorStore.onClickCell(pointerEvent, props.cell)"
     @pointer-enter="
       (intersection, pointerEvent) =>

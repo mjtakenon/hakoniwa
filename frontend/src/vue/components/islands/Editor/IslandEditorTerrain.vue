@@ -18,7 +18,7 @@
         "
         :scale="models[cell.type][cell.data.sub_type ?? 'default'].scene.scale.x"
         :cell="cell"
-        :scene="models[cell.type][cell.data.sub_type ?? 'default'].scene.clone()"></IslandEditorCell>
+        :scene="models[cell.type][cell.data.sub_type ?? 'default'].scene.clone()" />
     </template>
 
     <!-- 選択セルカーソル -->
@@ -59,7 +59,7 @@ import { useGLTF } from '@tresjs/cientos'
 import IslandEditorCell from './IslandEditorCell.vue'
 import { Terrain } from '$entity/Terrain'
 import { computed, onMounted, shallowRef } from 'vue'
-import { CellType, DEFAULT_CELL_SIZE, getCellPath, getCellSubTypes, getCellTypes } from '$entity/Cell.js'
+import { Cell, CellType, DEFAULT_CELL_SIZE, getCellPath, getCellSubTypes, getCellTypes } from '$entity/Cell.js'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
@@ -108,7 +108,7 @@ onMounted(() => {
   referencedBox.value.material.transparent = true
 })
 
-const getCell = (x, y): Terrain => {
+const getCell = (x, y): Cell => {
   return props.terrain.cells
     .filter(function (item) {
       if (item.data.point.x === x && item.data.point.y === y) return true

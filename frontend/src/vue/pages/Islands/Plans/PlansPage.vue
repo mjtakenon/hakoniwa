@@ -8,10 +8,35 @@
     <div class="mx-auto mt-10 flex flex-wrap items-stretch justify-center">
       <PlanController class="grow" :class="{ 'order-2': !canSideBySide }" />
       <div class="z-30" :class="{ 'order-1 w-full': !canSideBySide }">
-        <PlansIslandEditor v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup">
-          <CameraControls />
-        </PlansIslandEditor>
-        <div v-else class="island-editor-padding"></div>
+        <div id="island">
+          <PlansIslandCanvas v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup" />
+          <CountdownWidget></CountdownWidget>
+          <IslandHoverWindow
+            :showHoverWindow="islandViewerStore.showHoverWindow"
+            :hoverWindowPoint="islandViewerStore.hoverWindowPoint"
+            :hoverCellPoint="islandViewerStore.hoverCellPoint"
+            :terrain="islandViewerStore.terrain">
+            <template v-for="(plan, index) of islandEditorStore.plans">
+              <div
+                class="hover-window-plan"
+                v-if="
+                  plan.data.usePoint &&
+                  plan.data.point.x === islandViewerStore.hoverCellPoint.x &&
+                  plan.data.point.y === islandViewerStore.hoverCellPoint.y &&
+                  (!plan.data.useTargetIsland ||
+                    (plan.data.useTargetIsland && plan.data.targetIsland === islandViewerStore.island.id))
+                ">
+                <span>[{{ index + 1 }}] </span>
+                <span>{{ plan.data.name }}</span>
+                <span v-if="plan.data.useAmount">
+                  <span v-if="plan.data.amount === 0"> {{ plan.data.defaultAmountString }}</span>
+                  <span v-else> {{ plan.data.amountString.replace(':amount:', plan.data.amount.toString()) }} </span>
+                </span>
+              </div>
+            </template>
+          </IslandHoverWindow>
+          <PlanWindow />
+        </div>
       </div>
       <PlanList class="grow" :class="{ 'order-2': !canSideBySide }"></PlanList>
     </div>
@@ -30,12 +55,11 @@ import PlansIslandEditor from './PlansIslandEditor.vue'
 import PlanController from './PlansController.vue'
 import PlanList from './PlansList.vue'
 import lodash from 'lodash'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive } from 'vue'
 
 import { Hakoniwa } from '$entity/Hakoniwa'
 import { Island } from '$entity/Island'
 import { Status } from '$entity/Status'
-import { Terrain } from '$entity/Terrain'
 import { Plan } from '$entity/Plan'
 import { Turn } from '$entity/Turn'
 import { LogParser, LogProps, SummaryProps } from '$entity/Log'
@@ -48,6 +72,13 @@ import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
 import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
+import { Cell } from '$entity/Cell.js'
+import { TresCanvas } from '@tresjs/core'
+import CountdownWidget from '$vue/components/islands/common/CountdownWidget.vue'
+import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
+import PlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vue'
+import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
+import PlansIslandCanvas from '$vue/pages/Islands/Plans/PlansIslandCanvas.vue'
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -57,7 +88,7 @@ interface Props {
     name: string
     owner_name: string
     status: Status
-    terrain: Terrain
+    terrain: Cell[]
     plans: Array<Plan>
     logs: LogProps[]
     summary: SummaryProps[]
@@ -74,6 +105,15 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const gl = reactive({
+  clearColor: '#888888',
+  shadows: true,
+  alpha: true,
+  shadowMapType: VSMShadowMap,
+  outputColorSpace: SRGBColorSpace,
+  toneMapping: NoToneMapping
+})
 
 const candidates: Plan[] = []
 
@@ -158,6 +198,64 @@ const onWindowSizeChanged = () => {
   .island-editor-padding {
     margin: 0 auto;
     @apply w-full max-w-[496px] md:min-w-[496px];
+  }
+}
+
+.island-canvas {
+  @apply max-h-[496px] min-h-[496px] w-full;
+}
+
+#island {
+  margin: 0 auto;
+  @apply w-full max-w-[496px] md:min-w-[496px];
+
+  .row {
+    @apply m-0 -mt-[0.1px] bg-black p-0;
+    display: grid;
+
+    .cell {
+      @apply aspect-square w-full;
+    }
+
+    &:nth-child(odd) {
+      grid-template-columns: 1fr repeat(15, 2fr);
+    }
+
+    &:nth-child(even) {
+      grid-template-columns: repeat(15, 2fr) 1fr;
+    }
+
+    .cell-is-selected {
+      border: 1px solid white;
+    }
+
+    .cell-is-referenced {
+      border: 1px solid red;
+    }
+
+    .left-padding {
+      @apply z-10 aspect-[1/2] w-full;
+      background-image: url('/img/hakoniwa/hakogif/land0.gif');
+      background-position: left;
+    }
+
+    .right-padding {
+      @apply relative z-10 aspect-[1/2] w-full;
+      background-image: url('/img/hakoniwa/hakogif/land0.gif');
+      background-position: right;
+
+      .right-padding-text {
+        @apply absolute left-1 z-10 overflow-hidden text-xs leading-none text-white max-xs:hidden md:text-sm;
+      }
+    }
+  }
+
+  .hover-window-plan {
+    @apply m-0 p-0 text-left text-sm;
+  }
+
+  .hover-window-plan:nth-child(2) {
+    @apply mt-3 border-t border-gray-500 border-opacity-70 pt-2;
   }
 }
 </style>
