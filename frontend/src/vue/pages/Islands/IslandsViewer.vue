@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { Vector3, WebGLRenderer } from 'three'
+import { Vector3 } from 'three'
 import IslandViewerCanvas from '$vue/components/islands/Viewer/IslandViewerCanvas.vue'
 import { useRenderLoop, useTresContext } from '@tresjs/core'
 import { onMounted } from 'vue'
