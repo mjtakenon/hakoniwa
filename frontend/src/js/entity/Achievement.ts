@@ -41,9 +41,10 @@ import AchievementLists from '$js/store/AchievementList.json'
  */
 export const getAchievement = (data: AchievementProp): Achievement => {
   let index = 0
+
   for (const achieve of AchievementLists) {
     if (data.type === achieve.type) {
-      let result = achieve as Achievement
+      let result = structuredClone(achieve) as Achievement
       result.index = index
       result.hover_text = data.hover_text ?? undefined
       result.extra_text = data.extra_text ?? undefined

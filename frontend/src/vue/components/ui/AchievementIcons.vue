@@ -67,16 +67,17 @@ const hoverWindow = ref({
 
 const BOTTOM_OFFSET = 40
 
-let achievements: Achievement[]
+const achievements = ref<Achievement[]>(null)
 if (props.achievement_data === undefined) {
-  achievements = filterDuplicatedAchievementType(getAchievementsList(props.achievement_props))
+  achievements.value = filterDuplicatedAchievementType(getAchievementsList(props.achievement_props))
 } else {
-  achievements = filterDuplicatedAchievementType(props.achievement_data)
+  achievements.value = filterDuplicatedAchievementType(props.achievement_data)
 }
-sortAchievements(achievements)
+
+sortAchievements(achievements.value)
 
 const cols = ref(props.max_cols)
-if (achievements.length < cols.value) cols.value = achievements.length
+if (achievements.value.length < cols.value) cols.value = achievements.value.length
 if (cols.value === 0) cols.value = 1
 
 // Computed
@@ -85,7 +86,7 @@ const gridColumns = computed(() => {
 })
 
 const hasAchievement = computed(() => {
-  return achievements !== null && achievements !== undefined && achievements.length > 0
+  return achievements !== null && achievements !== undefined && achievements.value.length > 0
 })
 
 const onHover = (event: MouseEvent, title: string, text: string) => {
