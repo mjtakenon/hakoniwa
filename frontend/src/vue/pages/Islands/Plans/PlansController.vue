@@ -192,9 +192,9 @@ const insertPlanAutomatically = (source: string, target: string) => {
   if (!islandEditorStore.planCandidate.find((p) => p.key === target)) {
     return
   }
-  for (let terrain of islandViewerStore.terrains) {
-    if (terrain.type === source) {
-      let plan = getCustomPlan(target, terrain.data.point)
+  for (let cell of islandViewerStore.island.terrain.cells) {
+    if (cell.type === source) {
+      let plan = getCustomPlan(target, cell.data.point)
 
       islandEditorStore.plans.splice(islandEditorStore.selectedPlanNumber - 1, 0, plan)
       islandEditorStore.plans.pop()
@@ -210,9 +210,9 @@ const overwritePlanAutomatically = (source: string, target: string) => {
   if (!islandEditorStore.planCandidate.find((p) => p.key === target)) {
     return
   }
-  for (let terrain of islandViewerStore.terrains) {
-    if (terrain.type === source) {
-      islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1] = getCustomPlan(target, terrain.data.point)
+  for (let cell of islandViewerStore.island.terrain.cells) {
+    if (cell.type === source) {
+      islandEditorStore.plans[islandEditorStore.selectedPlanNumber - 1] = getCustomPlan(target, cell.data.point)
 
       if (islandEditorStore.selectedPlanNumber < MAX_PLAN_NUMBER) {
         islandEditorStore.selectedPlanNumber++
