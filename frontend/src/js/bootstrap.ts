@@ -11,10 +11,9 @@ window._ = _
 import axios from 'axios'
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-window.axios = axios
 
 import { App } from 'vue'
-import { createApp } from 'vue/dist/vue.esm-bundler'
+import { createApp } from 'vue/dist/vue.esm-bundler.js'
 import { createPinia } from 'pinia'
 import Tres from '@tresjs/core'
 import IslandsPage from '$vue/pages/Islands/IslandsPage.vue'
