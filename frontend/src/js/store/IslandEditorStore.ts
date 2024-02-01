@@ -96,7 +96,7 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     if (target.length < 1) throw new Error('存在しない島IDです')
     if (target.length > 1) throw new Error('targetIslandに島が重複しています')
     // 既にロード済みの場合
-    if (target[0].terrains !== undefined) {
+    if (target[0].terrain !== undefined) {
       isLoadingTerrain.value = false
       return
     }
