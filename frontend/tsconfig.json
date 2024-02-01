@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
     "strict": true,
     "noImplicitAny": false,
@@ -22,6 +22,7 @@
 
     // Path aliases
     "baseUrl": "./",
+    "skipLibCheck": true,
     "paths": {
       "$css/*": ["src/css/*"],
       "$js/*": ["src/js/*"],
