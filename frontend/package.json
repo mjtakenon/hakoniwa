@@ -5,7 +5,8 @@
     "dev": "vite",
     "build": "vite build",
     "prettier-format": "prettier . --write",
-    "prettier-check": "prettier . --check"
+    "prettier-check": "prettier . --check",
+    "tsc-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.192",
