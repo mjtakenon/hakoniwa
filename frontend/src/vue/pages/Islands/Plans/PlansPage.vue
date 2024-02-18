@@ -44,14 +44,13 @@
       <Bbs :island="islandViewerStore.island" />
       <LogViewer :title="islandViewerStore.island.name + '島の近況'" :parsed-logs="islandViewerStore.logs" />
     </div>
-    <IslandPopup v-if="!islandEditorStore.isIslandEditorMount && islandEditorStore.isOpenPopup" />
+    <PlansIslandPopupCanvas v-if="!islandEditorStore.isIslandEditorMount && islandEditorStore.isOpenPopup" />
   </div>
 </template>
 
 <script setup lang="ts">
 import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
-import PlansIslandEditor from './PlansIslandEditor.vue'
 import PlanController from './PlansController.vue'
 import PlanList from './PlansList.vue'
 import lodash from 'lodash'
@@ -63,22 +62,20 @@ import { Status } from '$entity/Status'
 import { Plan } from '$entity/Plan'
 import { Turn } from '$entity/Turn'
 import { LogParser, LogProps, SummaryProps } from '$entity/Log'
-import IslandPopup from '$vue/components/islands/Popup/IslandPopup.vue'
 import CommentForm from '$vue/pages/Islands/Plans/PlansCommentForm.vue'
 import { AchievementProp, getAchievementsList } from '$entity/Achievement'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
 import { BbsMessage } from '$entity/Bbs'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
-import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 import { Cell } from '$entity/Cell.js'
-import { TresCanvas } from '@tresjs/core'
 import CountdownWidget from '$vue/components/islands/common/CountdownWidget.vue'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
 import PlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vue'
 import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
-import PlansIslandCanvas from '$vue/pages/Islands/Plans/PlansIslandCanvas.vue'
+import PlansIslandCanvas from '$vue/pages/Islands/Plans/PlansIslandEditorCanvas.vue'
+import PlansIslandPopupCanvas from '$vue/pages/Islands/Plans/PlansIslandPopupCanvas.vue'
 
 interface Props {
   hakoniwa: Hakoniwa

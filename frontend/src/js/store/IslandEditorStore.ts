@@ -147,6 +147,16 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
     selectedPoint.value.x = cell.data.point.x
     selectedPoint.value.y = cell.data.point.y
     showPlanWindow.value = true
+  }
+} else {
+  const offset = 15
+  planWindowPoint.value.x = event.pageX + offset
+  if (isOpenPopup.value) {
+    planWindowPoint.value.y = event.pageY - window.scrollY + offset
+  } else {
+    planWindowPoint.value.y = event.pageY + offset
+  }
+}
 
     if (islandViewerStore.isMobile) {
       planWindowPoint.value.x = event.pageX
@@ -165,20 +175,10 @@ export const useIslandEditorStore = defineStore('island-editor', () => {
         planWindowPoint.value.y = event.pageY - window.scrollY + offsetY
       } else {
         planWindowPoint.value.y = event.pageY + offsetY
-      }
-    } else {
-      const offset = 15
-      planWindowPoint.value.x = event.pageX + offset
-      if (isOpenPopup.value) {
-        planWindowPoint.value.y = event.pageY - window.scrollY + offset
-      } else {
-        planWindowPoint.value.y = event.pageY + offset
-      }
-    }
   }
 
   return {
-    targetTerrains,
+    targetTerrains,https://www.bgm-sabakan.net/
     targetIslandComments,
     plans,
     sentPlans,
