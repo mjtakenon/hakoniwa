@@ -20,8 +20,6 @@ import { useTresContext } from '@tresjs/core'
 const islandViewerStore = useIslandViewerStore()
 const context = useTresContext()
 
-let screenWidth = document.documentElement.clientWidth
-
 onMounted(() => {
   islandViewerStore.screenWidth = document.documentElement.clientWidth
   islandViewerStore.isMobile = document.documentElement.clientWidth < 1024

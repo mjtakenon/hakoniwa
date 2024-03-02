@@ -3,13 +3,13 @@
     <StatusTable
       :island="islandViewerStore.island"
       :status="islandViewerStore.status"
-      :achievements="islandEditorStore.achievements" />
-    <CommentForm />
+      :achievements="islandEditorStore.achievements"/>
+    <CommentForm/>
     <div class="mx-auto mt-10 flex flex-wrap items-stretch justify-center">
-      <PlanController class="grow" :class="{ 'order-2': !canSideBySide }" />
+      <PlanController class="grow" :class="{ 'order-2': !canSideBySide }"/>
       <div class="z-30" :class="{ 'order-1 w-full': !canSideBySide }">
         <div id="island">
-          <PlansIslandCanvas v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup" />
+          <PlansIslandCanvas v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup"/>
           <CountdownWidget></CountdownWidget>
           <IslandHoverWindow
             :showHoverWindow="islandViewerStore.showHoverWindow"
@@ -35,49 +35,46 @@
               </div>
             </template>
           </IslandHoverWindow>
-          <PlanWindow />
+          <PlanWindow/>
         </div>
       </div>
       <PlanList class="grow" :class="{ 'order-2': !canSideBySide }"></PlanList>
     </div>
     <div class="md:max-lg:px-3">
-      <Bbs :island="islandViewerStore.island" />
-      <LogViewer :title="islandViewerStore.island.name + '島の近況'" :parsed-logs="islandViewerStore.logs" />
+      <Bbs :island="islandViewerStore.island"/>
+      <LogViewer :title="islandViewerStore.island.name + '島の近況'" :parsed-logs="islandViewerStore.logs"/>
     </div>
-    <IslandPopup v-if="!islandEditorStore.isIslandEditorMount && islandEditorStore.isOpenPopup" />
+    <IslandPopup v-if="!islandEditorStore.isIslandEditorMount && islandEditorStore.isOpenPopup"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
-import PlansIslandEditor from './PlansIslandEditor.vue'
 import PlanController from './PlansController.vue'
 import PlanList from './PlansList.vue'
 import lodash from 'lodash'
-import { computed, onMounted, onUnmounted, reactive } from 'vue'
+import {computed, onMounted, onUnmounted, reactive} from 'vue'
 
-import { Hakoniwa } from '$entity/Hakoniwa'
-import { Island } from '$entity/Island'
-import { Status } from '$entity/Status'
-import { Plan } from '$entity/Plan'
-import { Turn } from '$entity/Turn'
-import { LogParser, LogProps, SummaryProps } from '$entity/Log'
+import {Hakoniwa} from '$entity/Hakoniwa'
+import {Island} from '$entity/Island'
+import {Status} from '$entity/Status'
+import {Plan} from '$entity/Plan'
+import {Turn} from '$entity/Turn'
+import {LogParser, LogProps, SummaryProps} from '$entity/Log'
 import IslandPopup from '$vue/components/islands/Popup/IslandPopup.vue'
 import CommentForm from '$vue/pages/Islands/Plans/PlansCommentForm.vue'
-import { AchievementProp, getAchievementsList } from '$entity/Achievement'
+import {AchievementProp, getAchievementsList} from '$entity/Achievement'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
-import { BbsMessage } from '$entity/Bbs'
-import { useIslandEditorStore } from '$store/IslandEditorStore.js'
-import { useBbsStore } from '$store/BbsStore.js'
-import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
-import { useIslandViewerStore } from '$store/IslandViewerStore.js'
-import { Cell } from '$entity/Cell.js'
-import { TresCanvas } from '@tresjs/core'
+import {BbsMessage} from '$entity/Bbs'
+import {useIslandEditorStore} from '$store/IslandEditorStore.js'
+import {useBbsStore} from '$store/BbsStore.js'
+import {useIslandViewerStore} from '$store/IslandViewerStore.js'
+import {Cell} from '$entity/Cell.js'
 import CountdownWidget from '$vue/components/islands/common/CountdownWidget.vue'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
 import PlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vue'
-import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
+import {NoToneMapping, SRGBColorSpace, VSMShadowMap} from 'three'
 import PlansIslandCanvas from '$vue/pages/Islands/Plans/PlansIslandCanvas.vue'
 
 interface Props {
