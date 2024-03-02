@@ -31,8 +31,8 @@ onMounted(() => {
   context.scene.value.children[2].shadow.camera.left = -100
   context.scene.value.children[2].shadow.camera.top = -100
   context.scene.value.children[2].shadow.camera.bottom = 100
-  context.scene.value.children[2].shadow.mapSize.width = 2048
-  context.scene.value.children[2].shadow.mapSize.height = 2048
+  context.scene.value.children[2].shadow.mapSize.width = 1000
+  context.scene.value.children[2].shadow.mapSize.height = 1000
   context.scene.value.children[2].shadow.radius = 0.5
 })
 
