@@ -24,6 +24,8 @@ const gl = reactive({
 const islandEditorStore = useIslandEditorStore()
 const islandViewerStore = useIslandViewerStore()
 
+let screenWidth = document.documentElement.clientWidth
+
 onBeforeMount(() => {
   islandEditorStore.isIslandEditorMount = true
   islandEditorStore.targetTerrains[islandViewerStore.island.id] = islandViewerStore.terrain

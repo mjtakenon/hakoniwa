@@ -5,7 +5,7 @@
     :style="{ bottom: props.hoverWindowPoint.y + 'px', left: props.hoverWindowPoint.x + 'px' }">
     <div class="hover-window-header">
       <Suspense>
-        <HoverCanvas class="hover-window-img" />
+        <IslandHoverCanvas class="hover-window-img" />
       </Suspense>
       <div class="hover-window-info grow items-center">
         {{ getCell(props.hoverCellPoint.x, props.hoverCellPoint.y).data.info }}
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import HoverCanvas from './IslandHoverCanvas.vue'
+import IslandHoverCanvas from './IslandHoverCanvas.vue'
 import { Terrain } from '$entity/Terrain'
 import { Point } from '$entity/Point.js'
 import { Cell } from '$entity/Cell.js'

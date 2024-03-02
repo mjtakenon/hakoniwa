@@ -22,18 +22,8 @@
             fill="currentFill" />
         </svg>
       </div>
-      <TresCanvas v-else v-bind="gl" :class="['island-canvas', { 'opacity-80': islandEditorStore.showPlanWindow }]">
-        <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" :look-at="[0, 0, 0]" />
-        <CameraControls />
-
-        <Suspense>
-          <IslandEditorCanvas
-            v-if="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland] !== undefined"
-            :terrain="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland]" />
-        </Suspense>
-
-        <TresAmbientLight :intensity="2" />
-        <TresDirectionalLight :position="[192, 192, 192] as Vector3" cast-shadow :intensity="3" />
+      <TresCanvas v-bind="gl" :class="['island-canvas', { 'opacity-80': islandEditorStore.showPlanWindow }]">
+        <PlansIslandPopup />
       </TresCanvas>
       <IslandHoverWindow
         :showHoverWindow="islandViewerStore.showHoverWindow"
@@ -59,7 +49,7 @@
           </div>
         </template>
       </IslandHoverWindow>
-      <PlanWindow />
+      <IslandEditorPlanWindow />
       <div class="comment-box">
         <div class="comment-title">Comment:</div>
         <div class="comment-text">
@@ -71,27 +61,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3 } from 'three'
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive } from 'vue'
+import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
 import { TresCanvas } from '@tresjs/core'
-import IslandEditorCanvas from '../Editor/IslandEditorTerrain.vue'
-import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
-import PlanWindow from '../Editor/IslandEditorPlanWindow.vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
-import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
-import { getAchievementsList } from '$entity/Achievement.js'
+import PlansIslandPopup from '$vue/pages/Islands/Plans/PlansIslandPopup.vue'
+import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
+import IslandEditorPlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vue'
 
 const islandEditorStore = useIslandEditorStore()
 const islandViewerStore = useIslandViewerStore()
-const { isOpenPopup, isLoadingTerrain } = storeToRefs(islandEditorStore)
 
 const gl = reactive({
   clearColor: '#888888',
   shadows: true,
   alpha: true,
-  shadowMapType: BasicShadowMap,
+  shadowMapType: VSMShadowMap,
   outputColorSpace: SRGBColorSpace,
   toneMapping: NoToneMapping,
   width: 100
@@ -115,23 +101,6 @@ onBeforeUnmount(() => {
 onUnmounted(() => {
   islandEditorStore.isIslandPopupMount = false
   window.removeEventListener('resize', onWindowSizeChanged)
-})
-
-watch(isLoadingTerrain, () => {
-  if (islandEditorStore.isLoadingTerrain) return
-  const target = islandEditorStore.targetIslands.filter(
-    (island) => island.id === islandEditorStore.selectedTargetIsland
-  )
-  if (target.length < 1) throw new Error('対象の島が見つかりません')
-  if (target[0].terrain === undefined) throw new Error('目標の島に地形情報がありません')
-
-  // 取得した目標島の地形を保存
-  islandEditorStore.$patch((state) => {
-    state.targetTerrains[islandEditorStore.selectedTargetIsland] = {
-      cells: target[0].terrain
-    }
-    state.targetIslandComments[islandEditorStore.selectedTargetIsland] = target[0].comment
-  })
 })
 
 const titleStyle = computed(() => {
