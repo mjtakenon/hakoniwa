@@ -62,9 +62,9 @@ create-node-modules-dir:
 	-mkdir ./frontend/node_modules
 
 exec-composer:
-	docker compose run --user debian composer bash
+	docker compose run --rm --user debian composer bash
 composer-install:
-	docker compose run --user debian composer bash -c "composer install"
+	docker compose run --rm --user debian composer bash -c "composer install"
 
 exec-db:
 	docker compose exec db bash
