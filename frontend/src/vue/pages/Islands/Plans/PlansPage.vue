@@ -44,7 +44,7 @@
       <Bbs :island="islandViewerStore.island"/>
       <LogViewer :title="islandViewerStore.island.name + '島の近況'" :parsed-logs="islandViewerStore.logs"/>
     </div>
-    <IslandPopup v-if="!islandEditorStore.isIslandEditorMount && islandEditorStore.isOpenPopup"/>
+    <IslandPopupCanvas v-if="!islandEditorStore.isIslandEditorMount && islandEditorStore.isOpenPopup"/>
   </div>
 </template>
 
@@ -62,7 +62,6 @@ import {Status} from '$entity/Status'
 import {Plan} from '$entity/Plan'
 import {Turn} from '$entity/Turn'
 import {LogParser, LogProps, SummaryProps} from '$entity/Log'
-import IslandPopup from '$vue/components/islands/Popup/IslandPopup.vue'
 import CommentForm from '$vue/pages/Islands/Plans/PlansCommentForm.vue'
 import {AchievementProp, getAchievementsList} from '$entity/Achievement'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
@@ -76,6 +75,7 @@ import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.v
 import PlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vue'
 import {NoToneMapping, SRGBColorSpace, VSMShadowMap} from 'three'
 import IslandEditorCanvas from '$vue/components/islands/Editor/IslandEditorCanvas.vue'
+import IslandPopupCanvas from "$vue/components/islands/Popup/IslandPopupCanvas.vue";
 
 interface Props {
   hakoniwa: Hakoniwa
