@@ -40,7 +40,7 @@ onUnmounted(() => {
 
 const onWindowSizeChanged = () => {
   const newScreenWidth = document.documentElement.clientWidth
-  if (screenWidth !== newScreenWidth) {
+  if (islandViewerStore.screenWidth !== newScreenWidth) {
     islandViewerStore.screenWidth = newScreenWidth
     islandViewerStore.isMobile = document.documentElement.clientWidth < 1024
   }
