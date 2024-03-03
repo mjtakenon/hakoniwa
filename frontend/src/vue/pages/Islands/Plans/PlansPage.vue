@@ -9,7 +9,7 @@
       <PlanController class="grow" :class="{ 'order-2': !canSideBySide }"/>
       <div class="z-30" :class="{ 'order-1 w-full': !canSideBySide }">
         <div id="island">
-          <PlansIslandCanvas v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup"/>
+          <IslandEditorCanvas v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup"/>
           <CountdownWidget></CountdownWidget>
           <IslandHoverWindow
             :showHoverWindow="islandViewerStore.showHoverWindow"
@@ -75,7 +75,7 @@ import CountdownWidget from '$vue/components/islands/common/CountdownWidget.vue'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
 import PlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vue'
 import {NoToneMapping, SRGBColorSpace, VSMShadowMap} from 'three'
-import PlansIslandCanvas from '$vue/pages/Islands/Plans/PlansIslandCanvas.vue'
+import IslandEditorCanvas from '$vue/components/islands/Editor/IslandEditorCanvas.vue'
 
 interface Props {
   hakoniwa: Hakoniwa

@@ -1,11 +1,11 @@
 <template>
   <TresCanvas v-bind="gl" :class="['island-canvas', { 'opacity-80': islandEditorStore.showPlanWindow }]">
-    <PlansIslandEditor v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup" />
+    <IslandEditor v-if="!islandEditorStore.isIslandPopupMount && !islandEditorStore.isOpenPopup" />
   </TresCanvas>
 </template>
 
 <script setup lang="ts">
-import PlansIslandEditor from './PlansIslandEditor.vue'
+import IslandEditor from './IslandEditor.vue'
 import { onBeforeMount, onMounted, onUnmounted, reactive } from 'vue'
 import { useIslandEditorStore } from '$store/IslandEditorStore.js'
 import { TresCanvas } from '@tresjs/core'

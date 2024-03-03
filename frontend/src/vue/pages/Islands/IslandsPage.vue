@@ -2,7 +2,7 @@
   <div id="sightseeing-page" class="wrapper">
     <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
     <div id="island">
-      <IslandsCanvas />
+      <IslandViewerCanvas />
       <IslandHoverWindow
         :showHoverWindow="store.showHoverWindow"
         :hoverWindowPoint="store.hoverWindowPoint"
@@ -29,7 +29,7 @@ import { BbsMessage } from '$entity/Bbs'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 import { useBbsStore } from '$store/BbsStore.js'
-import IslandsCanvas from '$vue/pages/Islands/IslandsCanvas.vue'
+import IslandViewerCanvas from '$vue/components/islands/Viewer/IslandViewerCanvas.vue'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
 
 const store = useIslandViewerStore()

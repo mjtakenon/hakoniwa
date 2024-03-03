@@ -1,6 +1,6 @@
 <template>
   <TresCanvas v-bind="gl" id="island-canvas">
-    <IslandsViewer />
+    <IslandViewer />
   </TresCanvas>
 </template>
 
@@ -8,7 +8,7 @@
 import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
 import { TresCanvas } from '@tresjs/core'
 import { reactive } from 'vue'
-import IslandsViewer from '$vue/pages/Islands/IslandsViewer.vue'
+import IslandViewer from '$vue/components/islands/Viewer/IslandViewer.vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
 
 const gl = reactive({
