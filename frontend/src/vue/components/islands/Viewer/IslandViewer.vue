@@ -1,19 +1,19 @@
 <template>
-  <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" :look-at="[0, 0, 0]" />
-  <CameraControls />
+  <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" :look-at="[0, 0, 0]"/>
+  <CameraControls/>
   <Suspense>
-    <IslandViewerTerrain />
+    <IslandViewerTerrain/>
   </Suspense>
 
-  <TresAmbientLight :intensity="0.5" />
-  <TresDirectionalLight :position="[10, 200, 100] as Vector3" cast-shadow :intensity="8" v-bind="{ color: 0xffdddd }" />
+  <TresAmbientLight :intensity="0.5"/>
+  <TresDirectionalLight :position="[10, 200, 100] as Vector3" cast-shadow :intensity="8" v-bind="{ color: 0xffdddd }"/>
 </template>
 
 <script setup lang="ts">
-import { Vector3 } from 'three'
+import {Vector3} from 'three'
 import IslandViewerTerrain from '$vue/components/islands/Viewer/IslandViewerTerrain.vue'
-import { useTresContext } from '@tresjs/core'
-import { onMounted } from 'vue'
+import {useTresContext} from '@tresjs/core'
+import {onMounted} from 'vue'
 import CameraControls from '$vue/components/islands/Camera/CameraControls.vue'
 
 const context = useTresContext()

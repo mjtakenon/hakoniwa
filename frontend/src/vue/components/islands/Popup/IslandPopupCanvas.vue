@@ -63,7 +63,7 @@
 <script setup lang="ts">
 import {computed, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, reactive, watch} from 'vue'
 import {storeToRefs} from 'pinia'
-import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3} from 'three'
+import {BasicShadowMap, NoToneMapping, SRGBColorSpace, Vector3, VSMShadowMap} from 'three'
 import {TresCanvas} from '@tresjs/core'
 import IslandEditorTerrain from '../Editor/IslandEditorTerrain.vue'
 import IslandHoverWindow from '../Hover/IslandHoverWindow.vue'
@@ -81,10 +81,9 @@ const gl = reactive({
   clearColor: '#888888',
   shadows: true,
   alpha: true,
-  shadowMapType: BasicShadowMap,
+  shadowMapType: VSMShadowMap,
   outputColorSpace: SRGBColorSpace,
-  toneMapping: NoToneMapping,
-  width: 100
+  toneMapping: NoToneMapping
 })
 
 onBeforeMount(() => {
