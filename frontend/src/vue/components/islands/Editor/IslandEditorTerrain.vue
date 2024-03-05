@@ -120,41 +120,26 @@ onMounted(() => {
   referencedBox.value.material.transparent = true
 })
 
-const getCell = (x, y): Cell => {
-  return props.terrain.cells
-    .filter(function (item) {
-      if (item.data.point.x === x && item.data.point.y === y) return true
-    })
-    .pop()
-}
-
-const getModelSize = (type, subType): Vector3 => {
-  return new Box3().setFromObject(models[type][subType].scene).getSize(new Vector3())
-}
-
 const selectedBoxScale = computed(() => {
   const selectedBoxScaleMargin = 0.1
   if (islandEditorStore.selectedPoint === null) {
     return new Vector3(0, 0, 0)
   }
-  const cell = getCell(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y)
   return new Vector3(
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin,
-    getModelSize(cell.type, cell.data.sub_type ?? 'default').y + selectedBoxScaleMargin,
+    8,
     DEFAULT_CELL_SIZE + selectedBoxScaleMargin
   )
 })
 
 const selectedBoxPosition = computed(() => {
   const selectedPoint = islandEditorStore.selectedPoint
-  const selectedBoxPositionMarginY = 4
   if (selectedPoint === null) {
     return new Vector3(0, 0, 0)
   }
-  const cell = getCell(islandEditorStore.selectedPoint.x, islandEditorStore.selectedPoint.y)
   return new Vector3(
     selectedPoint.x * DEFAULT_CELL_SIZE + ((((selectedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-    (getModelSize(cell.type, cell.data.sub_type ?? 'default').y - 8) / 2 + selectedBoxPositionMarginY,
+    9,
     selectedPoint.y * DEFAULT_CELL_SIZE
   )
 })
@@ -176,24 +161,21 @@ const referencedBoxScale = computed(() => {
   if (referencedPoint === null) {
     return new Vector3(0, 0, 0)
   }
-  const cell = getCell(referencedPoint.x, referencedPoint.y)
   return new Vector3(
     DEFAULT_CELL_SIZE + referencedBoxScaleMargin,
-    getModelSize(cell.type, cell.data.sub_type ?? 'default').y + referencedBoxScaleMargin,
+    8,
     DEFAULT_CELL_SIZE + referencedBoxScaleMargin
   )
 })
 
 const referencedBoxPosition = computed(() => {
   const referencedPoint = getReferencedPoint.value
-  const referencedBoxPositionMarginY = 4
   if (referencedPoint === null) {
     return new Vector3(0, 0, 0)
   }
-  const cell = getCell(referencedPoint.x, referencedPoint.y)
   return new Vector3(
     referencedPoint.x * DEFAULT_CELL_SIZE + ((((referencedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
-    (getModelSize(cell.type, cell.data.sub_type ?? 'default').y - 8) / 2 + referencedBoxPositionMarginY,
+    8,
     referencedPoint.y * DEFAULT_CELL_SIZE
   )
 })
