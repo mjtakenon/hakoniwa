@@ -8,8 +8,8 @@
       :terrain="islandEditorStore.targetTerrains[islandEditorStore.selectedTargetIsland]"/>
   </Suspense>
 
-  <TresAmbientLight :intensity="0.5"/>
-  <TresDirectionalLight :position="[10, 200, 100] as Vector3" cast-shadow :intensity="8" v-bind="{ color: 0xffdddd }"/>
+  <TresAmbientLight :intensity="1"/>
+  <TresDirectionalLight :position="[10, 200, 100] as Vector3" cast-shadow :intensity="6" v-bind="{ color: 0xffdddd }"/>
 </template>
 
 <script setup lang="ts">

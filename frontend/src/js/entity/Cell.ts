@@ -14,9 +14,9 @@ export const DEFAULT_CELL_SIZE = 8
 export const CELL_PATHS = {
   city: { default: '/img/hakoniwa/gltf/plain.gltf' },
   factory: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  farm: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  farm_dome: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  forest: { default: '/img/hakoniwa/gltf/plain.gltf' },
+  farm: { default: '/img/hakoniwa/gltf/farm.gltf' },
+  farm_dome: { default: '/img/hakoniwa/gltf/farm.gltf' },
+  forest: { default: '/img/hakoniwa/gltf/forest.gltf' },
   metropolis: { default: '/img/hakoniwa/gltf/plain.gltf' },
   mountain: { default: '/img/hakoniwa/gltf/mountain.gltf' },
   volcano: { default: '/img/hakoniwa/gltf/volcano.gltf' },
