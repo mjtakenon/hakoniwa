@@ -4,7 +4,7 @@
     v-for="child of props.scene.children"
     :object="child"
     :scale="props.scale"
-    :position="props.position"
+    :position="[props.position[0], child.position.y, props.position[2]]"
     receive-shadow
     cast-shadow
     @click="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"

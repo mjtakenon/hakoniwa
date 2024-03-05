@@ -1,4 +1,4 @@
-import { Point } from './Point.js'
+import {Point} from './Point.js'
 
 export interface Cell {
   type: CellType
@@ -12,85 +12,85 @@ export interface Cell {
 export const DEFAULT_CELL_SIZE = 8
 
 export const CELL_PATHS = {
-  city: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  factory: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  farm: { default: '/img/hakoniwa/gltf/farm.gltf' },
-  farm_dome: { default: '/img/hakoniwa/gltf/farm.gltf' },
-  forest: { default: '/img/hakoniwa/gltf/forest.gltf' },
-  metropolis: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  mountain: { default: '/img/hakoniwa/gltf/mountain.gltf' },
-  volcano: { default: '/img/hakoniwa/gltf/volcano.gltf' },
-  mine: { default: '/img/hakoniwa/gltf/mine.gltf' },
-  oilfield: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  plain: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  sea: { default: '/img/hakoniwa/gltf/sea.gltf' },
-  shallow: { default: '/img/hakoniwa/gltf/shallow.gltf' },
-  lake: { default: '/img/hakoniwa/gltf/shallow.gltf' },
-  large_factory: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  town: { default: '/img/hakoniwa/gltf/village.gltf' },
-  village: { default: '/img/hakoniwa/gltf/village.gltf' },
-  wasteland: { default: '/img/hakoniwa/gltf/wasteland.gltf' },
-  missile_base: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  seabed_base: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  park: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  monument_of_agriculture: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  monument_of_mining: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  monument_of_master: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  monument_of_peace: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  monument_of_war: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  monument_of_conquest: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  red_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  dark_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  king_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
+  city: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  factory: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  farm: { default: [{ path: '/img/hakoniwa/gltf/farm.gltf' }] },
+  farm_dome: { default: [{ path: '/img/hakoniwa/gltf/farm_dome.gltf' }, { path:'/img/hakoniwa/gltf/farm_dome_transparent.gltf', opacity: 0.5 }] },
+  forest: { default: [{ path: '/img/hakoniwa/gltf/forest.gltf' }] },
+  metropolis: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  mountain: { default: [{ path: '/img/hakoniwa/gltf/mountain.gltf' }] },
+  volcano: { default: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }] },
+  mine: { default: [{ path: '/img/hakoniwa/gltf/mine.gltf' }] },
+  oilfield: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  plain: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  sea: { default: [{ path: '/img/hakoniwa/gltf/sea.gltf' }] },
+  shallow: { default: [{ path: '/img/hakoniwa/gltf/shallow.gltf' }] },
+  lake: { default: [{ path: '/img/hakoniwa/gltf/shallow.gltf' }] },
+  large_factory: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  town: { default: [{ path: '/img/hakoniwa/gltf/village.gltf' }] },
+  village: { default: [{ path: '/img/hakoniwa/gltf/village.gltf' }] },
+  wasteland: { default: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }] },
+  missile_base: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  seabed_base: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  park: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  monument_of_agriculture: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  monument_of_mining: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  monument_of_master: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  monument_of_peace: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  monument_of_war: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  monument_of_conquest: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  inora: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  red_inora: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  dark_inora: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  king_inora: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
   sanjira: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    metalized: '/img/hakoniwa/gltf/plain.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    metalized: [{ path: '/img/hakoniwa/gltf/plain.gltf' }]
   },
   kujira: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    metalized: '/img/hakoniwa/gltf/plain.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    metalized: [{ path: '/img/hakoniwa/gltf/plain.gltf' }]
   },
-  hamunemu: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  ghost_inora: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  slime: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  slime_legend: { default: '/img/hakoniwa/gltf/plain.gltf' },
+  hamunemu: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  ghost_inora: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  slime: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  slime_legend: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
   levinoth: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/volcano.gltf',
-    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    shallow: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }],
+    sea: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }]
   },
-  begenoth: { default: '/img/hakoniwa/gltf/plain.gltf' },
-  egg: { default: '/img/hakoniwa/gltf/plain.gltf' },
+  begenoth: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
+  egg: { default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }] },
   transport_ship: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/volcano.gltf',
-    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    shallow: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }],
+    sea: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }]
   },
   battleship: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/volcano.gltf',
-    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    shallow: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }],
+    sea: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }]
   },
   submarine: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/volcano.gltf',
-    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    shallow: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }],
+    sea: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }]
   },
   pirate: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/volcano.gltf',
-    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    shallow: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }],
+    sea: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }]
   },
   levinoth_battleship: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/volcano.gltf',
-    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    shallow: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }],
+    sea: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }]
   },
   levinoth_submarine: {
-    default: '/img/hakoniwa/gltf/plain.gltf',
-    shallow: '/img/hakoniwa/gltf/volcano.gltf',
-    sea: '/img/hakoniwa/gltf/wasteland.gltf'
+    default: [{ path: '/img/hakoniwa/gltf/plain.gltf' }],
+    shallow: [{ path: '/img/hakoniwa/gltf/volcano.gltf' }],
+    sea: [{ path: '/img/hakoniwa/gltf/wasteland.gltf' }]
   }
 } as const
 

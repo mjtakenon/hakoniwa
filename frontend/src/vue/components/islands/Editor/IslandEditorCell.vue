@@ -2,7 +2,7 @@
   <primitive
     v-for="child of props.scene.children"
     :object="child"
-    :position="props.position"
+    :position="[props.position[0], child.position.y, props.position[2]]"
     :scale="props.scale"
     receive-shadow
     cast-shadow
