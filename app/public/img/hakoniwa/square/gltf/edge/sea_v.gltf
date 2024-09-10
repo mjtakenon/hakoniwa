@@ -1,0 +1,155 @@
+{
+  "images": [
+    {"uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAAR0lEQVR4Xu3QwQkAIAwEwWvD/gvVl+BbAyLOQL5H2LSkz8umdeNk54qKxwV4OUAFAQQQQAABBBBAAAEEEEAAAX4MAAAAAG8ZCntUOdItvIMAAAAASUVORK5CYII="},
+    {"uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAASUlEQVR4Xu3QQQrAMAwDQf//0+k16JgGWtAM7NUYzcysrVP7jTd3PnHjcQNEdQwQ1TFAVMcAUR0DRHUMENUxQFTHABEAAADwXw+cZ0y0gQkOEwAAAABJRU5ErkJggg=="}
+  ],
+  "accessors": [
+    {
+      "componentType": 5126,
+      "min": [
+        -8,
+        -1,
+        -1
+      ],
+      "byteOffset": 0,
+      "bufferView": 0,
+      "max": [
+        8,
+        1,
+        1
+      ],
+      "count": 36,
+      "type": "VEC3"
+    },
+    {
+      "componentType": 5126,
+      "byteOffset": 0,
+      "bufferView": 1,
+      "count": 36,
+      "type": "VEC3"
+    },
+    {
+      "componentType": 5126,
+      "byteOffset": 0,
+      "bufferView": 2,
+      "count": 36,
+      "type": "VEC2"
+    },
+    {
+      "componentType": 5126,
+      "byteOffset": 0,
+      "bufferView": 2,
+      "count": 36,
+      "type": "VEC2"
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "sampler": 0
+    },
+    {
+      "source": 1,
+      "sampler": 0
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 432,
+      "uri": "data:application/octet-stream;base64,AAAAwQAAgL8AAIA/AAAAwQAAgD8AAIA/AAAAwQAAgD8AAIC/AAAAwQAAgD8AAIC/AAAAwQAAgL8AAIC/AAAAwQAAgL8AAIA/AAAAQQAAgL8AAIC/AAAAQQAAgD8AAIC/AAAAQQAAgD8AAIA/AAAAQQAAgD8AAIA/AAAAQQAAgL8AAIA/AAAAQQAAgL8AAIC/AAAAwQAAgL8AAIC/AAAAQQAAgL8AAIC/AAAAQQAAgL8AAIA/AAAAQQAAgL8AAIA/AAAAwQAAgL8AAIA/AAAAwQAAgL8AAIC/AAAAwQAAgD8AAIA/AAAAQQAAgD8AAIA/AAAAQQAAgD8AAIC/AAAAQQAAgD8AAIC/AAAAwQAAgD8AAIC/AAAAwQAAgD8AAIA/AAAAwQAAgD8AAIC/AAAAQQAAgD8AAIC/AAAAQQAAgL8AAIC/AAAAQQAAgL8AAIC/AAAAwQAAgL8AAIC/AAAAwQAAgD8AAIC/AAAAwQAAgL8AAIA/AAAAQQAAgL8AAIA/AAAAQQAAgD8AAIA/AAAAQQAAgD8AAIA/AAAAwQAAgD8AAIA/AAAAwQAAgL8AAIA/"
+    },
+    {
+      "byteLength": 432,
+      "uri": "data:application/octet-stream;base64,AACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/"
+    },
+    {
+      "byteLength": 288,
+      "uri": "data:application/octet-stream;base64,AAAAAAAAgD0AAAA9AACAPQAAAD0AAAAAAAAAPQAAAAAAAAAAAAAAAAAAAAAAAIA9AAAAAAAAAAAAAAA9AAAAAAAAAD0AAIA9AAAAPQAAgD0AAAAAAACAPQAAAAAAAAAAAACQPgAAAD8AAJA+AAAAAAAAoD4AAAAAAACgPgAAAAAAAKA+AAAAPwAAkD4AAAA/AACgPgAAAD8AAKA+AAAAAAAAkD4AAAAAAACQPgAAAAAAAJA+AAAAPwAAoD4AAAA/AACgPgAAAD8AAKA+AAAAAAAAkD4AAAAAAACQPgAAAAAAAJA+AAAAPwAAoD4AAAA/AACQPgAAAD8AAJA+AAAAAAAAoD4AAAAAAACgPgAAAAAAAKA+AAAAPwAAkD4AAAA/"
+    }
+  ],
+  "bufferViews": [
+    {
+      "byteOffset": 0,
+      "byteLength": 432,
+      "buffer": 0,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "byteOffset": 0,
+      "byteLength": 432,
+      "buffer": 1,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "byteOffset": 0,
+      "byteLength": 288,
+      "buffer": 2,
+      "byteStride": 8,
+      "target": 34962
+    }
+  ],
+  "samplers": [{
+    "minFilter": 9728,
+    "wrapT": 33071,
+    "wrapS": 33071,
+    "magFilter": 9728
+  }],
+  "scene": 0,
+  "nodes": [{
+    "rotation": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "translation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      -1,
+      1,
+      1
+    ],
+    "mesh": 0
+  }],
+  "materials": [{
+    "name": "Content-Material",
+    "emissiveTexture": {
+      "index": 1,
+      "texCoord": 1
+    },
+    "pbrMetallicRoughness": {
+      "baseColorTexture": {"index": 0},
+      "metallicFactor": 0,
+      "roughnessFactor": 1
+    },
+    "emissiveFactor": [
+      1,
+      1,
+      1
+    ]
+  }],
+  "animations": [],
+  "scenes": [{"nodes": [0]}],
+  "asset": {
+    "generator": "VoxEdit Beta 5ec25cd9",
+    "version": "2.0"
+  },
+  "meshes": [{
+    "primitives": [{
+      "mode": 4,
+      "material": 0,
+      "attributes": {
+        "POSITION": 0,
+        "TEXCOORD_1": 3,
+        "TEXCOORD_0": 2,
+        "NORMAL": 1
+      }
+    }],
+    "name": "Content-Mesh"
+  }]
+}

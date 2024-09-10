@@ -6,7 +6,7 @@
 import {AmbientLight, Box3, Camera, Group, Mesh, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three'
 import {useGLTF} from '@tresjs/cientos'
 import {onMounted, ref, UnwrapRef} from 'vue'
-import {CellType, DEFAULT_CELL_SIZE, getCellPath, getCellSubTypes, getCellTypes} from '$entity/Cell.js'
+import {CellType, CELL_SIZE_X, getCellPath, getCellSubTypes, getCellTypes} from '$entity/Cell.js'
 import {useIslandHoverStore} from '$store/IslandHoverStore.js'
 
 const store = useIslandHoverStore()
@@ -28,10 +28,10 @@ for (let type of getCellTypes()) {
     for (let path of paths) {
       let model = await useGLTF(path['path'], {draco: true})
       const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-      model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
-      model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
-      model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
-      model.scene.position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
+      model.scene.scale.x = CELL_SIZE_X / size.x
+      model.scene.scale.y = CELL_SIZE_X / size.x
+      model.scene.scale.z = CELL_SIZE_X / size.x
+      model.scene.position.y += (size.y * (CELL_SIZE_X / size.x) - CELL_SIZE_X) / 2
 
       model.scene.traverse((object: Mesh | Group) => {
         if (object.isMesh) {
@@ -64,7 +64,7 @@ onMounted(() => {
   scene.add(light)
 
   let position = new Vector3(0, 0, 0)
-  const positionMargin = new Vector3(DEFAULT_CELL_SIZE * 4, DEFAULT_CELL_SIZE * 4, DEFAULT_CELL_SIZE * -4)
+  const positionMargin = new Vector3(CELL_SIZE_X * 4, CELL_SIZE_X * 4, CELL_SIZE_X * -4)
   const cameraPositionDiff = new Vector3(4, 16, 4)
 
   for (let type of getCellTypes()) {

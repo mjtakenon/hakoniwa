@@ -3,8 +3,9 @@
     ref="objectRef"
     v-for="child of props.scene.children"
     :object="child"
-    :scale="props.scale"
+    :scale="getScale()"
     :position="[props.position[0], child.position.y, props.position[2]]"
+    :rotation="getRotation()"
     receive-shadow
     cast-shadow
     @click="(intersection, pointerEvent) => store.onMouseOverCell(pointerEvent, props.cell)"
@@ -20,15 +21,14 @@ import { Object3D, Vector3 } from 'three'
 
 import { shallowRef, ShallowRef } from 'vue'
 import { useIslandViewerStore } from '$store/IslandViewerStore.js'
-import { Cell } from '$entity/Cell.js'
+import {Cell, getRotation, getScale} from '$entity/Cell.js'
 
 const store = useIslandViewerStore()
 
 interface Props {
   cell: Cell
-  position: Vector3
+  position: Array<number>
   scene: Object3D
-  scale: number
 }
 
 const props = defineProps<Props>()

@@ -1,0 +1,155 @@
+{
+  "images": [
+    {"uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAA9hAAAPYQGoP6dpAAABiUlEQVR4Xu2azUrDQBSFswpuXLgpVAS3Ll37Wj6PTxUQQfIs1Rk5Mnxwp5LN4J3zwYG09IN7xjQ/psvT/ni5325rynbJuq01fL0EvL3eXf4ausMpxW62h5rnj7Vm2ZcaFf99P4Ale6E7HA7Y5uV9rdEeQlfQ64XucDhgG+0Z+irQFfR6oTscDthGu74Wgq6g1wvd4XDANvrLT3sMUPHUZwEO2Gb6Y4CKT3sWmH4B+NkIer3QHQ4HPDIsvV7oDocDHhmWXi90h8MBjwxLrxe6w+GAR4bVdUI5UJbrBh00y3a5lzh9nq5eTA2DpY8sgM4WuqPU1WN5XRagvbWmOxyW9gIEoZcGFo1CLw0sGoVeGlg0Cr00sGgUemlg0Sj00sCiUeilgUWj0EsDi0ahlwYWjUIvDSwahV4aWDQKvTSwaBR6aWDRKPTSwKJR6KWhPvPbl8t5O/88//ve1j18eU+PyumlQT+M0O8A9CRI/9K69ljs3zP9AhhjjDHGGGOMMcYYY4wxxhhjzAx8ARKXUHU3LH8eAAAAAElFTkSuQmCC"},
+    {"uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAA5UlEQVR4Xu3PMQoDMBADQf//00m/IEGuUoQGtrNB9957nx9S+M4VhwNdCt+54nCgS+E7VxwOdCl854rDgS6F71xxONCl8J0rDge6FL5zxeFAl8J3rjgc6FL4zhWHA10K37nicOBlLP+54nDgZSz/ueJw4GUs/7nicOBlLP+54nDgZSz/ueJw4GUs/7nicOBlLP+54nCgqhYPVdXioapaPFRVi4eqavFQVS0eqqrFQ1W1eKiqFg9V1eKhqlo8VFWLh6pq8VBVLR6qqsVDVbV4qKoWD1XNzMzMzMzMzMzMzMzMzMy/+gI1SgwRaqqZ4QAAAABJRU5ErkJggg=="}
+  ],
+  "accessors": [
+    {
+      "componentType": 5126,
+      "min": [
+        -4.5,
+        -8,
+        -1
+      ],
+      "byteOffset": 0,
+      "bufferView": 0,
+      "max": [
+        4.5,
+        8,
+        1
+      ],
+      "count": 36,
+      "type": "VEC3"
+    },
+    {
+      "componentType": 5126,
+      "byteOffset": 0,
+      "bufferView": 1,
+      "count": 36,
+      "type": "VEC3"
+    },
+    {
+      "componentType": 5126,
+      "byteOffset": 0,
+      "bufferView": 2,
+      "count": 36,
+      "type": "VEC2"
+    },
+    {
+      "componentType": 5126,
+      "byteOffset": 0,
+      "bufferView": 2,
+      "count": 36,
+      "type": "VEC2"
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "sampler": 0
+    },
+    {
+      "source": 1,
+      "sampler": 0
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 432,
+      "uri": "data:application/octet-stream;base64,AACQwAAAAMEAAIA/AACQwAAAAEEAAIA/AACQwAAAAEEAAIC/AACQwAAAAEEAAIC/AACQwAAAAMEAAIC/AACQwAAAAMEAAIA/AACQQAAAAMEAAIC/AACQQAAAAEEAAIC/AACQQAAAAEEAAIA/AACQQAAAAEEAAIA/AACQQAAAAMEAAIA/AACQQAAAAMEAAIC/AACQwAAAAMEAAIC/AACQQAAAAMEAAIC/AACQQAAAAMEAAIA/AACQQAAAAMEAAIA/AACQwAAAAMEAAIA/AACQwAAAAMEAAIC/AACQwAAAAEEAAIA/AACQQAAAAEEAAIA/AACQQAAAAEEAAIC/AACQQAAAAEEAAIC/AACQwAAAAEEAAIC/AACQwAAAAEEAAIA/AACQwAAAAEEAAIC/AACQQAAAAEEAAIC/AACQQAAAAMEAAIC/AACQQAAAAMEAAIC/AACQwAAAAMEAAIC/AACQwAAAAEEAAIC/AACQwAAAAMEAAIA/AACQQAAAAMEAAIA/AACQQAAAAEEAAIA/AACQQAAAAEEAAIA/AACQwAAAAEEAAIA/AACQwAAAAMEAAIA/"
+    },
+    {
+      "byteLength": 432,
+      "uri": "data:application/octet-stream;base64,AACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/"
+    },
+    {
+      "byteLength": 288,
+      "uri": "data:application/octet-stream;base64,AAAAPQAAgD4AAAA9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPgAAAD0AAIA+AACAPQAAgD4AAIA9AAAAAAAAwD0AAAAAAADAPQAAAAAAAMA9AACAPgAAgD0AAIA+AAAAAAAAMD4AAAAAAAAAPQAAAD0AAAA9AAAAPQAAAD0AAAA9AAAwPgAAAAAAADA+AAAgPgAAED4AACA+AAAAAAAAAD4AAAAAAAAAPgAAAAAAAAA+AAAQPgAAID4AABA+AACQPgAAgD4AANg+AACAPgAA2D4AAAAAAADYPgAAAAAAAJA+AAAAAAAAkD4AAIA+AAAAAAAAkD4AABA+AACQPgAAED4AAAg/AAAQPgAACD8AAAAAAAAIPwAAAAAAAJA+"
+    }
+  ],
+  "bufferViews": [
+    {
+      "byteOffset": 0,
+      "byteLength": 432,
+      "buffer": 0,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "byteOffset": 0,
+      "byteLength": 432,
+      "buffer": 1,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "byteOffset": 0,
+      "byteLength": 288,
+      "buffer": 2,
+      "byteStride": 8,
+      "target": 34962
+    }
+  ],
+  "samplers": [{
+    "minFilter": 9728,
+    "wrapT": 33071,
+    "wrapS": 33071,
+    "magFilter": 9728
+  }],
+  "scene": 0,
+  "nodes": [{
+    "rotation": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "translation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      -1,
+      1,
+      1
+    ],
+    "mesh": 0
+  }],
+  "materials": [{
+    "name": "Content-Material",
+    "emissiveTexture": {
+      "index": 1,
+      "texCoord": 1
+    },
+    "pbrMetallicRoughness": {
+      "baseColorTexture": {"index": 0},
+      "metallicFactor": 0,
+      "roughnessFactor": 1
+    },
+    "emissiveFactor": [
+      1,
+      1,
+      1
+    ]
+  }],
+  "animations": [],
+  "scenes": [{"nodes": [0]}],
+  "asset": {
+    "generator": "VoxEdit Beta 5ec25cd9",
+    "version": "2.0"
+  },
+  "meshes": [{
+    "primitives": [{
+      "mode": 4,
+      "material": 0,
+      "attributes": {
+        "POSITION": 0,
+        "TEXCOORD_1": 3,
+        "TEXCOORD_0": 2,
+        "NORMAL": 1
+      }
+    }],
+    "name": "Content-Mesh"
+  }]
+}

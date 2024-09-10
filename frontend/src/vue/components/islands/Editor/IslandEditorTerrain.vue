@@ -2,18 +2,18 @@
   <TresGroup
     :position="
       [
-        -DEFAULT_CELL_SIZE * Math.floor(islandViewerStore.hakoniwa.width / 2),
+        -CELL_SIZE_X * Math.floor(islandViewerStore.hakoniwa.width / 2),
         0,
-        -DEFAULT_CELL_SIZE * Math.floor(islandViewerStore.hakoniwa.height / 2)
+        -CELL_SIZE_X * Math.floor(islandViewerStore.hakoniwa.height / 2)
       ] as Vector3
     ">
     <template v-for="cell of props.terrain.cells">
       <IslandEditorCell
         :position="
           [
-            cell.data.point.x * DEFAULT_CELL_SIZE + ((((cell.data.point.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
+            cell.data.point.x * (CELL_SIZE_X + EDGE_WIDTH_X) + ((((cell.data.point.y + 1) % 2) - 1) * CELL_SIZE_X) / 2,
             0,
-            cell.data.point.y * DEFAULT_CELL_SIZE
+            cell.data.point.y * (CELL_SIZE_X + EDGE_WIDTH_X)
           ] as Vector3
         "
         :scale="models[cell.type][cell.data.sub_type ?? 'default'].scene.scale.x"
@@ -59,7 +59,16 @@ import {useGLTF} from '@tresjs/cientos'
 import IslandEditorCell from './IslandEditorCell.vue'
 import {Terrain} from '$entity/Terrain'
 import {computed, onMounted, shallowRef} from 'vue'
-import {Cell, CellType, DEFAULT_CELL_SIZE, getCellPath, getCellSubTypes, getCellTypes} from '$entity/Cell.js'
+import {
+  CellType,
+  CELL_SIZE_X,
+  getCellPath,
+  getCellSubTypes,
+  getCellTypes
+} from '$entity/Cell.js'
+import {
+  EDGE_WIDTH_X,
+} from '$entity/Edge.js'
 import {useIslandEditorStore} from '$store/IslandEditorStore.js'
 import {useIslandViewerStore} from '$store/IslandViewerStore.js'
 
@@ -95,10 +104,10 @@ for (let type of getCellTypes()) {
     for (let path of paths) {
       let model = await useGLTF(path['path'], {draco: true})
       const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-      model.scene.scale.x = DEFAULT_CELL_SIZE / size.x
-      model.scene.scale.y = DEFAULT_CELL_SIZE / size.x
-      model.scene.scale.z = DEFAULT_CELL_SIZE / size.x
-      model.scene.children[0].position.y += (size.y * (DEFAULT_CELL_SIZE / size.x) - DEFAULT_CELL_SIZE) / 2
+      model.scene.scale.x = CELL_SIZE_X / size.x
+      model.scene.scale.y = CELL_SIZE_X / size.x
+      model.scene.scale.z = CELL_SIZE_X / size.x
+      model.scene.children[0].position.y += (size.y * (CELL_SIZE_X / size.x) - CELL_SIZE_X) / 2
 
       model.scene.traverse((object: Mesh | Group) => {
         if (object.isMesh) {
@@ -126,9 +135,9 @@ const selectedBoxScale = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    DEFAULT_CELL_SIZE + selectedBoxScaleMargin,
+    (CELL_SIZE_X + EDGE_WIDTH_X) + selectedBoxScaleMargin,
     8,
-    DEFAULT_CELL_SIZE + selectedBoxScaleMargin
+    (CELL_SIZE_X + EDGE_WIDTH_X) + selectedBoxScaleMargin
   )
 })
 
@@ -138,9 +147,9 @@ const selectedBoxPosition = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    selectedPoint.x * DEFAULT_CELL_SIZE + ((((selectedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
+    selectedPoint.x * (CELL_SIZE_X + EDGE_WIDTH_X) + ((((selectedPoint.y + 1) % 2) - 1) * (CELL_SIZE_X + EDGE_WIDTH_X)) / 2,
     9,
-    selectedPoint.y * DEFAULT_CELL_SIZE
+    selectedPoint.y * (CELL_SIZE_X + EDGE_WIDTH_X)
   )
 })
 
@@ -162,9 +171,9 @@ const referencedBoxScale = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    DEFAULT_CELL_SIZE + referencedBoxScaleMargin,
+    (CELL_SIZE_X + EDGE_WIDTH_X) + referencedBoxScaleMargin,
     8,
-    DEFAULT_CELL_SIZE + referencedBoxScaleMargin
+    (CELL_SIZE_X + EDGE_WIDTH_X) + referencedBoxScaleMargin
   )
 })
 
@@ -174,9 +183,9 @@ const referencedBoxPosition = computed(() => {
     return new Vector3(0, 0, 0)
   }
   return new Vector3(
-    referencedPoint.x * DEFAULT_CELL_SIZE + ((((referencedPoint.y + 1) % 2) - 1) * DEFAULT_CELL_SIZE) / 2,
+    referencedPoint.x * (CELL_SIZE_X + EDGE_WIDTH_X) + ((((referencedPoint.y + 1) % 2) - 1) * (CELL_SIZE_X + EDGE_WIDTH_X)) / 2,
     8,
-    referencedPoint.y * DEFAULT_CELL_SIZE
+    referencedPoint.y * (CELL_SIZE_X + EDGE_WIDTH_X)
   )
 })
 </script>

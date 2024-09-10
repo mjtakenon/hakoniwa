@@ -17,7 +17,6 @@ use App\Entity\Cell\Others\Lake;
 use App\Entity\Cell\Others\Mountain;
 use App\Entity\Cell\Others\OutOfRegion;
 use App\Entity\Cell\Others\Plain;
-use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\Others\Wasteland;
@@ -27,6 +26,8 @@ use App\Entity\Cell\ResourcesProduction\Oilfield;
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Cell\Ship\Submarine;
+use App\Entity\Edge\Edge;
+use App\Entity\Edge\EdgeConst;
 use App\Entity\JsonCodable;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -41,18 +42,30 @@ class Terrain implements JsonCodable
 {
     public const AREA_PER_CELL = 100;
     private Collection $cells;
+    private Collection $edges;
 
     public function __construct()
     {
         $cells = new Collection();
+        $edges = new Collection();
+
         for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
-            $row = new Collection();
+            $cellsRow = new Collection();
+            $edgesRow = new Collection();
             for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
-                $row[] = new Sea(point: new Point($x, $y));
+                $cellsRow[] = new \App\Entity\Cell\Others\Sea(point: new Point($x, $y));
+                $edgesColumn = new Collection();
+                for ($f = 0; $f < 3; $f++) {
+                    $edgesColumn[] = new \App\Entity\Edge\Sea(point: new Point($x, $y), face: $f);
+                }
+                $edgesRow[] = $edgesColumn;
             }
-            $cells[] = $row;
+            $cells[] = $cellsRow;
+            $edges[] = $edgesRow;
         }
+
         $this->cells = $cells;
+        $this->edges = $edges;
     }
 
     public static function create(): Terrain
@@ -67,14 +80,14 @@ class Terrain implements JsonCodable
 
     public function toArray(bool $isPrivate = false, bool $withStatic = false): array
     {
-        $cells = [];
-        foreach ($this->cells as $row) {
-            /** @var Cell $cell */
-            foreach ($row as $cell) {
-                $cells[] = $cell->toArray($isPrivate, $withStatic);
-            }
-        }
-        return $cells;
+        return [
+            'cells' => $this->cells->flatten()->map(function (Cell $cell) use ($isPrivate, $withStatic) {
+                return $cell->toArray($isPrivate, $withStatic);
+            }),
+            'edges' => $this->edges->flatten()->map(function (Edge $edge) {
+                return $edge->toArray();
+            }),
+        ];
     }
 
     public static function fromJson(string $json): Terrain
@@ -82,21 +95,36 @@ class Terrain implements JsonCodable
         $objects = json_decode($json);
 
         $cells = new Collection();
+        $edges = new Collection();
         for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
-            $row = new Collection();
+            $cellsRow = new Collection();
+            $edgesRow = new Collection();
             for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
-                $row[] = null;
+                $cellsRow[] = null;
+                $edgesColumn = new Collection();
+                for ($f = 0; $f < 3; $f++) {
+                    $edgesColumn[] = null;
+                }
+                $edgesRow[] = $edgesColumn;
             }
-            $cells[] = $row;
+            $cells[] = $cellsRow;
+            $edges[] = $edgesRow;
         }
 
-        foreach ($objects as $object) {
+        foreach ($objects->cells as $object) {
             $cell = Cell::fromJson($object->type, $object->data);
             $cells[$cell->getPoint()->y][$cell->getPoint()->x] = $cell;
         }
 
+        foreach ($objects->edges as $object) {
+            $edge = Edge::fromJson($object->type, $object->data);
+            $edges[$edge->getPoint()->y][$edge->getPoint()->x][$edge->getFace()] = $edge;
+        }
+
         $static = new static();
         $static->setCells($cells);
+        $static->setEdges($edges);
+
         return $static;
     }
 
@@ -127,6 +155,16 @@ class Terrain implements JsonCodable
             }
         }
 
+        $this->cells->flatten()->each(function(Cell $cell) {
+            for ($f = 0; $f < 3; $f++) {
+                if ($cell->getElevation() === CellConst::ELEVATION_PLAIN && $cell->getType() !== Wasteland::TYPE) {
+                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$f] = new \App\Entity\Edge\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $f);
+                } else {
+                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$f] = EdgeConst::getDefaultEdge(new Point($cell->getPoint()->x, $cell->getPoint()->y), $f, $cell->getElevation());
+                }
+            }
+        });
+
         return $this->replaceShallowToLake();
     }
 
@@ -135,9 +173,14 @@ class Terrain implements JsonCodable
         return $this->cells;
     }
 
-    public function setCells($cells): void
+    public function setCells(Collection $cells): void
     {
         $this->cells = $cells;
+    }
+
+    public function setEdges(Collection $edges): void
+    {
+        $this->edges = $edges;
     }
 
     public function getCell(Point $point): Cell

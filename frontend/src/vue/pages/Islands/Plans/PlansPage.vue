@@ -76,6 +76,7 @@ import PlanWindow from '$vue/components/islands/Editor/IslandEditorPlanWindow.vu
 import {NoToneMapping, SRGBColorSpace, VSMShadowMap} from 'three'
 import IslandEditorCanvas from '$vue/components/islands/Editor/IslandEditorCanvas.vue'
 import IslandPopupCanvas from "$vue/components/islands/Popup/IslandPopupCanvas.vue";
+import {Edge} from "$entity/Edge.js";
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -85,7 +86,10 @@ interface Props {
     name: string
     owner_name: string
     status: Status
-    terrain: Cell[]
+    terrain: {
+      cells: Cell[]
+      edges: Edge[]
+    }
     plans: Array<Plan>
     logs: LogProps[]
     summary: SummaryProps[]
@@ -156,12 +160,14 @@ islandViewerStore.$patch((state) => {
     owner_name: props.island.owner_name,
     comment: props.island.comment,
     terrain: {
-      cells: props.island.terrain
+      cells: props.island.terrain.cells,
+      edges: props.island.terrain.edges
     }
   }
   state.status = props.island.status
   state.terrain = {
-    cells: props.island.terrain
+    cells: props.island.terrain.cells,
+    edges: props.island.terrain.edges
   }
   state.logs = logs
   state.achievements = getAchievementsList(props.island.achievements)

@@ -1,17 +1,18 @@
 <template>
   <div id="sightseeing-page" class="wrapper">
-    <StatusTable :island="store.island" :status="store.status" :achievements="store.achievements" />
+    <StatusTable :island="islandViewerStore.island" :status="islandViewerStore.status"
+                 :achievements="islandViewerStore.achievements"/>
     <div id="island">
-      <IslandViewerCanvas />
+      <IslandViewerCanvas/>
       <IslandHoverWindow
-        :showHoverWindow="store.showHoverWindow"
-        :hoverWindowPoint="store.hoverWindowPoint"
-        :hoverCellPoint="store.hoverCellPoint"
-        :terrain="store.terrain" />
+        :showHoverWindow="islandViewerStore.showHoverWindow"
+        :hoverWindowPoint="islandViewerStore.hoverWindowPoint"
+        :hoverCellPoint="islandViewerStore.hoverCellPoint"
+        :terrain="islandViewerStore.terrain"/>
     </div>
     <div class="md:max-lg:px-3">
-      <Bbs :island="store.island" />
-      <LogViewer :title="store.island.name + '島の近況'" :parsed-logs="store.logs" />
+      <Bbs :island="islandViewerStore.island"/>
+      <LogViewer :title="islandViewerStore.island.name + '島の近況'" :parsed-logs="islandViewerStore.logs"/>
     </div>
   </div>
 </template>
@@ -19,20 +20,21 @@
 <script setup lang="ts">
 import StatusTable from '$vue/components/islands/common/StatusTable.vue'
 import LogViewer from '$vue/components/islands/common/LogViewer.vue'
-import { Hakoniwa } from '$entity/Hakoniwa'
-import { Status } from '$entity/Status'
-import { Terrain } from '$entity/Terrain'
-import { Plan } from '$entity/Plan'
-import { LogParser, LogProps, SummaryProps } from '$entity/Log'
-import { AchievementProp, getAchievementsList } from '$entity/Achievement'
-import { BbsMessage } from '$entity/Bbs'
+import {Hakoniwa} from '$entity/Hakoniwa'
+import {Status} from '$entity/Status'
+import {Plan} from '$entity/Plan'
+import {LogParser, LogProps, SummaryProps} from '$entity/Log'
+import {AchievementProp, getAchievementsList} from '$entity/Achievement'
+import {BbsMessage} from '$entity/Bbs'
 import Bbs from '$vue/components/islands/common/Bbs.vue'
-import { useIslandViewerStore } from '$store/IslandViewerStore.js'
-import { useBbsStore } from '$store/BbsStore.js'
+import {useIslandViewerStore} from '$store/IslandViewerStore.js'
+import {useBbsStore} from '$store/BbsStore.js'
 import IslandViewerCanvas from '$vue/components/islands/Viewer/IslandViewerCanvas.vue'
 import IslandHoverWindow from '$vue/components/islands/Hover/IslandHoverWindow.vue'
+import {Cell} from "$entity/Cell.js";
+import {Edge} from "$entity/Edge.js";
 
-const store = useIslandViewerStore()
+const islandViewerStore = useIslandViewerStore()
 
 interface Props {
   hakoniwa: Hakoniwa
@@ -42,7 +44,10 @@ interface Props {
     name: string
     owner_name: string
     status: Status
-    terrain: Terrain
+    terrain: {
+      cells: Cell[]
+      edges: Edge[]
+    }
     plans: Array<Plan>
     logs: LogProps[]
     summary: SummaryProps[]
@@ -58,7 +63,7 @@ const props = defineProps<Props>()
 const parser = new LogParser()
 const logs = parser.parse(props.island.logs, props.island.summary)
 
-store.$patch((state) => {
+islandViewerStore.$patch((state) => {
   state.hakoniwa = props.hakoniwa
   state.island = {
     id: props.island.id,
@@ -66,12 +71,14 @@ store.$patch((state) => {
     owner_name: props.island.owner_name,
     comment: props.island.comment,
     terrain: {
-      cells: props.island.terrain
+      cells: props.island.terrain.cells,
+      edges: props.island.terrain.edges
     }
   }
   state.status = props.island.status
   state.terrain = {
-    cells: props.island.terrain
+    cells: props.island.terrain.cells,
+    edges: props.island.terrain.edges
   }
   state.logs = logs
   state.achievements = getAchievementsList(props.island.achievements)
