@@ -91,7 +91,7 @@ class ExecuteTurn extends Command
                     $islandPlan = $island->islandPlans->firstOrFail();
                     $islandTerrain = $island->islandTerrains->firstOrFail();
                     $islandStatus = $island->islandStatuses->firstOrFail();
-                    $islandAchievements = $island->islandAchievements()->with(['island', 'turn'])->get();
+                    $islandAchievements = $island->islandAchievements()->with(['island', 'turn' => function ($query) { $query->withTrashed(); }])->get();
 
                     $planList->put($island->id, $islandPlan->toEntity());
                     $terrainList->put($island->id, $islandTerrain->toEntity());
@@ -380,8 +380,7 @@ class ExecuteTurn extends Command
 
         \Log::info('end ' . $this->signature . ' ' . hrtime(true) - $now . 'ns');
 
-        // TODO: あとで解除
-//        \Artisan::call('prune:logs');
+        \Artisan::call('prune:logs');
         return Command::SUCCESS;
     }
 }

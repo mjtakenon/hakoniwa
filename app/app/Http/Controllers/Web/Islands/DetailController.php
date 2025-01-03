@@ -35,7 +35,7 @@ class DetailController extends Controller
         $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
         /** @var IslandComment $islandComment */
         $islandComment = $island->islandComments()->first();
-        $islandAchievements = $island->islandAchievements()->with(['island', 'turn'])->get();
+        $islandAchievements = $island->islandAchievements()->with(['island', 'turn' => function ($query) { $query->withTrashed(); }])->get();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - config('app.hakoniwa.detail_page_show_log_turns'))->get('id'))
             ->whereIn('visibility', [LogConst::VISIBILITY_GLOBAL, LogConst::VISIBILITY_PUBLIC])
@@ -58,7 +58,7 @@ class DetailController extends Controller
             ->withTrashed()
             ->orderByDesc('id')
             ->limit(config('app.hakoniwa.default_show_bbs_comments'))
-            ->with(['commenterIsland', 'turn'])
+            ->with(['commenterIsland', 'turn' => function ($query) { $query->withTrashed(); }])
             ->get();
 
         $summary = $island->islandStatuses()
