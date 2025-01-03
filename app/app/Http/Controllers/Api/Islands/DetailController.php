@@ -89,7 +89,7 @@ class DetailController extends Controller
                 ]);
             }
 
-            if ($status->getFunds() < config('app.change_island_name_price')) {
+            if ($status->getFunds() < config('app.hakoniwa.change_island_name_price')) {
                 return $this->badRequest([
                     'code' => 'lack_of_funds'
                 ]);
@@ -111,7 +111,7 @@ class DetailController extends Controller
                 $islandHistory->save();
                 $island->save();
 
-                $status->setFunds($status->getFunds() - config('app.change_island_name_price'));
+                $status->setFunds($status->getFunds() - config('app.hakoniwa.change_island_name_price'));
                 $islandStatus->funds = $status->getFunds();
                 $islandStatus->save();
 
