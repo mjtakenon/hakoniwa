@@ -17,8 +17,6 @@ use Illuminate\Support\Collection;
 class DetailController extends Controller
 {
     // TODO Consider to reduce count of recent turns log after making log detail page.
-    const DEFAULT_SHOW_LOG_TURNS = 20;
-    const DEFAULT_SHOW_BBS_COMMENTS = 10;
     public function get($islandId) {
         $island = Island::find($islandId);
 
@@ -29,7 +27,7 @@ class DetailController extends Controller
         $turn = Turn::latest()->firstOrFail();
         $user = \Auth::user();
         $userIsland = $user?->island;
-        $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
+        $getLogRecentTurns = config('app.hakoniwa.detail_page_show_log_turns');
 
         /** @var IslandStatus $islandStatus */
         $islandStatus = $island->islandStatuses()->where('turn_id', $turn->id)->firstOrFail();
@@ -39,7 +37,7 @@ class DetailController extends Controller
         $islandComment = $island->islandComments()->first();
         $islandAchievements = $island->islandAchievements()->with(['island', 'turn'])->get();
         $islandLogs = $island->islandLogs()
-            ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
+            ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - config('app.hakoniwa.detail_page_show_log_turns'))->get('id'))
             ->whereIn('visibility', [LogConst::VISIBILITY_GLOBAL, LogConst::VISIBILITY_PUBLIC])
             ->with(['turn'])
             ->orderByDesc('id')
@@ -59,7 +57,7 @@ class DetailController extends Controller
         $islandBbses = IslandBbs::where('island_id', $islandId)
             ->withTrashed()
             ->orderByDesc('id')
-            ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
+            ->limit(config('app.hakoniwa.default_show_bbs_comments'))
             ->with(['commenterIsland', 'turn'])
             ->get();
 

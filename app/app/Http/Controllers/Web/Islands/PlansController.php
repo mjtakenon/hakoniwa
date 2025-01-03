@@ -15,8 +15,6 @@ use Illuminate\Support\Collection;
 class PlansController extends Controller
 {
     // TODO Consider to reduce count of recent turns log after making log detail page.
-    const DEFAULT_SHOW_LOG_TURNS = 20;
-    const DEFAULT_SHOW_BBS_COMMENTS = 10;
 
     public function get(int $islandId)
     {
@@ -33,7 +31,7 @@ class PlansController extends Controller
         $turn = Turn::latest()->firstOrFail();
         $user = \Auth::user();
         $userIsland = $user?->island;
-        $getLogRecentTurns = self::DEFAULT_SHOW_LOG_TURNS;
+        $getLogRecentTurns = config('app.hakoniwa.detail_page_show_log_turns');
 
         $islandPlans = $island->islandPlans()->where('turn_id', $turn->id)->firstOrFail();
         /** @var IslandStatus $islandStatus */
@@ -62,7 +60,7 @@ class PlansController extends Controller
         $islandBbses = IslandBbs::where('island_id', $islandId)
             ->withTrashed()
             ->orderByDesc('id')
-            ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
+            ->limit(config('app.hakoniwa.default_show_bbs_comments'))
             ->with(['commenterIsland', 'turn'])
             ->get();
 

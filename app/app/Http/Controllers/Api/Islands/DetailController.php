@@ -16,8 +16,6 @@ class DetailController extends Controller
 {
     use WebApi;
 
-    const CHANGE_ISLAND_NAME_PRICE = 1000;
-
     public function get(int $islandId): \Illuminate\Http\JsonResponse
     {
         /** @var Island $island */
@@ -91,7 +89,7 @@ class DetailController extends Controller
                 ]);
             }
 
-            if ($status->getFunds() < self::CHANGE_ISLAND_NAME_PRICE) {
+            if ($status->getFunds() < config('app.change_island_name_price')) {
                 return $this->badRequest([
                     'code' => 'lack_of_funds'
                 ]);
@@ -113,7 +111,7 @@ class DetailController extends Controller
                 $islandHistory->save();
                 $island->save();
 
-                $status->setFunds($status->getFunds() - self::CHANGE_ISLAND_NAME_PRICE);
+                $status->setFunds($status->getFunds() - config('app.change_island_name_price'));
                 $islandStatus->funds = $status->getFunds();
                 $islandStatus->save();
 
