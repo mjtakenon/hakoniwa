@@ -57,16 +57,17 @@ class PruneLogs extends Command
                 return Command::SUCCESS;
             }
 
-            // 最新のターンからマージンを残し、
-            // バックアップ間隔以外のターンを削除
+            // 最新のターンからマージンを残し、バックアップ間隔以外のターンを削除
             // 1ターン目は念の為残す
             $turns = Turn::where('turn', '<=', $latestTurn->turn - config('app.hakoniwa.prune_logs_margin_turn'))
                 ->whereRaw('turn % ' . config('app.hakoniwa.backup_logs_interval'))
                 ->where('turn', '!=', 1)
-                ->whereNull('deleted_at');
+                ->whereNull('deleted_at')
+                ->get();
 
-            foreach ($turns->get() as $turn) {
+            foreach ($turns as $turn) {
                 \DB::transaction(function () use ($turn) {
+                    $turn->lockForUpdate();
                     $turn->islandLogs()->forceDelete();
                     $turn->islandPlans()->forceDelete();
                     $turn->islandStatuses()->forceDelete();
