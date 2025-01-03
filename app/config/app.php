@@ -223,10 +223,21 @@ return [
     ])->toArray(),
 
     'hakoniwa' => [
-        'turn_update_minutes' => env('TURN_UPDATE_MINUTES'),
-        'max_islands' => env('MAX_ISLANDS'),
+        'turn_update_minutes' => env('TURN_UPDATE_MINUTES', 240),
+        'max_islands' => env('MAX_ISLANDS', 50),
+
+        'private_post_price' => env('PRIVATE_POST_PRICE', 1000),
+        'change_island_name_price' => env('CHANGE_ISLAND_NAME_PRICE', 1000),
+
+        'default_show_bbs_comments' => env('DEFAULT_SHOW_BBS_COMMENTS', 10),
+        'index_page_show_log_turns' => env('INDEX_PAGE_SHOW_LOG_TURNS', 5),
+        'detail_page_show_log_turns' => env('DETAIL_PAGE_SHOW_LOG_TURNS', 20),
+
+        'backup_logs_interval' => env('BACKUP_LOGS_INTERVAL', 1),
+        'prune_logs_margin_turn' => env('PRUNE_LOGS_MARGIN_TURN', 100),
+
         'monster_action_probably' => env('MONSTER_ACTION_PROBABLY', 1),
-        'island_abandon_turn' => env('ISLAND_ABANDONED_TURN'),
+        'island_abandon_turn' => env('ISLAND_ABANDONED_TURN', null),
         'debug' => [
             'login_using_id' => env('DEBUG_LOGIN_USING_ID')
         ]

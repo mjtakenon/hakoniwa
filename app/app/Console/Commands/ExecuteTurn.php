@@ -379,6 +379,9 @@ class ExecuteTurn extends Command
         }
 
         \Log::info('end ' . $this->signature . ' ' . hrtime(true) - $now . 'ns');
+
+        // TODO: あとで解除
+//        \Artisan::call('prune:logs');
         return Command::SUCCESS;
     }
 }
