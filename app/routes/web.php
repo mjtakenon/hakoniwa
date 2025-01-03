@@ -24,7 +24,7 @@ $baseMiddleware = [
 ];
 
 Route::prefix('/')->middleware($baseMiddleware)->group( function() {
-    Route::get('', [\App\Http\Controllers\IndexController::class, 'get'])->name(RouteServiceProvider::ROUTE_HOME);
+    Route::get('', [\App\Http\Controllers\Web\IndexController::class, 'get'])->name(RouteServiceProvider::ROUTE_HOME);
 });
 
 Route::prefix('/islands')->middleware($baseMiddleware)->group( function() {
