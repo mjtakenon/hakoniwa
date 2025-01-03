@@ -12,8 +12,6 @@ use Illuminate\Support\Collection;
 
 class IndexController extends Controller
 {
-    const DEFAULT_SHOW_LOG_TURNS = 5;
-
     public function get()
     {
         $turn = Turn::latest()->firstOrFail();
@@ -24,7 +22,7 @@ class IndexController extends Controller
             ->with(['island.islandComments', 'island.islandAchievements', 'island.islandAchievements.island', 'island.islandAchievements.turn'])
             ->get();
 
-        $logs = IslandLog::whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
+        $logs = IslandLog::whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - config('app.hakoniwa.index_page_show_log_turns'))->get('id'))
             ->where('visibility', LogConst::VISIBILITY_GLOBAL)
             ->orderByDesc('id')
             ->with(['turn'])
