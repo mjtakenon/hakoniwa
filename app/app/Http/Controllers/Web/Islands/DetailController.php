@@ -58,7 +58,7 @@ class DetailController extends Controller
             ->withTrashed()
             ->orderByDesc('id')
             ->limit(config('app.hakoniwa.default_show_bbs_comments'))
-            ->with(['commenterIsland', 'turn'])
+            ->with(['commenterIsland', 'turn' => function ($query) { $query->withTrashed(); }])
             ->get();
 
         $summary = $island->islandStatuses()

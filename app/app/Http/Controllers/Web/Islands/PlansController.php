@@ -39,7 +39,7 @@ class PlansController extends Controller
         /** @var IslandTerrain $islandTerrain */
         $islandTerrain = $island->islandTerrains()->where('turn_id', $turn->id)->firstOrFail();
         $islandComment = $island->islandComments()->first();
-        $islandAchievements = $island->islandAchievements()->with(['island', 'turn'])->get();
+        $islandAchievements = $island->islandAchievements()->with(['island', 'turn' => function ($query) { $query->withTrashed(); }])->get();
         $islandLogs = $island->islandLogs()
             ->whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - $getLogRecentTurns)->get('id'))
             ->with(['turn'])
@@ -61,7 +61,7 @@ class PlansController extends Controller
             ->withTrashed()
             ->orderByDesc('id')
             ->limit(config('app.hakoniwa.default_show_bbs_comments'))
-            ->with(['commenterIsland', 'turn'])
+            ->with(['commenterIsland', 'turn' => function ($query) { $query->withTrashed(); }])
             ->get();
 
         $summary = $island->islandStatuses()
