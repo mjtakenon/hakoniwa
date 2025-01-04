@@ -41,7 +41,7 @@ class IndexController extends Controller
                     'area' => $islandStatus->area,
                 ],
             ],
-            'CHANGE_ISLAND_NAME_PRICE' => DetailController::CHANGE_ISLAND_NAME_PRICE
+            'CHANGE_ISLAND_NAME_PRICE' => config('app.hakoniwa.change_island_name_price')
         ]);
     }
 }

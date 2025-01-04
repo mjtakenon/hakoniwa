@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use App\Entity\Achievement\Achievements;
 use App\Entity\Log\LogConst;
+use App\Http\Controllers\Controller;
 use App\Models\Island;
 use App\Models\IslandLog;
 use App\Models\IslandStatus;
@@ -12,8 +13,6 @@ use Illuminate\Support\Collection;
 
 class IndexController extends Controller
 {
-    const DEFAULT_SHOW_LOG_TURNS = 5;
-
     public function get()
     {
         $turn = Turn::latest()->firstOrFail();
@@ -21,10 +20,10 @@ class IndexController extends Controller
         $islandStatuses = IslandStatus::where('turn_id', $turn->id)
             ->orderByDesc('development_points')
             ->join('islands', 'island_id', '=', 'islands.id')
-            ->with(['island.islandComments', 'island.islandAchievements', 'island.islandAchievements.island', 'island.islandAchievements.turn'])
+            ->with(['island.islandComments', 'island.islandAchievements', 'island.islandAchievements.island', 'island.islandAchievements.turn' => function ($query) { $query->withTrashed(); }])
             ->get();
 
-        $logs = IslandLog::whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - self::DEFAULT_SHOW_LOG_TURNS)->get('id'))
+        $logs = IslandLog::whereIn('turn_id', Turn::where('turn', '>=', $turn->turn - config('app.hakoniwa.index_page_show_log_turns'))->get('id'))
             ->where('visibility', LogConst::VISIBILITY_GLOBAL)
             ->orderByDesc('id')
             ->with(['turn'])

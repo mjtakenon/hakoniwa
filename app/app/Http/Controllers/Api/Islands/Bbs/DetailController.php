@@ -11,8 +11,6 @@ class DetailController extends Controller
 {
     use WebApi;
 
-    const DEFAULT_SHOW_BBS_COMMENTS = 10;
-
     public function delete(int $islandId, int $bbsId): \Illuminate\Http\JsonResponse
     {
         if (!\HakoniwaService::isIslandRegistered()) {
@@ -46,7 +44,7 @@ class DetailController extends Controller
             $islandBbses = IslandBbs::where('island_id', $islandId)
                 ->withTrashed()
                 ->orderByDesc('id')
-                ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
+                ->limit(config('app.hakoniwa.default_show_bbs_comments'))
                 ->with(['commenterIsland', 'turn'])
                 ->get();
 

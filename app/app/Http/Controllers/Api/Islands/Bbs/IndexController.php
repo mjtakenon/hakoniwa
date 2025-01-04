@@ -14,9 +14,6 @@ class IndexController extends Controller
 {
     use WebApi;
 
-    const PRIVATE_POST_PRICE = 1000;
-    const DEFAULT_SHOW_BBS_COMMENTS = 10;
-
     public function post(int $islandId): \Illuminate\Http\JsonResponse
     {
         $validator = \Validator::make(\Request::all(), [
@@ -61,8 +58,8 @@ class IndexController extends Controller
                     return $this->badRequest();
                 }
 
-                if ($commenterIslandStatus->funds >= self::PRIVATE_POST_PRICE) {
-                    $commenterIslandStatus->funds -= self::PRIVATE_POST_PRICE;
+                if ($commenterIslandStatus->funds >= config('app.hakoniwa.private_post_price')) {
+                    $commenterIslandStatus->funds -= config('app.hakoniwa.private_post_price');
                     $commenterIslandStatus->save();
                 } else {
                     return $this->badRequest([
@@ -83,7 +80,7 @@ class IndexController extends Controller
             $islandBbses = IslandBbs::where('island_id', $islandId)
                 ->withTrashed()
                 ->orderByDesc('id')
-                ->limit(self::DEFAULT_SHOW_BBS_COMMENTS)
+                ->limit(config('app.hakoniwa.default_show_bbs_comments'))
                 ->with(['commenterIsland', 'turn'])
                 ->get();
 

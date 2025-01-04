@@ -56,7 +56,9 @@ create-log-file:
 	docker compose exec --user debian app sudo touch /app/.phpunit.result.cache
 	docker compose exec --user debian app sudo chmod 777 .phpunit.result.cache
 next-turn:
-	docker compose exec --user www-data app php artisan execute:turn
+	@for i in $$(seq 1 $(TIMES)); do \
+		docker compose exec --user www-data app php artisan execute:turn; \
+	done
 
 create-node-modules-dir:
 	-mkdir ./frontend/node_modules
