@@ -10,14 +10,14 @@ export interface Edge {
   }
 }
 
-export const EDGE_WIDTH_X = 2
-export const EDGE_WIDTH_Y = 3
+export const EDGE_WIDTH_X = 0.2
+export const EDGE_WIDTH_Y = 0.2
 
 export const EDGE_PATHS = {
-  wasteland: { horizontal: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_h.gltf' }], vertical: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_v.gltf' }] },
-  plain: { horizontal: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_h.gltf' }], vertical: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_v.gltf' }] },
-  sea: { horizontal: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_h.gltf' }], vertical: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_v.gltf' }] },
-  shallow: { horizontal: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_h.gltf' }], vertical: [{ path: '/img/hakoniwa/hexa/gltf/edge/river_v.gltf' }] },
+  wasteland: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  plain: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  sea: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  shallow: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
 } as const
 
 export type EdgeType =
@@ -67,12 +67,12 @@ export const getPosition = (edge: Edge, position: Array<number>) => {
 export const getRotation = (edge: Edge) => {
   switch (edge.data.face) {
     case 0:
-      return [0, Math.PI/2, 0]
+      return [0, Math.PI/3, 0]
     case 1:
-      return [0, Math.PI/2, 0]
+      return [0, Math.PI/3*2, 0]
     case 2:
     case 3:
-      return [0, Math.PI/2, 0]
+      return [0, 0, 0]
     default:
       return 0
   }

@@ -10,7 +10,7 @@
     <template v-for="cell of store.terrain.cells">
       <IslandViewerCell
         :position="[
-          cell.data.point.x * ((CELL_SIZE_X - CELL_MARGIN_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE) + (((cell.data.point.y + 1) % 2) * (CELL_SIZE_X + 2) / 2 * DEFAULT_MODEL_SCALE),
+          cell.data.point.x * ((CELL_SIZE_X - CELL_MARGIN_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE) + (((cell.data.point.y + 1) % 2) * (CELL_SIZE_X + 2) / 4 * DEFAULT_MODEL_SCALE),
           0,
           cell.data.point.y * (CELL_SIZE_Y - CELL_MARGIN_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE
         ]"
@@ -21,7 +21,7 @@
     <template v-for="edge of store.terrain.edges">
       <IslandViewerEdge
         :position="[
-          edge.data.point.x * ((CELL_SIZE_X - CELL_MARGIN_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE) + (((edge.data.point.y + 1) % 2) * (CELL_SIZE_X + 2) / 2 * DEFAULT_MODEL_SCALE),
+          edge.data.point.x * ((CELL_SIZE_X - CELL_MARGIN_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE) + (((edge.data.point.y + 1) % 2) * (CELL_SIZE_X + 2) / 4 * DEFAULT_MODEL_SCALE),
           0,
           edge.data.point.y * (CELL_SIZE_Y - CELL_MARGIN_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE
         ]"
