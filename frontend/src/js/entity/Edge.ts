@@ -14,10 +14,10 @@ export const EDGE_WIDTH_X = 0.2
 export const EDGE_WIDTH_Y = EDGE_WIDTH_X * 1.732 // 30°の傾きなので三平方の定理よりX×sqrt(3)
 
 export const EDGE_PATHS = {
-  wasteland: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
-  plain: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
-  sea: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
-  shallow: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  wasteland: { default: [{ path: '/img/hakoniwa/glb/plaine.glb' }] },
+  plain: { default: [{ path: '/img/hakoniwa/glb/plaine.glb' }] },
+  sea: { default: [{ path: '/img/hakoniwa/glb/plaine.glb' }] },
+  shallow: { default: [{ path: '/img/hakoniwa/glb/plaine.glb' }] },
 } as const
 
 export type EdgeType =
