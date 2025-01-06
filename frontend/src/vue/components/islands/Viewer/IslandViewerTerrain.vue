@@ -67,8 +67,8 @@ for (let type of getCellTypes()) {
 
     for (let path of paths) {
       let model = await useGLTF(path['path'], {draco: true})
-      const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-      model.scene.children[0].position.y += (size.y * DEFAULT_MODEL_SCALE - CELL_SIZE_X) / 2
+      // const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
+      // model.scene.children[0].position.y += (size.y * DEFAULT_MODEL_SCALE - CELL_SIZE_X) / 2
 
       model.scene.traverse((object: Mesh | Group) => {
         if (object.isMesh) {
@@ -89,8 +89,8 @@ for (let type of getEdgeTypes()) {
 
     for (let path of paths) {
       let model = await useGLTF(path['path'], {draco: true})
-      const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-      model.scene.children[0].position.y += (size.y * DEFAULT_MODEL_SCALE - CELL_SIZE_X) / 2
+      // const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
+      // model.scene.children[0].position.y += (size.y * DEFAULT_MODEL_SCALE - CELL_SIZE_X) / 2
 
       model.scene.traverse((object: Mesh | Group) => {
         if (object.isMesh) {
