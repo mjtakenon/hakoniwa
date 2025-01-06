@@ -65,6 +65,20 @@ abstract class Edge
         return $this->elevation;
     }
 
+    // 隣接するセルを取得
+//    public function getAdjacentCells(Terrain $terrain): Collection
+//    {
+//        $aroundCells = $terrain->getAroundCells($this->point, includeOutOfRegion: true);
+//
+//        if ($this->point->y % 2 === 0) {
+//            return match ($this->getFace()) {
+//                0 => collect([$terrain->getCell($this->point), $terrain->getCell($this->point->x)]
+//            };
+//        } else {
+//
+//        }
+//    }
+
     static public function fromJson(string $type, $data): Edge
     {
         return EdgeConst::getClassByType($type, $data);

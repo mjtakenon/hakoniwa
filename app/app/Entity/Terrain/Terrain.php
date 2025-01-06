@@ -56,7 +56,7 @@ class Terrain implements JsonCodable
                 $cellsRow[] = new \App\Entity\Cell\Others\Sea(point: new Point($x, $y));
                 $edgesColumn = new Collection();
                 for ($f = 0; $f < 3; $f++) {
-                    $edgesColumn[] = new \App\Entity\Edge\Sea(point: new Point($x, $y), face: $f);
+                    $edgesColumn[] = new \App\Entity\Edge\Others\Sea(point: new Point($x, $y), face: $f);
                 }
                 $edgesRow[] = $edgesColumn;
             }
@@ -158,7 +158,7 @@ class Terrain implements JsonCodable
         $this->cells->flatten()->each(function(Cell $cell) {
             for ($f = 0; $f < 3; $f++) {
                 if ($cell->getElevation() === CellConst::ELEVATION_PLAIN && $cell->getType() !== Wasteland::TYPE) {
-                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$f] = new \App\Entity\Edge\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $f);
+                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$f] = new \App\Entity\Edge\Others\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $f);
                 } else {
                     $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$f] = EdgeConst::getDefaultEdge(new Point($cell->getPoint()->x, $cell->getPoint()->y), $f, $cell->getElevation());
                 }
@@ -285,6 +285,11 @@ class Terrain implements JsonCodable
             $this->cells = $passTurnResult->getTerrain()->getCells();
             $status = $passTurnResult->getStatus();
             $logs->merge($passTurnResult->getLogs());
+        }
+
+        /** @var Edge $edge */
+        foreach ($this->edges->flatten(1) as $edge) {
+            $edge->passTurn($island, $this, $status, $turn, $foreignIslandEvents);
         }
 
         return new PassTurnResult($this, $status, $logs);

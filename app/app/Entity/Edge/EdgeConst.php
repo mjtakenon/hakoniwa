@@ -2,6 +2,10 @@
 
 namespace App\Entity\Edge;
 
+use App\Entity\Edge\Others\Plain;
+use App\Entity\Edge\Others\Sea;
+use App\Entity\Edge\Others\Shallow;
+use App\Entity\Edge\Others\Wasteland;
 use App\Entity\Util\Point;
 
 class EdgeConst
