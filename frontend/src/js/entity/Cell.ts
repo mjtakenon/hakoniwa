@@ -10,8 +10,8 @@ export interface Cell {
   }
 }
 
-export const CELL_SIZE_Y = 1.325
-export const CELL_SIZE_X = 1.732
+export const CELL_SIZE_X = Math.sqrt(3)
+export const CELL_SIZE_Y = 1.5
 export const DEFAULT_MODEL_SCALE = 10
 
 export const CELL_PATHS = {

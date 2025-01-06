@@ -11,7 +11,7 @@ export interface Edge {
 }
 
 export const EDGE_WIDTH_X = 0.2
-export const EDGE_WIDTH_Y = EDGE_WIDTH_X * 1.732 // 30°の傾きなので三平方の定理よりX×sqrt(3)
+export const EDGE_WIDTH_Y = EDGE_WIDTH_X * 0.5 * Math.sqrt(3) // 直角の長辺を0.2とする30°の傾きなので三平方の定理よりX*0.5*sqrt(3)
 
 export const EDGE_PATHS = {
   wasteland: { default: [{ path: '/img/hakoniwa/glb/plain_edge.glb' }] },
