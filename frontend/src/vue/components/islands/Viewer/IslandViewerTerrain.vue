@@ -10,24 +10,23 @@
     <template v-for="cell of store.terrain.cells">
       <IslandViewerCell
         :position="[
-          cell.data.point.x * ((CELL_SIZE_X - CELL_MARGIN_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE) + (((cell.data.point.y + 1) % 2) * (CELL_SIZE_X + 2) / 4 * DEFAULT_MODEL_SCALE),
+          (cell.data.point.x * ((CELL_SIZE_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE)) + (((cell.data.point.y + 1) % 2) * ((CELL_SIZE_X + EDGE_WIDTH_X) / 2) * DEFAULT_MODEL_SCALE),
           0,
-          cell.data.point.y * (CELL_SIZE_Y - CELL_MARGIN_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE
+          cell.data.point.y * ((CELL_SIZE_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE),
         ]"
-        :scale="cellModels[cell.type][cell.data.sub_type ?? 'default'].scene.scale"
         :cell="cell"
         :scene="cellModels[cell.type][cell.data.sub_type ?? 'default'].scene.clone()"/>
     </template>
     <template v-for="edge of store.terrain.edges">
       <IslandViewerEdge
         :position="[
-          edge.data.point.x * ((CELL_SIZE_X - CELL_MARGIN_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE) + (((edge.data.point.y + 1) % 2) * (CELL_SIZE_X + 2) / 4 * DEFAULT_MODEL_SCALE),
+          (edge.data.point.x * ((CELL_SIZE_X + EDGE_WIDTH_X) * DEFAULT_MODEL_SCALE)) + (((edge.data.point.y + 1) % 2) * ((CELL_SIZE_X + EDGE_WIDTH_X) / 2) * DEFAULT_MODEL_SCALE),
           0,
-          edge.data.point.y * (CELL_SIZE_Y - CELL_MARGIN_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE
+          edge.data.point.y * (CELL_SIZE_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE
         ]"
-        :scale="edgeModels[edge.type][getFaceType(edge)].scene.scale"
+        :scale="edgeModels[edge.type]['default'].scene.scale.toArray()"
         :edge="edge"
-        :scene="edgeModels[edge.type][getFaceType(edge)].scene.clone()"/>
+        :scene="edgeModels[edge.type]['default'].scene.clone()"/>
     </template>
   </TresGroup>
 </template>
@@ -43,7 +42,7 @@ import {
   getCellSubTypes,
   getCellTypes,
   DEFAULT_MODEL_SCALE,
-  CELL_SIZE_Y, CELL_MARGIN_Y, CELL_MARGIN_X
+  CELL_SIZE_Y
 } from '$entity/Cell.js'
 import {useIslandViewerStore} from '$store/IslandViewerStore.js'
 import {
@@ -53,7 +52,6 @@ import {
   getEdgePath,
   getEdgeSubTypes,
   getEdgeTypes,
-  getFaceType
 } from "$entity/Edge.js";
 import IslandViewerEdge from "$vue/components/islands/Viewer/IslandViewerEdge.vue";
 

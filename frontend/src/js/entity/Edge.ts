@@ -11,13 +11,13 @@ export interface Edge {
 }
 
 export const EDGE_WIDTH_X = 0.2
-export const EDGE_WIDTH_Y = 0.2
+export const EDGE_WIDTH_Y = EDGE_WIDTH_X * 1.732 // 30°の傾きなので三平方の定理よりX×sqrt(3)
 
 export const EDGE_PATHS = {
-  wasteland: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
-  plain: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
-  sea: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
-  shallow: { horizontal: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }], vertical: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  wasteland: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  plain: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  sea: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
+  shallow: { default: [{ path: '/img/hakoniwa/hexa/glb/edge/plaine.glb' }] },
 } as const
 
 export type EdgeType =
@@ -25,10 +25,6 @@ export type EdgeType =
   | 'plain'
   | 'sea'
   | 'shallow'
-
-export type FaceType =
-  | 'horizontal'
-  | 'vertial'
 
 export const getEdgeTypes = () => {
   return Object.keys(EDGE_PATHS)
@@ -39,22 +35,19 @@ export const getEdgeSubTypes = (type: EdgeType) => {
 }
 
 export const getEdgePath = (type: EdgeType, subType: string | null = null) => {
-  return subType ? EDGE_PATHS[type][subType] : EDGE_PATHS[type].horizontal
-}
-
-export const getFaceType = (edge: Edge) => {
-  return (edge.data.face === 2 || edge.data.face === 3) ? 'vertical' : 'horizontal'
+  return subType ? EDGE_PATHS[type][subType] : EDGE_PATHS[type].default
 }
 
 export const getPosition = (edge: Edge, position: Array<number>) => {
+  // face はcellの 0: 左上, 1: 右上, 2: 左, 3: 右, 4: 左下, 5: 右下。基本0, 1, 2のみ
   switch (edge.data.face) {
     case 0:
       position[0] -= ((CELL_SIZE_X + EDGE_WIDTH_X) / 4) * DEFAULT_MODEL_SCALE
-      position[2] -= ((CELL_SIZE_Y - EDGE_WIDTH_Y) / 2 - 1) * DEFAULT_MODEL_SCALE
+      position[2] -= ((CELL_SIZE_Y + EDGE_WIDTH_Y) / 2) * DEFAULT_MODEL_SCALE
       return position;
     case 1:
       position[0] += ((CELL_SIZE_X + EDGE_WIDTH_X) / 4) * DEFAULT_MODEL_SCALE
-      position[2] -= ((CELL_SIZE_Y - EDGE_WIDTH_Y) / 2 - 1) * DEFAULT_MODEL_SCALE
+      position[2] -= ((CELL_SIZE_Y + EDGE_WIDTH_Y) / 2) * DEFAULT_MODEL_SCALE
       return position;
     case 2:
       position[0] -= ((CELL_SIZE_X + EDGE_WIDTH_X) / 2) * DEFAULT_MODEL_SCALE
@@ -67,9 +60,9 @@ export const getPosition = (edge: Edge, position: Array<number>) => {
 export const getRotation = (edge: Edge) => {
   switch (edge.data.face) {
     case 0:
-      return [0, Math.PI/3, 0]
-    case 1:
       return [0, Math.PI/3*2, 0]
+    case 1:
+      return [0, Math.PI/3, 0]
     case 2:
     case 3:
       return [0, 0, 0]

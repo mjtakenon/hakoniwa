@@ -10,11 +10,9 @@ export interface Cell {
   }
 }
 
-export const CELL_SIZE_X = 1.73
-export const CELL_SIZE_Y = 1.4
-export const CELL_MARGIN_X = 0
-export const CELL_MARGIN_Y = 0
-export const DEFAULT_MODEL_SCALE = 5
+export const CELL_SIZE_Y = 1.325
+export const CELL_SIZE_X = 1.732
+export const DEFAULT_MODEL_SCALE = 10
 
 export const CELL_PATHS = {
   city: { default: [{ path: '/img/hakoniwa/hexa/glb/cell/plain.glb' }] },
