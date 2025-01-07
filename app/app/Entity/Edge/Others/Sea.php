@@ -2,6 +2,8 @@
 
 namespace App\Entity\Edge\Others;
 
+use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Edge\Edge;
 use App\Entity\Log\Logs;
@@ -16,9 +18,4 @@ class Sea extends Edge
     public const TYPE = 'sea';
 
     protected string $type = self::TYPE;
-
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
-    {
-        return new PassTurnResult($terrain, $status, Logs::create());
-    }
 }

@@ -34,12 +34,15 @@ use App\Entity\Status\Status;
 use App\Entity\Util\Normal;
 use App\Entity\Util\Point;
 use App\Entity\Util\Rand;
+use App\Entity\Util\Range;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
 
 class Terrain implements JsonCodable
 {
+    use Range;
+
     public const AREA_PER_CELL = 100;
     private Collection $cells;
     private Collection $edges;
@@ -55,8 +58,8 @@ class Terrain implements JsonCodable
             for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
                 $cellsRow[] = new \App\Entity\Cell\Others\Sea(point: new Point($x, $y));
                 $edgesColumn = new Collection();
-                for ($f = 0; $f < 3; $f++) {
-                    $edgesColumn[] = new \App\Entity\Edge\Others\Sea(point: new Point($x, $y), face: $f);
+                for ($face = 0; $face < 3; $face++) {
+                    $edgesColumn[] = new \App\Entity\Edge\Others\Sea(point: new Point($x, $y), face: $face);
                 }
                 $edgesRow[] = $edgesColumn;
             }
@@ -102,7 +105,7 @@ class Terrain implements JsonCodable
             for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
                 $cellsRow[] = null;
                 $edgesColumn = new Collection();
-                for ($f = 0; $f < 3; $f++) {
+                for ($face = 0; $face < 3; $face++) {
                     $edgesColumn[] = null;
                 }
                 $edgesRow[] = $edgesColumn;
@@ -156,11 +159,11 @@ class Terrain implements JsonCodable
         }
 
         $this->cells->flatten()->each(function(Cell $cell) {
-            for ($f = 0; $f < 3; $f++) {
+            for ($face = 0; $face < 3; $face++) {
                 if ($cell->getElevation() === CellConst::ELEVATION_PLAIN && $cell->getType() !== Wasteland::TYPE) {
-                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$f] = new \App\Entity\Edge\Others\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $f);
+                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = new \App\Entity\Edge\Others\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $face);
                 } else {
-                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$f] = EdgeConst::getDefaultEdge(new Point($cell->getPoint()->x, $cell->getPoint()->y), $f, $cell->getElevation());
+                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = EdgeConst::getDefaultEdge(new Point($cell->getPoint()->x, $cell->getPoint()->y), $face, $cell->getElevation());
                 }
             }
         });
@@ -171,6 +174,11 @@ class Terrain implements JsonCodable
     public function getCells(): Collection
     {
         return $this->cells;
+    }
+
+    private function getEdges(): Collection
+    {
+        return $this->edges;
     }
 
     public function setCells(Collection $cells): void
@@ -191,6 +199,16 @@ class Terrain implements JsonCodable
     public function setCell(Point $point, Cell $cell): void
     {
         $this->cells[$point->y][$point->x] = $cell;
+    }
+
+    public function getEdge(Point $point, int $faceace): Edge
+    {
+        return $this->edges[$point->y][$point->x][$faceace];
+    }
+
+    public function setEdge(Point $point, Edge $edge): void
+    {
+        $this->edges[$point->y][$point->x][$edge->getFace()] = $edge;
     }
 
     public function aggregatePopulation(): int
@@ -264,7 +282,7 @@ class Terrain implements JsonCodable
         return $landCells * self::AREA_PER_CELL;
     }
 
-    public function passTurn(Island $island, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
+    public function passTurn(Island $island, Status $status, Turn $turn, Collection $faceoreignIslandEvents): PassTurnResult
     {
         $logs = Logs::create();
 
@@ -280,24 +298,25 @@ class Terrain implements JsonCodable
                 continue;
             }
 
-            $passTurnResult = $cell->passTurn($island, $this, $status, $turn, $foreignIslandEvents);
+            $passTurnResult = $cell->passTurn($island, $this, $status, $turn, $faceoreignIslandEvents);
 
             $this->cells = $passTurnResult->getTerrain()->getCells();
             $status = $passTurnResult->getStatus();
             $logs->merge($passTurnResult->getLogs());
         }
 
-        /** @var Edge $edge */
-        foreach ($this->edges->flatten(1) as $edge) {
-            $edge->passTurn($island, $this, $status, $turn, $foreignIslandEvents);
+        /** @var Collection $edge */
+        foreach ($this->edges->flatten(1) as $edges) {
+            /** @var Edge $edge */
+            foreach ($edges as $edge) {
+                $passTurnResult = $edge->passTurn($island, $this, $status, $turn, $faceoreignIslandEvents);
+                $this->edges = $passTurnResult->getTerrain()->getEdges();
+                $status = $passTurnResult->getStatus();
+                $logs->merge($passTurnResult->getLogs());
+            }
         }
 
         return new PassTurnResult($this, $status, $logs);
-    }
-
-    private function inRange(int $n, int $min, int $max): bool
-    {
-        return $n >= $min && $n < $max;
     }
 
     public function getAroundCells(Point $point, int $range = 1, bool $includeOutOfRegion = false): Collection

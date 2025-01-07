@@ -40,17 +40,31 @@ export const getEdgePath = (type: EdgeType, subType: string | null = null) => {
 
 export const getPosition = (edge: Edge, position: Array<number>) => {
   // face はcellの 0: 左上, 1: 右上, 2: 左, 3: 右, 4: 左下, 5: 右下。基本0, 1, 2のみ
+  const QUARTER_SIZE_X = ((CELL_SIZE_X + EDGE_WIDTH_X) / 4) * DEFAULT_MODEL_SCALE
+  const HALF_SIZE_Y = ((CELL_SIZE_Y + EDGE_WIDTH_Y) / 2) * DEFAULT_MODEL_SCALE
+
   switch (edge.data.face) {
     case 0:
-      position[0] -= ((CELL_SIZE_X + EDGE_WIDTH_X) / 4) * DEFAULT_MODEL_SCALE
-      position[2] -= ((CELL_SIZE_Y + EDGE_WIDTH_Y) / 2) * DEFAULT_MODEL_SCALE
+      position[0] -= QUARTER_SIZE_X
+      position[2] -= HALF_SIZE_Y
       return position;
     case 1:
-      position[0] += ((CELL_SIZE_X + EDGE_WIDTH_X) / 4) * DEFAULT_MODEL_SCALE
-      position[2] -= ((CELL_SIZE_Y + EDGE_WIDTH_Y) / 2) * DEFAULT_MODEL_SCALE
+      position[0] += QUARTER_SIZE_X
+      position[2] -= HALF_SIZE_Y
       return position;
     case 2:
-      position[0] -= ((CELL_SIZE_X + EDGE_WIDTH_X) / 2) * DEFAULT_MODEL_SCALE
+      position[0] -= QUARTER_SIZE_X * 2
+      return position;
+    case 3:
+      position[0] += QUARTER_SIZE_X * 2
+      return position;
+    case 4:
+      position[0] -= QUARTER_SIZE_X
+      position[2] += HALF_SIZE_Y
+      return position;
+    case 5:
+      position[0] += QUARTER_SIZE_X
+      position[2] += HALF_SIZE_Y
       return position;
     default:
       return position;
@@ -60,28 +74,19 @@ export const getPosition = (edge: Edge, position: Array<number>) => {
 export const getRotation = (edge: Edge) => {
   switch (edge.data.face) {
     case 0:
+    case 5:
       return [0, Math.PI/3*2, 0]
     case 1:
+    case 4:
       return [0, Math.PI/3, 0]
     case 2:
     case 3:
       return [0, 0, 0]
     default:
-      return 0
+      return [0, 0, 0]
   }
 }
 
 export const getScale = (edge: Edge) => {
-
-  switch (edge.data.face) {
-    case 0:
-      return [DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE * -1]
-    case 1:
-      return [DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE]
-    case 2:
-    case 3:
-      return [DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE]
-    default:
-      return [DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE]
-  }
+  return [DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE]
 }

@@ -4,7 +4,7 @@
     v-for="child of props.scene.children"
     :object="child"
     :rotation="getRotation(props.edge)"
-    :scale="getScale(props.edge)"
+    :scale="getScale()"
     :position="[position[0], child.position.y, position[2]]"
     receive-shadow
     cast-shadow
@@ -13,12 +13,11 @@
 
 <script setup lang="ts">
 import {TresInstance} from '@tresjs/core'
-import {Object3D, Vector3} from 'three'
+import {Object3D} from 'three'
 
 import {shallowRef, ShallowRef} from 'vue'
 import {useIslandViewerStore} from '$store/IslandViewerStore.js'
-import {EDGE_WIDTH_X, Edge, getPosition, getRotation, getScale} from '$entity/Edge.js'
-import {CELL_SIZE_X, DEFAULT_MODEL_SCALE} from "$entity/Cell.js";
+import {Edge, getPosition, getRotation, getScale} from '$entity/Edge.js'
 
 const store = useIslandViewerStore()
 

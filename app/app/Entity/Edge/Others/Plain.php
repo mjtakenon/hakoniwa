@@ -16,9 +16,4 @@ class Plain extends Edge
     public const TYPE = 'plain';
 
     protected string $type = self::TYPE;
-
-    public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
-    {
-        return new PassTurnResult($terrain, $status, Logs::create());
-    }
 }
