@@ -16,6 +16,7 @@ export const EDGE_WIDTH_Y = EDGE_WIDTH_X * 0.5 * Math.sqrt(3) // 直角の長辺
 export const EDGE_PATHS = {
   wasteland: { default: [{ path: '/img/hakoniwa/glb/wasteland_edge.glb' }] },
   plain: { default: [{ path: '/img/hakoniwa/glb/plain_edge.glb' }] },
+  shore: { default: [{ path: '/img/hakoniwa/glb/shore_edge.glb' }] },
   sea: { default: [{ path: '/img/hakoniwa/glb/sea_edge.glb', opacity: 0.8 }] },
   shallow: { default: [{ path: '/img/hakoniwa/glb/shallow_edge.glb', opacity: 0.8 }] },
 } as const
