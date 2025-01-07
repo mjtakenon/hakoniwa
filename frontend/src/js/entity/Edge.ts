@@ -25,6 +25,7 @@ export type EdgeType =
   | 'wasteland'
   | 'plain'
   | 'sea'
+  | 'shore'
   | 'shallow'
 
 export const getEdgeTypes = () => {

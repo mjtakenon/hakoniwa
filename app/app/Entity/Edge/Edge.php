@@ -179,16 +179,15 @@ abstract class Edge
                 $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, 1));
             }
         } else {
-            $avr = ($elevation1 + $elevation2) / 2;
-            if ($avr < 0.5) {
+            $avr = ((float)$elevation1 + (float)$elevation2) / 2;
+            if ($avr < -0.5) {
                 $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, ceil($avr)));
             } else if ($avr === -0.5) {
                 $terrain->setEdge($this->point, new Shore(point: $this->point, face: $this->face));
             } else {
-                // TODO: 実装する
+                // TODO: 実装
             }
         }
-
         return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

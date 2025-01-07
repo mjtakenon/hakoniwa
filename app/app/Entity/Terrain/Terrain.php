@@ -201,9 +201,9 @@ class Terrain implements JsonCodable
         $this->cells[$point->y][$point->x] = $cell;
     }
 
-    public function getEdge(Point $point, int $faceace): Edge
+    public function getEdge(Point $point, int $face): Edge
     {
-        return $this->edges[$point->y][$point->x][$faceace];
+        return $this->edges[$point->y][$point->x][$face];
     }
 
     public function setEdge(Point $point, Edge $edge): void
