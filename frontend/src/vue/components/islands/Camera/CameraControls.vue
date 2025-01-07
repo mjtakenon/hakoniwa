@@ -16,7 +16,7 @@ const controls = ref<MapControls | null>(null)
 
 onMounted(() => {
   controls.value.maxDistance = 250
-  controls.value.minDistance = 20
+  controls.value.minDistance = 4
   controls.value.maxPolarAngle = Math.PI / 2
   controls.value.zoomToCursor = true
   controls.value.zoomSpeed = 2

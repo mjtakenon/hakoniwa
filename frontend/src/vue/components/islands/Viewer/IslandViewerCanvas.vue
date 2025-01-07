@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { NoToneMapping, SRGBColorSpace, VSMShadowMap } from 'three'
+import {NoToneMapping, PCFSoftShadowMap, SRGBColorSpace, VSMShadowMap} from 'three'
 import { TresCanvas } from '@tresjs/core'
 import { reactive } from 'vue'
 import IslandViewer from '$vue/components/islands/Viewer/IslandViewer.vue'
@@ -15,9 +15,10 @@ const gl = reactive({
   clearColor: '#888888',
   shadows: true,
   alpha: true,
-  shadowMapType: VSMShadowMap,
+  shadowMapType: PCFSoftShadowMap,
   outputColorSpace: SRGBColorSpace,
-  toneMapping: NoToneMapping
+  toneMapping: NoToneMapping,
+  antialias: true,
 })
 
 const store = useIslandViewerStore()

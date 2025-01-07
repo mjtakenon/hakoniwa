@@ -1,12 +1,12 @@
 <template>
-  <TresPerspectiveCamera :position="[8, 200, 32] as Vector3" :look-at="[0, 0, 0]"/>
+  <TresPerspectiveCamera :position="[4, 20, 8] as Vector3" :look-at="[0, 0, 0]"/>
   <CameraControls/>
   <Suspense>
     <IslandViewerTerrain/>
   </Suspense>
 
   <TresAmbientLight :intensity="1"/>
-  <TresDirectionalLight :position="[10, 200, 100] as Vector3" cast-shadow :intensity="6" v-bind="{ color: 0xffdddd }"/>
+  <TresDirectionalLight :position="[20, 100, 100] as Vector3" cast-shadow :intensity="10" v-bind="{ color: 0xffdddd }"/>
 </template>
 
 <script setup lang="ts">
@@ -20,13 +20,15 @@ const context = useTresContext()
 
 onMounted(() => {
   context.renderer.value.shadowMap.enabled = true
-  context.scene.value.children[2].shadow.camera.right = 100
-  context.scene.value.children[2].shadow.camera.left = -100
-  context.scene.value.children[2].shadow.camera.top = -100
-  context.scene.value.children[2].shadow.camera.bottom = 100
-  context.scene.value.children[2].shadow.mapSize.width = 1000
-  context.scene.value.children[2].shadow.mapSize.height = 1000
+  context.scene.value.children[2].shadow.camera.right = 20
+  context.scene.value.children[2].shadow.camera.left = -15
+  context.scene.value.children[2].shadow.camera.top = -15
+  context.scene.value.children[2].shadow.camera.bottom = 15
+  context.scene.value.children[2].shadow.mapSize.width = 4096
+  context.scene.value.children[2].shadow.mapSize.height = 4096
   context.scene.value.children[2].shadow.radius = 0.5
+  context.scene.value.children[2].shadow.bias = 0.000001
+  context.scene.value.children[2].shadow.normalBias = 0.01
 })
 
 // useRenderLoop().onLoop(({ delta, elapsed }) => {
