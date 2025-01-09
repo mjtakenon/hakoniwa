@@ -15,7 +15,7 @@
           cell.data.point.y * ((CELL_SIZE_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE),
         ]"
         :cell="cell"
-        :scene="cellModels[cell.type][cell.data.sub_type ?? 'default'].clone()"/>
+        :group="cellModels[cell.type][cell.data.sub_type ?? 'default']"/>
     </template>
     <template v-for="edge of store.terrain.edges">
       <IslandViewerEdge
@@ -25,7 +25,7 @@
           edge.data.point.y * (CELL_SIZE_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE
         ]"
         :edge="edge"
-        :scene="edgeModels[edge.type][edge.data.sub_type ?? 'default'].clone()"/>
+        :group="edgeModels[edge.type][edge.data.sub_type ?? 'default']"/>
     </template>
   </TresGroup>
 </template>
@@ -75,8 +75,6 @@ for (let type of getCellTypes()) {
     cellModels[type][subType] = group
   }
 }
-
-console.log(cellModels)
 
 let edgeModels = {}
 

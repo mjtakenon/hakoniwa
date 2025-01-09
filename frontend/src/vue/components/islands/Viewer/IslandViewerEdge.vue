@@ -1,7 +1,7 @@
 <template>
   <primitive
     ref="objectRef"
-    v-for="child of props.scene.children"
+    v-for="child of group.children"
     :object="child"
     :rotation="getRotation(props.edge)"
     :scale="getScale()"
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import {TresInstance} from '@tresjs/core'
-import {Object3D} from 'three'
+import {Group, Object3D} from 'three'
 
 import {shallowRef, ShallowRef} from 'vue'
 import {useIslandViewerStore} from '$store/IslandViewerStore.js'
@@ -24,7 +24,7 @@ const store = useIslandViewerStore()
 interface Props {
   edge: Edge
   position: Array<number>
-  scene: Object3D
+  group: Object3D
 }
 
 const props = defineProps<Props>()
@@ -33,6 +33,9 @@ let position = getPosition(props.edge, props.position)
 
 
 let objectRef: ShallowRef<TresInstance | null> = shallowRef(null)
+
+let group = new Group()
+group.add(props.group.children[0].clone(false))
 </script>
 
 <style lang="scss" scoped></style>
