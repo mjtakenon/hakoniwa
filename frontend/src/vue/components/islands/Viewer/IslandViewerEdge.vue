@@ -25,7 +25,6 @@ interface Props {
   edge: Edge
   position: Array<number>
   scene: Object3D
-  scale: Array<number>
 }
 
 const props = defineProps<Props>()

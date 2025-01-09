@@ -62,7 +62,7 @@ import {computed, onMounted, shallowRef} from 'vue'
 import {
   CellType,
   CELL_SIZE_X,
-  getCellPath,
+  getCellModels,
   getCellSubTypes,
   getCellTypes
 } from '$entity/Cell.js'
@@ -99,7 +99,7 @@ let models = {}
 for (let type of getCellTypes()) {
   models[type] = {}
   for (let subType of getCellSubTypes(type as CellType)) {
-    let paths = getCellPath(type as CellType, subType)
+    let paths = getCellModels(type as CellType, subType)
 
     for (let path of paths) {
       let model = await useGLTF(path['path'], {draco: true})

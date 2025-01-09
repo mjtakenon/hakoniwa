@@ -3,10 +3,10 @@
 </template>
 
 <script setup lang="ts">
-import {AmbientLight, Box3, Camera, Group, Mesh, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three'
+import {AmbientLight, Camera, Group, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three'
 import {useGLTF} from '@tresjs/cientos'
 import {onMounted, ref, UnwrapRef} from 'vue'
-import {CellType, CELL_SIZE_X, getCellPath, getCellSubTypes, getCellTypes} from '$entity/Cell.js'
+import {CELL_SIZE_X, CellType, getCellModels, getCellSubTypes, getCellTypes} from '$entity/Cell.js'
 import {useIslandHoverStore} from '$store/IslandHoverStore.js'
 
 const store = useIslandHoverStore()
@@ -18,30 +18,31 @@ const scene = new Scene()
 
 const canvas = ref(null)
 
+let nodes = {}
+let gltfResult = await useGLTF('/img/hakoniwa/glb/models.glb', {draco: true})
+
+for (let child of gltfResult.scene.children) {
+  nodes[child.name] = child
+}
+
 let models = {}
+
 for (let type of getCellTypes()) {
   models[type] = {}
-  for (let subType of getCellSubTypes(type as CellType)) {
-    let paths = getCellPath(type as CellType, subType)
-    models[type][subType] = []
 
-    for (let path of paths) {
-      let model = await useGLTF(path['path'], {draco: true})
-      const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-      model.scene.scale.x = CELL_SIZE_X / size.x
-      model.scene.scale.y = CELL_SIZE_X / size.x
-      model.scene.scale.z = CELL_SIZE_X / size.x
-      model.scene.position.y += (size.y * (CELL_SIZE_X / size.x) - CELL_SIZE_X) / 2
+  for (let subType of getCellSubTypes(type)) {
+    let group = new Group();
 
-      model.scene.traverse((object: Mesh | Group) => {
-        if (object.isMesh) {
-          object.material.transparent = true;
-          object.material.opacity = path['opacity'] ?? 1;
-        }
-      })
-
-      models[type][subType].push(model)
+    for (let models of getCellModels(type, subType)) {
+      let n = nodes[models.model]
+      n.material.opacity = models.opacity ?? 1
+      if (n.material.opacity < 1) {
+        n.material.transparent = true;
+      }
+      group.children.push(n)
     }
+
+    models[type][subType] = group
   }
 }
 
@@ -65,22 +66,20 @@ onMounted(() => {
 
   let position = new Vector3(0, 0, 0)
   const positionMargin = new Vector3(CELL_SIZE_X * 4, CELL_SIZE_X * 4, CELL_SIZE_X * -4)
-  const cameraPositionDiff = new Vector3(4, 16, 4)
+  const cameraPositionDiff = new Vector3(1, 4, 1)
 
   for (let type of getCellTypes()) {
     store.cameraLookAt[type] = {}
     store.cameraPositions[type] = {}
 
     for (let subType of getCellSubTypes(type as CellType)) {
-      models[type][subType].forEach((model) => {
-        model.scene.position.x = position.x
-        model.scene.position.y = position.y + model.scene.position.y
-        model.scene.position.z = position.z
-        store.cameraLookAt[type][subType] = position.clone()
-        store.cameraLookAt[type][subType].y += 4
-        store.cameraPositions[type][subType] = position.clone().add(cameraPositionDiff)
-        scene.add(model.scene)
-      })
+      models[type][subType].position.x = position.x
+      models[type][subType].position.y = position.y + models[type][subType].position.y
+      models[type][subType].position.z = position.z
+      store.cameraLookAt[type][subType] = position.clone()
+      store.cameraLookAt[type][subType].y += 1
+      store.cameraPositions[type][subType] = position.clone().add(cameraPositionDiff)
+      scene.add(models[type][subType])
       position.add(positionMargin)
     }
   }
@@ -93,9 +92,7 @@ onMounted(() => {
 const tick = () => {
   for (let type of getCellTypes()) {
     for (let subType of getCellSubTypes(type as CellType)) {
-      models[type][subType].forEach((model) => {
-        model.scene.rotation.y += 0.01
-      })
+      models[type][subType].rotation.y += 0.01
     }
   }
   renderer.render(scene, store.camera)

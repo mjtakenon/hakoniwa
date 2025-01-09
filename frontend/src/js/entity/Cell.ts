@@ -1,5 +1,4 @@
 import {Point} from './Point.js'
-import {Edge} from "$entity/Edge.js";
 
 export interface Cell {
   type: CellType
@@ -14,86 +13,86 @@ export const CELL_SIZE_X = Math.sqrt(3)
 export const CELL_SIZE_Y = 1.5
 export const DEFAULT_MODEL_SCALE = 1
 
-export const CELL_PATHS = {
-  city: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  factory: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  farm: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  farm_dome: { default: [{ path: '/img/hakoniwa/glb/plain.glb', opacity: 0.5 }] },
-  forest: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  metropolis: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  mountain: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  volcano: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  mine: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  oilfield: { default: [{ path: '/img/hakoniwa/glb/plain.glb', opacity: 0.8}] },
-  plain: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  sea: { default: [{ path: '/img/hakoniwa/glb/sea.glb', opacity: 0.8}] },
-  shallow: { default: [{ path: '/img/hakoniwa/glb/shallow.glb', opacity: 0.8}] },
-  lake: { default: [{ path: '/img/hakoniwa/glb/shallow.glb', opacity: 0.8}] },
-  large_factory: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  town: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  village: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  wasteland: { default: [{ path: '/img/hakoniwa/glb/wasteland.glb' }] },
-  missile_base: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  seabed_base: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  park: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  monument_of_agriculture: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  monument_of_mining: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  monument_of_master: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  monument_of_peace: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  monument_of_war: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  monument_of_conquest: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  inora: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  red_inora: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  dark_inora: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  king_inora: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
+export const CELL_MODELS = {
+  city: {default: [{model: 'plain'}]},
+  factory: {default: [{model: 'plain'}]},
+  farm: {default: [{model: 'plain'}]},
+  farm_dome: {default: [{model: 'plain'}]},
+  forest: {default: [{model: 'plain'}]},
+  metropolis: {default: [{model: 'plain'}]},
+  mountain: {default: [{model: 'plain'}]},
+  volcano: {default: [{model: 'plain'}]},
+  mine: {default: [{model: 'plain'}]},
+  oilfield: {default: [{model: 'shallow'}]},
+  plain: {default: [{model: 'plain'}]},
+  sea: {default: [{model: 'sea', opacity: 0.8}]},
+  shallow: {default: [{model: 'shallow', opacity: 0.8}]},
+  lake: {default: [{model: 'shallow', opacity: 0.8}]},
+  large_factory: {default: [{model: 'plain'}]},
+  town: {default: [{model: 'plain'}]},
+  village: {default: [{model: 'plain'}]},
+  wasteland: {default: [{model: 'wasteland'}]},
+  missile_base: {default: [{model: 'plain'}]},
+  seabed_base: {default: [{model: 'sea'}]},
+  park: {default: [{model: 'plain'}]},
+  monument_of_agriculture: {default: [{model: 'plain'}]},
+  monument_of_mining: {default: [{model: 'plain'}]},
+  monument_of_master: {default: [{model: 'plain'}]},
+  monument_of_peace: {default: [{model: 'plain'}]},
+  monument_of_war: {default: [{model: 'plain'}]},
+  monument_of_conquest: {default: [{model: 'plain'}]},
+  inora: {default: [{model: 'plain'}]},
+  red_inora: {default: [{model: 'plain'}]},
+  dark_inora: {default: [{model: 'plain'}]},
+  king_inora: {default: [{model: 'plain'}]},
   sanjira: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    metalized: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'plain'}],
+    metalized: [{model: 'plain'}]
   },
   kujira: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    metalized: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'plain'}],
+    metalized: [{model: 'plain'}]
   },
-  hamunemu: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  ghost_inora: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  slime: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  slime_legend: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
+  hamunemu: {default: [{model: 'plain'}]},
+  ghost_inora: {default: [{model: 'plain'}]},
+  slime: {default: [{model: 'plain'}]},
+  slime_legend: {default: [{model: 'plain'}]},
   levinoth: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    shallow: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    sea: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'plain'}],
+    shallow: [{model: 'plain'}],
+    sea: [{model: 'plain'}]
   },
-  begenoth: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
-  egg: { default: [{ path: '/img/hakoniwa/glb/plain.glb' }] },
+  begenoth: {default: [{model: 'plain'}]},
+  egg: {default: [{model: 'plain'}]},
   transport_ship: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    shallow: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    sea: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'sea'}],
+    shallow: [{model: 'shallow'}],
+    sea: [{model: 'sea'}]
   },
   battleship: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    shallow: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    sea: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'sea'}],
+    shallow: [{model: 'shallow'}],
+    sea: [{model: 'sea'}]
   },
   submarine: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    shallow: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    sea: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'sea'}],
+    shallow: [{model: 'shallow'}],
+    sea: [{model: 'sea'}]
   },
   pirate: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    shallow: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    sea: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'sea'}],
+    shallow: [{model: 'shallow'}],
+    sea: [{model: 'sea'}]
   },
   levinoth_battleship: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    shallow: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    sea: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'sea'}],
+    shallow: [{model: 'shallow'}],
+    sea: [{model: 'sea'}]
   },
   levinoth_submarine: {
-    default: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    shallow: [{ path: '/img/hakoniwa/glb/plain.glb' }],
-    sea: [{ path: '/img/hakoniwa/glb/plain.glb' }]
+    default: [{model: 'sea'}],
+    shallow: [{model: 'shallow'}],
+    sea: [{model: 'sea'}]
   }
 } as const
 
@@ -146,21 +145,21 @@ export type CellType =
   | 'levinoth_submarine'
 
 export const getCellTypes = () => {
-  return Object.keys(CELL_PATHS)
+  return Object.keys(CELL_MODELS)
 }
 
 export const getCellSubTypes = (type: CellType) => {
-  return Object.keys(CELL_PATHS[type])
+  return Object.keys(CELL_MODELS[type])
 }
 
-export const getCellPath = (type: CellType, subType: string | null = null) => {
-  return subType ? CELL_PATHS[type][subType] : CELL_PATHS[type].default
+export const getCellModels = (type: CellType, subType: string | null = null) => {
+  return subType ? CELL_MODELS[type][subType] : CELL_MODELS[type].default
 }
 
 export const getRotation = () => {
-    return [0, 0, 0]
+  return [0, 0, 0]
 }
 
 export const getScale = () => {
-    return [DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE]
+  return [DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE, DEFAULT_MODEL_SCALE]
 }

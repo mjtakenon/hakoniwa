@@ -6,7 +6,7 @@
   </Suspense>
 
   <TresAmbientLight :intensity="1"/>
-  <TresDirectionalLight :position="[20, 100, 100] as Vector3" cast-shadow :intensity="10" v-bind="{ color: 0xffdddd }"/>
+  <TresDirectionalLight :position="[20, 100, 100] as Vector3" cast-shadow :intensity="6" v-bind="{ color: 0xffdddd }"/>
 </template>
 
 <script setup lang="ts">

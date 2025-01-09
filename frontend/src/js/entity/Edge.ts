@@ -1,5 +1,5 @@
 import {Point} from './Point.js'
-import {CELL_PATHS, CellType, CELL_SIZE_X, DEFAULT_MODEL_SCALE, CELL_SIZE_Y} from "$entity/Cell.js";
+import {CELL_SIZE_X, CELL_SIZE_Y, DEFAULT_MODEL_SCALE} from "$entity/Cell.js";
 
 export interface Edge {
   type: EdgeType
@@ -13,12 +13,12 @@ export interface Edge {
 export const EDGE_WIDTH_X = 0.2
 export const EDGE_WIDTH_Y = EDGE_WIDTH_X * 0.5 * Math.sqrt(3) // 直角の長辺を0.2とする30°の傾きなので三平方の定理よりX*0.5*sqrt(3)
 
-export const EDGE_PATHS = {
-  wasteland: { default: [{ path: '/img/hakoniwa/glb/wasteland_edge.glb' }] },
-  plain: { default: [{ path: '/img/hakoniwa/glb/plain_edge.glb' }] },
-  shore: { default: [{ path: '/img/hakoniwa/glb/shore_edge.glb' }] },
-  sea: { default: [{ path: '/img/hakoniwa/glb/sea_edge.glb', opacity: 0.8 }] },
-  shallow: { default: [{ path: '/img/hakoniwa/glb/shallow_edge.glb', opacity: 0.8 }] },
+export const EDGE_MODELS = {
+  wasteland: {default: [{model: 'wasteland_edge'}]},
+  plain: {default: [{model: 'plain_edge'}]},
+  shore: {default: [{model: 'shore_edge'}]},
+  sea: {default: [{model: 'sea_edge'}]},
+  shallow: {default: [{model: 'shallow_edge'}]},
 } as const
 
 export type EdgeType =
@@ -29,15 +29,15 @@ export type EdgeType =
   | 'shallow'
 
 export const getEdgeTypes = () => {
-  return Object.keys(EDGE_PATHS)
+  return Object.keys(EDGE_MODELS)
 }
 
 export const getEdgeSubTypes = (type: EdgeType) => {
-  return Object.keys(EDGE_PATHS[type])
+  return Object.keys(EDGE_MODELS[type])
 }
 
-export const getEdgePath = (type: EdgeType, subType: string | null = null) => {
-  return subType ? EDGE_PATHS[type][subType] : EDGE_PATHS[type].default
+export const getEdgeModels = (type: EdgeType, subType: string | null = null) => {
+  return subType ? EDGE_MODELS[type][subType] : EDGE_MODELS[type].default
 }
 
 export const getPosition = (edge: Edge, position: Array<number>) => {
@@ -77,10 +77,10 @@ export const getRotation = (edge: Edge) => {
   switch (edge.data.face) {
     case 0:
     case 5:
-      return [0, Math.PI/3*2, 0]
+      return [0, Math.PI / 3 * 2, 0]
     case 1:
     case 4:
-      return [0, Math.PI/3, 0]
+      return [0, Math.PI / 3, 0]
     case 2:
     case 3:
       return [0, 0, 0]

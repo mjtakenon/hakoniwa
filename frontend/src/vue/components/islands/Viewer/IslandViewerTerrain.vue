@@ -15,7 +15,7 @@
           cell.data.point.y * ((CELL_SIZE_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE),
         ]"
         :cell="cell"
-        :scene="cellModels[cell.type][cell.data.sub_type ?? 'default'].scene.clone()"/>
+        :scene="cellModels[cell.type][cell.data.sub_type ?? 'default'].clone()"/>
     </template>
     <template v-for="edge of store.terrain.edges">
       <IslandViewerEdge
@@ -24,85 +24,78 @@
           0,
           edge.data.point.y * (CELL_SIZE_Y + EDGE_WIDTH_Y) * DEFAULT_MODEL_SCALE
         ]"
-        :scale="edgeModels[edge.type]['default'].scene.scale.toArray()"
         :edge="edge"
-        :scene="edgeModels[edge.type]['default'].scene.clone()"/>
+        :scene="edgeModels[edge.type][edge.data.sub_type ?? 'default'].clone()"/>
     </template>
   </TresGroup>
 </template>
 
 <script async setup lang="ts">
-import {Box3, Group, Mesh, Vector3} from 'three'
+import {Group, Vector3} from 'three'
 import {useGLTF} from '@tresjs/cientos'
 import IslandViewerCell from './IslandViewerCell.vue'
 import {
-  CellType,
   CELL_SIZE_X,
-  getCellPath,
-  getCellSubTypes,
-  getCellTypes,
+  CELL_SIZE_Y,
   DEFAULT_MODEL_SCALE,
-  CELL_SIZE_Y
+  getCellModels,
+  getCellSubTypes,
+  getCellTypes
 } from '$entity/Cell.js'
 import {useIslandViewerStore} from '$store/IslandViewerStore.js'
-import {
-  EDGE_WIDTH_X,
-  EDGE_WIDTH_Y,
-  EdgeType,
-  getEdgePath,
-  getEdgeSubTypes,
-  getEdgeTypes,
-} from "$entity/Edge.js";
+import {EDGE_WIDTH_X, EDGE_WIDTH_Y, getEdgeModels, getEdgeSubTypes, getEdgeTypes,} from "$entity/Edge.js";
 import IslandViewerEdge from "$vue/components/islands/Viewer/IslandViewerEdge.vue";
 
 const store = useIslandViewerStore()
 
+let nodes = {}
+let gltfResult = await useGLTF('/img/hakoniwa/glb/models.glb', {draco: true})
+
+for (let child of gltfResult.scene.children) {
+  nodes[child.name] = child
+}
+
 let cellModels = {}
-let edgeModels = {}
 
 for (let type of getCellTypes()) {
   cellModels[type] = {}
-  for (let subType of getCellSubTypes(type as CellType)) {
-    let paths = getCellPath(type as CellType, subType)
 
-    for (let path of paths) {
-      let model = await useGLTF(path['path'], {draco: true})
-      // const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-      // model.scene.children[0].position.y += (size.y * DEFAULT_MODEL_SCALE - CELL_SIZE_X) / 2
+  for (let subType of getCellSubTypes(type)) {
+    let group = new Group();
 
-      model.scene.traverse((object: Mesh | Group) => {
-        if (object.isMesh) {
-          object.material.transparent = true;
-          object.material.opacity = path['opacity'] ?? 1;
-        }
-      })
-
-      cellModels[type][subType] ? cellModels[type][subType].scene.children.push(model.scene.children[0]) : cellModels[type][subType] = model
+    for (let models of getCellModels(type, subType)) {
+      let n = nodes[models.model]
+      n.material.opacity = models.opacity ?? 1
+      if (n.material.opacity < 1) {
+        n.material.transparent = true;
+      }
+      group.children.push(n)
     }
+
+    cellModels[type][subType] = group
   }
 }
+
+console.log(cellModels)
+
+let edgeModels = {}
 
 for (let type of getEdgeTypes()) {
   edgeModels[type] = {}
-  for (let subType of getEdgeSubTypes(type as EdgeType)) {
-    let paths = getEdgePath(type as EdgeType, subType)
 
-    for (let path of paths) {
-      let model = await useGLTF(path['path'], {draco: true})
-      // const size = new Box3().setFromObject(model.scene).getSize(new Vector3())
-      // model.scene.children[0].position.y += (size.y * DEFAULT_MODEL_SCALE - CELL_SIZE_X) / 2
+  for (let subType of getEdgeSubTypes(type)) {
+    let group = new Group();
 
-      model.scene.traverse((object: Mesh | Group) => {
-        if (object.isMesh) {
-          object.material.transparent = true;
-          object.material.opacity = path['opacity'] ?? 1;
-        }
-      })
-
-      edgeModels[type][subType] ? edgeModels[type][subType].scene.children.push(model.scene.children[0]) : edgeModels[type][subType] = model
+    for (let models of getEdgeModels(type, subType)) {
+      let n = nodes[models.model]
+      n.material.opacity = models.opacity ?? 1
+      group.children.push(n)
     }
+
+    edgeModels[type][subType] = group
   }
 }
+
 </script>
 
 <style lang="scss" scoped></style>
