@@ -61,7 +61,10 @@ class VolcanicEruption implements IDisaster
             } else {
                 $logs->add(new DestructionByVolcanicEruptionLog($island, $cell));
             }
-            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), min(0, $cell->getElevation()+1)));
+
+            if (!$cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
+                $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), min(0, $cell->getElevation()+1)));
+            }
         }
 
         return new DisasterResult($terrain, $status, $logs);

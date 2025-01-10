@@ -22,6 +22,7 @@ class Oilfield extends Cell implements IResourcesProduction
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,

@@ -55,6 +55,8 @@ class CellConst
     const IS_LAND = 'is_land';
     const IS_MONSTER = 'is_monster';
     const IS_SHIP = 'is_ship';
+    const IS_MOUNTAIN = 'is_mountain';
+
     const DESTRUCTIBLE_BY_FIRE = 'destructible_by_fire';
     const DESTRUCTIBLE_BY_TSUNAMI = 'destructible_by_tsunami';
     const DESTRUCTIBLE_BY_EARTHQUAKE = 'destructible_by_earthquake';
@@ -64,6 +66,7 @@ class CellConst
     const DESTRUCTIBLE_BY_MISSILE = 'destructible_by_missile';
     const DESTRUCTIBLE_BY_RIOT = 'destructible_by_riot';
     const DESTRUCTIBLE_BY_MONSTER = 'destructible_by_monster';
+
     const PREVENTING_FIRE = 'preventing_fire';
     const PREVENTING_TYPHOON = 'preventing_typhoon';
     const PREVENTING_TSUNAMI = 'preventing_tsunami';
