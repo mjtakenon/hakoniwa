@@ -18,6 +18,7 @@ export const EDGE_PATHS = {
   plain: { default: [{ path: '/img/hakoniwa/glb/plain_edge.glb' }] },
   sea: { default: [{ path: '/img/hakoniwa/glb/sea_edge.glb', opacity: 0.8 }] },
   shallow: { default: [{ path: '/img/hakoniwa/glb/shallow_edge.glb', opacity: 0.8 }] },
+  shore: { default: [{ path: '/img/hakoniwa/glb/shallow_edge.glb', opacity: 0.8 }] },
 } as const
 
 export type EdgeType =
@@ -25,6 +26,7 @@ export type EdgeType =
   | 'plain'
   | 'sea'
   | 'shallow'
+  | 'shore'
 
 export const getEdgeTypes = () => {
   return Object.keys(EDGE_PATHS)

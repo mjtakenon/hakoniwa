@@ -5,6 +5,7 @@ namespace App\Entity\Edge;
 use App\Entity\Edge\Others\Plain;
 use App\Entity\Edge\Others\Sea;
 use App\Entity\Edge\Others\Shallow;
+use App\Entity\Edge\Others\Shore;
 use App\Entity\Edge\Others\Wasteland;
 use App\Entity\Util\Point;
 
@@ -22,6 +23,7 @@ class EdgeConst
             Plain::TYPE => new Plain(...get_object_vars($data)),
             Shallow::TYPE => new Shallow(...get_object_vars($data)),
             Sea::TYPE => new Sea(...get_object_vars($data)),
+            Shore::TYPE => new Shore(...get_object_vars($data)),
         };
     }
 
