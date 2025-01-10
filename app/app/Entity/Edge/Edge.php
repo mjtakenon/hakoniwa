@@ -6,7 +6,9 @@ use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\OutOfRegion;
 use App\Entity\Cell\PassTurnResult;
+use App\Entity\Edge\Others\Plain;
 use App\Entity\Edge\Others\Shore;
+use App\Entity\Edge\Others\Wasteland;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -165,27 +167,33 @@ abstract class Edge
         /** @var Collection<Cell> $cells */
         $cells = $this->getAdjacentCells($terrain);
 
-        $elevation1 = $cells[0]->getElevation();
-        $elevation2 = $cells[1]->getElevation();
+        /** @var Cell $cell1 */
+        $cell1 = $cells[0];
+        /** @var Cell $cell2 */
+        $cell2 = $cells[1];
 
-        if ($elevation1 === $elevation2) {
+        $elevation1 = $cell1->getElevation();
+        $elevation2 = $cell2->getElevation();
+
+        if ($elevation1 === $elevation2 && $elevation1 < 0) {
             if ($elevation1 === CellConst::ELEVATION_SEA && $elevation2 === CellConst::ELEVATION_SEA) {
                 $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, -2));
             } else if ($elevation1 === CellConst::ELEVATION_SHALLOW && $elevation2 === CellConst::ELEVATION_SHALLOW) {
                 $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, -1));
-            } else if ($elevation1 === CellConst::ELEVATION_PLAIN && $elevation2 === CellConst::ELEVATION_PLAIN) {
-                $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, 0));
-            } else if ($elevation1 === CellConst::ELEVATION_MOUNTAIN && $elevation2 === CellConst::ELEVATION_MOUNTAIN) {
-                $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, 1));
             }
         } else {
-            $avr = ((float)$elevation1 + (float)$elevation2) / 2;
+            $avr = ($elevation1 + $elevation2) / 2;
             if ($avr < -0.5) {
                 $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, ceil($avr)));
             } else if ($avr === -0.5) {
                 $terrain->setEdge($this->point, new Shore(point: $this->point, face: $this->face));
             } else {
-                // TODO: 実装
+                if ($cell1->getType() === Wasteland::TYPE || $cell2->getType() === Wasteland::TYPE) {
+                    $terrain->setEdge($this->point, new Wasteland(point: $this->point, face: $this->face));
+                } else {
+                    $terrain->setEdge($this->point, new Plain(point: $this->point, face: $this->face));
+                }
+                // TODO: 実装する
             }
         }
         return new PassTurnResult($terrain, $status, Logs::create());

@@ -24,6 +24,7 @@ class EdgeConst
             Shore::TYPE => new Shore(...get_object_vars($data)),
             Shallow::TYPE => new Shallow(...get_object_vars($data)),
             Sea::TYPE => new Sea(...get_object_vars($data)),
+            Shore::TYPE => new Shore(...get_object_vars($data)),
         };
     }
 
