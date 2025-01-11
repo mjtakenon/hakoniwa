@@ -160,7 +160,7 @@ class Terrain implements JsonCodable
 
         $this->cells->flatten()->each(function(Cell $cell) {
             for ($face = 0; $face < 3; $face++) {
-                if ($cell->getElevation() === CellConst::ELEVATION_PLAIN && $cell->getType() !== Wasteland::TYPE) {
+                if ($cell->getElevation() >= CellConst::ELEVATION_LAND && $cell->getType() !== Wasteland::TYPE) {
                     $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = new \App\Entity\Edge\Others\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $face);
                 } else {
                     $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = EdgeConst::getDefaultEdge(new Point($cell->getPoint()->x, $cell->getPoint()->y), $face, $cell->getElevation());

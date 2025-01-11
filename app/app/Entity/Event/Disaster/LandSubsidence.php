@@ -36,7 +36,8 @@ class LandSubsidence implements IDisaster
         $logs->add(new OccurLandSubsidenceLog($island));
 
         $candidates = $terrain->getCells()->flatten(1)->filter(function (Cell $cell) {
-            return !$cell::ATTRIBUTE[CellConst::IS_SHIP] && ($cell::ELEVATION === CellConst::ELEVATION_SHALLOW || $cell::ELEVATION === CellConst::ELEVATION_PLAIN);
+            // 船や山ではない かつ 浅瀬以上の標高
+            return !($cell::ATTRIBUTE[CellConst::IS_SHIP] || $cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) && $cell::ELEVATION >= CellConst::ELEVATION_SHALLOW;
         });
 
         /** @var Cell $cell */

@@ -27,7 +27,7 @@ class DestructionByMeteoriteLog extends LogRow
             ['text' => $this->cell::NAME, 'style' => LogConst::BOLD . LogConst::COLOR_WARNING],
             ['text' => 'に'],
             ['text' => '隕石が落下', 'style' => LogConst::BOLD . LogConst::COLOR_DANGER],
-            $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => 'し、海底がえぐられました。'] : ($this->cell::ELEVATION === 0 ? ['text' => 'し、一帯が水没しました。'] : ['text' => 'し、山が消し飛びました。']),
+            $this->cell::ELEVATION < CellConst::ELEVATION_LAND ? ['text' => 'し、海底がえぐられました。'] : ($this->cell::ATTRIBUTE[CellConst::IS_MOUNTAIN] ? ['text' => 'し、山が消し飛びました。'] : ['text' => 'し、一帯が水没しました。']),
         ]);
     }
 }

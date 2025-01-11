@@ -134,6 +134,7 @@ class Levinoth extends Monster
             return new PassTurnResult($terrain, $status, $logs);
         }
 
+        // 怪獣にあたったときは体力を1回復する
         if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
             /** @var Monster $cell */
             $cell->setHitPoints($cell->getHitPoints() + 1);
@@ -141,7 +142,8 @@ class Levinoth extends Monster
             return new PassTurnResult($terrain, $status, $logs);
         }
 
-        if ($cell::ELEVATION === CellConst::ELEVATION_PLAIN) {
+        // 地上に落ちたときは一定確率で卵が設置される
+        if ($cell::ELEVATION >= CellConst::ELEVATION_LAND) {
             if (self::SPAWN_EGG_PROBABILITY <= Rand::mt_rand_float()) {
                 $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
             } else {

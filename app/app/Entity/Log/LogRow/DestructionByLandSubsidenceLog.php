@@ -27,7 +27,7 @@ class DestructionByLandSubsidenceLog extends LogRow
             ['text' => $this->cell::NAME, 'style' => LogConst::BOLD . LogConst::COLOR_WARNING],
             ['text' => 'は'],
             ['text' => '地盤が沈下', 'style' => LogConst::BOLD . LogConst::COLOR_DANGER],
-            $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => 'しました'] : ['text' => 'し、一帯が水没しました。'],
+            $this->cell::ELEVATION < CellConst::ELEVATION_LAND ? ['text' => 'しました'] : ['text' => 'し、一帯が水没しました。'],
         ]);
     }
 }

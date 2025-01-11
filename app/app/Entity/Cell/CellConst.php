@@ -71,8 +71,7 @@ class CellConst
     const PREVENTING_TYPHOON = 'preventing_typhoon';
     const PREVENTING_TSUNAMI = 'preventing_tsunami';
 
-    const ELEVATION_MOUNTAIN = 1;
-    const ELEVATION_PLAIN = 0;
+    const ELEVATION_LAND = 0;
     const ELEVATION_SHALLOW = -1;
     const ELEVATION_SEA = -2;
 
@@ -131,8 +130,7 @@ class CellConst
     static public function getDefaultCell(Point $point, int $elevation): Cell
     {
         return match(true) {
-            $elevation >= self::ELEVATION_MOUNTAIN => new Mountain(point: $point),
-            $elevation === self::ELEVATION_PLAIN => new Wasteland(point: $point),
+            $elevation >= self::ELEVATION_LAND => new Wasteland(point: $point),
             $elevation === self::ELEVATION_SHALLOW => new Shallow(point: $point),
             $elevation <= self::ELEVATION_SEA => new Sea(point: $point),
         };

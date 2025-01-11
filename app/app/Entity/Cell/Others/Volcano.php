@@ -27,7 +27,7 @@ class Volcano extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => true,
     ];
-    public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
+    public const ELEVATION = CellConst::ELEVATION_LAND;
 
     protected string $type = self::TYPE;
     protected string $name = self::NAME;

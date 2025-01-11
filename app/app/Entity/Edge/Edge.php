@@ -22,7 +22,7 @@ abstract class Edge
 {
     use Range;
 
-    public const ELEVATION = CellConst::ELEVATION_PLAIN;
+    public const ELEVATION = CellConst::ELEVATION_LAND;
 
     protected string $name;
     protected string $type;
@@ -183,9 +183,9 @@ abstract class Edge
             }
         } else {
             $avr = ($elevation1 + $elevation2) / 2;
-            if ($avr < -0.5) {
+            if ($avr < CellConst::ELEVATION_SEA) {
                 $terrain->setEdge($this->point, EdgeConst::getDefaultEdge($this->point, $this->face, ceil($avr)));
-            } else if ($avr === -0.5) {
+            } else if ($avr > -1 && $avr < 0) {
                 $terrain->setEdge($this->point, new Shore(point: $this->point, face: $this->face));
             } else {
                 if ($cell1->getType() === Wasteland::TYPE || $cell2->getType() === Wasteland::TYPE) {

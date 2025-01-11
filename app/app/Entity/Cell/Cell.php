@@ -31,7 +31,7 @@ abstract class Cell
         CellConst::PREVENTING_TSUNAMI => false,
     ];
 
-    public const ELEVATION = CellConst::ELEVATION_PLAIN;
+    public const ELEVATION = CellConst::ELEVATION_LAND;
 
     protected string $name;
     protected string $type;
