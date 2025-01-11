@@ -70,7 +70,7 @@ class ConstructSubmarinePlan extends Plan
         /** @var Cell $cell */
         $cell = $seaCells->random();
 
-        $terrain->setCell($cell->getPoint(), new Submarine(
+        $terrain->setCell(new Submarine(
             point: $cell->getPoint(),
             elevation: $cell->getElevation(),
             affiliation_id: $island->id,

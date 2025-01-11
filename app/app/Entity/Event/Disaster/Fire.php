@@ -40,7 +40,7 @@ class Fire implements IDisaster
                 continue;
             }
 
-            $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
+            $terrain->setCell(new Wasteland(point: $cell->getPoint()));
             $logs->add(new DestructionByFireLog($island, $cell));
         }
 

@@ -67,7 +67,7 @@ class LandfillPlan extends Plan
         }
 
         if (in_array($cell::TYPE, [Shallow::TYPE, Lake::TYPE], true)) {
-            $terrain->setCell($this->point, new Wasteland(point: $this->point));
+            $terrain->setCell(new Wasteland(point: $this->point));
 
             // 周囲が3セル以上陸地だった場合、周囲の海は浅瀬になる
             $cells = $terrain->getAroundCells($this->point);
@@ -78,11 +78,11 @@ class LandfillPlan extends Plan
                 foreach ($cells->filter(function ($cell) {
                     return $cell::TYPE === Sea::TYPE;
                 }) as $c) {
-                    $terrain->setCell($c->getPoint(), new Shallow(point: $c->getPoint()));
+                    $terrain->setCell(new Shallow(point: $c->getPoint()));
                 }
             }
         } else {
-            $terrain->setCell($this->point, new Shallow(point: $this->point));
+            $terrain->setCell(new Shallow(point: $this->point));
         }
 
         $terrain->replaceShallowToLake();

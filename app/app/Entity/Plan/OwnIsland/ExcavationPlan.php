@@ -57,11 +57,11 @@ class ExcavationPlan extends Plan
         }
 
         if ($cell::TYPE === Shallow::TYPE) {
-            $terrain->setCell($this->point, new Sea(point: $this->point));
+            $terrain->setCell(new Sea(point: $this->point));
         } else if (in_array($cell::TYPE, [Mountain::TYPE, Volcano::TYPE], true)) {
-            $terrain->setCell($this->point, new Wasteland(point: $this->point));
+            $terrain->setCell(new Wasteland(point: $this->point));
         } else {
-            $terrain->setCell($this->point, new Shallow(point: $this->point));
+            $terrain->setCell(new Shallow(point: $this->point));
         }
 
         $terrain->replaceShallowToLake();

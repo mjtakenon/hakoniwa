@@ -82,7 +82,7 @@ class FoodsTransportationPlan extends Plan
 
         /** @var TransportShip $transportShip */
         $transportShip = $transportShips->random();
-        $terrain->setCell($transportShip->getPoint(), CellConst::getDefaultCell($transportShip->getPoint(), $transportShip->getElevation()));
+        $terrain->setCell(CellConst::getDefaultCell($transportShip->getPoint(), $transportShip->getElevation()));
 
         $status->setFoods($status->getFoods() - (self::UNIT * $this->amount));
 

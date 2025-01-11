@@ -196,9 +196,13 @@ class Terrain implements JsonCodable
         return $this->cells[$point->y][$point->x];
     }
 
-    public function setCell(Point $point, Cell $cell): void
+    public function setCell(Cell $cell, ?Point $point = null): void
     {
-        $this->cells[$point->y][$point->x] = $cell;
+        if (is_null($point)) {
+            $this->cells[$cell->getPoint()->y][$cell->getPoint()->x] = $cell;
+        } else {
+            $this->cells[$point->y][$point->x] = $point;
+        }
     }
 
     public function getEdge(Point $point, int $face): Edge
@@ -401,7 +405,7 @@ class Terrain implements JsonCodable
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
             if ($cell::TYPE === Lake::TYPE) {
-                $this->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
+                $this->setCell(new Shallow(point: $cell->getPoint()));
             } else if ($cell::ATTRIBUTE[CellConst::IS_LAND]) {
                 $isChecked[$cell->getPoint()->toString()] = true;
                 continue;
@@ -438,7 +442,7 @@ class Terrain implements JsonCodable
 
         $isLake->each(function ($val, $key) {
             $point = Point::fromString($key);
-            $this->setCell($point, new Lake(point: $point));
+            $this->setCell(new Lake(point: $point));
         });
 
         return $this;
@@ -475,19 +479,19 @@ class Terrain implements JsonCodable
         $plains = $this->findByTypes([Plain::TYPE, Wasteland::TYPE]);
         if (!$plains->isEmpty()) {
             $targetCell = $plains->random();
-            $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
+            $this->setCell(new Village(point: $targetCell->getPoint()));
             return;
         }
 
         $shallows = $this->findByTypes([Shallow::TYPE, Mountain::TYPE]);
         if (!$shallows->isEmpty()) {
             $targetCell = $shallows->random();
-            $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
+            $this->setCell(new Village(point: $targetCell->getPoint()));
             return;
         }
 
         $targetCell = $this->cells->flatten(1)->random();
-        $this->setCell($targetCell->getPoint(), new Village(point: $targetCell->getPoint()));
+        $this->setCell(new Village(point: $targetCell->getPoint()));
     }
 
     public function changeIslandName(Island $island): static
@@ -499,7 +503,7 @@ class Terrain implements JsonCodable
         foreach ($ships as $ship) {
             if ($ship->getAffiliationId() === $island->id) {
                 $ship->setAffiliationName($island->name);
-                $this->setCell($ship->getPoint(), $ship);
+                $this->setCell($ship);
             }
         }
 

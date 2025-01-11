@@ -39,7 +39,7 @@ class VolcanicEruption implements IDisaster
         $mountains = $terrain->findByTypes([Volcano::TYPE, Mine::TYPE]);
         /** @var Cell $mountain */
         foreach ($mountains as $mountain) {
-            $terrain->setCell($mountain->getPoint(), new Mountain(point: $mountain->getPoint()));
+            $terrain->setCell(new Mountain(point: $mountain->getPoint()));
             if ($mountain->getType() === Mine::TYPE) {
                 $logs->add(new MineClosureLog($island, deep_copy($mountain)));
             }
@@ -49,7 +49,7 @@ class VolcanicEruption implements IDisaster
 
         $logs->add(new OccurVolcanicEruptionLog($island, $point));
 
-        $terrain->setCell($point, new Volcano(point: $point));
+        $terrain->setCell(new Volcano(point: $point));
 
         $aroundCells = $terrain->getAroundCells($point);
         /** @var Cell $cell */
@@ -63,7 +63,7 @@ class VolcanicEruption implements IDisaster
             }
 
             if (!$cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
-                $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), min(0, $cell->getElevation()+1)));
+                $terrain->setCell(CellConst::getDefaultCell($cell->getPoint(), min(0, $cell->getElevation()+1)));
             }
         }
 

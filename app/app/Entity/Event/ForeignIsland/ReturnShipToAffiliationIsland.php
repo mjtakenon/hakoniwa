@@ -28,7 +28,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
 
         // 帰還先の島がない場合、当該セルを消すだけとする
         if (is_null($toIsland)) {
-            $fromTerrain->setCell($combatantShip->getPoint(), CellConst::getDefaultCell($combatantShip->getPoint(), $combatantShip->getElevation()));
+            $fromTerrain->setCell(CellConst::getDefaultCell($combatantShip->getPoint(), $combatantShip->getElevation()));
             $fromLogs->add(new AbortReturnNotFoundLog($combatantShip));
 
             return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
@@ -41,7 +41,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
             $fromLogs->add(new AbortReturnLog($fromIsland, $combatantShip));
             return new ForeignIslandEventResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs);
         }
-        $fromTerrain->setCell($combatantShip->getPoint(), CellConst::getDefaultCell($combatantShip->getPoint(), $combatantShip->getElevation()));
+        $fromTerrain->setCell(CellConst::getDefaultCell($combatantShip->getPoint(), $combatantShip->getElevation()));
 
         /** @var Cell $seaCell */
         $seaCell = $seaCells->random();
@@ -52,7 +52,7 @@ class ReturnShipToAffiliationIsland extends ForeignIslandEvent
         // 途中で島名が変わったときのことを考慮し、艦隊名を更新
         $combatantShip->setAffiliationName($toIsland->name);
 
-        $toTerrain->setCell($combatantShip->getPoint(), $combatantShip);
+        $toTerrain->setCell($combatantShip);
 
         $fromLogs->add(new ReturnLog($toIsland, $combatantShip, true));
         $toLogs->add(new ReturnLog($fromIsland, $combatantShip, false));

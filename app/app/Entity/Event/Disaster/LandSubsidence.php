@@ -45,7 +45,7 @@ class LandSubsidence implements IDisaster
 
             if ($cell::ELEVATION === CellConst::ELEVATION_SHALLOW) {
                 $logs->add(new DestructionByLandSubsidenceLog($island, $cell));
-                $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
+                $terrain->setCell(new Sea(point: $cell->getPoint()));
                 continue;
             }
 
@@ -54,7 +54,7 @@ class LandSubsidence implements IDisaster
             }
 
             $logs->add(new DestructionByLandSubsidenceLog($island, $cell));
-            $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
+            $terrain->setCell(new Shallow(point: $cell->getPoint()));
         }
 
         return new DisasterResult($terrain, $status, $logs);

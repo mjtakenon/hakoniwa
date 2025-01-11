@@ -62,7 +62,7 @@ class ConstructParkPlan extends Plan
         /** @var Park $park */
         foreach (self::PARKS as $park) {
             if ($park::canBuild($terrain, $status, $achievements)) {
-                $terrain->setCell($this->point, new $park(point: $this->point));
+                $terrain->setCell(new $park(point: $this->point));
                 break;
             }
         }

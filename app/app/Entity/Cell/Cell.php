@@ -49,6 +49,8 @@ abstract class Cell
     public function __construct(...$data)
     {
         $this->point = new Point($data['point']->x, $data['point']->y);
+        $this->elevation = $data['elevation'];
+
         if (array_key_exists('sub_type', $data)) {
             $this->subType = $data['sub_type'];
         }
@@ -65,6 +67,7 @@ abstract class Cell
             'type' => $this->getType(),
             'data' => [
                 'point' => $this->getPoint(),
+                'elevation' => $this->getElevation(),
             ]
         ];
 

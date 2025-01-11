@@ -52,7 +52,7 @@ class GroundLevelingPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        $terrain->setCell($this->point, new Plain(point: $this->point));
+        $terrain->setCell(new Plain(point: $this->point));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);

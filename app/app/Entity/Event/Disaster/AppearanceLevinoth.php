@@ -52,7 +52,7 @@ class AppearanceLevinoth implements IDisaster
         $levinoth = new Levinoth(point: $cell->getPoint(), remain_move_times: 0, level: $level, hit_points: $hitPoints, elevation: $cell->getElevation());
         $logs->add(new AppearLevinothLog($island, $levinoth));
 
-        $terrain->setCell($cell->getPoint(), $levinoth);
+        $terrain->setCell($levinoth);
 
         $disasterResult = LevinothFleetsInvasion::occur($island, $terrain, $status, $turn);
 

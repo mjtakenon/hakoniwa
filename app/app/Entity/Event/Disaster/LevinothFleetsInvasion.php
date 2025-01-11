@@ -40,7 +40,7 @@ class LevinothFleetsInvasion implements IDisaster
         $spawnCells = $seaCells->random(min($maxEnemyShipsCount, $seaCells->count()));
 
         foreach ($spawnCells as $spawnCell) {
-            $terrain->setCell($spawnCell->getPoint(), new LevinothSubmarine(
+            $terrain->setCell(new LevinothSubmarine(
                 point: $spawnCell->getPoint(),
                 elevation: $spawnCell->getElevation(),
                 experience: random_int(0, self::getInitialExperience($status->getPopulation())),
@@ -59,7 +59,7 @@ class LevinothFleetsInvasion implements IDisaster
         $spawnCells = $seaCells->random(min($maxEnemyShipsCount, $seaCells->count()));
 
         foreach ($spawnCells as $spawnCell) {
-            $terrain->setCell($spawnCell->getPoint(), new LevinothBattleship(
+            $terrain->setCell(new LevinothBattleship(
                 point: $spawnCell->getPoint(),
                 elevation: $spawnCell->getElevation(),
                 experience: random_int(0, self::getInitialExperience($status->getPopulation())),

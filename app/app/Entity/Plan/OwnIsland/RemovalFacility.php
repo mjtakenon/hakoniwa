@@ -42,11 +42,11 @@ class RemovalFacility extends Plan
         }
 
         if ($cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
-            $terrain->setCell($this->point, new Mountain(point: $this->point));
+            $terrain->setCell(new Mountain(point: $this->point));
         } else if ($cell->getElevation() >= CellConst::ELEVATION_LAND) {
-            $terrain->setCell($this->point, new Plain(point: $this->point));
+            $terrain->setCell(new Plain(point: $this->point));
         } else {
-            $terrain->setCell($this->point, CellConst::getDefaultCell($this->point, $cell->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($this->point, $cell->getElevation()));
         }
 
         $logs = Logs::create()->add(new ExecuteLog($island, $this));

@@ -35,7 +35,7 @@ class HugeMeteorite implements IDisaster
         $around1HexCells = $terrain->getAroundCells($point);
         $around2HexCells = $terrain->getAroundCells($point, 2);
 
-        $terrain->setCell($point, new Sea(point: $point));
+        $terrain->setCell(new Sea(point: $point));
 
         $logs->add(new OccurHugeMeteoriteLog($island, $point));
 
@@ -54,7 +54,7 @@ class HugeMeteorite implements IDisaster
                 $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 1));
             }
 
-            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()-1));
+            $terrain->setCell(CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()-1));
         }
 
         // 周囲2hex
@@ -71,7 +71,7 @@ class HugeMeteorite implements IDisaster
                 $logs->add(new DestructionByHugeMeteoriteLog($island, $cell, 2));
             }
 
-            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
         }
 
         return new DisasterResult($terrain, $status, $logs);

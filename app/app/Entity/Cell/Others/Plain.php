@@ -62,7 +62,7 @@ class Plain extends Cell
             return in_array($cell::TYPE, self::IMMIGRABLE_TYPE, true);
         });
         if ($immigrableCells->count() * self::IMMIGRATE_COEF > Rand::mt_rand_float()) {
-            $terrain->setCell($this->point, new Village(point: $this->point));
+            $terrain->setCell(new Village(point: $this->point));
         }
         return new PassTurnResult($terrain, $status, Logs::create());
     }

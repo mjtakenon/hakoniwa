@@ -50,7 +50,7 @@ class Typhoon implements IDisaster
                 continue;
             }
 
-            $terrain->setCell($cell->getPoint(), new Plain(point: $cell->getPoint()));
+            $terrain->setCell(new Plain(point: $cell->getPoint()));
             $logs->add(new DestructionByTyphoonLog($island, $cell));
         }
 

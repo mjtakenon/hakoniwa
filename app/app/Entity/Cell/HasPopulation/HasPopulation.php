@@ -152,26 +152,26 @@ abstract class HasPopulation extends Cell implements IHasPopulation
 
         // マップチップ入れ替え
         if ($this->population >= Metropolis::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Metropolis(point: $this->point, population: $this->population));
+            $terrain->setCell(new Metropolis(point: $this->point, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= City::MIN_POPULATION) {
-            $terrain->setCell($this->point, new City(point: $this->point, population: $this->population));
+            $terrain->setCell(new City(point: $this->point, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= Town::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Town(point: $this->point, population: $this->population));
+            $terrain->setCell(new Town(point: $this->point, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= Village::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Village(point: $this->point, population: $this->population));
+            $terrain->setCell(new Village(point: $this->point, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
-        $terrain->setCell($this->point, new Plain(point: $this->point));
+        $terrain->setCell(new Plain(point: $this->point));
         return new PassTurnResult($terrain, $status, Logs::create());
     }
 

@@ -56,7 +56,7 @@ class Mountain extends Cell
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
-        $terrain->setCell($this->point, new Volcano(point: $this->point));
+        $terrain->setCell(new Volcano(point: $this->point, elevation: $this->elevation));
 
         return new PassTurnResult($terrain, $status, Logs::create());
     }

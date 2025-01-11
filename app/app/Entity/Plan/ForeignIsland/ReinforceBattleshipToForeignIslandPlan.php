@@ -56,14 +56,14 @@ class ReinforceBattleshipToForeignIslandPlan extends TargetedToForeignIslandPlan
         foreach ($battleships as $battleship) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            $fromTerrain->setCell($battleship->getPoint(), CellConst::getDefaultCell($battleship->getPoint(), $battleship->getElevation()));
+            $fromTerrain->setCell(CellConst::getDefaultCell($battleship->getPoint(), $battleship->getElevation()));
 
             $battleship->setPoint($seaCell->getPoint());
             $battleship->setElevation($seaCell->getElevation());
             // 帰還ターンは変数に切り出す
             $battleship->setReturnTurn($turn->turn + self::DEFAULT_REINFORCE_TURN);
 
-            $toTerrain->setCell($battleship->getPoint(), $battleship);
+            $toTerrain->setCell($battleship);
         }
 
         $fromLogs->add(new ReinforceLog($toIsland, $amount, $this->plan, true));

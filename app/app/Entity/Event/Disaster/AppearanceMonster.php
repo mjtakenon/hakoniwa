@@ -57,7 +57,7 @@ class AppearanceMonster implements IDisaster
             $monsterCell = new $monster(point: $cell->getPoint(), remain_move_times: 0);
             $logs->add(new AppearMonsterLog($island, $cell, $monsterCell));
 
-            $terrain->setCell($cell->getPoint(), $monsterCell);
+            $terrain->setCell($monsterCell);
         }
 
         return new DisasterResult($terrain, $status, $logs);

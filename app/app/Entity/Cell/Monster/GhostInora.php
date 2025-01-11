@@ -62,7 +62,7 @@ class GhostInora extends Monster
         if ($this->getDisappearancePopulation() > $status->getPopulation()) {
             $logs = Logs::create();
             $logs->add(new DisappearMonsterLog($island, $this));
-            $terrain->setCell($this->point, new Wasteland(point: $this->point));
+            $terrain->setCell(new Wasteland(point: $this->point));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -85,12 +85,12 @@ class GhostInora extends Monster
         $logs = Logs::create();
         // 破壊する際、消えないよう元のデータを持っておく
         $monster = $this;
-        $terrain->setCell($this->point, new Wasteland(point: $this->point));
+        $terrain->setCell(new Wasteland(point: $this->point));
 
         $logs->add(new DestructionByMonsterLog($island, $moveTarget, $this));
         $monster->point = $moveTarget->point;
         // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
-        $terrain->setCell($monster->getPoint(), $monster);
+        $terrain->setCell($monster);
 $passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
         $terrain = $passTurnResult->getTerrain();

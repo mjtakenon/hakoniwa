@@ -81,9 +81,9 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
                     $targetCell->setHitPoints($targetCell->getHitPoints() - 1);
                     $toLogs->add(new MissileHitToMonsterLog($fromIsland, deep_copy($targetCell), $this->plan));
                     if ($targetCell->getHitPoints() >= 1) {
-                        $toTerrain->setCell($targetCell->getPoint(), $targetCell);
+                        $toTerrain->setCell($targetCell);
                     } else {
-                        $toTerrain->setCell($targetCell->getPoint(), new Wasteland(point: $targetCell->getPoint()));
+                        $toTerrain->setCell(new Wasteland(point: $targetCell->getPoint()));
 
                         $targetCells = $toTerrain->getAroundCells($this->plan->getPoint(), $this->plan->getAccuracy(), true);
                         $targetCells->add($toTerrain->getCell($this->plan->getPoint()));
@@ -92,7 +92,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
                         $toStatus->setFunds($toStatus->getFunds() + $targetCell->getCorpsePrice());
 
                         $missileBase->setExperience($missileBase->getExperience() + $targetCell->getExperience());
-                        $fromTerrain->setCell($missileBase->getPoint(), $missileBase);
+                        $fromTerrain->setCell($missileBase);
                     }
                 } else {
                     $toLogs->add(new MissileSelfDestructLog($fromIsland, $targetCell->getPoint(), $this->plan));

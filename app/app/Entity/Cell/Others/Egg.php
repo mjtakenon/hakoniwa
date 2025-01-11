@@ -52,7 +52,7 @@ class Egg extends Cell
         }
 
         $monster = new Begenoth(point: $this->point, remain_move_times: 0);
-        $terrain->setCell($this->point, $monster);
+        $terrain->setCell($monster, $this->point);
         $logs->add(new HatchLog($island, $this, $monster));
 
         return new PassTurnResult($terrain, $status, $logs);

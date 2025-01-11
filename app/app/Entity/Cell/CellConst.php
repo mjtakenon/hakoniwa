@@ -130,9 +130,9 @@ class CellConst
     static public function getDefaultCell(Point $point, int $elevation): Cell
     {
         return match(true) {
-            $elevation >= self::ELEVATION_LAND => new Wasteland(point: $point),
-            $elevation === self::ELEVATION_SHALLOW => new Shallow(point: $point),
-            $elevation <= self::ELEVATION_SEA => new Sea(point: $point),
+            $elevation >= self::ELEVATION_LAND => new Wasteland(point: $point, elevation: $elevation),
+            $elevation === self::ELEVATION_SHALLOW => new Shallow(point: $point, elevation: $elevation),
+            $elevation <= self::ELEVATION_SEA => new Sea(point: $point, elevation: $elevation),
         };
     }
 }

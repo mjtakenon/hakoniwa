@@ -110,9 +110,9 @@ class Levinoth extends Monster
         $beforeCellCopy = deep_copy($beforeCell);
         $beforeCell->point = $afterCell->getPoint();
         $beforeCell->elevation = $afterCell->getElevation();
-        $terrain->setCell($beforeCell->point, $beforeCell);
+        $terrain->setCell($beforeCell);
 
-        $terrain->setCell($beforeCellCopy->getPoint(), CellConst::getDefaultCell($beforeCellCopy->getPoint(), $beforeCellCopy->getElevation()));
+        $terrain->setCell(CellConst::getDefaultCell($beforeCellCopy->getPoint(), $beforeCellCopy->getElevation()));
 
         return $terrain;
     }
@@ -130,7 +130,7 @@ class Levinoth extends Monster
         $logs->add(new DestructionByEggLog($island, $this, $cell));
 
         if ($cell::ATTRIBUTE[CellConst::IS_SHIP]) {
-            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -138,16 +138,16 @@ class Levinoth extends Monster
         if ($cell::ATTRIBUTE[CellConst::IS_MONSTER]) {
             /** @var Monster $cell */
             $cell->setHitPoints($cell->getHitPoints() + 1);
-            $terrain->setCell($cell->getPoint(), $cell);
+            $terrain->setCell($cell);
             return new PassTurnResult($terrain, $status, $logs);
         }
 
         // 地上に落ちたときは一定確率で卵が設置される
         if ($cell::ELEVATION >= CellConst::ELEVATION_LAND) {
             if (self::SPAWN_EGG_PROBABILITY <= Rand::mt_rand_float()) {
-                $terrain->setCell($cell->getPoint(), new Wasteland(point: $cell->getPoint()));
+                $terrain->setCell(new Wasteland(point: $cell->getPoint()));
             } else {
-                $terrain->setCell($cell->getPoint(), new Egg(point: $cell->getPoint()));
+                $terrain->setCell(new Egg(point: $cell->getPoint()));
             }
         }
 
@@ -164,7 +164,7 @@ class Levinoth extends Monster
         if ($this->getDisappearancePopulation() > $status->getPopulation() || $terrain->findByTypes([LevinothBattleship::TYPE, LevinothSubmarine::TYPE])->isEmpty()) {
             $logs = Logs::create();
             $logs->add(new DisappearMonsterLog($island, $this));
-            $terrain->setCell($this->getPoint(), CellConst::getDefaultCell($this->getPoint(), $this->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($this->getPoint(), $this->getElevation()));
             return new PassTurnResult($terrain, $status, $logs);
         }
 

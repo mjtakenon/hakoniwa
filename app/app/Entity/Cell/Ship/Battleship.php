@@ -113,13 +113,13 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
                 $logs->add(new ReceiveBountyLog(deep_copy($enemyShip), $amount));
             }
 
-            $terrain->setCell($enemyShip->getPoint(), CellConst::getDefaultCell($enemyShip->getPoint(), $enemyShip->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($enemyShip->getPoint(), $enemyShip->getElevation()));
 
             // TODO: 得られる経験値は変数に切り出す
             $this->experience += $enemyShip->getLevel() * 5;
         } else {
             $logs->add(new AttackLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-            $terrain->setCell($enemyShip->getPoint(), $enemyShip);
+            $terrain->setCell($enemyShip);
         }
 
         return new PassTurnResult($terrain, $status, $logs);
