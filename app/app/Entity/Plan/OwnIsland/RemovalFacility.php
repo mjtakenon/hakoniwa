@@ -42,9 +42,9 @@ class RemovalFacility extends Plan
         }
 
         if ($cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
-            $terrain->setCell(new Mountain(point: $this->point));
+            $terrain->setCell(new Mountain(point: $cell->getPoint(), elevation: $cell->getElevation()));
         } else if ($cell->getElevation() >= CellConst::ELEVATION_LAND) {
-            $terrain->setCell(new Plain(point: $this->point));
+            $terrain->setCell(new Plain(point: $cell->getPoint(), elevation: $cell->getElevation()));
         } else {
             $terrain->setCell(CellConst::getDefaultCell($this->point, $cell->getElevation()));
         }

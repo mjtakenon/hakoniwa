@@ -75,7 +75,7 @@ class Slime extends Monster
         if ($this->getDisappearancePopulation() > $status->getPopulation()) {
             $logs = Logs::create();
             $logs->add(new DisappearMonsterLog($island, $this));
-            $terrain->setCell(new Wasteland(point: $this->point));
+            $terrain->setCell(new Wasteland(point: $this->point, elevation: $this->elevation));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -101,7 +101,7 @@ class Slime extends Monster
         // 1/3の確率で分裂, 分裂確率は島のモンスター数により変化
         // 3/2の確率で移動
         if ($this->getDivisionProbably($terrain) <= Rand::mt_rand_float()) {
-            $terrain->setCell(new Wasteland(point: $this->point));
+            $terrain->setCell(new Wasteland(point: $this->point, elevation: $this->elevation));
 
             $logs->add(new DestructionByMonsterLog($island, $moveTarget, $this));
             $monster->point = $moveTarget->point;
@@ -115,7 +115,7 @@ $passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $te
 
             return new PassTurnResult($terrain, $status, $logs);
         } else {
-            $terrain->setCell(new Slime(point: $this->point, remain_move_times: 0, hit_points: 1));
+            $terrain->setCell(new Slime(point: $this->point, elevation: $this->elevation, remain_move_times: 0, hit_points: 1));
 
             $logs->add(new DestructionByDividedMonsterLog($island, $moveTarget, $this));
             $monster->point = $moveTarget->point;

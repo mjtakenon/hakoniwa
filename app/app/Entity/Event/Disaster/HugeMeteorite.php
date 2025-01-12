@@ -35,7 +35,8 @@ class HugeMeteorite implements IDisaster
         $around1HexCells = $terrain->getAroundCells($point);
         $around2HexCells = $terrain->getAroundCells($point, 2);
 
-        $terrain->setCell(new Sea(point: $point));
+        // FIXME 標高に合わせてセルを変えるよう実装
+        $terrain->setCell(new Sea(point: $point, elevation: CellConst::ELEVATION_SEA));
 
         $logs->add(new OccurHugeMeteoriteLog($island, $point));
 

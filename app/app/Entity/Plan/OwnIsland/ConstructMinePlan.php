@@ -42,7 +42,7 @@ class ConstructMinePlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        $terrain->setCell(new Mine(point: $this->point));
+        $terrain->setCell(new Mine(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);

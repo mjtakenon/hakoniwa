@@ -145,9 +145,9 @@ class Levinoth extends Monster
         // 地上に落ちたときは一定確率で卵が設置される
         if ($cell::ELEVATION >= CellConst::ELEVATION_LAND) {
             if (self::SPAWN_EGG_PROBABILITY <= Rand::mt_rand_float()) {
-                $terrain->setCell(new Wasteland(point: $cell->getPoint()));
+                $terrain->setCell(new Wasteland(point: $cell->getPoint(), elevation: $cell->getElevation()));
             } else {
-                $terrain->setCell(new Egg(point: $cell->getPoint()));
+                $terrain->setCell(new Egg(point: $cell->getPoint(), elevation: $cell->getElevation()));
             }
         }
 

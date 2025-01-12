@@ -83,7 +83,7 @@ class FiringMissileToForeignIslandPlan extends TargetedToForeignIslandPlan
                     if ($targetCell->getHitPoints() >= 1) {
                         $toTerrain->setCell($targetCell);
                     } else {
-                        $toTerrain->setCell(new Wasteland(point: $targetCell->getPoint()));
+                        $toTerrain->setCell(new Wasteland(point: $targetCell->getPoint(), elevation: $targetCell->getElevation()));
 
                         $targetCells = $toTerrain->getAroundCells($this->plan->getPoint(), $this->plan->getAccuracy(), true);
                         $targetCells->add($toTerrain->getCell($this->plan->getPoint()));

@@ -56,7 +56,7 @@ class FoodsTransportationPlan extends Plan
         }
 
         if ($transportShips->isEmpty()) {
-            $logs->add(new AbortNoShipLog($island, $this, new TransportShip(point: new Point(0,0))));
+            $logs->add(new AbortNoShipLog($island, $this, new TransportShip(point: new Point(0,0), elevation: CellConst::ELEVATION_MIN)));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }

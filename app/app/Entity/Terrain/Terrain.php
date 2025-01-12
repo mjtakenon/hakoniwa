@@ -56,7 +56,7 @@ class Terrain implements JsonCodable
             $cellsRow = new Collection();
             $edgesRow = new Collection();
             for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
-                $cellsRow[] = new \App\Entity\Cell\Others\Sea(point: new Point($x, $y));
+                $cellsRow[] = new \App\Entity\Cell\Others\Sea(point: new Point($x, $y), elevation: CellConst::ELEVATION_SEA);
                 $edgesColumn = new Collection();
                 for ($face = 0; $face < 3; $face++) {
                     $edgesColumn[] = new \App\Entity\Edge\Others\Sea(point: new Point($x, $y), face: $face);
@@ -140,17 +140,17 @@ class Terrain implements JsonCodable
 
             if ($this->cells[$y][$x]::TYPE === 'sea') {
                 if ($n < 4) {
-                    $this->cells[$y][$x] = new Forest(point: new Point($x, $y));
+                    $this->cells[$y][$x] = new Forest(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND);
                 } else if ($n < 18) {
-                    $this->cells[$y][$x] = new Wasteland(point: new Point($x, $y));
+                    $this->cells[$y][$x] = new Wasteland(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND);
                 } else if ($n < 19) {
-                    $this->cells[$y][$x] = new Volcano(point: new Point($x, $y));
+                    $this->cells[$y][$x] = new Volcano(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX);
                 } else if ($n < 21) {
-                    $this->cells[$y][$x] = new Village(point: new Point($x, $y), population: 1000);
+                    $this->cells[$y][$x] = new Village(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND, population: 1000);
                 } else if ($n < 28) {
-                    $this->cells[$y][$x] = new Plain(point: new Point($x, $y));
+                    $this->cells[$y][$x] = new Plain(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND);
                 } else if ($n < 38) {
-                    $this->cells[$y][$x] = new Shallow(point: new Point($x, $y));
+                    $this->cells[$y][$x] = new Shallow(point: new Point($x, $y), elevation: CellConst::ELEVATION_SHALLOW);
                 } else {
                     break;
                 }
@@ -158,6 +158,7 @@ class Terrain implements JsonCodable
             }
         }
 
+        // TODO: 標高の平坦化処理
         $this->cells->flatten()->each(function(Cell $cell) {
             for ($face = 0; $face < 3; $face++) {
                 if ($cell->getElevation() >= CellConst::ELEVATION_LAND && $cell->getType() !== Wasteland::TYPE) {
@@ -330,25 +331,25 @@ class Terrain implements JsonCodable
         if ($this->inRange($point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x - 1, 0, \HakoniwaService::getMaxWidth())) {
             $cells[] = $this->cells[$point->y][$point->x - 1];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y));
+            $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y), elevation: CellConst::ELEVATION_MIN);
         }
 
         if ($this->inRange($point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x + 1, 0, \HakoniwaService::getMaxWidth())) {
             $cells[] = $this->cells[$point->y][$point->x + 1];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y));
+            $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y), elevation: CellConst::ELEVATION_MIN);
         }
 
         if ($this->inRange($point->y - 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x, 0, \HakoniwaService::getMaxWidth())) {
             $cells[] = $this->cells[$point->y - 1][$point->x];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y - 1));
+            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y - 1), elevation: CellConst::ELEVATION_MIN);
         }
 
         if ($this->inRange($point->y + 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x, 0, \HakoniwaService::getMaxWidth())) {
             $cells[] = $this->cells[$point->y + 1][$point->x];
         } else if ($includeOutOfRegion) {
-            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y - 1));
+            $cells[] = new OutOfRegion(point: new Point($point->x, $point->y - 1), elevation: CellConst::ELEVATION_MIN);
         }
 
         // yが偶数 => (+1:-1), (+1:+1)
@@ -357,24 +358,24 @@ class Terrain implements JsonCodable
             if ($this->inRange($point->y - 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x + 1, 0, \HakoniwaService::getMaxWidth())) {
                 $cells[] = $this->cells[$point->y - 1][$point->x + 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y - 1));
+                $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y - 1), elevation: CellConst::ELEVATION_MIN);
             }
             if ($this->inRange($point->y + 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x + 1, 0, \HakoniwaService::getMaxWidth())) {
                 $cells[] = $this->cells[$point->y + 1][$point->x + 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y + 1));
+                $cells[] = new OutOfRegion(point: new Point($point->x + 1, $point->y + 1), elevation: CellConst::ELEVATION_MIN);
             }
         } else {
             // yが偶数 => (-1:-1), (-1:+1)
             if ($this->inRange($point->y - 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x - 1, 0, \HakoniwaService::getMaxWidth())) {
                 $cells[] = $this->cells[$point->y - 1][$point->x - 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y - 1));
+                $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y - 1), elevation: CellConst::ELEVATION_MIN);
             }
             if ($this->inRange($point->y + 1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($point->x - 1, 0, \HakoniwaService::getMaxWidth())) {
                 $cells[] = $this->cells[$point->y + 1][$point->x - 1];
             } else if ($includeOutOfRegion) {
-                $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y + 1));
+                $cells[] = new OutOfRegion(point: new Point($point->x - 1, $point->y + 1), elevation: CellConst::ELEVATION_MIN);
             }
         }
 
@@ -397,6 +398,7 @@ class Terrain implements JsonCodable
         return $cells;
     }
 
+    // TODO: 標高ベースの置き換え処理二変更
     public function replaceShallowToLake(): static
     {
         $isChecked = new Collection();
@@ -405,7 +407,7 @@ class Terrain implements JsonCodable
         /** @var Cell $cell */
         foreach ($this->cells->flatten(1) as $cell) {
             if ($cell::TYPE === Lake::TYPE) {
-                $this->setCell(new Shallow(point: $cell->getPoint()));
+                $this->setCell(new Shallow(point: $cell->getPoint(), elevation: $cell->getElevation()));
             } else if ($cell::ATTRIBUTE[CellConst::IS_LAND]) {
                 $isChecked[$cell->getPoint()->toString()] = true;
                 continue;
@@ -442,7 +444,7 @@ class Terrain implements JsonCodable
 
         $isLake->each(function ($val, $key) {
             $point = Point::fromString($key);
-            $this->setCell(new Lake(point: $point));
+            $this->setCell(new Lake(point: $point, elevation: CellConst::ELEVATION_SHALLOW));
         });
 
         return $this;
@@ -479,19 +481,19 @@ class Terrain implements JsonCodable
         $plains = $this->findByTypes([Plain::TYPE, Wasteland::TYPE]);
         if (!$plains->isEmpty()) {
             $targetCell = $plains->random();
-            $this->setCell(new Village(point: $targetCell->getPoint()));
+            $this->setCell(new Village(point: $targetCell->getPoint(), elevation: $targetCell->getElevation()));
             return;
         }
 
         $shallows = $this->findByTypes([Shallow::TYPE, Mountain::TYPE]);
         if (!$shallows->isEmpty()) {
             $targetCell = $shallows->random();
-            $this->setCell(new Village(point: $targetCell->getPoint()));
+            $this->setCell(new Village(point: $targetCell->getPoint(), elevation: $targetCell->getElevation()));
             return;
         }
 
         $targetCell = $this->cells->flatten(1)->random();
-        $this->setCell(new Village(point: $targetCell->getPoint()));
+        $this->setCell(new Village(point: $targetCell->getPoint(), elevation: $targetCell->getElevation()));
     }
 
     public function changeIslandName(Island $island): static

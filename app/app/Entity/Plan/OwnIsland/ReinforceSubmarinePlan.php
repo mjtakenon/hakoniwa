@@ -4,6 +4,7 @@ namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\Cell;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Log\LogRow\AbortInvalidIslandLog;
 use App\Entity\Log\LogRow\AbortNoShipLog;
@@ -57,7 +58,7 @@ class ReinforceSubmarinePlan extends Plan
         }
 
         if ($submarines->isEmpty()) {
-            $logs->add(new AbortNoShipLog($island, $this, new Submarine(point: new Point(0, 0))));
+            $logs->add(new AbortNoShipLog($island, $this, new Submarine(point: new Point(0, 0), elevation: CellConst::ELEVATION_MIN)));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }

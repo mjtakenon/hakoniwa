@@ -36,7 +36,7 @@ class Earthquake implements IDisaster
             if (self::DESTRUCTION_PROBABILITY <= Rand::mt_rand_float()) {
                 continue;
             }
-            $terrain->setCell(new Wasteland(point: $cell->getPoint()));
+            $terrain->setCell(new Wasteland(point: $cell->getPoint(), elevation: $cell->getElevation()));
             $logs->add(new DestructionByEarthquakeLog($island, $cell));
         }
 

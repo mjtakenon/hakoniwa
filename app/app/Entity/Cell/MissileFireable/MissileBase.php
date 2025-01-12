@@ -63,7 +63,7 @@ class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumbe
             $arr['data']['experience'] = $this->experience;
             return $arr;
         }
-        return (new Forest(point: $this->point))->toArray($isPrivate, $withStatic);
+        return (new Forest(point: $this->point, elevation: $this->elevation))->toArray($isPrivate, $withStatic);
     }
 
     public function __construct(...$data)

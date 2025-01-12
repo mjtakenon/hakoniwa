@@ -99,7 +99,7 @@ abstract class Monster extends Cell implements IMonster
         if ($this->getDisappearancePopulation() > $status->getPopulation()) {
             $logs = Logs::create();
             $logs->add(new DisappearMonsterLog($island, $this));
-            $terrain->setCell(new Wasteland(point: $this->point));
+            $terrain->setCell(new Wasteland(point: $this->point, elevation: $this->elevation));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -122,7 +122,7 @@ abstract class Monster extends Cell implements IMonster
         $logs = Logs::create();
         // 破壊する際、消えないよう元のデータを持っておく
         $monster = $this;
-        $terrain->setCell(new Wasteland(point: $this->point));
+        $terrain->setCell(new Wasteland(point: $this->point, elevation: $this->elevation));
 
         $logs->add(new DestructionByMonsterLog($island, $moveTarget, $this));
         $monster->point = $moveTarget->point;

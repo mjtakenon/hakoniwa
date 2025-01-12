@@ -140,7 +140,7 @@ class FiringMissilePlan extends Plan
                     if ($targetCell->getHitPoints() >= 1) {
                         $terrain->setCell($targetCell);
                     } else {
-                        $terrain->setCell(new Wasteland(point: $targetCell->getPoint()));
+                        $terrain->setCell(new Wasteland(point: $targetCell->getPoint(), elevation: $targetCell->getElevation()));
 
                         $targetCells = $terrain->getAroundCells($this->point, $this->getAccuracy(), true);
                         $targetCells->add($terrain->getCell($this->point));

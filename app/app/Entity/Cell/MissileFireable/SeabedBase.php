@@ -68,7 +68,7 @@ class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumber
             $arr['data']['experience'] = $this->experience;
             return $arr;
         }
-        return (new Sea(point: $this->point))->toArray($isPrivate, $withStatic);
+        return (new Sea(point: $this->point, elevation: $this->elevation))->toArray($isPrivate, $withStatic);
     }
 
     public function getInfoString(bool $isPrivate = false): string

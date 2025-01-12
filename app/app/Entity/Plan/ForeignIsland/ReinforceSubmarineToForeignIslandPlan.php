@@ -46,7 +46,7 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
 
         $amount = min($this->plan->getAmount(), $seaCells->count(), $submarines->count());
         if ($amount <= 0) {
-            $fromLogs->add(new AbortNoShipLog($fromIsland, $this->plan, new Submarine(point: new Point(0, 0))));
+            $fromLogs->add(new AbortNoShipLog($fromIsland, $this->plan, new Submarine(point: new Point(0, 0), elevation: CellConst::ELEVATION_SEA)));
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs, $fromAchievements, $toAchievements);
         }
 

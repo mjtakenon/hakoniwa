@@ -27,7 +27,7 @@ class OutOfRegion extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => false,
     ];
-    public const ELEVATION = CellConst::ELEVATION_SEA;
+    public const ELEVATION = CellConst::ELEVATION_MIN;
 
     protected string $type = self::TYPE;
     protected string $name = self::NAME;

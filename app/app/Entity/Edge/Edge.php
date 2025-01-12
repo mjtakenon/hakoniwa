@@ -82,37 +82,37 @@ abstract class Edge
                 if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y-1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y-1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 1) {
                 if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y-1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y-1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 2) {
                 if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 3) {
                 if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 4) {
                 if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y+1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y+1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
                 }
             } else {
                 if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y+1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y+1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
                 }
             }
         } else {
@@ -120,37 +120,37 @@ abstract class Edge
                 if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y-1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y-1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 1) {
                 if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y-1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y-1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 2) {
                 if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 3) {
                 if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
                 }
             } else if ($this->getFace() === 4) {
                 if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y+1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y+1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
                 }
             } else {
                 if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
                     $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y+1));
                 } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y+1));
+                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
                 }
             }
         }

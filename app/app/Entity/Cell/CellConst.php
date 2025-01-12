@@ -71,9 +71,11 @@ class CellConst
     const PREVENTING_TYPHOON = 'preventing_typhoon';
     const PREVENTING_TSUNAMI = 'preventing_tsunami';
 
+    const ELEVATION_MAX = 5;
     const ELEVATION_LAND = 0;
     const ELEVATION_SHALLOW = -1;
     const ELEVATION_SEA = -2;
+    const ELEVATION_MIN = -5;
 
     static public function getClassByType(string $type, object $data): Cell
     {
