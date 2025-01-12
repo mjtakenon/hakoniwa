@@ -16,7 +16,7 @@ setup:
 	make create-log-file
 	make composer-install
 	make migrate
-	make seeding
+	make seed
 	make ide-helper-generate
 	make yarn-install
 	make yarn-run-dev
@@ -24,7 +24,7 @@ start:
 	make create-node-modules-dir
 	make up
 	make migrate
-	make seeding
+	make seed
 	make yarn-install
 	make yarn-run-dev
 logs:
@@ -40,9 +40,9 @@ migrate-rollback:
 	docker compose exec --user www-data app php artisan migrate:rollback
 migrate-testing:
 	docker compose exec --user www-data app php artisan migrate --env=testing
-seeding:
+seed:
 	docker compose exec --user www-data app php artisan db:seed
-seeding-testing:
+seed-testing:
 	docker compose exec --user www-data app php artisan db:seed --env=testing
 ide-helper-generate:
 	docker compose exec --user debian app sudo php artisan ide-helper:generate
@@ -96,5 +96,5 @@ yarn-run-prettier:
 yarn-run-build:
 	docker compose exec frontend bash -c "yarn run build"
 
-testing:
+test:
 	docker compose exec --user www-data app php artisan test tests/App
