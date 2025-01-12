@@ -12,8 +12,8 @@ use App\Entity\Util\Point;
 class EdgeConst
 {
     const ELEVATION_LAND = 0;
-    const ELEVATION_SHALLOW = -1;
-    const ELEVATION_SEA = -2;
+    const ELEVATION_SHALLOW = -2;
+    const ELEVATION_SEA = -4;
 
     static public function getClassByType(string $type, object $data): Edge
     {
@@ -29,9 +29,9 @@ class EdgeConst
     static public function getDefaultEdge(Point $point, int $face, int $elevation): Edge
     {
         return match(true) {
-            $elevation >= self::ELEVATION_LAND => new Wasteland(point: $point, face: $face),
-            $elevation === self::ELEVATION_SHALLOW => new Shallow(point: $point, face: $face),
-            $elevation <= self::ELEVATION_SEA => new Sea(point: $point, face: $face),
+            $elevation >= self::ELEVATION_LAND => new Wasteland(point: $point, face: $face, elevation: $elevation),
+            $elevation <= self::ELEVATION_SEA => new Sea(point: $point, face: $face, elevation: $elevation),
+            default => new Shallow(point: $point, face: $face, elevation: $elevation),
         };
     }
 }

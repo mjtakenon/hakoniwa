@@ -119,8 +119,11 @@ abstract class Cell
 
     public function getInfoString(bool $isPrivate = false): string
     {
-        return
-            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName();
+        return $this->elevation < CellConst::ELEVATION_LAND ?
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '水深 ' . $this->elevation*50 . 'm':
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm';
     }
 
     static public function fromJson(string $type, $data): Cell

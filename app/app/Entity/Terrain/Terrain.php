@@ -59,7 +59,7 @@ class Terrain implements JsonCodable
                 $cellsRow[] = new \App\Entity\Cell\Others\Sea(point: new Point($x, $y), elevation: CellConst::ELEVATION_SEA);
                 $edgesColumn = new Collection();
                 for ($face = 0; $face < 3; $face++) {
-                    $edgesColumn[] = new \App\Entity\Edge\Others\Sea(point: new Point($x, $y), face: $face);
+                    $edgesColumn[] = new \App\Entity\Edge\Others\Sea(point: new Point($x, $y), face: $face, elevation: CellConst::ELEVATION_SEA);
                 }
                 $edgesRow[] = $edgesColumn;
             }
@@ -162,12 +162,21 @@ class Terrain implements JsonCodable
         $this->cells->flatten()->each(function(Cell $cell) {
             for ($face = 0; $face < 3; $face++) {
                 if ($cell->getElevation() >= CellConst::ELEVATION_LAND && $cell->getType() !== Wasteland::TYPE) {
-                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = new \App\Entity\Edge\Others\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $face);
+                    $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = new \App\Entity\Edge\Others\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $face, elevation: CellConst::ELEVATION_LAND);
                 } else {
                     $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = EdgeConst::getDefaultEdge(new Point($cell->getPoint()->x, $cell->getPoint()->y), $face, $cell->getElevation());
                 }
             }
         });
+
+        /** @var Collection $edge */
+        foreach ($this->edges->flatten(1) as $edges) {
+            /** @var Edge $edge */
+            foreach ($edges as $edge) {
+                $terrain = $edge->weathering($this);
+                $this->setEdge($terrain->getEdge(new Point($edge->getPoint()->x, $edge->getPoint()->y), $edge->getFace()));
+            }
+        }
 
         return $this->replaceShallowToLake();
     }
@@ -211,9 +220,18 @@ class Terrain implements JsonCodable
         return $this->edges[$point->y][$point->x][$face];
     }
 
-    public function setEdge(Point $point, Edge $edge): void
+    public function setEdge(Edge $edge, ?Point $point = null): void
     {
-        $this->edges[$point->y][$point->x][$edge->getFace()] = $edge;
+        if (is_null($point)) {
+            $this->edges[$edge->getPoint()->y][$edge->getPoint()->x][$edge->getFace()] = $edge;
+        } else {
+            $this->edges[$point->y][$point->x][$edge->getFace()] = $edge;
+        }
+    }
+
+    public function updateEdge(Edge $edge): void
+    {
+        $this->edges[$edge->getPoint()->y][$edge->getPoint()->x][$edge->getFace()] = $edge;
     }
 
     public function aggregatePopulation(): int

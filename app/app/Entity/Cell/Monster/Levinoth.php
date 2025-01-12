@@ -100,6 +100,7 @@ class Levinoth extends Monster
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             'レベル' . $this->getLevel() . PHP_EOL .
             '体力 ' . $this->getHitPoints();
     }

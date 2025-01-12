@@ -64,6 +64,7 @@ class Mine extends Cell implements IResourcesProduction
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             $this->resourcesProductionCapacity . '人規模';
     }
 

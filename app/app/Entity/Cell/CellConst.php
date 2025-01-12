@@ -71,11 +71,11 @@ class CellConst
     const PREVENTING_TYPHOON = 'preventing_typhoon';
     const PREVENTING_TSUNAMI = 'preventing_tsunami';
 
-    const ELEVATION_MAX = 5;
+    const ELEVATION_MAX = 10;
     const ELEVATION_LAND = 0;
-    const ELEVATION_SHALLOW = -1;
-    const ELEVATION_SEA = -2;
-    const ELEVATION_MIN = -5;
+    const ELEVATION_SHALLOW = -2;
+    const ELEVATION_SEA = -4;
+    const ELEVATION_MIN = -10;
 
     static public function getClassByType(string $type, object $data): Cell
     {
@@ -133,8 +133,8 @@ class CellConst
     {
         return match(true) {
             $elevation >= self::ELEVATION_LAND => new Wasteland(point: $point, elevation: $elevation),
-            $elevation === self::ELEVATION_SHALLOW => new Shallow(point: $point, elevation: $elevation),
             $elevation <= self::ELEVATION_SEA => new Sea(point: $point, elevation: $elevation),
+            default => new Shallow(point: $point, elevation: $elevation),
         };
     }
 }
