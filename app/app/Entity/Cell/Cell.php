@@ -131,6 +131,24 @@ abstract class Cell
         return CellConst::getClassByType($type, $data);
     }
 
+    public function weathering(Terrain $terrain): Cell
+    {
+        if (!$this::ATTRIBUTE[CellConst::IS_LAND] || $this::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
+            return $this;
+        }
+
+        $cells = $terrain->getAroundCells($this->point);
+        $elevationAverage = $cells->avg(function (Cell $cell) { return $cell->getElevation(); });
+
+        if ($elevationAverage < CellConst::ELEVATION_LAND) {
+            $this->elevation = CellConst::ELEVATION_LAND;
+        } else {
+            $this->elevation = floor($elevationAverage);
+        }
+
+        return $this;
+    }
+
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         return new PassTurnResult($terrain, $status, Logs::create());

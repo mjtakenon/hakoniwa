@@ -38,6 +38,7 @@ use App\Entity\Util\Range;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
+use function DeepCopy\deep_copy;
 
 class Terrain implements JsonCodable
 {
@@ -140,15 +141,15 @@ class Terrain implements JsonCodable
 
             if ($this->cells[$y][$x]::TYPE === 'sea') {
                 if ($n < 4) {
-                    $this->cells[$y][$x] = new Forest(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND);
+                    $this->cells[$y][$x] = new Forest(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3);
                 } else if ($n < 18) {
-                    $this->cells[$y][$x] = new Wasteland(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND);
+                    $this->cells[$y][$x] = new Wasteland(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3);
                 } else if ($n < 19) {
                     $this->cells[$y][$x] = new Volcano(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX);
                 } else if ($n < 21) {
-                    $this->cells[$y][$x] = new Village(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND, population: 1000);
+                    $this->cells[$y][$x] = new Village(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3, population: 1000);
                 } else if ($n < 28) {
-                    $this->cells[$y][$x] = new Plain(point: new Point($x, $y), elevation: CellConst::ELEVATION_LAND);
+                    $this->cells[$y][$x] = new Plain(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3);
                 } else if ($n < 38) {
                     $this->cells[$y][$x] = new Shallow(point: new Point($x, $y), elevation: CellConst::ELEVATION_SHALLOW);
                 } else {
@@ -158,7 +159,13 @@ class Terrain implements JsonCodable
             }
         }
 
-        // TODO: 標高の平坦化処理
+        // Cellの平坦化
+        $terrainTmp = deep_copy($this);
+        $this->cells->flatten()->each(function(Cell $cell) use ($terrainTmp) {
+            $this->setCell($cell->weathering($terrainTmp));
+        });
+
+        // Edgeの初期配置
         $this->cells->flatten()->each(function(Cell $cell) {
             for ($face = 0; $face < 3; $face++) {
                 if ($cell->getElevation() >= CellConst::ELEVATION_LAND && $cell->getType() !== Wasteland::TYPE) {
@@ -169,6 +176,7 @@ class Terrain implements JsonCodable
             }
         });
 
+        // Edgeの平坦化
         /** @var Collection $edge */
         foreach ($this->edges->flatten(1) as $edges) {
             /** @var Edge $edge */
