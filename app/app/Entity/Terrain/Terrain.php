@@ -53,13 +53,16 @@ class Terrain implements JsonCodable
         $cells = new Collection();
         $edges = new Collection();
 
-        for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
+        for ($y = 0; $y < \HakoniwaService::getMaxHeight(); $y++) {
             $cellsRow = new Collection();
             $edgesRow = new Collection();
-            for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
+            for ($x = 0; $x < \HakoniwaService::getMaxWidth(); $x++) {
                 $cellsRow[] = new \App\Entity\Cell\Others\Sea(point: new Point($x, $y), elevation: CellConst::ELEVATION_SEA);
                 $edgesColumn = new Collection();
                 for ($face = 0; $face < 3; $face++) {
+                    if (!$this->hasEdge(new Point($x, $y), $face)) {
+                        continue;
+                    }
                     $edgesColumn[] = new \App\Entity\Edge\Others\Sea(point: new Point($x, $y), face: $face, elevation: CellConst::ELEVATION_SEA);
                 }
                 $edgesRow[] = $edgesColumn;
@@ -100,10 +103,10 @@ class Terrain implements JsonCodable
 
         $cells = new Collection();
         $edges = new Collection();
-        for ($y = 0; $y < \HakoniwaService::getMaxWidth(); $y++) {
+        for ($y = 0; $y < \HakoniwaService::getMaxHeight(); $y++) {
             $cellsRow = new Collection();
             $edgesRow = new Collection();
-            for ($x = 0; $x < \HakoniwaService::getMaxHeight(); $x++) {
+            for ($x = 0; $x < \HakoniwaService::getMaxWidth(); $x++) {
                 $cellsRow[] = null;
                 $edgesColumn = new Collection();
                 for ($face = 0; $face < 3; $face++) {
@@ -124,6 +127,15 @@ class Terrain implements JsonCodable
             $edge = Edge::fromJson($object->type, $object->data);
             $edges[$edge->getPoint()->y][$edge->getPoint()->x][$edge->getFace()] = $edge;
         }
+
+        // 端のEdgeはnullになるのでArrayから除去
+        $edges = $edges->map(function (Collection $y) {
+            return $y->map(function (Collection $x) {
+                return $x->filter(function (?Edge $e) {
+                    return !is_null($e);
+                });
+            });
+        });
 
         $static = new static();
         $static->setCells($cells);
@@ -168,6 +180,10 @@ class Terrain implements JsonCodable
         // Edgeの初期配置
         $this->cells->flatten()->each(function(Cell $cell) {
             for ($face = 0; $face < 3; $face++) {
+                if (!$this->hasEdge($cell->getPoint(), $face)) {
+                    continue;
+                }
+
                 if ($cell->getElevation() >= CellConst::ELEVATION_LAND && $cell->getType() !== Wasteland::TYPE) {
                     $this->edges[$cell->getPoint()->y][$cell->getPoint()->x][$face] = new \App\Entity\Edge\Others\Plain(point: new Point($cell->getPoint()->x, $cell->getPoint()->y), face: $face, elevation: CellConst::ELEVATION_LAND);
                 } else {
@@ -194,7 +210,7 @@ class Terrain implements JsonCodable
         return $this->cells;
     }
 
-    private function getEdges(): Collection
+    public function getEdges(): Collection
     {
         return $this->edges;
     }
@@ -235,11 +251,6 @@ class Terrain implements JsonCodable
         } else {
             $this->edges[$point->y][$point->x][$edge->getFace()] = $edge;
         }
-    }
-
-    public function updateEdge(Edge $edge): void
-    {
-        $this->edges[$edge->getPoint()->y][$edge->getPoint()->x][$edge->getFace()] = $edge;
     }
 
     public function aggregatePopulation(): int
@@ -424,7 +435,7 @@ class Terrain implements JsonCodable
         return $cells;
     }
 
-    // TODO: 標高ベースの置き換え処理二変更
+    // TODO: 標高ベースの置き換え処理に変更
     public function replaceShallowToLake(): static
     {
         $isChecked = new Collection();
@@ -536,5 +547,14 @@ class Terrain implements JsonCodable
         }
 
         return $this;
+    }
+
+    // その箇所のEdgeを設置するか
+    private function hasEdge(Point $point, int $face): bool {
+        // 端にはEdgeを設置しない
+        return !(
+            ($point->y === 0 && ($face === 0 || $face === 1)) ||
+            ($point->x === 0 && ($face === 2 || $point->y % 2 === 1 && $face === 0)) ||
+            ($point->x === \HakoniwaService::getMaxWidth()-1 && $point->y % 2 === 0 && $face === 1));
     }
 }
