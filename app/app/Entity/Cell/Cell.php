@@ -16,6 +16,7 @@ abstract class Cell
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -30,7 +31,7 @@ abstract class Cell
         CellConst::PREVENTING_TSUNAMI => false,
     ];
 
-    public const ELEVATION = CellConst::ELEVATION_PLAIN;
+    public const ELEVATION = CellConst::ELEVATION_LAND;
 
     protected string $name;
     protected string $type;
@@ -48,6 +49,8 @@ abstract class Cell
     public function __construct(...$data)
     {
         $this->point = new Point($data['point']->x, $data['point']->y);
+        $this->elevation = $data['elevation'];
+
         if (array_key_exists('sub_type', $data)) {
             $this->subType = $data['sub_type'];
         }
@@ -64,6 +67,7 @@ abstract class Cell
             'type' => $this->getType(),
             'data' => [
                 'point' => $this->getPoint(),
+                'elevation' => $this->getElevation(),
             ]
         ];
 
@@ -115,13 +119,34 @@ abstract class Cell
 
     public function getInfoString(bool $isPrivate = false): string
     {
-        return
-            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName();
+        return $this->elevation < CellConst::ELEVATION_LAND ?
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '水深 ' . $this->elevation*50 . 'm':
+            '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm';
     }
 
     static public function fromJson(string $type, $data): Cell
     {
         return CellConst::getClassByType($type, $data);
+    }
+
+    public function weathering(Terrain $terrain): Cell
+    {
+        if (!$this::ATTRIBUTE[CellConst::IS_LAND] || $this::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
+            return $this;
+        }
+
+        $cells = $terrain->getAroundCells($this->point);
+        $elevationAverage = $cells->avg(function (Cell $cell) { return $cell->getElevation(); });
+
+        if ($elevationAverage < CellConst::ELEVATION_LAND) {
+            $this->elevation = CellConst::ELEVATION_LAND;
+        } else {
+            $this->elevation = floor($elevationAverage);
+        }
+
+        return $this;
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult

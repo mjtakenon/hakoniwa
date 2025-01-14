@@ -46,7 +46,7 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
 
         $amount = min($this->plan->getAmount(), $seaCells->count(), $submarines->count());
         if ($amount <= 0) {
-            $fromLogs->add(new AbortNoShipLog($fromIsland, $this->plan, new Submarine(point: new Point(0, 0))));
+            $fromLogs->add(new AbortNoShipLog($fromIsland, $this->plan, new Submarine(point: new Point(0, 0), elevation: CellConst::ELEVATION_SEA)));
             return new ExecutePlanToForeignIslandResult($fromTerrain, $toTerrain, $fromStatus, $toStatus, $fromLogs, $toLogs, $fromAchievements, $toAchievements);
         }
 
@@ -57,14 +57,14 @@ class ReinforceSubmarineToForeignIslandPlan extends TargetedToForeignIslandPlan
         foreach ($submarines as $submarine) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->pop();
-            $fromTerrain->setCell($submarine->getPoint(), CellConst::getDefaultCell($submarine->getPoint(), $submarine->getElevation()));
+            $fromTerrain->setCell(CellConst::getDefaultCell($submarine->getPoint(), $submarine->getElevation()));
 
             $submarine->setPoint($seaCell->getPoint());
             $submarine->setElevation($seaCell->getElevation());
             // 帰還ターンは変数に切り出す
             $submarine->setReturnTurn($turn->turn + self::DEFAULT_REINFORCE_TURN);
 
-            $toTerrain->setCell($submarine->getPoint(), $submarine);
+            $toTerrain->setCell($submarine);
         }
 
         $fromLogs->add(new ReinforceLog($toIsland, $amount, $this->plan, true));

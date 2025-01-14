@@ -60,7 +60,7 @@ class ConstructBattleshipPlan extends Plan
         /** @var Cell $cell */
         $cell = $seaCells->random();
 
-        $terrain->setCell($cell->getPoint(), new Battleship(
+        $terrain->setCell(new Battleship(
             point: $cell->getPoint(),
             elevation: $cell->getElevation(),
             affiliation_id: $island->id,

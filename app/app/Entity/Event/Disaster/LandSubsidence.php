@@ -36,7 +36,8 @@ class LandSubsidence implements IDisaster
         $logs->add(new OccurLandSubsidenceLog($island));
 
         $candidates = $terrain->getCells()->flatten(1)->filter(function (Cell $cell) {
-            return !$cell::ATTRIBUTE[CellConst::IS_SHIP] && ($cell::ELEVATION === CellConst::ELEVATION_SHALLOW || $cell::ELEVATION === CellConst::ELEVATION_PLAIN);
+            // 船や山ではない かつ 浅瀬以上の標高
+            return !($cell::ATTRIBUTE[CellConst::IS_SHIP] || $cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) && $cell::ELEVATION >= CellConst::ELEVATION_SHALLOW;
         });
 
         /** @var Cell $cell */
@@ -44,7 +45,8 @@ class LandSubsidence implements IDisaster
 
             if ($cell::ELEVATION === CellConst::ELEVATION_SHALLOW) {
                 $logs->add(new DestructionByLandSubsidenceLog($island, $cell));
-                $terrain->setCell($cell->getPoint(), new Sea(point: $cell->getPoint()));
+                // FIXME 標高に合わせてセルを変えるよう実装
+                $terrain->setCell(new Sea(point: $cell->getPoint(), elevation: $cell->getElevation()-1));
                 continue;
             }
 
@@ -53,7 +55,8 @@ class LandSubsidence implements IDisaster
             }
 
             $logs->add(new DestructionByLandSubsidenceLog($island, $cell));
-            $terrain->setCell($cell->getPoint(), new Shallow(point: $cell->getPoint()));
+            // FIXME 標高に合わせてセルを変えるよう実装
+            $terrain->setCell(new Shallow(point: $cell->getPoint(), elevation: $cell->getElevation()-1));
         }
 
         return new DisasterResult($terrain, $status, $logs);

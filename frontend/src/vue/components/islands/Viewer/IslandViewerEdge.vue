@@ -5,7 +5,7 @@
     :object="child"
     :rotation="getRotation(props.edge)"
     :scale="getScale()"
-    :position="[position[0], child.position.y, position[2]]"
+    :position="[position[0], child.position.y + props.edge.data.elevation * 0.1, position[2]]"
     receive-shadow
     cast-shadow
     blocks-pointer-events></primitive>

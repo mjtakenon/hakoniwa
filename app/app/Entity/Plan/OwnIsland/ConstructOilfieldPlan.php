@@ -42,7 +42,7 @@ class ConstructOilfieldPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        $terrain->setCell($this->point, new Oilfield(point: $this->point));
+        $terrain->setCell(new Oilfield(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);

@@ -44,7 +44,7 @@ class GradingPlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        $terrain->setCell($this->point, new Plain(point: $this->point));
+        $terrain->setCell(new Plain(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
 

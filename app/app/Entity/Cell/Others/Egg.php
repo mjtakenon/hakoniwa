@@ -23,6 +23,7 @@ class Egg extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -50,8 +51,8 @@ class Egg extends Cell
             return new PassTurnResult($terrain, $status, $logs);
         }
 
-        $monster = new Begenoth(point: $this->point, remain_move_times: 0);
-        $terrain->setCell($this->point, $monster);
+        $monster = new Begenoth(point: $this->point, elevation: $this->elevation, remain_move_times: 0);
+        $terrain->setCell($monster, $this->point);
         $logs->add(new HatchLog($island, $this, $monster));
 
         return new PassTurnResult($terrain, $status, $logs);

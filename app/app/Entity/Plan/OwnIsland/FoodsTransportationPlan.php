@@ -56,7 +56,7 @@ class FoodsTransportationPlan extends Plan
         }
 
         if ($transportShips->isEmpty()) {
-            $logs->add(new AbortNoShipLog($island, $this, new TransportShip(point: new Point(0,0))));
+            $logs->add(new AbortNoShipLog($island, $this, new TransportShip(point: new Point(0,0), elevation: CellConst::ELEVATION_MIN)));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
@@ -82,7 +82,7 @@ class FoodsTransportationPlan extends Plan
 
         /** @var TransportShip $transportShip */
         $transportShip = $transportShips->random();
-        $terrain->setCell($transportShip->getPoint(), CellConst::getDefaultCell($transportShip->getPoint(), $transportShip->getElevation()));
+        $terrain->setCell(CellConst::getDefaultCell($transportShip->getPoint(), $transportShip->getElevation()));
 
         $status->setFoods($status->getFoods() - (self::UNIT * $this->amount));
 

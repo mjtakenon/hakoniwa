@@ -25,6 +25,7 @@ class Forest extends Cell implements IHasWoods
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -65,9 +66,11 @@ class Forest extends Cell implements IHasWoods
         if ($isPrivate) {
             return
                 '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+                '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
                 $this->woods . '本';
         }
-        return '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName();
+        return '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm';
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult

@@ -40,7 +40,7 @@ class DeforestationPlan extends Plan
         }
 
         $amount = $cell->getWoods();
-        $terrain->setCell($this->point, new Plain(point: $this->point));
+        $terrain->setCell(new Plain(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
         $status->setResources($status->getResources() + ($amount * Forest::WOODS_TO_RESOURCES_COEF));
         $logs->add(new DeforestationLog($amount * Forest::WOODS_TO_RESOURCES_COEF));

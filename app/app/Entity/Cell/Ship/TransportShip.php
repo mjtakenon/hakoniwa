@@ -52,6 +52,7 @@ class TransportShip extends Ship implements IHasMaintenanceNumberOfPeople
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL;
     }
 

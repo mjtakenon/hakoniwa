@@ -37,6 +37,7 @@ class LevinothBattleship extends CombatantShip
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             'レベル' . $this->getLevel() . ' 経験値:' . $this->experience .
             ($this->damage > 0 ? PHP_EOL . '破損率 ' . $this->damage . '%' : '');
     }
@@ -48,7 +49,7 @@ class LevinothBattleship extends CombatantShip
         // 他の島のもので規定ターンを過ぎていたら返す
         if (!is_null($this->getReturnTurn()) && $this->returnTurn <= $turn->turn) {
             $logs->add(new DisappearEnemyShipLog($island, deep_copy($this)));
-            $terrain->setCell($this->getPoint(), CellConst::getDefaultCell($this->getPoint(), $this->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($this->getPoint(), $this->getElevation()));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -75,10 +76,10 @@ class LevinothBattleship extends CombatantShip
                 $attackDamage -= $enemyShip->damage - 100;
                 $enemyShip->damage = 100;
                 $logs->add(new AttackAndDefeatLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-                $terrain->setCell($enemyShip->getPoint(), CellConst::getDefaultCell($enemyShip->getPoint(), $enemyShip->getElevation()));
+                $terrain->setCell(CellConst::getDefaultCell($enemyShip->getPoint(), $enemyShip->getElevation()));
             } else {
                 $logs->add(new AttackLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-                $terrain->setCell($enemyShip->getPoint(), $enemyShip);
+                $terrain->setCell($enemyShip);
             }
         } else {
             // 海岸沿いの建造物を破壊
@@ -112,7 +113,7 @@ class LevinothBattleship extends CombatantShip
                 /** @var Cell $destroyTarget */
                 $destroyTarget = $destroyTargetCells->random();
                 $logs->add(new DestructionByShipLog($island, deep_copy($destroyTarget), deep_copy($this)));
-                $terrain->setCell($destroyTarget->getPoint(), new Wasteland(point: $destroyTarget->getPoint()));
+                $terrain->setCell(new Wasteland(point: $destroyTarget->getPoint(), elevation: $destroyTarget->getElevation()));
             }
         }
 

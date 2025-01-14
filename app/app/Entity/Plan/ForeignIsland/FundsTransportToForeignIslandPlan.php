@@ -32,7 +32,7 @@ class FundsTransportToForeignIslandPlan extends TargetedToForeignIslandPlan
         if ($seaCells->count() >= 1) {
             /** @var Cell $seaCell */
             $seaCell = $seaCells->random();
-            $toTerrain->setCell($seaCell->getPoint(), new TransportShip(point: $seaCell->getPoint(), elevation: $seaCell->getElevation()));
+            $toTerrain->setCell(new TransportShip(point: $seaCell->getPoint(), elevation: $seaCell->getElevation()));
         }
 
         $fromLogs->add(new FundsTransportationLog($toIsland, $amount, true));

@@ -22,6 +22,7 @@ class Mountain extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => true,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -35,7 +36,7 @@ class Mountain extends Cell
         CellConst::PREVENTING_TYPHOON => false,
         CellConst::PREVENTING_TSUNAMI => true,
     ];
-    public const ELEVATION = CellConst::ELEVATION_MOUNTAIN;
+    public const ELEVATION = CellConst::ELEVATION_LAND;
     private const ACTIVATE_PROBABILITY = 0.3;
 
     protected string $type = self::TYPE;
@@ -55,7 +56,7 @@ class Mountain extends Cell
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
-        $terrain->setCell($this->point, new Volcano(point: $this->point));
+        $terrain->setCell(new Volcano(point: $this->point, elevation: $this->elevation));
 
         return new PassTurnResult($terrain, $status, Logs::create());
     }

@@ -37,6 +37,7 @@ class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumbe
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -62,7 +63,7 @@ class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumbe
             $arr['data']['experience'] = $this->experience;
             return $arr;
         }
-        return (new Forest(point: $this->point))->toArray($isPrivate, $withStatic);
+        return (new Forest(point: $this->point, elevation: $this->elevation))->toArray($isPrivate, $withStatic);
     }
 
     public function __construct(...$data)
@@ -86,11 +87,13 @@ class MissileBase extends Cell implements IMissileFireable, IHasMaintenanceNumbe
     {
         if ($isPrivate) {
             return
-                '('. $this->point->x . ',' . $this->point->y .') ' . $this->getName() . PHP_EOL .
+                '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+                '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
                 '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL .
                 'レベル' . $this->getLevel() . ' 経験値:' . $this->experience;
         }
-        return '('. $this->point->x . ',' . $this->point->y .') ' . Forest::NAME;
+        return '(' . $this->point->x . ',' . $this->point->y . ') ' . Forest::NAME . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm';
     }
 
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult

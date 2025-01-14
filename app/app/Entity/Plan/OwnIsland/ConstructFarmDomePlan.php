@@ -53,7 +53,7 @@ class ConstructFarmDomePlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        $terrain->setCell($this->point, new FarmDome(point: $this->point));
+        $terrain->setCell(new FarmDome(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);

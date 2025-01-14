@@ -28,6 +28,7 @@ class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumber
         CellConst::IS_LAND => false,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -67,7 +68,7 @@ class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumber
             $arr['data']['experience'] = $this->experience;
             return $arr;
         }
-        return (new Sea(point: $this->point))->toArray($isPrivate, $withStatic);
+        return (new Sea(point: $this->point, elevation: $this->elevation))->toArray($isPrivate, $withStatic);
     }
 
     public function getInfoString(bool $isPrivate = false): string
@@ -75,10 +76,12 @@ class SeabedBase extends Cell implements IMissileFireable, IHasMaintenanceNumber
         if ($isPrivate) {
             return
                 '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+                '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
                 '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL .
                 'レベル' . $this->getLevel() . ' 経験値:' . $this->experience;
         }
-        return '(' . $this->point->x . ',' . $this->point->y . ') ' . Forest::NAME;
+        return '(' . $this->point->x . ',' . $this->point->y . ') ' . Sea::NAME . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm';
     }
 
     public function getLevel(): int

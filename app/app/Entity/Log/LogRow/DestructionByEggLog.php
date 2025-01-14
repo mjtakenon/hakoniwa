@@ -54,7 +54,7 @@ class DestructionByEggLog extends LogRow
             ]);
         }
 
-        if ($this->cell::ELEVATION === CellConst::ELEVATION_PLAIN) {
+        if ($this->cell::ELEVATION >= CellConst::ELEVATION_LAND) {
             if ($this->cell::TYPE !== Wasteland::TYPE) {
                 return json_encode([
                     ['text' => $this->island->name . '島', 'link' => '/islands/' . $this->island->id, 'style' => LogConst::BOLD],

@@ -55,6 +55,8 @@ class CellConst
     const IS_LAND = 'is_land';
     const IS_MONSTER = 'is_monster';
     const IS_SHIP = 'is_ship';
+    const IS_MOUNTAIN = 'is_mountain';
+
     const DESTRUCTIBLE_BY_FIRE = 'destructible_by_fire';
     const DESTRUCTIBLE_BY_TSUNAMI = 'destructible_by_tsunami';
     const DESTRUCTIBLE_BY_EARTHQUAKE = 'destructible_by_earthquake';
@@ -64,14 +66,16 @@ class CellConst
     const DESTRUCTIBLE_BY_MISSILE = 'destructible_by_missile';
     const DESTRUCTIBLE_BY_RIOT = 'destructible_by_riot';
     const DESTRUCTIBLE_BY_MONSTER = 'destructible_by_monster';
+
     const PREVENTING_FIRE = 'preventing_fire';
     const PREVENTING_TYPHOON = 'preventing_typhoon';
     const PREVENTING_TSUNAMI = 'preventing_tsunami';
 
-    const ELEVATION_MOUNTAIN = 1;
-    const ELEVATION_PLAIN = 0;
-    const ELEVATION_SHALLOW = -1;
-    const ELEVATION_SEA = -2;
+    const ELEVATION_MAX = 10;
+    const ELEVATION_LAND = 0;
+    const ELEVATION_SHALLOW = -2;
+    const ELEVATION_SEA = -4;
+    const ELEVATION_MIN = -10;
 
     static public function getClassByType(string $type, object $data): Cell
     {
@@ -128,10 +132,9 @@ class CellConst
     static public function getDefaultCell(Point $point, int $elevation): Cell
     {
         return match(true) {
-            $elevation >= self::ELEVATION_MOUNTAIN => new Mountain(point: $point),
-            $elevation === self::ELEVATION_PLAIN => new Wasteland(point: $point),
-            $elevation === self::ELEVATION_SHALLOW => new Shallow(point: $point),
-            $elevation <= self::ELEVATION_SEA => new Sea(point: $point),
+            $elevation >= self::ELEVATION_LAND => new Wasteland(point: $point, elevation: $elevation),
+            $elevation <= self::ELEVATION_SEA => new Sea(point: $point, elevation: $elevation),
+            default => new Shallow(point: $point, elevation: $elevation),
         };
     }
 }

@@ -23,6 +23,7 @@ class Factory extends Cell implements IFundsProduction
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => true,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
@@ -64,6 +65,7 @@ class Factory extends Cell implements IFundsProduction
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             $this->fundsProductionCapacity . '人規模';
     }
 

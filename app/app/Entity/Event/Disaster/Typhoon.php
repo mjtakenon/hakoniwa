@@ -50,9 +50,10 @@ class Typhoon implements IDisaster
                 continue;
             }
 
-            $terrain->setCell($cell->getPoint(), new Plain(point: $cell->getPoint()));
+            $terrain->setCell(new Plain(point: $cell->getPoint(), elevation: $cell->getElevation()));
             $logs->add(new DestructionByTyphoonLog($island, $cell));
         }
+        // TODO: 土砂崩れの実装
 
         return new DisasterResult($terrain, $status, $logs);
     }

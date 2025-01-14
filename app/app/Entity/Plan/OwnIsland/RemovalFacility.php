@@ -4,6 +4,7 @@ namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Achievement\Achievements;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\Others\Mountain;
 use App\Entity\Cell\Others\Plain;
 use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
@@ -40,10 +41,12 @@ class RemovalFacility extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        if ($cell->getElevation() === CellConst::ELEVATION_PLAIN) {
-            $terrain->setCell($this->point, new Plain(point: $this->point));
+        if ($cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
+            $terrain->setCell(new Mountain(point: $cell->getPoint(), elevation: $cell->getElevation()));
+        } else if ($cell->getElevation() >= CellConst::ELEVATION_LAND) {
+            $terrain->setCell(new Plain(point: $cell->getPoint(), elevation: $cell->getElevation()));
         } else {
-            $terrain->setCell($this->point, CellConst::getDefaultCell($this->point, $cell->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($this->point, $cell->getElevation()));
         }
 
         $logs = Logs::create()->add(new ExecuteLog($island, $this));

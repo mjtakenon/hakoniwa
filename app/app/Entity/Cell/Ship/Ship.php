@@ -66,9 +66,9 @@ abstract class Ship extends Cell
         $beforeCellCopy = deep_copy($beforeCell);
         $beforeCell->point = $afterCell->getPoint();
         $beforeCell->elevation = $afterCell->getElevation();
-        $terrain->setCell($beforeCell->point, $beforeCell);
+        $terrain->setCell($beforeCell);
 
-        $terrain->setCell($beforeCellCopy->getPoint(), CellConst::getDefaultCell($beforeCellCopy->getPoint(), $beforeCellCopy->getElevation()));
+        $terrain->setCell(CellConst::getDefaultCell($beforeCellCopy->getPoint(), $beforeCellCopy->getElevation()));
 
         return $terrain;
     }

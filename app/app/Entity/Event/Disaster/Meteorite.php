@@ -47,7 +47,7 @@ class Meteorite implements IDisaster
                 $logs->add(new DestructionByMeteoriteLog($island, $cell));
             }
 
-            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()-1));
+            $terrain->setCell(CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()-1));
 
         } while (self::OCCUR_CONTINUOUSLY_PROBABILITY >= Rand::mt_rand_float());
 

@@ -41,7 +41,7 @@ class Riot implements IDisaster
                 continue;
             }
 
-            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($cell->getPoint(), $cell->getElevation()));
             $logs->add(new DestructionByRiotLog($island, $cell));
         }
 

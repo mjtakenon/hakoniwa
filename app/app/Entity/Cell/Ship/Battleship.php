@@ -52,6 +52,7 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             '維持人数' . $this->maintenanceNumberOfPeople . '人' . PHP_EOL .
             $this->affiliationName . '島所属' . PHP_EOL .
             'レベル' . $this->getLevel() . ' 経験値:' . $this->experience .
@@ -113,13 +114,13 @@ class Battleship extends CombatantShip implements IHasMaintenanceNumberOfPeople
                 $logs->add(new ReceiveBountyLog(deep_copy($enemyShip), $amount));
             }
 
-            $terrain->setCell($enemyShip->getPoint(), CellConst::getDefaultCell($enemyShip->getPoint(), $enemyShip->getElevation()));
+            $terrain->setCell(CellConst::getDefaultCell($enemyShip->getPoint(), $enemyShip->getElevation()));
 
             // TODO: 得られる経験値は変数に切り出す
             $this->experience += $enemyShip->getLevel() * 5;
         } else {
             $logs->add(new AttackLog($island, deep_copy($this), deep_copy($enemyShip), $attackDamage));
-            $terrain->setCell($enemyShip->getPoint(), $enemyShip);
+            $terrain->setCell($enemyShip);
         }
 
         return new PassTurnResult($terrain, $status, $logs);

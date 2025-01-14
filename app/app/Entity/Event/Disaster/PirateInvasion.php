@@ -49,7 +49,7 @@ class PirateInvasion implements IDisaster
         /** @var Cell|Collection $pirateSpawnCells */
         $pirateSpawnCells = $seaCells->random($maxPiratesCount);
         foreach ($pirateSpawnCells as $pirateSpawnCell) {
-            $terrain->setCell($pirateSpawnCell->getPoint(), new Pirate(
+            $terrain->setCell(new Pirate(
                 point: $pirateSpawnCell->getPoint(),
                 elevation: $pirateSpawnCell->getElevation(),
                 experience: random_int(0, self::getInitialExperience($status->getPopulation())),

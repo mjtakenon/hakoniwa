@@ -29,8 +29,8 @@ class DestructionByHugeMeteoriteLog extends LogRow
                 ['text' => ' (' . $this->cell->getPoint()->x . ',' . $this->cell->getPoint()->y . ') の'],
                 ['text' => $this->cell::NAME, 'style' => LogConst::BOLD . LogConst::COLOR_WARNING],
                 ['text' => 'は、'],
-                $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => '海底がえぐられ'] : ['text' => '一帯が水没', 'style' => LogConst::BOLD . LogConst::COLOR_DANGER],
-                $this->cell::ELEVATION < CellConst::ELEVATION_PLAIN ? ['text' => 'ました。'] : ['text' => 'しました。'],
+                $this->cell::ELEVATION < CellConst::ELEVATION_LAND ? ['text' => '海底がえぐられ'] : ['text' => '一帯が水没', 'style' => LogConst::BOLD . LogConst::COLOR_DANGER],
+                $this->cell::ELEVATION < CellConst::ELEVATION_LAND ? ['text' => 'ました。'] : ['text' => 'しました。'],
             ]);
         }
 

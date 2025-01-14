@@ -56,7 +56,7 @@ class ConstructSeabedBasePlan extends Plan
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }
 
-        $terrain->setCell($this->point, new SeabedBase(point: $this->point));
+        $terrain->setCell(new SeabedBase(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs->add(new ExecuteLog($island, $this, LogConst::VISIBILITY_PRIVATE));
         $seabedBase = deep_copy($this);

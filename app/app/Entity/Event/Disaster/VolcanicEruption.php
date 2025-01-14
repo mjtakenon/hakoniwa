@@ -39,7 +39,7 @@ class VolcanicEruption implements IDisaster
         $mountains = $terrain->findByTypes([Volcano::TYPE, Mine::TYPE]);
         /** @var Cell $mountain */
         foreach ($mountains as $mountain) {
-            $terrain->setCell($mountain->getPoint(), new Mountain(point: $mountain->getPoint()));
+            $terrain->setCell(new Mountain(point: $mountain->getPoint(), elevation: $mountain->getElevation()));
             if ($mountain->getType() === Mine::TYPE) {
                 $logs->add(new MineClosureLog($island, deep_copy($mountain)));
             }
@@ -49,7 +49,7 @@ class VolcanicEruption implements IDisaster
 
         $logs->add(new OccurVolcanicEruptionLog($island, $point));
 
-        $terrain->setCell($point, new Volcano(point: $point));
+        $terrain->setCell(new Volcano(point: $point, elevation: CellConst::ELEVATION_MAX));
 
         $aroundCells = $terrain->getAroundCells($point);
         /** @var Cell $cell */
@@ -61,7 +61,11 @@ class VolcanicEruption implements IDisaster
             } else {
                 $logs->add(new DestructionByVolcanicEruptionLog($island, $cell));
             }
-            $terrain->setCell($cell->getPoint(), CellConst::getDefaultCell($cell->getPoint(), min(0, $cell->getElevation()+1)));
+
+            if (!$cell::ATTRIBUTE[CellConst::IS_MOUNTAIN]) {
+                // TODO: 周囲のセルの実装
+                $terrain->setCell(CellConst::getDefaultCell($cell->getPoint(), min(0, $cell->getElevation()+1)));
+            }
         }
 
         return new DisasterResult($terrain, $status, $logs);

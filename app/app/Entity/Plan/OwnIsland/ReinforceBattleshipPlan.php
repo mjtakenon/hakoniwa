@@ -3,6 +3,7 @@
 namespace App\Entity\Plan\OwnIsland;
 
 use App\Entity\Achievement\Achievements;
+use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Ship\Battleship;
 use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Log\LogRow\AbortInvalidIslandLog;
@@ -55,7 +56,7 @@ class ReinforceBattleshipPlan extends Plan
         }
 
         if ($battleships->isEmpty()) {
-            $logs->add(new AbortNoShipLog($island, $this, new Battleship(point: new Point(0,0))));
+            $logs->add(new AbortNoShipLog($island, $this, new Battleship(point: new Point(0,0), elevation: CellConst::ELEVATION_MIN)));
             $this->amount = 0;
             return new ExecutePlanResult($terrain, $status, $logs, $achievements, false);
         }

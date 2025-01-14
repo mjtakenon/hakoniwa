@@ -4,7 +4,7 @@
     v-for="child of group.children"
     :object="child"
     :scale="getScale()"
-    :position="[props.position[0], child.position.y, props.position[2]]"
+    :position="[props.position[0], child.position.y + props.cell.data.elevation * 0.1, props.position[2]]"
     :rotation="getRotation()"
     receive-shadow
     cast-shadow

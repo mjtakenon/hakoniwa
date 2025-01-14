@@ -21,6 +21,7 @@ abstract class Monster extends Cell implements IMonster
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => true,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => false,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -66,6 +67,7 @@ abstract class Monster extends Cell implements IMonster
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             '体力 ' . $this->getHitPoints();
     }
 
@@ -98,7 +100,7 @@ abstract class Monster extends Cell implements IMonster
         if ($this->getDisappearancePopulation() > $status->getPopulation()) {
             $logs = Logs::create();
             $logs->add(new DisappearMonsterLog($island, $this));
-            $terrain->setCell($this->point, new Wasteland(point: $this->point));
+            $terrain->setCell(new Wasteland(point: $this->point, elevation: $this->elevation));
             return new PassTurnResult($terrain, $status, $logs);
         }
 
@@ -121,12 +123,12 @@ abstract class Monster extends Cell implements IMonster
         $logs = Logs::create();
         // 破壊する際、消えないよう元のデータを持っておく
         $monster = $this;
-        $terrain->setCell($this->point, new Wasteland(point: $this->point));
+        $terrain->setCell(new Wasteland(point: $this->point, elevation: $this->elevation));
 
         $logs->add(new DestructionByMonsterLog($island, $moveTarget, $this));
         $monster->point = $moveTarget->point;
         // 移動先でさらに動く場合の操作をするため再帰呼び出しをしている
-        $terrain->setCell($monster->getPoint(), $monster);
+        $terrain->setCell($monster);
         $passTurnResult = $terrain->getCell($monster->getPoint())->passTurn($island, $terrain, $status, $turn, $foreignIslandEvents);
 
         $terrain = $passTurnResult->getTerrain();

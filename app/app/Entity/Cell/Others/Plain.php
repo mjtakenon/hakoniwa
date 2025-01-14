@@ -37,6 +37,7 @@ class Plain extends Cell
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => false,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => false,
@@ -61,7 +62,7 @@ class Plain extends Cell
             return in_array($cell::TYPE, self::IMMIGRABLE_TYPE, true);
         });
         if ($immigrableCells->count() * self::IMMIGRATE_COEF > Rand::mt_rand_float()) {
-            $terrain->setCell($this->point, new Village(point: $this->point));
+            $terrain->setCell(new Village(point: $this->point, elevation: $this->elevation));
         }
         return new PassTurnResult($terrain, $status, Logs::create());
     }

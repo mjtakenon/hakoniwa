@@ -25,6 +25,7 @@ abstract class HasPopulation extends Cell implements IHasPopulation
         CellConst::IS_LAND => true,
         CellConst::IS_MONSTER => false,
         CellConst::IS_SHIP => false,
+        CellConst::IS_MOUNTAIN => false,
         CellConst::DESTRUCTIBLE_BY_FIRE => true,
         CellConst::DESTRUCTIBLE_BY_TSUNAMI => true,
         CellConst::DESTRUCTIBLE_BY_EARTHQUAKE => true,
@@ -64,6 +65,7 @@ abstract class HasPopulation extends Cell implements IHasPopulation
     {
         return
             '(' . $this->point->x . ',' . $this->point->y . ') ' . $this->getName() . PHP_EOL .
+            '標高 ' . $this->elevation*50 . 'm' . PHP_EOL .
             '人口 ' . $this->population . '人';
     }
 
@@ -151,26 +153,26 @@ abstract class HasPopulation extends Cell implements IHasPopulation
 
         // マップチップ入れ替え
         if ($this->population >= Metropolis::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Metropolis(point: $this->point, population: $this->population));
+            $terrain->setCell(new Metropolis(point: $this->point, elevation: $this->elevation, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= City::MIN_POPULATION) {
-            $terrain->setCell($this->point, new City(point: $this->point, population: $this->population));
+            $terrain->setCell(new City(point: $this->point, elevation: $this->elevation, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= Town::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Town(point: $this->point, population: $this->population));
+            $terrain->setCell(new Town(point: $this->point, elevation: $this->elevation, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
         if ($this->population >= Village::MIN_POPULATION) {
-            $terrain->setCell($this->point, new Village(point: $this->point, population: $this->population));
+            $terrain->setCell(new Village(point: $this->point, elevation: $this->elevation, population: $this->population));
             return new PassTurnResult($terrain, $status, Logs::create());
         }
 
-        $terrain->setCell($this->point, new Plain(point: $this->point));
+        $terrain->setCell(new Plain(point: $this->point, elevation: $this->elevation));
         return new PassTurnResult($terrain, $status, Logs::create());
     }
 

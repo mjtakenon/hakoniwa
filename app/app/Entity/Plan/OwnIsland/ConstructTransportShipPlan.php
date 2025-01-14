@@ -60,7 +60,7 @@ class ConstructTransportShipPlan extends Plan
         /** @var Cell $cell */
         $cell = $seaCells->random();
 
-        $terrain->setCell($cell->getPoint(), new TransportShip(point: $cell->getPoint(), elevation: $cell->getElevation()));
+        $terrain->setCell(new TransportShip(point: $cell->getPoint(), elevation: $cell->getElevation()));
         $status->setFunds($status->getFunds() - self::PRICE);
         $logs = Logs::create()->add(new ExecuteLog($island, $this));
         return new ExecutePlanResult($terrain, $status, $logs, $achievements, true);

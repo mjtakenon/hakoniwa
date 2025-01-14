@@ -5,6 +5,7 @@ export interface Cell {
   data: {
     info: string
     point: Point
+    elevation: number
     sub_type?: string
   }
 }
@@ -20,9 +21,9 @@ export const CELL_MODELS = {
   farm_dome: {default: [{model: 'plain'}]},
   forest: {default: [{model: 'plain'}]},
   metropolis: {default: [{model: 'plain'}]},
-  mountain: {default: [{model: 'plain'}]},
-  volcano: {default: [{model: 'plain'}]},
-  mine: {default: [{model: 'plain'}]},
+  mountain: {default: [{model: 'wasteland'}]},
+  volcano: {default: [{model: 'wasteland'}]},
+  mine: {default: [{model: 'wasteland'}]},
   oilfield: {default: [{model: 'shallow'}]},
   plain: {default: [{model: 'plain'}]},
   sea: {default: [{model: 'sea', opacity: 0.1}]},

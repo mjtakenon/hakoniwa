@@ -5,6 +5,7 @@ export interface Edge {
   type: EdgeType
   data: {
     point: Point
+    elevation: number
     face: number
     sub_type?: string
   }
