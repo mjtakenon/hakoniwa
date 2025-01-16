@@ -34,12 +34,10 @@ for (let type of getCellTypes()) {
     let group = new Group();
 
     for (let models of getCellModels(type, subType)) {
-      let n = nodes[models.model].clone(false)
-      n.material.opacity = models.opacity ?? 1
-      if (n.material.opacity < 1) {
-        n.material.transparent = true;
-      }
-      group.add(n)
+      let node = nodes[models.model].clone()
+      node.userData.elevation_multiply = models.elevation_multiply ?? 1
+      node.userData.opacity = models.opacity ?? 1
+      group.children.push(node)
     }
 
     models[type][subType] = group
@@ -66,16 +64,18 @@ onMounted(() => {
 
   let position = new Vector3(0, 0, 0)
   const positionMargin = new Vector3(CELL_SIZE_X * 4, CELL_SIZE_X * 4, CELL_SIZE_X * -4)
-  const cameraPositionDiff = new Vector3(CELL_SIZE_X, CELL_SIZE_X * 1.5, CELL_SIZE_X)
+  const cameraPositionDiff = new Vector3(CELL_SIZE_X, CELL_SIZE_X * 2, CELL_SIZE_X)
 
   for (let type of getCellTypes()) {
     store.cameraLookAt[type] = {}
     store.cameraPositions[type] = {}
 
     for (let subType of getCellSubTypes(type as CellType)) {
-      models[type][subType].children[0].position.x = position.x
-      models[type][subType].children[0].position.y = position.y + models[type][subType].position.y
-      models[type][subType].children[0].position.z = position.z
+      for (let childIdx in models[type][subType].children) {
+        models[type][subType].children[childIdx].position.x = position.x
+        models[type][subType].children[childIdx].position.y = position.y + models[type][subType].position.y
+        models[type][subType].children[childIdx].position.z = position.z
+      }
       store.cameraLookAt[type][subType] = position.clone()
       store.cameraLookAt[type][subType].y += 1
       store.cameraPositions[type][subType] = position.clone().add(cameraPositionDiff)
@@ -92,7 +92,9 @@ onMounted(() => {
 const tick = () => {
   for (let type of getCellTypes()) {
     for (let subType of getCellSubTypes(type as CellType)) {
-      models[type][subType].children[0].rotation.y += 0.01
+      for (let childIdx in models[type][subType].children) {
+        models[type][subType].children[childIdx].rotation.y += 0.01
+      }
     }
   }
   renderer.render(scene, store.camera)
