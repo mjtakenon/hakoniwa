@@ -18,8 +18,8 @@ export const EDGE_MODELS = {
   wasteland: {default: [{model: 'wasteland_edge'}]},
   plain: {default: [{model: 'plain_edge'}]},
   shore: {default: [{model: 'shore_edge'}]},
-  sea: {default: [{model: 'sea_edge'}]},
-  shallow: {default: [{model: 'shallow_edge'}]},
+  sea: {default: [{model: 'sea_edge', opacity: 0.8, elevation_multiply: 0}, {model: 'floor_edge'}]},
+  shallow: {default: [{model: 'shallow_edge', opacity: 0.8, elevation_multiply: 0}, {model: 'floor_edge'}]},
 } as const
 
 export type EdgeType =

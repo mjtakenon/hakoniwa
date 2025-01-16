@@ -64,12 +64,11 @@ for (let type of getCellTypes()) {
     let group = new Group();
 
     for (let models of getCellModels(type, subType)) {
-      let n = nodes[models.model]
-      n.material.opacity = models.opacity ?? 1
-      if (n.material.opacity < 1) {
-        n.material.transparent = true;
-      }
-      group.children.push(n)
+      // TODO: InstancedMeshを利用する
+      let node = nodes[models.model].clone()
+      node.userData.elevation_multiply = models.elevation_multiply ?? 1
+      node.userData.opacity = models.opacity ?? 1
+      group.children.push(node)
     }
 
     cellModels[type][subType] = group
@@ -85,9 +84,10 @@ for (let type of getEdgeTypes()) {
     let group = new Group();
 
     for (let models of getEdgeModels(type, subType)) {
-      let n = nodes[models.model]
-      n.material.opacity = models.opacity ?? 1
-      group.children.push(n)
+      let node = nodes[models.model].clone()
+      node.userData.elevation_multiply = models.elevation_multiply ?? 1
+      node.userData.opacity = models.opacity ?? 1
+      group.children.push(node)
     }
 
     edgeModels[type][subType] = group

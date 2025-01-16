@@ -184,7 +184,7 @@ abstract class Edge
         } else if ($avr < CellConst::ELEVATION_LAND) {
             // -2~0: 浅瀬（陸地に面していたら砂浜）
             if (($elevation1 >= CellConst::ELEVATION_LAND || $elevation2 >= CellConst::ELEVATION_LAND) && $avr > CellConst::ELEVATION_SHALLOW) {
-                $terrain->setEdge(new Shore(point: $this->point, face: $this->face, elevation: $avr));
+                $terrain->setEdge(new Shore(point: $this->point, face: $this->face, elevation: 0));
             } else {
                 $terrain->setEdge(EdgeConst::getDefaultEdge($this->point, $this->face, $avr));
             }

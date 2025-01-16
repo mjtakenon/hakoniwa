@@ -5,7 +5,7 @@
     :object="child"
     :rotation="getRotation(props.edge)"
     :scale="getScale()"
-    :position="[position[0], child.position.y + props.edge.data.elevation * 0.1, position[2]]"
+    :position="[position[0], child.position.y + props.edge.data.elevation * 0.1 * child.userData.elevation_multiply, position[2]]"
     receive-shadow
     cast-shadow
     blocks-pointer-events></primitive>
@@ -35,7 +35,9 @@ let position = getPosition(props.edge, props.position)
 let objectRef: ShallowRef<TresInstance | null> = shallowRef(null)
 
 let group = new Group()
-group.add(props.group.children[0].clone(false))
+for (let child of props.group.children) {
+  group.add(child.clone())
+}
 </script>
 
 <style lang="scss" scoped></style>
