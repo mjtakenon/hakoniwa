@@ -17,9 +17,9 @@ export const DEFAULT_MODEL_SCALE = 1
 export const CELL_MODELS = {
   city: {default: [{model: 'plain'}]},
   factory: {default: [{model: 'plain'}]},
-  farm: {default: [{model: 'plain'}]},
+  farm: {default: [{model: 'plain'}, {model: 'farm'}]},
   farm_dome: {default: [{model: 'plain'}]},
-  forest: {default: [{model: 'plain'}, {model: 'tree1'}, {model: 'tree2'}, {model: 'tree3'}]},
+  forest: {default: [{model: 'plain'}, {model: 'trees'}]},
   metropolis: {default: [{model: 'plain'}]},
   mountain: {default: [{model: 'wasteland'}]},
   volcano: {default: [{model: 'wasteland'}]},
