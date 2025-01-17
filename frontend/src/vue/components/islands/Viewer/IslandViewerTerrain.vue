@@ -67,7 +67,6 @@ for (let type of getCellTypes()) {
       // TODO: InstancedMeshを利用する
       let node = nodes[models.model].clone()
       node.userData.elevation_multiply = models.elevation_multiply ?? 1
-      node.userData.opacity = models.opacity ?? 1
       group.children.push(node)
     }
 
@@ -86,7 +85,6 @@ for (let type of getEdgeTypes()) {
     for (let models of getEdgeModels(type, subType)) {
       let node = nodes[models.model].clone()
       node.userData.elevation_multiply = models.elevation_multiply ?? 1
-      node.userData.opacity = models.opacity ?? 1
       group.children.push(node)
     }
 

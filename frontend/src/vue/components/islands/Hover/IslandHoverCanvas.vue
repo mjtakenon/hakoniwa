@@ -36,7 +36,6 @@ for (let type of getCellTypes()) {
     for (let models of getCellModels(type, subType)) {
       let node = nodes[models.model].clone()
       node.userData.elevation_multiply = models.elevation_multiply ?? 1
-      node.userData.opacity = models.opacity ?? 1
       group.children.push(node)
     }
 
