@@ -63,7 +63,7 @@ onMounted(() => {
 
   let position = new Vector3(0, 0, 0)
   const positionMargin = new Vector3(CELL_SIZE_X * 4, CELL_SIZE_X * 4, CELL_SIZE_X * -4)
-  const cameraPositionDiff = new Vector3(CELL_SIZE_X, CELL_SIZE_X * 2, CELL_SIZE_X)
+  const cameraPositionDiff = new Vector3(CELL_SIZE_X, CELL_SIZE_X * 1.75, CELL_SIZE_X)
 
   for (let type of getCellTypes()) {
     store.cameraLookAt[type] = {}
