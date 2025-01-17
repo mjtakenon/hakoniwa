@@ -5,6 +5,7 @@ namespace App\Entity\Edge;
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
 use App\Entity\Cell\Others\OutOfRegion;
+use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Edge\Others\Plain;
 use App\Entity\Edge\Others\Shore;
@@ -191,7 +192,7 @@ abstract class Edge
         } else {
             // 0~: 両方陸地であれば
             // TODO: 実装する
-            if ($cell1->getType() === Wasteland::TYPE || $cell2->getType() === Wasteland::TYPE) {
+            if (in_array($cell1->getType(), [Wasteland::TYPE, Volcano::TYPE], true) || in_array($cell2->getType(), [Wasteland::TYPE, Volcano::TYPE], true)) {
                 $terrain->setEdge(new Wasteland(point: $this->point, face: $this->face, elevation: $avr));
             } else {
                 $terrain->setEdge(new Plain(point: $this->point, face: $this->face, elevation: $avr));
