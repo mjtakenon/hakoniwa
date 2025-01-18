@@ -4,12 +4,15 @@ namespace App\Entity\Edge;
 
 use App\Entity\Cell\Cell;
 use App\Entity\Cell\CellConst;
+use App\Entity\Cell\HasWoods\Forest;
 use App\Entity\Cell\Others\OutOfRegion;
 use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\PassTurnResult;
 use App\Entity\Edge\Others\Plain;
+use App\Entity\Edge\Others\River;
 use App\Entity\Edge\Others\Shore;
 use App\Entity\Edge\Others\Wasteland;
+use App\Entity\Edge\Others\WaterSource;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
 use App\Entity\Terrain\Terrain;
@@ -18,6 +21,7 @@ use App\Entity\Util\Range;
 use App\Models\Island;
 use App\Models\Turn;
 use Illuminate\Support\Collection;
+use function DeepCopy\deep_copy;
 
 abstract class Edge
 {
@@ -80,84 +84,104 @@ abstract class Edge
     public function getAdjacentCells(Terrain $terrain): Collection
     {
         $cells = collect([$terrain->getCell($this->point)]);
+        $adjacentPoint = deep_copy($this->point);
+
         if ($this->point->y % 2 === 0) {
-            if ($this->getFace() === 0) {
-                if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y-1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 1) {
-                if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y-1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 2) {
-                if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 3) {
-                if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 4) {
-                if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y+1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else {
-                if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y+1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
-                }
+            if ($this->face % 2 === 1) {
+                $adjacentPoint->x += 1;
+            } else if ($this->face === 2) {
+                $adjacentPoint->x -= 1;
             }
         } else {
-            if ($this->getFace() === 0) {
-                if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y-1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 1) {
-                if ($this->inRange($this->point->y-1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y-1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y-1), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 2) {
-                if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 3) {
-                if ($this->inRange($this->point->y, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x+1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x+1, $this->point->y));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x+1, $this->point->y), elevation: CellConst::ELEVATION_MIN);
-                }
-            } else if ($this->getFace() === 4) {
-                if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x-1, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x-1, $this->point->y+1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x-1, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
+            if ($this->face % 2 === 0) {
+                $adjacentPoint->x -= 1;
+            } else if ($this->face === 3) {
+                $adjacentPoint->x += 1;
+            }
+        }
+
+        if ($this->face <= 1) {
+            $adjacentPoint->y -= 1;
+        } else if ($this->face >= 4) {
+            $adjacentPoint->y += 1;
+        }
+
+        if ($terrain->isExistsCell($adjacentPoint)) {
+            $cells[] = $terrain->getCell($adjacentPoint);
+        } else {
+            $cells[] = new OutOfRegion(point: $adjacentPoint, elevation: CellConst::ELEVATION_MIN);
+        }
+
+        return $cells;
+    }
+
+    // 隣接するEdgeを取得
+    public function getAdjacentEdges(Terrain $terrain): Collection
+    {
+        $edges = collect();
+
+        if ($this->getFace() === 0) {
+            if ($terrain->isExistsEdge(new Point($this->point->x-1, $this->point->y), 1)) {
+                $edges[] = $terrain->getEdge(new Point($this->point->x-1, $this->point->y), 1);
+            }
+            if ($terrain->isExistsEdge($this->point, 2)) {
+                $edges[] = $terrain->getEdge($this->point, 2);
+            }
+            if ($this->point->y % 2 === 0) {
+                if ($terrain->isExistsEdge(new Point($this->point->x+1, $this->point->y-1), 2)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x+1, $this->point->y-1), 2);
                 }
             } else {
-                if ($this->inRange($this->point->y+1, 0, \HakoniwaService::getMaxHeight()) && $this->inRange($this->point->x, 0, \HakoniwaService::getMaxWidth())) {
-                    $cells[] = $terrain->getCell(new Point($this->point->x, $this->point->y+1));
-                } else {
-                    $cells[] = new OutOfRegion(point: new Point($this->point->x, $this->point->y+1), elevation: CellConst::ELEVATION_MIN);
+                if ($terrain->isExistsEdge(new Point($this->point->x, $this->point->y-1), 2)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x, $this->point->y-1), 2);
+                }
+            }
+            if ($terrain->isExistsEdge($this->point, 1)) {
+                $edges[] = $terrain->getEdge($this->point, 1);
+            }
+        } else if ($this->getFace() === 1) {
+            if ($terrain->isExistsEdge($this->point, 0)) {
+                $edges[] = $terrain->getEdge($this->point, 0);
+            }
+            if ($this->point->y % 2 === 0) {
+                if ($terrain->isExistsEdge(new Point($this->point->x+1, $this->point->y-1), 2)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x+1, $this->point->y-1), 2);
+                }
+            } else {
+                if ($terrain->isExistsEdge(new Point($this->point->x, $this->point->y-1), 2)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x, $this->point->y-1), 2);
+                }
+            }
+            if ($terrain->isExistsEdge(new Point($this->point->x+1, $this->point->y), 0)) {
+                $edges[] = $terrain->getEdge(new Point($this->point->x+1, $this->point->y), 0);
+            }
+            if ($terrain->isExistsEdge(new Point($this->point->x+1, $this->point->y), 2)) {
+                $edges[] = $terrain->getEdge(new Point($this->point->x+1, $this->point->y), 2);
+            }
+        } else {
+            if ($terrain->isExistsEdge($this->point, 0)) {
+                $edges[] = $terrain->getEdge($this->point, 0);
+            }
+            if ($terrain->isExistsEdge(new Point($this->point->x-1, $this->point->y), 1)) {
+                $edges[] = $terrain->getEdge(new Point($this->point->x-1, $this->point->y), 1);
+            }
+            if ($this->point->y % 2 === 0) {
+                if ($terrain->isExistsEdge(new Point($this->point->x, $this->point->y+1), 0)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x, $this->point->y+1), 0);
+                }
+                if ($terrain->isExistsEdge(new Point($this->point->x, $this->point->y+1), 1)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x, $this->point->y+1), 1);
+                }
+            } else {
+                if ($terrain->isExistsEdge(new Point($this->point->x-1, $this->point->y+1), 0)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x-1, $this->point->y+1), 0);
+                }
+                if ($terrain->isExistsEdge(new Point($this->point->x-1, $this->point->y+1), 1)) {
+                    $edges[] = $terrain->getEdge(new Point($this->point->x-1, $this->point->y+1), 1);
                 }
             }
         }
-        return $cells;
+        return $edges;
     }
 
     static public function fromJson(string $type, $data): Edge
@@ -201,9 +225,26 @@ abstract class Edge
         return $terrain;
     }
 
+    public function setRiverSource(Terrain $terrain) : Terrain
+    {
+        /** @var Collection<Cell> $cells */
+        $cells = $this->getAdjacentCells($terrain);
+
+        /** @var Cell $cell1 */
+        $cell1 = $cells[0];
+        /** @var Cell $cell2 */
+        $cell2 = $cells[1];
+
+        if ((in_array($cell1->getType(), [Forest::TYPE], true) || $cell1::ATTRIBUTE[CellConst::IS_MOUNTAIN]) && (in_array($cell2->getType(), [Forest::TYPE], true) || $cell2::ATTRIBUTE[CellConst::IS_MOUNTAIN])) {
+            $terrain->setEdge(new WaterSource(point: $this->point, face: $this->face, elevation: $this->elevation));
+        }
+        return $terrain;
+    }
+
     public function passTurn(Island $island, Terrain $terrain, Status $status, Turn $turn, Collection $foreignIslandEvents): PassTurnResult
     {
         $terrain = $this->weathering($terrain);
+        $terrain = $this->setRiverSource($terrain);
         return new PassTurnResult($terrain, $status, Logs::create());
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Entity\Edge;
 
 use App\Entity\Edge\Others\Plain;
+use App\Entity\Edge\Others\River;
 use App\Entity\Edge\Others\Sea;
 use App\Entity\Edge\Others\Shallow;
 use App\Entity\Edge\Others\Shore;
 use App\Entity\Edge\Others\Wasteland;
+use App\Entity\Edge\Others\WaterSource;
 use App\Entity\Util\Point;
 
 class EdgeConst
@@ -23,6 +25,8 @@ class EdgeConst
             Shore::TYPE => new Shore(...get_object_vars($data)),
             Shallow::TYPE => new Shallow(...get_object_vars($data)),
             Sea::TYPE => new Sea(...get_object_vars($data)),
+            River::TYPE => new River(...get_object_vars($data)),
+            WaterSource::TYPE => new WaterSource(...get_object_vars($data)),
         };
     }
 

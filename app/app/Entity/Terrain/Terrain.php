@@ -28,6 +28,8 @@ use App\Entity\Cell\Ship\CombatantShip;
 use App\Entity\Cell\Ship\Submarine;
 use App\Entity\Edge\Edge;
 use App\Entity\Edge\EdgeConst;
+use App\Entity\Edge\Others\River;
+use App\Entity\Edge\Others\WaterSource;
 use App\Entity\JsonCodable;
 use App\Entity\Log\Logs;
 use App\Entity\Status\Status;
@@ -153,16 +155,16 @@ class Terrain implements JsonCodable
 
             if ($this->cells[$y][$x]::TYPE === 'sea') {
                 if ($n < 4) {
-                    $this->cells[$y][$x] = new Forest(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3);
+                    $this->cells[$y][$x] = new Forest(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX / 3);
                 } else if ($n < 18) {
-                    $this->cells[$y][$x] = new Wasteland(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3);
-                } else if ($n < 19) {
+                    $this->cells[$y][$x] = new Wasteland(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX / 3);
+                } else if ($n < 22) {
                     $this->cells[$y][$x] = new Volcano(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX);
-                } else if ($n < 21) {
-                    $this->cells[$y][$x] = new Village(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3, population: 1000);
-                } else if ($n < 28) {
-                    $this->cells[$y][$x] = new Plain(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX/3);
+                } else if ($n < 23) {
+                    $this->cells[$y][$x] = new Village(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX / 3, population: 1000);
                 } else if ($n < 38) {
+                    $this->cells[$y][$x] = new Plain(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX / 3);
+                } else if ($n < 48) {
                     $this->cells[$y][$x] = new Shallow(point: new Point($x, $y), elevation: CellConst::ELEVATION_SHALLOW);
                 } else {
                     break;
@@ -173,12 +175,12 @@ class Terrain implements JsonCodable
 
         // Cellの平坦化
         $terrainTmp = deep_copy($this);
-        $this->cells->flatten()->each(function(Cell $cell) use ($terrainTmp) {
+        $this->cells->flatten()->each(function (Cell $cell) use ($terrainTmp) {
             $this->setCell($cell->weathering($terrainTmp));
         });
 
         // Edgeの初期配置
-        $this->cells->flatten()->each(function(Cell $cell) {
+        $this->cells->flatten()->each(function (Cell $cell) {
             for ($face = 0; $face < 3; $face++) {
                 if (!$this->hasEdge($cell->getPoint(), $face)) {
                     continue;
@@ -253,6 +255,26 @@ class Terrain implements JsonCodable
         }
     }
 
+    public function isExistsCell(Point $point): bool
+    {
+        try {
+            $this->cells[$point->y][$point->x];
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    public function isExistsEdge(Point $point, int $edge): bool
+    {
+        try {
+            $this->edges[$point->y][$point->x][$edge];
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
     public function aggregatePopulation(): int
     {
         return $this->findByInterface(IHasPopulation::class)->sum(function ($cell) {
@@ -297,9 +319,9 @@ class Terrain implements JsonCodable
             return $maintenanceInfo->getAffiliationId();
         })->each(function ($groupedMaintenanceInfo, $index) use ($maintenanceNumberOfPeoples) {
             $sumMaintenanceNumberOfPeoples = $maintenanceNumberOfPeoples->get($index) + $groupedMaintenanceInfo->sum(function ($maintenanceInfo) {
-                /** @var MaintenanceInfo $maintenanceInfo */
-                return $maintenanceInfo->getMaintenanceNumberOfPeople();
-            });
+                    /** @var MaintenanceInfo $maintenanceInfo */
+                    return $maintenanceInfo->getMaintenanceNumberOfPeople();
+                });
             $maintenanceNumberOfPeoples->put($index, $sumMaintenanceNumberOfPeoples);
         });
     }
@@ -357,6 +379,8 @@ class Terrain implements JsonCodable
                 $logs->merge($passTurnResult->getLogs());
             }
         }
+
+        $this->replaceLandToRiver();
 
         return new PassTurnResult($this, $status, $logs);
     }
@@ -487,6 +511,46 @@ class Terrain implements JsonCodable
         return $this;
     }
 
+    private function replaceLandToRiver(): void
+    {
+        $sources = $this->edges->flatten()->filter(function (Edge $edge) {
+            return $edge->getType() === WaterSource::TYPE;
+        });
+
+        $sources->each(function (Edge $source) {
+            $candidates = $source->getAdjacentEdges($this);
+            $candidates->filter(function (Edge $e) {
+                return in_array($e->getType(), [\App\Entity\Edge\Others\Sea::TYPE, \App\Entity\Edge\Others\Shallow::TYPE], true);
+            });
+
+            // 隣接Edgeが4つでない場合, 海系地形が含まれる場合は端であるため終了
+            if ($candidates->count() !== 4) {
+                return;
+            }
+
+            // とりあえず水源より標高の低いEdgeをフィルタ
+            $candidates = $candidates->filter(function (Edge $e) use ($source) {
+                return $e->getElevation() <= $source->getElevation();
+            });
+
+            if ($candidates->isEmpty()) {
+                return;
+            }
+
+            // その中で最も標高の低いEdgeを候補とする
+            $minElevation = $candidates->min(function (Edge $e) {
+                return $e->getElevation();
+            });
+
+            /** @var Edge $candidate */
+            $candidate = $candidates->first(function (Edge $e) use ($minElevation) {
+                return $e->getElevation() <= $minElevation;
+            });
+
+            $this->setEdge(new River(point: $candidate->getPoint(), face: $candidate->getFace(), elevation: $candidate->getElevation()));
+        });
+    }
+
     public function findByTypes(array $cellTypes): Collection
     {
         return $this->cells->flatten(1)->filter(function ($cell) use ($cellTypes) {
@@ -550,11 +614,12 @@ class Terrain implements JsonCodable
     }
 
     // その箇所のEdgeを設置するか
-    private function hasEdge(Point $point, int $face): bool {
+    private function hasEdge(Point $point, int $face): bool
+    {
         // 端にはEdgeを設置しない
         return !(
             ($point->y === 0 && ($face === 0 || $face === 1)) ||
             ($point->x === 0 && ($face === 2 || $point->y % 2 === 1 && $face === 0)) ||
-            ($point->x === \HakoniwaService::getMaxWidth()-1 && $point->y % 2 === 0 && $face === 1));
+            ($point->x === \HakoniwaService::getMaxWidth() - 1 && $point->y % 2 === 0 && $face === 1));
     }
 }
