@@ -28,7 +28,7 @@ export const CELL_MODELS = {
   plain: {default: [{model: 'plain'}]},
   sea: {default: [{model: 'sea', elevation_multiply: 0}, {model: 'floor'}]},
   shallow: {default: [{model: 'shallow', elevation_multiply: 0}, {model: 'floor'}]},
-  lake: {default: [{model: 'shallow'}, {model: 'floor', elevation_multiply: 0}]},
+  lake: {default: [{model: 'shallow', elevation_multiply: 0}, {model: 'floor'}]},
   large_factory: {default: [{model: 'plain'}]},
   town: {default: [{model: 'plain'}]},
   village: {default: [{model: 'plain'}]},

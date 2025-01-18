@@ -17,6 +17,7 @@ use App\Entity\Cell\Others\Lake;
 use App\Entity\Cell\Others\Mountain;
 use App\Entity\Cell\Others\OutOfRegion;
 use App\Entity\Cell\Others\Plain;
+use App\Entity\Cell\Others\Sea;
 use App\Entity\Cell\Others\Shallow;
 use App\Entity\Cell\Others\Volcano;
 use App\Entity\Cell\Others\Wasteland;
@@ -162,9 +163,9 @@ class Terrain implements JsonCodable
                     $this->cells[$y][$x] = new Volcano(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX);
                 } else if ($n < 23) {
                     $this->cells[$y][$x] = new Village(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX / 3, population: 1000);
-                } else if ($n < 38) {
+                } else if ($n < 45) {
                     $this->cells[$y][$x] = new Plain(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX / 3);
-                } else if ($n < 48) {
+                } else if ($n < 50) {
                     $this->cells[$y][$x] = new Shallow(point: new Point($x, $y), elevation: CellConst::ELEVATION_SHALLOW);
 //                } else if ($n < 19) {
 //                    $this->cells[$y][$x] = new Volcano(point: new Point($x, $y));
@@ -525,7 +526,9 @@ class Terrain implements JsonCodable
             return $edge->getType() === WaterSource::TYPE;
         });
 
-        $sources->each(function (Edge $source) {
+        $rivers = collect();
+
+        $sources->each(function (Edge $source) use ($rivers) {
             $candidates = $source->getAdjacentEdges($this);
             $candidates->filter(function (Edge $e) {
                 return in_array($e->getType(), [\App\Entity\Edge\Others\Sea::TYPE, \App\Entity\Edge\Others\Shallow::TYPE], true);
@@ -555,8 +558,38 @@ class Terrain implements JsonCodable
                 return $e->getElevation() <= $minElevation;
             });
 
-            $this->setEdge(new River(point: $candidate->getPoint(), face: $candidate->getFace(), elevation: $candidate->getElevation()));
+            $river = new River(point: $candidate->getPoint(), face: $candidate->getFace(), elevation: $candidate->getElevation());
+            $this->setEdge($river);
+
+            $rivers[] = $river;
         });
+
+        while ($rivers->isNotEmpty()) {
+            /** @var Edge $river */
+            $river = $rivers->pop();
+
+            $candidates = $river->getAdjacentEdges($this);
+
+            // マップ端か、海または浅瀬に面している場合は処理を終了
+            if ($candidates->count() !== 4 || $candidates->filter(function (Edge $e) { return in_array($e->getType(), [\App\Entity\Edge\Others\Sea::TYPE, \App\Entity\Edge\Others\Shallow::TYPE], true); })->isNotEmpty()) {
+                continue;
+            }
+
+            // その中で最も標高の低いEdgeを候補とする
+            $minElevation = $candidates->min(function (Edge $e) {
+                return $e->getElevation();
+            });
+
+            /** @var Edge $candidate */
+            $candidate = $candidates->first(function (Edge $e) use ($minElevation) {
+                return $e->getElevation() <= $minElevation;
+            });
+
+            $river = new River(point: $candidate->getPoint(), face: $candidate->getFace(), elevation: $candidate->getElevation());
+            $this->setEdge($river);
+
+            $rivers[] = $river;
+        }
     }
 
     public function findByTypes(array $cellTypes): Collection

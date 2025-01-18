@@ -20,8 +20,8 @@ export const EDGE_MODELS = {
   shore: {default: [{model: 'shore_edge'}]},
   sea: {default: [{model: 'sea_edge', elevation_multiply: 0}, {model: 'floor_edge'}]},
   shallow: {default: [{model: 'shallow_edge', elevation_multiply: 0}, {model: 'floor_edge'}]},
-  river: {default: [{model: 'shallow_edge'}, {model: 'floor_edge', elevation_multiply: 0.90}]},
-  water_source: {default: [{model: 'sea_edge'}, {model: 'floor_edge', elevation_multiply: 0.90}]},
+  river: {default: [{model: 'river_edge'}]},
+  water_source: {default: [{model: 'water_source_edge'}]},
 } as const
 
 export type EdgeType =
