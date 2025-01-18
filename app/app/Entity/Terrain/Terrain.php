@@ -166,6 +166,14 @@ class Terrain implements JsonCodable
                     $this->cells[$y][$x] = new Plain(point: new Point($x, $y), elevation: CellConst::ELEVATION_MAX / 3);
                 } else if ($n < 48) {
                     $this->cells[$y][$x] = new Shallow(point: new Point($x, $y), elevation: CellConst::ELEVATION_SHALLOW);
+//                } else if ($n < 19) {
+//                    $this->cells[$y][$x] = new Volcano(point: new Point($x, $y));
+//                } else if ($n < 21) {
+//                    $this->cells[$y][$x] = new Village(point: new Point($x, $y), population: 1000);
+//                } else if ($n < 28) {
+//                    $this->cells[$y][$x] = new Plain(point: new Point($x, $y));
+//                } else if ($n < 38) {
+//                    $this->cells[$y][$x] = new Shallow(point: new Point($x, $y));
                 } else {
                     break;
                 }
