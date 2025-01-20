@@ -15,12 +15,12 @@ export const CELL_SIZE_Y = 1.5
 export const DEFAULT_MODEL_SCALE = 1
 
 export const CELL_MODELS = {
-  city: {default: [{model: 'plain'}]},
+  city: {default: [{model: 'plain'}, {model: 'village'}]},
   factory: {default: [{model: 'plain'}]},
   farm: {default: [{model: 'plain'}, {model: 'farm'}]},
   farm_dome: {default: [{model: 'plain'}]},
   forest: {default: [{model: 'plain'}, {model: 'trees'}]},
-  metropolis: {default: [{model: 'plain'}]},
+  metropolis: {default: [{model: 'plain'}, {model: 'village'}]},
   mountain: {default: [{model: 'mountain'}]},
   volcano: {default: [{model: 'volcano'}]},
   mine: {default: [{model: 'wasteland'}]},
@@ -30,8 +30,8 @@ export const CELL_MODELS = {
   shallow: {default: [{model: 'shallow', elevation_multiply: 0}, {model: 'floor'}]},
   lake: {default: [{model: 'shallow', elevation_multiply: 0}, {model: 'floor'}]},
   large_factory: {default: [{model: 'plain'}]},
-  town: {default: [{model: 'plain'}]},
-  village: {default: [{model: 'plain'}]},
+  town: {default: [{model: 'plain'}, {model: 'village'}]},
+  village: {default: [{model: 'plain'}, {model: 'village'}]},
   wasteland: {default: [{model: 'wasteland'}]},
   missile_base: {default: [{model: 'plain'}]},
   seabed_base: {default: [{model: 'sea'}]},
