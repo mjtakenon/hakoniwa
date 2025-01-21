@@ -23,7 +23,7 @@ export const CELL_MODELS = {
   metropolis: {default: [{model: 'plain'}, {model: 'village'}]},
   mountain: {default: [{model: 'mountain'}]},
   volcano: {default: [{model: 'volcano'}]},
-  mine: {default: [{model: 'wasteland'}]},
+  mine: {default: [{model: 'mine'}]},
   oilfield: {default: [{model: 'shallow'}]},
   plain: {default: [{model: 'plain'}]},
   sea: {default: [{model: 'sea', elevation_multiply: 0}, {model: 'floor'}]},
