@@ -102,7 +102,7 @@ steps:
       'beta', 'run', 'jobs', 'update', '${_CLOUD_RUN_JOB_NAME}',
       '--image', '${_IMAGE_APP_DEPLOY_STAGE}',
       '--tasks=1',
-      '--region', 'asia-northeast1',
+      '--region', 'us-central1',
     ]
     waitFor: [ 'migrate' ]
 
@@ -112,8 +112,8 @@ steps:
 substitutions:
   _NODE_IMAGE_NAME: 'node:18.15.0-bullseye'
   _COMPOSER_IMAGE_NAME: 'composer:2.5.5'
-  _IMAGE_FRONTEND_BUILD_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/develop/cache/frontend_build_stage'
-  _IMAGE_APP_DEPLOY_STAGE: 'asia-northeast1-docker.pkg.dev/hakoniwa-dev/build-images/develop/app_deploy_stage'
+  _IMAGE_FRONTEND_BUILD_STAGE: 'us-central1-docker.pkg.dev/hakoniwa-dev/build-images/develop/cache/frontend_build_stage'
+  _IMAGE_APP_DEPLOY_STAGE: 'us-central1-docker.pkg.dev/hakoniwa-dev/build-images/develop/app_deploy_stage'
   _CLOUD_RUN_INSTANCE_NAME: 'hakoniwa-dev'
   _CLOUD_RUN_JOB_NAME: 'hakoniwa-develop-exec-turn'
   _INSTANCE_CONNECTION_NAME: 'hakoniwa-dev:asia-northeast1:hakoniwa-develop'
