@@ -80,7 +80,7 @@ exec-frontend:
 yarn-install:
 	docker compose exec frontend bash -c "yarn install --frozen-lockfile"
 	docker compose exec frontend bash -c "chown node:node /app/node_modules -R"
-	docker compose cp app:/app/node_modules ./app
+	sudo docker compose cp app:/app/node_modules ./app
 yarn-run-dev:
 	docker compose exec frontend bash -c "yarn run dev"
 

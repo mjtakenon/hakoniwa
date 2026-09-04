@@ -7,7 +7,7 @@ COPY ./app ./
 RUN yarn install && yarn build
 
 
-FROM php:8.2.4-fpm AS deploy_stage
+FROM php:8.5.10-fpm AS deploy_stage
 
 ARG APP_ENV
 ARG DB_PASSWORD
@@ -16,8 +16,6 @@ ARG NOTIFICATION_WEBHOOK_URL
 ARG YAHOO_CLIENT_SECRET
 
 WORKDIR /app
-
-COPY ./infra/app/sources.list /etc/apt/sources.list
 
 RUN \
   apt-get update && \
@@ -34,8 +32,7 @@ RUN docker-php-ext-install \
   bcmath \
   pdo_mysql \
   mysqli \
-  zip \
-  opcache
+  zip
 
 RUN mkdir -p /var/run/php-fpm && \
     touch /var/run/php-fpm/php-fpm.sock && \
