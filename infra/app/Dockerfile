@@ -1,8 +1,6 @@
-FROM php:8.2.4-fpm
+FROM php:8.5.10-fpm
 
 WORKDIR /app
-
-COPY ./infra/app/sources.list /etc/apt/sources.list
 
 RUN \
   apt-get update && \
@@ -22,8 +20,7 @@ RUN docker-php-ext-install \
   bcmath \
   pdo_mysql \
   mysqli \
-  zip \
-  opcache
+  zip
 
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
