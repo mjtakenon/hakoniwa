@@ -1,4 +1,4 @@
-FROM node:18.15.0-bullseye
+FROM node:24.20-trixie
 
 EXPOSE 54373
 
