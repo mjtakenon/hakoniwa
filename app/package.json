@@ -8,7 +8,7 @@
     "devDependencies": {
         "@types/lodash": "^4.17.25",
         "@types/markdown-it": "^12.2.3",
-        "@types/node": "^20.2.3",
+        "@types/node": "^24",
         "@vitejs/plugin-vue": "^6.0.8",
         "@vue/devtools-api": "^8.2.1",
         "autoprefixer": "^10.5.5",
