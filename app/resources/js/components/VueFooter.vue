@@ -72,7 +72,7 @@ export default defineComponent({
                     title: "一般",
                     links: [
                         { name: "トップページ", href: "/" },
-                        { name: "更新情報", href: "/releases" },
+                        { name: "更新情報", href: "https://github.com/mjtakenon/hakoniwa/releases" },
                         { name: "プライバシーポリシー", href: "/privacy" },
                     ]
                 },
