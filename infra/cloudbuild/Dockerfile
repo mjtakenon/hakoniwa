@@ -1,4 +1,4 @@
-FROM node:18.15.0-bullseye AS frontend_build_stage
+FROM node:24.20-trixie AS frontend_build_stage
 
 WORKDIR /app
 
@@ -45,7 +45,7 @@ COPY ./infra/app/php-fpm.conf /usr/local/etc/php-fpm.d/php-fpm.conf
 COPY ./infra/app/php.ini /usr/local/etc/php/php.ini
 COPY ./infra/app/supervisor-app.conf /etc/supervisor/conf.d/
 
-COPY --from=composer:2.5.5 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.10.3 /usr/bin/composer /usr/bin/composer
 COPY --chown=www-data ./app ./
 COPY --from=frontend_build_stage --chown=www-data /app/public/build /app/public/build
 
