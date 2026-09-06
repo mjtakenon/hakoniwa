@@ -297,7 +297,9 @@ export default defineComponent({
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
+
 #plan-controller {
     @apply bg-surface-variant text-on-surface-variant rounded-xl mx-1 lg:mr-2 mb-3 p-1 max-lg:h-fit lg:p-2 md:max-w-[200px] lg:max-w-[230px] drop-shadow-md;
 

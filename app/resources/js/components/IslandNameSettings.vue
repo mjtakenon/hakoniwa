@@ -146,13 +146,15 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 .island-settings {
-    // general
+    /* general */
     @apply w-full bg-surface-variant rounded-md mb-6;
-    // sp
+    /* sp */
     @apply p-2;
-    // desktop
+    /* desktop */
     @apply md:py-4 md:px-6;
 
     .subtitle {
@@ -189,9 +191,9 @@ export default defineComponent({
         .input-form {
             @apply w-full bg-background text-on-background p-1 outline-1 outline-primary rounded drop-shadow-md;
             @apply disabled:opacity-40;
-            // sp
+            /* sp */
             @apply w-full px-2;
-            // desktop
+            /* desktop */
             @apply md:px-4;
 
             &.error {
@@ -202,9 +204,9 @@ export default defineComponent({
 
     .other-error {
         @apply w-full text-center text-error font-bold;
-        // sp
+        /* sp */
         @apply text-xs;
-        // desktop
+        /* desktop */
         @apply md:text-sm;
     }
 
@@ -215,9 +217,9 @@ export default defineComponent({
     .submit {
         @apply block mt-5 mx-auto;
         @apply disabled:bg-on-surface-variant disabled:text-surface-variant;
-        // sp
+        /* sp */
         @apply w-1/2;
-        // desktop
+        /* desktop */
         @apply md:w-1/6;
     }
 

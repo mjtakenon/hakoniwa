@@ -80,7 +80,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 
 #countdown-widget {
     @apply flex w-full justify-between h-6 mb-4 lg:mb-2 drop-shadow;

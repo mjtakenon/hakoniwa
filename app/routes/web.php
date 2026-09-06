@@ -50,10 +50,6 @@ Route::prefix('/logout')->middleware($baseMiddleware)->group( function() {
     Route::post('', [\App\Http\Controllers\Web\Logout\IndexController::class, 'post']);
 });
 
-Route::prefix('/releases')->middleware($baseMiddleware)->group( function() {
-    Route::get('', [\App\Http\Controllers\Web\Releases\IndexController::class, 'get']);
-});
-
 Route::prefix('/privacy')->middleware($baseMiddleware)->group( function() {
     Route::get('', [\App\Http\Controllers\Web\Privacy\IndexController::class, 'get']);
 });

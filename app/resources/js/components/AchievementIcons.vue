@@ -121,7 +121,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 .achievements {
     @apply relative w-full grid min-h-full;
 

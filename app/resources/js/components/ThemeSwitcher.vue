@@ -48,15 +48,17 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 #theme-switch {
     .switch-bar {
         @apply w-10 h-5 my-2 rounded-3xl relative cursor-pointer;
         @apply bg-surface-variant;
         @apply transition-all duration-300 ease-in-out;
-        // sp
+        /* sp */
         @apply mx-auto;
-        // desktop
+        /* desktop */
         @apply md:mx-2;
 
         .switch-button {

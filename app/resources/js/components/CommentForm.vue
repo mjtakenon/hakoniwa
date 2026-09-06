@@ -81,11 +81,13 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 #comment-form {
-    // general
+    /* general */
     @apply w-full my-4 text-left;
-    // desktop
+    /* desktop */
     @apply md:px-4;
 
     .comment-header {

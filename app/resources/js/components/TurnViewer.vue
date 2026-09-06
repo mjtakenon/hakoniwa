@@ -21,7 +21,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
+
 .turn-box {
     @apply bg-primary text-on-primary p-1 rounded drop-shadow-md;
 

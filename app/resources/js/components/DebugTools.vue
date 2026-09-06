@@ -47,7 +47,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 .login {
     @apply text-sm ml-1 p-1;
 }
