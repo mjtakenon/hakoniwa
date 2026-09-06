@@ -177,7 +177,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
+
 
 #plan-page {
     @apply text-center mx-auto max-w-[1000px] min-h-[1200px];

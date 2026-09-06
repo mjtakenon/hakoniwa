@@ -67,7 +67,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 #releases-page {
     @apply min-h-[100vh] max-w-[800px] mx-auto mt-10;
 

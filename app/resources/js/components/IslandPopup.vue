@@ -321,7 +321,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 .popup {
     @apply hidden;
 
@@ -335,20 +337,20 @@ export default defineComponent({
 }
 
 .popup-window {
-    // general
+    /* general */
     @apply w-fit pb-2 bg-background text-on-background rounded-xl;
-    // desktop
+    /* desktop */
     @apply md:px-2 md:max-w-[calc(498px+1rem)];
 
     .popup-window-header {
         @apply w-full flex justify-between items-center px-4 py-1;
 
         .popup-title-target {
-            // general
+            /* general */
             @apply text-on-surface-variant;
-            // sp
+            /* sp */
             @apply text-xs mr-1;
-            // desktop
+            /* desktop */
             @apply md:text-sm md:mr-2;
         }
 
@@ -375,11 +377,11 @@ export default defineComponent({
 }
 
 .loading {
-    // general
+    /* general */
     @apply flex items-center justify-center;
-    // sp
+    /* sp */
     @apply w-[100vw] h-[100vw];
-    // desktop
+    /* desktop */
     @apply max-w-[498px] max-h-[498px];
 
     .loading-circle {
@@ -388,9 +390,9 @@ export default defineComponent({
 }
 
 #popup-island {
-    // sp
+    /* sp */
     @apply w-[clamp(0px,100vw,498px)] mx-auto;
-    // desktop
+    /* desktop */
     @apply max-w-[498px] max-h-[498px];
 
     .row {
@@ -435,7 +437,7 @@ export default defineComponent({
     }
 
     .hover-window {
-        @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
+        @apply block absolute min-w-[200px] max-w-[200px] bg-black/50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
 
         .hover-window-header {
             @apply flex px-3 items-center;
@@ -456,7 +458,7 @@ export default defineComponent({
         }
 
         .hover-window-plan:nth-child(2) {
-            @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
+            @apply border-t mt-3 pt-2 border-gray-500/70 ;
         }
     }
 

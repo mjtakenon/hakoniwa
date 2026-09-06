@@ -174,7 +174,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 #bbs {
     @apply w-full bg-surface drop-shadow-md my-10 rounded-md py-5;
 

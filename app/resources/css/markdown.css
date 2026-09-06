@@ -1,8 +1,8 @@
 .markdown {
     @apply w-full;
 
-    // head
-    h1,h2,h3 {
+    /* head */
+    h1, h2, h3 {
         @apply font-bold;
     }
     h1 {
@@ -17,23 +17,23 @@
         @apply text-base my-4;
     }
 
-    // general padding
-    p,ul,ol{
+    /* general padding */
+    p, ul, ol {
         @apply max-md:text-sm px-1 md:px-2;
     }
 
-    // paragraph
+    /* paragraph */
     p {
         @apply my-3;
     }
 
 
-    // list
-    ul,ol {
+    /* list */
+    ul, ol {
         @apply pl-6 md:pl-10;
 
-        ul,ol {
-            @apply pl-5
+        ul, ol {
+            @apply pl-5;
         }
     }
 
@@ -49,7 +49,7 @@
         @apply max-md:mb-2;
     }
 
-    // texts
+    /* texts */
     b {
         @apply font-bold;
     }

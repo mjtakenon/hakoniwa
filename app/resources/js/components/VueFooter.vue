@@ -94,7 +94,9 @@ export default defineComponent({
 
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 #footer {
     @apply w-full max-md:px-5 mt-14 py-4 bg-surface-variant text-on-surface;
 
@@ -118,9 +120,9 @@ export default defineComponent({
 
             .footer-grid {
                 @apply grid grid-cols-2 pb-6;
-                // sp
+                /* sp */
                 @apply w-full;
-                // desktop
+                /* desktop */
                 @apply md:w-1/2 md:px-10;
 
                 .footer-links {

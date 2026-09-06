@@ -6,16 +6,14 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@tailwindcss/vite": "^4.3.3",
         "@types/lodash": "^4.17.25",
         "@types/markdown-it": "^12.2.3",
         "@types/node": "^24",
         "@vitejs/plugin-vue": "^6.0.8",
         "@vue/devtools-api": "^8.2.1",
-        "autoprefixer": "^10.5.5",
         "laravel-vite-plugin": "^3.2.0",
-        "postcss": "^8.5.28",
-        "sass": "^1.104.0",
-        "tailwindcss": "^3.3.2",
+        "tailwindcss": "^4.3.3",
         "vite": "^8.2.2"
     },
     "dependencies": {

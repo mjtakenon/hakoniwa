@@ -50,7 +50,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 #settings {
     @apply w-full min-h-[100vh];
 

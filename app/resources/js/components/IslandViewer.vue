@@ -110,7 +110,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
+
 #island {
     margin: 0 auto;
     @apply w-full md:min-w-[496px] max-w-[496px] mb-4;
@@ -149,7 +151,7 @@ export default defineComponent({
     }
 
     .hover-window {
-        @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
+        @apply block absolute min-w-[200px] max-w-[200px] bg-black/50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
         .hover-window-header {
             @apply flex px-3 items-center;
 
