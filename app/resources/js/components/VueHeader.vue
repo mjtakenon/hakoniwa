@@ -112,7 +112,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
 
 .navbar {
     @apply min-w-full mb-3 pt-2 pb-2 md:px-5 flex max-md:flex-wrap bg-surface text-on-surface drop-shadow-md items-center;
@@ -143,32 +144,32 @@ export default defineComponent({
 
     .navbar-menu {
         @apply block h-full;
-        // sp
+        /* sp */
         @apply max-md:mt-3 max-md:w-full;
-        // desktop
+        /* desktop */
         @apply md:flex md:items-center md:ml-auto;
 
         .navbar-register {
             @apply text-center;
-            // sp
+            /* sp */
             @apply max-md:w-full max-md:rounded-none max-md:mb-2 max-md:drop-shadow-none max-md:mt-4;
-            // desktop
+            /* desktop */
             @apply md:inline-block md:mr-3;
         }
 
         .navbar-username {
             @apply text-center leading-none;
-            // sp
+            /* sp */
             @apply max-md:mb-2 max-md:pb-1 max-md:border-b-2 max-md:font-bold;
-            // desktop
+            /* desktop */
             @apply md:max-w-xs md:mr-2 md:pr-2 md:border-r-2;
         }
 
         .menu-item {
             @apply hover:bg-on-surface-variant;
-            // sp
+            /* sp */
             @apply flex items-center px-8 py-2 max-md:mb-1;
-            // desktop
+            /* desktop */
             @apply md:mx-1 md:p-2 md:rounded-full bg-surface-variant;
 
             &.primary {
@@ -177,14 +178,14 @@ export default defineComponent({
 
             .menu-icon {
                 @apply inline w-5 h-5 max-w-[1.25rem] max-h-[1.25rem];
-                // sp
+                /* sp */
                 @apply max-md:mr-5;
             }
 
             .menu-title {
-                // sp
+                /* sp */
                 @apply font-bold;
-                // desktop
+                /* desktop */
                 @apply md:hidden;
 
                 &.plan-title {

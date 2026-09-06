@@ -213,7 +213,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
+
 .stats {
     @apply container mx-auto w-full bg-surface text-on-surface drop-shadow-md rounded-lg mb-4;
     @apply md:py-2 md:px-4;

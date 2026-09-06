@@ -269,7 +269,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
+
 
 #island {
     margin: 0 auto;
@@ -317,7 +319,7 @@ export default defineComponent({
     }
 
     .hover-window {
-        @apply block absolute min-w-[200px] max-w-[200px] bg-black bg-opacity-50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
+        @apply block absolute min-w-[200px] max-w-[200px] bg-black/50 p-1 text-white rounded-md border border-black -translate-x-1/2 z-30;
 
         .hover-window-header {
             @apply flex px-3 items-center;
@@ -338,7 +340,7 @@ export default defineComponent({
         }
 
         .hover-window-plan:nth-child(2) {
-            @apply border-t mt-3 pt-2 border-opacity-70 border-gray-500 ;
+            @apply border-t mt-3 pt-2 border-gray-500/70 ;
         }
     }
 

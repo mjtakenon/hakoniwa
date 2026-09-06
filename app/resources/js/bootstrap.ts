@@ -25,10 +25,8 @@ import TurnViewer from "./components/TurnViewer.vue";
 import RankingViewer from "./components/RankingViewer.vue";
 import LogViewer from "./components/LogViewer.vue";
 import SettingsPage from "./pages/SettingsPage.vue";
-import ReleaseNotes from "./pages/ReleasesPage.vue";
 import VueFooter from "./components/VueFooter.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import ReleasesPage from "./pages/ReleasesPage.vue";
 
 export const app: App = createApp({
     components: {
@@ -37,11 +35,9 @@ export const app: App = createApp({
         VueHeader,
         VueFooter,
         TurnViewer,
-        ReleaseNotes,
         RankingViewer,
         LogViewer,
         SettingsPage,
-        ReleasesPage,
     }
 });
 

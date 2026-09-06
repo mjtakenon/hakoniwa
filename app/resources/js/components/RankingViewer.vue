@@ -179,7 +179,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
+
 .ranking {
     @apply flex flex-wrap mb-3 p-0 rounded-xl border bg-surface drop-shadow-md text-on-surface;
 
@@ -253,11 +255,11 @@ export default defineComponent({
         }
 
         .island-comment-box {
-            // general
+            /* general */
             @apply w-full max-w-full px-2;
-            // sp
+            /* sp */
             @apply max-md:my-2;
-            // desktop
+            /* desktop */
             @apply md:py-1 md:mt-1 md:w-4/5;
 
             .comment-index {

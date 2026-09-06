@@ -13,7 +13,7 @@
         $ts = 'resources/js/debug.ts';
       }
     @endphp
-    @vite([$ts, 'resources/css/app.scss'])
+    @vite([$ts, 'resources/css/app.css'])
 </head>
 <body>
     <div>

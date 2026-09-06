@@ -110,8 +110,8 @@ steps:
 #  - '${_IMAGE_FRONTEND_BUILD_STAGE}:latest'
 #  - '${_IMAGE_APP_DEPLOY_STAGE}:latest'
 substitutions:
-  _NODE_IMAGE_NAME: 'node:18.15.0-bullseye'
-  _COMPOSER_IMAGE_NAME: 'composer:2.5.5'
+  _NODE_IMAGE_NAME: 'node:24.20-trixie'
+  _COMPOSER_IMAGE_NAME: 'composer:2.10.3'
   _IMAGE_FRONTEND_BUILD_STAGE: 'us-central1-docker.pkg.dev/hakoniwa-dev/build-images/develop/cache/frontend_build_stage'
   _IMAGE_APP_DEPLOY_STAGE: 'us-central1-docker.pkg.dev/hakoniwa-dev/build-images/develop/app_deploy_stage'
   _CLOUD_RUN_INSTANCE_NAME: 'hakoniwa-dev'

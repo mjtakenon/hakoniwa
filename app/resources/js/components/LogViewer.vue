@@ -135,10 +135,11 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@reference "../../css/app.css";
 
 #logs {
-    // general
+    /* general */
     @apply text-left w-full mt-10 bg-surface drop-shadow-md;
     @apply md:rounded-md;
 
@@ -147,51 +148,51 @@ export default defineComponent({
     }
 
     .turn-log {
-        // general
+        /* general */
         @apply flex items-start pb-3;
-        // sp
+        /* sp */
         @apply text-sm mb-1 max-md:mt-4 max-md:pb-6 max-md:flex-wrap;
-        // desktop
+        /* desktop */
         @apply md:border-b-2 md:border-b-surface-variant mt-4 md:text-base md:mx-5 lg:mb-0.5;
 
         .turn-title {
-            // general
+            /* general */
             @apply my-1;
-            // sp
+            /* sp */
             @apply max-md:bg-surface-variant max-md:rounded-r-3xl max-md:w-2/5 max-md:px-2 max-md:py-1 max-md:drop-shadow;
-            // desktop
+            /* desktop */
             @apply md:border-r-2 md:border-surface-variant md:pr-2;
 
             .turn-title-inner {
-                // general
+                /* general */
                 @apply text-center;
-                // sp
+                /* sp */
                 @apply w-full max-md:flex;
-                // desktop
+                /* desktop */
                 @apply md:mr-2;
 
                 .turn-title-inner-text {
-                    // general
+                    /* general */
                     @apply text-xs text-on-surface-variant;
-                    // desktop
+                    /* desktop */
                     @apply md:block;
                 }
 
                 .turn-title-inner-number {
-                    // general
+                    /* general */
                     @apply mt-auto font-bold text-lg;
-                    // sp
+                    /* sp */
                     @apply max-md:grow max-md:text-center;
-                    // desktop
+                    /* desktop */
                     @apply md:block md:-mt-1;
                 }
             }
         }
 
         .data-box {
-            // sp
+            /* sp */
             @apply max-md:mt-2 max-md:w-full;
-            // desktop
+            /* desktop */
             @apply md:grow;
 
             .log {
@@ -207,11 +208,11 @@ export default defineComponent({
             }
 
             .turn-summaries {
-                // general
+                /* general */
                 @apply mt-2 grid gap-2 text-left;
-                // sp
+                /* sp */
                 @apply grid-cols-2 max-md:mt-3;
-                // desktop
+                /* desktop */
                 @apply md:grid-cols-5 md:pl-[10%] lg:pl-[25%];
 
                 .summary-box {

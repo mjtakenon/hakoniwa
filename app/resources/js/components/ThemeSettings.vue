@@ -93,13 +93,15 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "../../css/app.css";
+
 .theme-settings {
-    // general
+    /* general */
     @apply w-full bg-surface-variant rounded-md;
-    // sp
+    /* sp */
     @apply p-2;
-    // desktop
+    /* desktop */
     @apply md:py-4 md:px-6;
 
     .subtitle {
@@ -116,9 +118,9 @@ export default defineComponent({
 
     .theme-samples {
         @apply mt-6;
-        // sp
+        /* sp */
         @apply px-2;
-        // desktop
+        /* desktop */
         @apply md:px-10;
 
         .samples-title {
@@ -130,9 +132,9 @@ export default defineComponent({
 
             .samples-grid {
                 @apply grid gap-2;
-                // sp
+                /* sp */
                 @apply grid-cols-1;
-                // desktop
+                /* desktop */
                 @apply md:grid-cols-2;
             }
 
