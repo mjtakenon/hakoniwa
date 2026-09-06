@@ -43,8 +43,8 @@ export default ({mode}) => {
             },
         },
         build: {
-            outDir: 'public/build/', // ビルド成果物の生成先
-            manifest: true
+            outDir: 'public/build/',
+            manifest: 'manifest.json'
         },
     });
 }
