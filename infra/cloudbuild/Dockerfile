@@ -7,7 +7,7 @@ COPY ./app ./
 RUN yarn install && yarn build
 
 
-FROM php:8.5.10-fpm AS deploy_stage
+FROM php:8.5.12-fpm AS deploy_stage
 
 ARG APP_ENV
 ARG DB_PASSWORD
